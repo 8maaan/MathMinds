@@ -1,103 +1,102 @@
-.Login{
+.register{
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
-.login-left-side{
+.register-left-side{
     display: flex;
     justify-content: center;
     align-items: center;
     min-width: 70vw;
     min-height: 100vh;
-    /* border: solid black 1px;   */
+    background-color: rgba(255, 177, 0, 0.4);
+    /* border: solid black 1px; */
+    
 }
 
-.login-right-side{
+.register-right-side{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-width: 30vw;
     min-height: 100vh;
-    /* border: solid black 1px; */
-    background-color: rgba(255, 177, 0, 0.4);     
+    /* border: solid black 1px;      */
 }
 
-.login-right-side > *{
+.register-right-side > *{
     width: 60%;
     /* border: solid black 1px; */
 }
 
-.login-logo-container{
+.register-logo-container{
     height: 20vh;
 }
 
-.login-logo-container img{
+.register-logo-container img{
     max-width: 100%;
     max-height: 100%;
 }
 
-.login-txtField{
+.register-txtField{
     width: 100%;
     /* border: solid black 1px; */
     margin-top: 3.5%;
     margin-bottom: 3.5%;
 }
 
-.login-bg-container{
+.register-bg-container{
     display: flex;
     justify-content: center;
     align-items: center;
     /* border: solid black 1px; */
-    min-height: 70vh;
-    width: 70%;
+    min-height: 100vh;
+    width: 100%;
 }
 
-.login-bg-container img{
+.register-bg-container img{
     max-width: 100%;
     max-height: 100%;
 }
 
-
 @media (max-width: 1024px){
-    .login-right-side{
+    .register-right-side{
         min-width: 35vw;    
     }
 
-    .login-left-side{
+    .register-left-side{
         min-width: 65vw;
     }
 
 }
 
 @media (max-width: 768px){
-    .login-right-side{
+    .register-right-side{
         min-width: 40vw;
         
     }
 
-    .login-left-side{
+    .register-left-side{
         min-width: 60vw;
     }
 
 }
 
 @media (max-width: 600px){
-    .login-right-side{
+    .register-right-side{
         min-width: 100vw;
         background-color: rgba(255, 177, 0, 0.4);
     }
 
-    .login-right-side > *{
+    .register-right-side > *{
         width: 85%;
     }
 
-    .login-left-side{
+    .register-left-side{
         display: none;
     }
 
 }
-
 
