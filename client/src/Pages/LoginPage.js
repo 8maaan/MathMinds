@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Button, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import '../PagesCSS/LoginPage.css'
+import { UserAuth } from '../Context-and-routes/AuthContext';
 
 export const txtFieldInputProps = {
     sx: {
@@ -11,15 +12,24 @@ export const txtFieldInputProps = {
 };
 
 const LoginPage = () => {
-    
-    const handleSubmit = (event) =>{
-        event.preventDefault();
-        console.log('Submitted');
-    }
-    
+
+    const { signIn } = UserAuth();
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     const navigateTo = useNavigate();
-    const navigateToRegistration = () =>{
-        navigateTo('/register');
+
+    const handleSubmit = async (event) =>{
+        event.preventDefault();
+        try{
+            await signIn(email, password);
+            console.log('You are logged in!');
+            navigateTo('/home');
+
+        }catch(e) {
+            console.log(e.message);
+        }
     }
 
     return (
@@ -42,7 +52,7 @@ const LoginPage = () => {
                             label='Enter email' 
                             fullWidth 
                             InputProps={txtFieldInputProps}
-                            className='test'
+                            onChange={(event) => {setEmail(event.target.value)}}
                         />
                     </div>
                     <div className='login-txtField'>
@@ -52,6 +62,7 @@ const LoginPage = () => {
                             label='Enter password'  
                             fullWidth
                             InputProps={txtFieldInputProps}
+                            onChange={(event) => {setPassword(event.target.value)}}
                         />
                     </div>
                     <Button
@@ -64,8 +75,8 @@ const LoginPage = () => {
                         <h4>LOG IN</h4>
                     </Button>
                 </form>
-                <p>Already have an account?
-                    <span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={navigateToRegistration}> Click here</span>
+                <p>No account yet?
+                    <span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={()=> navigateTo('/register')}> Click here</span>
                 </p>
             </div>
         </div>
