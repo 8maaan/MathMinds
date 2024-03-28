@@ -1,14 +1,8 @@
 import React from 'react'
 import {Button, TextField} from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { txtFieldInputProps } from './LoginPage'
 import '../PagesCSS/RegisterPage.css'
-
-
-const txtFieldInputProps = {
-    sx: {
-        borderRadius: '25px',
-        backgroundColor: 'white',          
-    }
-};
 
 const RegisterTxtField = ({label, type, }) =>{
     return(
@@ -30,6 +24,12 @@ const RegisterPage = () => {
         event.preventDefault();
         console.log('Submitted');
     }
+
+    const navigateTo = useNavigate();
+    const navigateToLogin = () =>{
+        navigateTo('/login');
+    }
+    
     return (
         <div className='register'>
             <div className='register-left-side'>
@@ -61,7 +61,7 @@ const RegisterPage = () => {
                     </Button>
                 </form>
                 <p>Already have an account?
-                    <span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}}> Sign in</span>
+                    <span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={navigateToLogin}> Sign in</span>
                 </p>
             </div>
         </div>
