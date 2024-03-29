@@ -3,6 +3,7 @@ import { UserAuth } from '../Context-and-routes/AuthContext';
 
 // FOR TESTING PURPOSES ONLY (ROUTES)
 // EDIT LATER
+//testing new branch
 
 const HomePage = () => {
     const { user } = UserAuth();
