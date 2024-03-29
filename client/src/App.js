@@ -1,10 +1,13 @@
 import './App.css';
 import  {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { AuthContextProvider } from './Context-and-routes/AuthContext';
+import { GuestRoute, ProtectedRoute } from './Context-and-routes/Routes';
 import RegisterPage from './Pages/RegisterPage';
 import LoginPage from './Pages/LoginPage'
+import ProfilePage from './Pages/ProfilePage';
+import PageNotFound from './Pages/PageNotFound';
 import HomePage from './Pages/HomePage';
-import {  ProtectedRoute } from './Context-and-routes/Routes';
+
 
 function App() {
   return (
@@ -13,11 +16,18 @@ function App() {
         <BrowserRouter>
           <Routes>
 
-            <Route path="/login" element={ <LoginPage/> } />
-            <Route path="/register" element={ <RegisterPage/>}/>
-            
-            <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
-            
+            {/* COMMON ROUTES */}
+            <Route path="/home" element={<HomePage/>}/>
+
+            {/* GUEST ROUTES */}
+            <Route path="/login" element={<GuestRoute> <LoginPage/> </GuestRoute>} />
+            <Route path="/register" element={<GuestRoute> <RegisterPage/> </GuestRoute>}/>
+
+
+            {/* PROTECTED ROUTES */}
+            <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
+
+            <Route path="*" element={<PageNotFound/>} />
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>

@@ -1,27 +1,27 @@
 import React from 'react'
-import { UserAuth } from '../Context-and-routes/AuthContext'
-import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { UserAuth } from '../Context-and-routes/AuthContext';
+
+// FOR TESTING PURPOSES ONLY (ROUTES)
+// EDIT LATER
 
 const HomePage = () => {
-    const { user, logOut } = UserAuth();
-    const navigateTo = useNavigate();
-
-    const handleSignOut = async () =>{
-        try{
-            await logOut();
-            console.log('You are logged out');
-            navigateTo('/login');
-        }catch (e){
-            console.log(e.message);
-        }
-    }
-
+    const { user } = UserAuth();
     return (
         <div>
-            {/* TESTING ONLY, TO BE REMOVED L8ER */}
-            {user ? <p>Hello {user.email} </p> : <p>Not found user</p>}
-            <Button variant='contained' size='large' onClick={handleSignOut}> SIGN OUT</Button>
+            <h1>HomePage</h1>
+            {user ? 
+                <>
+                    <h2>You are signed in</h2>
+                    <h3>Check /login if you can access, if not, good.</h3>
+                    <h3>Check /register if you can access, if not, good.</h3>
+                    <h3>Go to /profile to logout</h3>
+                </>
+            :   
+                <>
+                    <h2>Not signed in</h2>
+                    <h3>Check if you can access /profile, if not, good.</h3>
+                </>
+            }
         </div>
     )
 }

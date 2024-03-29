@@ -1,5 +1,4 @@
-import React from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { UserAuth } from './AuthContext'
 
 // TO BE OPTIMIZED
@@ -7,21 +6,23 @@ import { UserAuth } from './AuthContext'
 // IF USER NOT LOGGED IN, PREVENT ACCESS, REDIRECT TO /LOGIN
 export const ProtectedRoute = ({children}) => {
     const { user } = UserAuth();
-    const location = useLocation();
+    const navigateTo = useNavigate();
+
     if(!user){
-        // TEST ALTERNATIVE
-        return <Navigate to="/login" state={{ from: location }} replace />;
+        return navigateTo('/login');
     }
 
     return children;
 }
 
 // SIMILAR TO ProtectedRoute() BUT FOR LOGGED IN USERS
-// export const GuestRoute = ({children}) => {
-//     const { user } = UserAuth();
-//     if(user){
-//         return <Navigate to='/home' />
-//     }
+export const GuestRoute = ({children}) => {
+    const { user } = UserAuth();
+    const navigateTo = useNavigate();
+    
+    if(user){
+        return navigateTo('/profile');
+    }
 
-//     return children
-// }
+    return children
+}
