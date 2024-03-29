@@ -17,11 +17,11 @@ export const ProtectedRoute = ({children}) => {
 }
 
 // SIMILAR TO ProtectedRoute() BUT FOR LOGGED IN USERS
-export const GuestRoute = ({children}) => {
-    const { user } = UserAuth();
-    if(user){
-        return <Navigate to='/home' />
-    }
+// export const GuestRoute = ({children}) => {
+//     const { user } = UserAuth();
+//     if(user){
+//         return <Navigate to='/home' />
+//     }
 
-    return children
-}
+//     return children
+// }
