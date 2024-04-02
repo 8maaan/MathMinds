@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import '../PagesCSS/RegisterPage.css'
+import mathMindsLogo from '../Images/mathminds-logo.png';
+import registerBackground from '../Images/register-bg.png'
 import {Button, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { txtFieldInputProps } from './LoginPage'
@@ -46,7 +48,7 @@ const RegisterPage = () => {
         try{
             await createUser(user.email, user.password)
             console.log('Successs');
-            navigateTo('/home');
+            navigateTo('/home', {replace : true});
         }catch(e){
             console.log(e.message);
         }
@@ -57,12 +59,12 @@ const RegisterPage = () => {
         <div className='register'>
             <div className='register-left-side'>
                 <div className='register-bg-container'>
-                    <img src='https://i.imgur.com/Ojvyzfk.png' alt='bg'/>
+                    <img src={registerBackground} alt='bg'/>
                 </div>
             </div>
             <div className='register-right-side'>
                 <div className='register-logo-container'>
-                    <img src='https://i.imgur.com/itMKX5j.png' alt='bg'/>
+                    <img src={mathMindsLogo} alt='bg'/>
                 </div>
                 <h3 style={{color: '#181A52'}}>Create an account</h3>
                 

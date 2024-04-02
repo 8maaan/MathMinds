@@ -3,6 +3,8 @@ import {Button, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import '../PagesCSS/LoginPage.css'
 import { UserAuth } from '../Context-and-routes/AuthContext';
+import loginBackground from '../Images/login-bg.png';
+import mathMindsLogo from '../Images/mathminds-logo.png';
 
 export const txtFieldInputProps = {
     sx: {
@@ -25,7 +27,7 @@ const LoginPage = () => {
         try{
             await signIn(email, password);
             console.log('You are logged in!');
-            navigateTo('/home');
+            navigateTo('/home', {replace : true});
 
         }catch(e) {
             console.log(e.message);
@@ -36,12 +38,12 @@ const LoginPage = () => {
         <div className='Login'>
             <div className='login-left-side'>
                 <div className='login-bg-container'>
-                    <img src='https://i.imgur.com/6RYERRr.png' alt='bg'/>
+                    <img src={loginBackground} alt='bg'/>
                 </div>
             </div>
             <div className='login-right-side'>
                 <div className='login-logo-container'>
-                    <img src='https://i.imgur.com/itMKX5j.png' alt='logo'/>
+                    <img src={mathMindsLogo} alt='logo'/>
                 </div>
                 <h3 style={{color: '#181A52'}}>Log in to your account</h3>
                 
