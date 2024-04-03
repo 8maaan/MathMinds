@@ -2,33 +2,48 @@ import React from 'react'
 import '../PagesCSS/HomePage.css'
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import {AppBar, Box, Toolbar, Typography, IconButton, Menu, Container, Avatar, Button, Tooltip, MenuItem} from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 // FOR TESTING PURPOSES ONLY (ROUTES)
 // EDIT LATER
 // testing new branch
+
 const pages = ['Home', 'Dashboard', 'Lessons', 'Practice'];
 const settings = ['Profile', 'Logout'];
 
 
 const HomePage = () => {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const navigateTo = useNavigate();
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
+    
     const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
-
+            setAnchorElUser(event.currentTarget);
+        };
+    
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
     
+    const handleClickNavMenu = (menu) => {
+        if (menu === 'Home') {
+            navigateTo('/home');
+        } else if (menu === 'Dashboard') {
+            navigateTo('*');
+        } else if (menu === 'Lessons') {
+            navigateTo('*');
+        } else if (menu === 'Practice') {
+            navigateTo('*');
+        }
+    };
+
+    const handleClickSetting = (setting) => {
+        if (setting === 'Profile') {
+            navigateTo('*');
+        } else if (setting === 'Logout') {
+            navigateTo('/profile');
+        }
+    };
+
     const { user } = UserAuth();
     return (
         <div>
@@ -43,13 +58,13 @@ const HomePage = () => {
                                 <Box sx={{ flexGrow: 1 }} />
 
                                 <Box className='nav-buttons' sx={{ display: 'flex', alignItems: 'center' }}>
-                                    {pages.map((page) => (
+                                    {pages.map((menu) => (
                                         <Button className='nav-buttons button'
-                                            key={page}
-                                            onClick={handleCloseNavMenu}
+                                            key={menu}
+                                            onClick={() => handleClickNavMenu(menu)}
                                             sx={{ my: 2, ml: 4, color: '#181A52', fontFamily: 'Poppins, sans-serif', display: 'block' }}
                                         >
-                                            {page}
+                                            {menu}
                                         </Button>
                                     ))}
                                 </Box>
@@ -77,8 +92,8 @@ const HomePage = () => {
                                     onClose={handleCloseUserMenu}
                                     >
                                     {settings.map((setting) => (
-                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
+                                        <MenuItem key={setting} onClick={() => handleClickSetting(setting)}>
+                                            <Typography textAlign="center">{setting}</Typography>
                                         </MenuItem>
                                     ))}
                                     </Menu>
@@ -98,13 +113,13 @@ const HomePage = () => {
 
                         <Box className='image-buttons'>
                             <Button /*onClick={handleClickImage1}*/>
-                                <img src="https://imgur.com/nsthhLE.png" alt="Dashboard" className='img-button-size'/>
+                                <img src="https://imgur.com/nsthhLE.png" alt="Dashboard" className='img-button-size' onClick={()=> navigateTo('*')}/>
                             </Button>
                             <Button className='image-buttons-margin'>
-                                <img src="https://imgur.com/iP9rats.png" alt="Lessons" className='img-button-size' />
+                                <img src="https://imgur.com/iP9rats.png" alt="Lessons" className='img-button-size' onClick={()=> navigateTo('*')}/>
                             </Button>
                             <Button>
-                                <img src="https://imgur.com/A0SMvsY.png" alt="Practice" className='img-button-size' />
+                                <img src="https://imgur.com/A0SMvsY.png" alt="Practice" className='img-button-size' onClick={()=> navigateTo('*')}/>
                             </Button>
                         </Box>
                     </div>
