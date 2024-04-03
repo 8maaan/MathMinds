@@ -112,13 +112,13 @@ const HomePage = () => {
                         </Box>
 
                         <Box className='image-buttons'>
-                            <Button /*onClick={handleClickImage1}*/>
+                            <Button className='button'>
                                 <img src="https://imgur.com/nsthhLE.png" alt="Dashboard" className='img-button-size' onClick={()=> navigateTo('*')}/>
                             </Button>
                             <Button className='image-buttons-margin'>
                                 <img src="https://imgur.com/iP9rats.png" alt="Lessons" className='img-button-size' onClick={()=> navigateTo('*')}/>
                             </Button>
-                            <Button>
+                            <Button className='button'>
                                 <img src="https://imgur.com/A0SMvsY.png" alt="Practice" className='img-button-size' onClick={()=> navigateTo('*')}/>
                             </Button>
                         </Box>

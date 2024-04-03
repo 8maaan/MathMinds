@@ -12,6 +12,14 @@
     background-color: #ffb100;
 }
 
+.nav-buttons {
+    align-items: center; /* Center-align navigation buttons */
+}
+
+.nav-buttons .button:hover {
+    background-color: #ddd; /* Change background color on hover */
+}
+
 .image-buttons{
     align-items: 'center';
     justify-content: 'center';
@@ -23,8 +31,18 @@
     margin-right: 2%;
 }
 
+.image-buttons-margin:hover img{
+    transform: scale(1.05);
+    transition: transform; 
+}
+
 .img-button-size{
     height: 450px; 
+}
+
+.button:hover img {
+    transform: scale(1.05); 
+    transition: transform; 
 }
 
 .home-header {
@@ -84,6 +102,16 @@
         height: 350px; 
     }
 
+    .image-buttons-margin:hover img{
+        transform: scale(1.05);
+        transition: transform; 
+    }
+    
+    .button:hover img {
+        transform: scale(1.05); 
+        transition: transform; 
+    }
+
     .home-header {
         color: #181A52;
         font-family: 'Poppins', sans-serif;
@@ -121,6 +149,16 @@
         height: 300px; 
     }
 
+    .image-buttons-margin:hover img{
+        transform: scale(1.05);
+        transition: transform; 
+    }
+    
+    .button:hover img {
+        transform: scale(1.05); 
+        transition: transform; 
+    }
+
     .home-header {
         color: #181A52;
         font-family: 'Poppins', sans-serif;
@@ -152,6 +190,16 @@
         height: 60px; /* Reduce the height of the logo */
     }
     
+    .image-buttons-margin:hover img{
+        transform: scale(1.05);
+        transition: transform; 
+    }
+    
+    .button:hover img {
+        transform: scale(1.05); 
+        transition: transform; 
+    }
+
     .nav-buttons {
         flex-direction: column; /* Display navigation buttons vertically */
         align-items: center; /* Center-align navigation buttons */
