@@ -9,25 +9,56 @@ import mathMindsLogo from '../Images/mathminds-logo.png';
 export const txtFieldInputProps = {
     sx: {
         borderRadius: '20px',
-        backgroundColor: 'white',          
+        backgroundColor: 'white',         
     }
 };
 
 const LoginPage = () => {
 
-    const { signIn } = UserAuth();
+    const { signIn, validateUserPassword } = UserAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isValid, setIsValid] = useState(false);
+    const [isEmpty, setIsEmpty] = useState(false);
+
+    const validateLoginCredentials = async () =>{
+        // WILL OPTIMIZE LATER XD
+        try{
+            const validatePassword = await validateUserPassword(password);
+            console.log(validatePassword);
+            if(email.length === 0){
+                setIsEmpty(true);
+                setIsValid(true);
+                return false;
+            }else if(password.length === 0){
+                setIsEmpty(true);
+                setIsValid(true);
+                return false;        
+            }else if(validatePassword.isValid){
+                setIsValid(true);
+                return false;
+            }else{
+                setIsValid(false);
+                setIsEmpty(false);
+                return true;
+            }
+            
+        }catch(e){
+            console.log(e);
+        }
+    }
 
     const navigateTo = useNavigate();
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
-        try{
-            await signIn(email, password);
-            console.log('You are logged in!');
-            navigateTo('/home', {replace : true});
+        try{     
+            if(validateLoginCredentials()){
+                await signIn(email, password);
+                console.log('You are logged in!');
+                navigateTo('/home', {replace : true});
+            }
 
         }catch(e) {
             console.log(e.message);
@@ -49,7 +80,8 @@ const LoginPage = () => {
                 
                 <form onSubmit={handleSubmit} style={{marginBottom:'10px'}}>
                     <div className='login-txtField'>
-                        <TextField 
+                        <TextField
+                            error={isValid}
                             variant='outlined' 
                             label='Enter email' 
                             fullWidth 
@@ -59,6 +91,8 @@ const LoginPage = () => {
                     </div>
                     <div className='login-txtField'>
                         <TextField
+                            error={isValid}
+                            helperText={isEmpty ? 'Incorrect username or password' : null}
                             type='password'
                             variant='outlined' 
                             label='Enter password'  
