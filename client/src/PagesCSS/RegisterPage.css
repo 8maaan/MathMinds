@@ -23,7 +23,7 @@
     align-items: center;
     min-width: 30vw;
     min-height: 100vh;
-    /* border: solid black 1px;      */
+    /* border: solid black 1px; */
 }
 
 .register-right-side > *{
@@ -52,8 +52,10 @@
     justify-content: center;
     align-items: center;
     /* border: solid black 1px; */
-    min-height: 90vh;
+    min-height: 100vh;
     width: 93%;
+    /* background-image: url("../Images/register-bg.png");
+    background-size: cover; */
 }
 
 .register-bg-container img{

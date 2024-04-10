@@ -1,67 +1,51 @@
 import React, { useState } from 'react'
+import '../PagesCSS/LoginPage.css'
 import {Button, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import '../PagesCSS/LoginPage.css'
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import loginBackground from '../Images/login-bg.png';
 import mathMindsLogo from '../Images/mathminds-logo.png';
 
 export const txtFieldInputProps = {
+    disableUnderline: true,
     sx: {
+        border: '1px solid #cccdcf',
         borderRadius: '20px',
-        backgroundColor: 'white',         
+        backgroundColor: 'white',
+        '&:hover': {
+            backgroundColor: 'white',
+        },
+        '&:focus': {
+            backgroundColor: 'white', 
+        },
+        '&:not(:focus)': {
+            backgroundColor: 'white',
+        },
     }
 };
 
 const LoginPage = () => {
 
-    const { signIn, validateUserPassword } = UserAuth();
+    const { signIn } = UserAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isValid, setIsValid] = useState(false);
-    const [isEmpty, setIsEmpty] = useState(false);
-
-    const validateLoginCredentials = async () =>{
-        // WILL OPTIMIZE LATER XD
-        try{
-            const validatePassword = await validateUserPassword(password);
-            console.log(validatePassword);
-            if(email.length === 0){
-                setIsEmpty(true);
-                setIsValid(true);
-                return false;
-            }else if(password.length === 0){
-                setIsEmpty(true);
-                setIsValid(true);
-                return false;        
-            }else if(validatePassword.isValid){
-                setIsValid(true);
-                return false;
-            }else{
-                setIsValid(false);
-                setIsEmpty(false);
-                return true;
-            }
-            
-        }catch(e){
-            console.log(e);
-        }
-    }
+    const [isValid, setIsValid] = useState(true);
 
     const navigateTo = useNavigate();
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
-        try{     
-            if(validateLoginCredentials()){
-                await signIn(email, password);
-                console.log('You are logged in!');
-                navigateTo('/home', {replace : true});
-            }
+        try{ 
+            setIsValid(true);
+            await signIn(email, password);
+            console.log('You are logged in!');
+            navigateTo('/home', {replace : true});
 
         }catch(e) {
             console.log(e.message);
+            setIsValid(false);
+            console.log(isValid);
         }
     }
 
@@ -81,23 +65,27 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit} style={{marginBottom:'10px'}}>
                     <div className='login-txtField'>
                         <TextField
-                            error={isValid}
-                            variant='outlined' 
-                            label='Enter email' 
+                            required
+                            error={!isValid}
+                            variant='filled' 
+                            label={<span>Enter email<span style={{color: 'red'}}> *</span></span>} 
                             fullWidth 
                             InputProps={txtFieldInputProps}
+                            InputLabelProps={{ required: false }}
                             onChange={(event) => {setEmail(event.target.value)}}
                         />
                     </div>
                     <div className='login-txtField'>
                         <TextField
-                            error={isValid}
-                            helperText={isEmpty ? 'Incorrect username or password' : null}
+                            required
+                            error={!isValid}
+                            helperText={!isValid? 'Incorrect email or password' : null}
                             type='password'
-                            variant='outlined' 
-                            label='Enter password'  
+                            variant='filled' 
+                            label={<span>Enter password<span style={{color: 'red'}}> *</span></span>}   
                             fullWidth
-                            InputProps={txtFieldInputProps}
+                            InputProps={{...txtFieldInputProps}}
+                            InputLabelProps={{ required: false }}
                             onChange={(event) => {setPassword(event.target.value)}}
                         />
                     </div>

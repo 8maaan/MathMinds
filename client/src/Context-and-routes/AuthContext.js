@@ -17,7 +17,7 @@ export const AuthContextProvider = ({children}) => {
 
     // REGISTER A USER
     const createUser = (email, password) => {
-        setLoading(true);
+        // setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
