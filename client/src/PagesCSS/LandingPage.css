@@ -1,0 +1,104 @@
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+.body {
+    color: #181A52;
+    background-image: url('../Images/landing-body-background.png');
+    background-size: cover;
+    min-height: 100vh; 
+    width: 100%; 
+}
+
+.button {
+    width: 30%;
+    height: 55px;
+    background-color: #FFB100;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins';
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); 
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.button:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); 
+    background-color: #FFB100; 
+}
+
+.landing-nav {
+    display:  grid;
+    padding: 8px;
+    gap: 200px;
+    grid-template-columns: 0.5fr 0.5fr;
+    background-color: rgb(238, 206, 163);
+    box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.1);
+}
+
+.landing-nav > .right-buttons { 
+    margin-top: 10px;
+
+    .button {
+        margin-left: 15px;
+        width: 14%;
+        font-size: 15px;
+        height: 50px;
+    }
+}
+
+.landing-body-grid-container {
+    background-color: #fafafa;
+    margin-top: 1.5%;
+    margin-left: 9%;
+    margin-right: 9%;
+    padding: 100px;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    box-shadow: 0px 10px 15px 7px rgba(0,0,0,0.1);
+}
+
+.landing-body-grid-container > .text-section {
+    h1 {
+        font-family: 'Poppins';
+        font-weight: bold;
+        font-size: 80px;
+        text-align: left;
+    }
+
+    span {
+        background-color: rgba(255, 177, 0, 0.4);
+    }
+
+    p {
+        font-size: 20px;
+        font-weight: 600;
+        font-family: 'Poppins';
+        text-align: justify;
+    }
+}
+
+
+.landing-body-grid-container > .image-section {
+    .button {
+        margin-left: 450px;
+    }
+} 
+
+@media (max-width: 1500px){
+    .image-section {
+        display: none;
+    }
+
+}
+
+@media (max-width: 850px) {
+  .landing-body-grid-container {
+    display: none;
+  } 
+}
