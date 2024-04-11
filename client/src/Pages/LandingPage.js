@@ -11,11 +11,11 @@ const LandingPage = () => {
     return (
         <div className='body'>
             <div className='landing-nav'>
-                <div>
+                <div className='mobile-view-logo'>
                     <img src={mathMindsHorizontalLogo} alt='Logo'/>
                 </div>
                 <div className='right-buttons'>
-                    <button style={{backgroundColor: '#ffffff'}}className='button' onClick={() => navigate('/register')}>SIGN UP</button>
+                    <button style={{backgroundColor: '#ffffff'}} className='button' onClick={() => navigate('/register')}>SIGN UP</button>
                     <button className='button' onClick={() => navigate('/login')}>LOG IN</button>
                 </div>
             </div>
@@ -37,6 +37,11 @@ const LandingPage = () => {
                         <button onClick={() => navigate('login')} className='button'>GET STARTED</button>
                     </div>
                 </div>
+            </div>
+
+            <div className='mobile-view-buttons'>
+                <button style={{backgroundColor: '#ffffff'}}className='button' onClick={() => navigate('/register')}>SIGN UP</button>
+                <button className='button' onClick={() => navigate('/login')}>LOG IN</button>
             </div>
         </div>
     )

@@ -91,14 +91,52 @@
 } 
 
 @media (max-width: 1500px){
+
     .image-section {
         display: none;
     }
-
 }
 
-@media (max-width: 850px) {
+@media (min-width: 768px) {
+  
+    .mobile-view-buttons {
+      display: none;
+    }
+  }
+
+@media (max-width: 768px) {
+
+  .right-buttons {
+    display: none;
+  }
+
   .landing-body-grid-container {
     display: none;
+  }
+  .text-section {
+    display: none;
   } 
+
+  .mobile-view-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+  .mobile-view-buttons {
+    display: grid;
+    margin: auto;
+    margin-top: 22%;
+    width: 80%;
 }
+
+  .button {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8%;
+    width: 100%;
+    height: 55px;
+  }
+}
+
