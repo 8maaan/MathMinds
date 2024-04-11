@@ -60,6 +60,30 @@
     max-height: 100%;
 }
 
+.forgot-password-text-container{
+    /* border: solid black 1px; */
+    font-size: 0.70rem;
+    text-align: right;
+    font-weight: 700;
+    color: #181A52;
+    
+}
+
+.forgot-password-text-container p{
+    /* border: solid black 1px; */
+    margin: auto 0;
+    width: auto;
+    float: right;
+    cursor: pointer;
+}
+
+
+.forgot-password-text-container p:hover{
+    transform: scale(1);
+    border-bottom-width: 1px; 
+    border-bottom-style: solid;
+}
+
 
 @media (max-width: 1024px){
     .login-right-side{
@@ -96,6 +120,10 @@
 
     .login-left-side{
         display: none;
+    }
+
+    .forgot-password-modal{
+        width: 10%;
     }
 
 }

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import loginBackground from '../Images/login-bg.png';
 import mathMindsLogo from '../Images/mathminds-logo.png';
+import ForgotPasswordModal from '../ReusableComponents/forgotPasswordModal';
 
 export const txtFieldInputProps = {
     disableUnderline: true,
@@ -49,6 +50,17 @@ const LoginPage = () => {
         }
     }
 
+    // FOR FORGOT PASSWORD MODAL
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleModalOpen = () => {
+        setModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
+
     return (
         <div className='Login'>
             <div className='login-left-side'>
@@ -89,12 +101,15 @@ const LoginPage = () => {
                             onChange={(event) => {setPassword(event.target.value)}}
                         />
                     </div>
+                    <div className='forgot-password-text-container'>
+                        <p onClick={handleModalOpen}>Forgot password?</p>
+                    </div>
                     <Button
                         type='submit'
                         variant='contained' 
                         fullWidth
                         size='large'
-                        sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '20px', height:'5vh'}}
+                        sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '30px', height:'5vh'}}
                     >
                         <h4>LOG IN</h4>
                     </Button>
@@ -103,6 +118,10 @@ const LoginPage = () => {
                     <span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={()=> navigateTo('/register')}> Click here</span>
                 </p>
             </div>
+ 
+            {modalOpen && (
+                <ForgotPasswordModal open={modalOpen} onClose={handleModalClose} />
+            )}
         </div>
     )
 }
