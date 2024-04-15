@@ -97,6 +97,13 @@
     }
 }
 
+@media (max-width: 1250px){
+
+    .right-buttons {
+        font-size: 10px;
+    }
+}
+
 @media (min-width: 768px) {
   
     .mobile-view-buttons {
