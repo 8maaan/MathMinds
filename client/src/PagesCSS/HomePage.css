@@ -5,21 +5,6 @@
     min-height: 100vh;
 }
 
-.nav-bar {
-    position: fixed; /* or sticky */
-    width: 100%; /* Ensure the navbar takes up the full width */
-    z-index: 1000; /* Ensure the navbar is above other content */
-    background-color: #ffb100;
-}
-
-.nav-buttons {
-    align-items: center; /* Center-align navigation buttons */
-}
-
-.nav-buttons .button:hover {
-    background-color: #ddd; /* Change background color on hover */
-}
-
 .image-buttons{
     align-items: 'center';
     justify-content: 'center';
@@ -186,9 +171,6 @@
 
 @media (max-width: 600px) {
     /* Adjustments for smaller screens */
-    .app-bar-logo {
-        height: 60px; /* Reduce the height of the logo */
-    }
     
     .image-buttons-margin:hover img{
         transform: scale(1.05);

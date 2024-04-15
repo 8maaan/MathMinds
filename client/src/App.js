@@ -1,12 +1,12 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import  {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { AuthContextProvider } from './Context-and-routes/AuthContext';
 import { GuestRoute, ProtectedRoute } from './Context-and-routes/Routes';
-import RegisterPage from './Pages/RegisterPage';
-import LoginPage from './Pages/LoginPage'
-import ProfilePage from './Pages/ProfilePage';
-import PageNotFound from './Pages/PageNotFound';
 import HomePage from './Pages/HomePage';
+import LoginPage from './Pages/LoginPage';
+import PageNotFound from './Pages/PageNotFound';
+import ProfilePage from './Pages/ProfilePage';
+import RegisterPage from './Pages/RegisterPage';
 
 
 function App() {
