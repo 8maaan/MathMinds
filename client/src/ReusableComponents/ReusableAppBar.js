@@ -1,23 +1,28 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import {AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem} from '@mui/material'
 import MenuIcon from '../Images/MenuIcon.png'
+import { useState } from 'react';
+import { UserAuth } from '../Context-and-routes/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['Home', 'Dashboard', 'Lessons', 'Practice'];
 const settings = ['Profile', 'Logout'];
 
 export default function ReusableAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const { logOut } = UserAuth();
+
+  const navigateTo = useNavigate();
+
+  const handleUserLogOut = async () =>{
+    try{
+      const userLogOut = await logOut();
+      console.log(userLogOut);
+    }catch(e){
+      console.log(e.message);
+    }
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -26,12 +31,38 @@ export default function ReusableAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
+    switch(page){
+      case 'Home':
+        console.log('Home');
+        break;
+
+      case 'Dashboard':
+        console.log('Dashboard');
+        break;
+
+      default:
+        break;
+    }
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting) => {
     setAnchorElUser(null);
+    switch(setting){
+      case 'Profile':
+        console.log('Profile');
+        navigateTo('/profile');
+        break;
+
+      case 'Logout':
+        console.log('Logout');
+        handleUserLogOut();
+        break;
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -118,8 +149,8 @@ export default function ReusableAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, ml: 4, color: '#181A52', fontFamily: 'Poppins, sans-serif', display: 'block' }}
+                onClick={()=>{handleCloseNavMenu(page)}}
+                sx={{ my: 2, ml: 2, mr: 2, color: '#181A52', fontFamily: 'Poppins, sans-serif', display: 'block' }}
               >
                 {page}
               </Button>
@@ -150,7 +181,7 @@ export default function ReusableAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={()=>{handleCloseUserMenu(setting)}}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
