@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { txtFieldInputProps } from './LoginPage'
 import { UserAuth } from '../Context-and-routes/AuthContext'
 import { isPasswordValid, isEmailValid, isPasswordMatch} from '../ReusableComponents/txtFieldValidations';
+import ForwardIcon from '@mui/icons-material/Forward';
 
 const RegisterTxtField = ({name, label, type, value, onChange, error, helperText}) =>{
     return(
@@ -94,8 +95,6 @@ const RegisterPage = () => {
     const { createUser } = UserAuth();
     const navigateTo = useNavigate();
 
-    console.log(userError);
-
     const handleSubmit = async (event) =>{
         event.preventDefault();
 
@@ -114,10 +113,16 @@ const RegisterPage = () => {
         }
     }
 
+    const handleBackBtnClick = () =>{
+        navigateTo('/');
+    }
 
     return (
         <div className='register'>
             <div className='register-left-side'>
+                <div className='register-back-btn'>
+                    <ForwardIcon className='register-back-icon' onClick={handleBackBtnClick}/>
+                </div>
                 <div className='register-bg-container'>
                     <img src={registerBackground} alt='bg'/>
                 </div>

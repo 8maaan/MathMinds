@@ -6,6 +6,7 @@ import { UserAuth } from '../Context-and-routes/AuthContext';
 import loginBackground from '../Images/login-bg.png';
 import mathMindsLogo from '../Images/mathminds-logo.png';
 import ForgotPasswordModal from '../ReusableComponents/forgotPasswordModal';
+import ForwardIcon from '@mui/icons-material/Forward';
 
 export const txtFieldInputProps = {
     disableUnderline: true,
@@ -61,9 +62,16 @@ const LoginPage = () => {
         setModalOpen(false);
     };
 
+    const handleBackBtnClick = () =>{
+        navigateTo('/');
+    }
+
     return (
         <div className='Login'>
             <div className='login-left-side'>
+                <div className='login-back-btn'>
+                    <ForwardIcon className='login-back-icon' onClick={handleBackBtnClick}/>
+                </div>
                 <div className='login-bg-container'>
                     <img src={loginBackground} alt='bg'/>
                 </div>
