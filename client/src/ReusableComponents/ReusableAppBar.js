@@ -3,6 +3,7 @@ import MenuIcon from '../Images/MenuIcon.png'
 import { useState } from 'react';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import mathMindsLogo from '../Images/mathminds-logo.png';
 
 const pages = ['Home', 'Dashboard', 'Lessons', 'Practice'];
 const settings = ['Profile', 'Logout'];
@@ -66,7 +67,7 @@ export default function ReusableAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{backgroundColor: '#ffb100'}}>
+    <AppBar position="fixed" sx={{backgroundColor: '#ffb100'}}> {/*set position to fixed from static -densha */}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
@@ -143,7 +144,7 @@ export default function ReusableAppBar() {
               textDecoration: 'none',
             }}
           >
-            MATHMINDS
+            <img src={mathMindsLogo} alt='logo' height='50px'/> {/*changed txt logo to pic logo -densha*/}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             {pages.map((page) => (
