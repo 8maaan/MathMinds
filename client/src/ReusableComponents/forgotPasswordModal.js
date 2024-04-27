@@ -58,7 +58,7 @@ export default function ForgotPasswordModal({ open, onClose }) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h5" component="h2">
+            <Typography style={{fontFamily:'Poppins'}} id="transition-modal-title" variant="h5" component="h2">
               Forgot your password?
             </Typography>
             {!confirmed ?
@@ -75,12 +75,12 @@ export default function ForgotPasswordModal({ open, onClose }) {
                     sx={{mb: 2,}} 
                     InputProps={{style:{borderRadius:'15px'}}} 
                     fullWidth/>
-                    <Button type='submit' variant='contained'fullWidth sx={{backgroundColor:'#ffb100', height:'6vh', fontWeight:'600', borderRadius:'15px'}}>Send link</Button>
+                    <Button type='submit' variant='contained'fullWidth sx={{backgroundColor:'#ffb100', height:'6vh', fontWeight:'600', fontFamily:'Poppins', borderRadius:'15px'}}>Send link</Button>
                 </form> 
               </div>
               :
               <div>
-                <Typography id="transition-modal-description" sx={{ mt: 2, mb: 5, fontSize: 12}}>
+                <Typography id="transition-modal-description" sx={{ mt: 2, mb: 5, fontSize: 12, fontFamily:'Poppins'}}>
                   Great! We've sent an email to {email} with instructions on how to reset your password.
                 </Typography>
               </div>
