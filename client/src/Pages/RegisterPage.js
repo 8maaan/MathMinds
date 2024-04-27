@@ -169,12 +169,12 @@ const RegisterPage = () => {
                         variant='contained' 
                         fullWidth
                         size='large'
-                        sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '1rem', height:'5vh'}}
+                        sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '1rem', height:'5vh', fontFamily:'Poppins'}}
                     >
                         <h4>REGISTER</h4>
                     </Button>
                 </form>
-                <Typography style={{fontSize:'12px'}}>Already have an account?<span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={() => navigateTo('/login')}> Sign in</span></Typography> 
+                <Typography style={{fontSize:'12px', fontFamily:'Poppins'}}>Already have an account?<span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={() => navigateTo('/login')}> Sign in</span></Typography> 
             </div>
         </div>
     )

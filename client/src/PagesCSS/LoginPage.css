@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
 .Login{
     display: flex;
     justify-content: center;
@@ -28,6 +30,7 @@
 }
 
 .login-right-side > *{
+    font-family: 'Poppins', sans-serif;
     width: 60%;
     /* border: solid black 1px; */
 }

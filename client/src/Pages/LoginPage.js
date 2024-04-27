@@ -117,7 +117,7 @@ const LoginPage = () => {
                         variant='contained' 
                         fullWidth
                         size='large'
-                        sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '30px', height:'5vh'}}
+                        sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '30px', height:'5vh', fontFamily:'Poppins'}}
                     >
                         <h4>LOG IN</h4>
                     </Button>
