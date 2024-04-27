@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import mathMindsLogo from '../Images/mathminds-logo.png';
+import mathMindsLogo2 from '../Images/mathminds-logo2.png';
 
 const pages = ['Home', 'Dashboard', 'Lessons', 'Practice'];
 const settings = ['Profile', 'Logout'];
@@ -37,10 +38,22 @@ export default function ReusableAppBar() {
     switch(page){
       case 'Home':
         console.log('Home');
+        navigateTo('/*');
         break;
 
       case 'Dashboard':
         console.log('Dashboard');
+        navigateTo('/*');
+        break;
+
+      case 'Lessons':
+        console.log('Dashboard');
+        navigateTo('/*');
+        break;
+
+      case 'Practice':
+        console.log('Dashboard');
+        navigateTo('/*');
         break;
 
       default:
@@ -87,7 +100,7 @@ export default function ReusableAppBar() {
             }}
           >
             {/* LOGO */}
-            <img className='app-bar-logo' src='https://imgur.com/1dsVqNE.png' alt='logo' height='80px'/>
+            <img className='app-bar-logo' src={mathMindsLogo2} alt='logo' height='80px'/>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -121,7 +134,7 @@ export default function ReusableAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={()=>{handleCloseNavMenu(page)}} sx={{color: '#181A52', fontFamily: 'Poppins, sans-serif'}}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -162,7 +175,7 @@ export default function ReusableAppBar() {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {/* AVATAR */}
-                <Avatar src="https://imgur.com/ip7Owg9.png" />
+                <Avatar src="https://imgur.com/ip7Owg9.png" alt='UserDP' />
               </IconButton>
             </Tooltip>
             <Menu
@@ -182,7 +195,7 @@ export default function ReusableAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={()=>{handleCloseUserMenu(setting)}}>
+                <MenuItem key={setting} onClick={()=>{handleCloseUserMenu(setting)}} sx={{color: '#181A52', fontFamily: 'Poppins, sans-serif'}}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

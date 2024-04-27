@@ -3,6 +3,9 @@ import '../PagesCSS/HomePage.css'
 import {Box,  Typography, Button, } from '@mui/material'
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { useNavigate } from 'react-router-dom';
+import homepageDashboardBtn from '../Images/HomePage_DashboardBtn.png';
+import homepageLessonBtn from '../Images/HomePage_LessonsBtn.png';
+import homepagePracticeBtn from '../Images/HomePage_PracticeBtn.png';
 
 
 const HomePage = () => {
@@ -23,13 +26,13 @@ const HomePage = () => {
 
                 <Box className='image-buttons'>
                     <Button className='image-buttons-margin'onClick={()=> navigateTo('*')}>
-                        <img src="https://imgur.com/nsthhLE.png" alt="Dashboard" className='img-button-size'/>
+                        <img src={homepageDashboardBtn} alt="Dashboard" className='img-button-size'/>
                     </Button>
                     <Button className='image-buttons-margin' onClick={()=> navigateTo('*')} sx={{marginLeft: 3, marginRight: 3}}>
-                        <img src="https://imgur.com/iP9rats.png" alt="Lessons" className='img-button-size' />
+                        <img src={homepageLessonBtn} alt="Lessons" className='img-button-size' />
                     </Button>
                     <Button className='image-buttons-margin'onClick={()=> navigateTo('*')}>
-                        <img src="https://imgur.com/A0SMvsY.png" alt="Practice" className='img-button-size' />
+                        <img src={homepagePracticeBtn} alt="Practice" className='img-button-size' />
                     </Button>
                 </Box>
             </div>       
