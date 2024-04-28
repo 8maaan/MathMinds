@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
 .register{
     display: flex;
     justify-content: center;
@@ -7,9 +9,10 @@
 
 .register-left-side{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 70vw;
+    min-width: 70%;
     min-height: 100vh;
     background-color: rgba(255, 177, 0, 0.4);
     /* border: solid black 1px; */
@@ -17,13 +20,14 @@
 }
 
 .register-right-side{
+    font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 30vw;
+    min-width: 30%;
     min-height: 100vh;
-    /* border: solid black 1px;      */
+    /* border: solid black 1px; */
 }
 
 .register-right-side > *{
@@ -52,8 +56,10 @@
     justify-content: center;
     align-items: center;
     /* border: solid black 1px; */
-    min-height: 90vh;
-    width: 93%;
+    min-height: 80vh;
+    width: 80%;
+    /* background-image: url("../Images/register-bg.png");
+    background-size: cover; */
 }
 
 .register-bg-container img{
@@ -61,32 +67,51 @@
     max-height: 100%;
 }
 
+.register-back-btn{
+    margin: 0 auto;
+    width: 90%;
+    text-align: left;
+    /* border: solid black 1px; */
+}
+
+.register-back-btn .MuiSvgIcon-root {
+    color: #181A52;
+    font-size: 3rem;
+    transform: rotate(180deg);
+    transition: transform 0.3s ease-in-out; 
+}
+
+.register-back-icon:hover {
+    cursor: pointer;
+    transform: rotate(180deg) scale(1.2); 
+}
+
 @media (max-width: 1024px){
     .register-right-side{
-        min-width: 35vw;    
+        min-width: 35%;    
     }
 
     .register-left-side{
-        min-width: 65vw;
+        min-width: 65%;
     }
 
 }
 
 @media (max-width: 768px){
     .register-right-side{
-        min-width: 40vw;
+        min-width: 40%;
         
     }
 
     .register-left-side{
-        min-width: 60vw;
+        min-width: 60%;
     }
 
 }
 
 @media (max-width: 600px){
     .register-right-side{
-        min-width: 100vw;
+        min-width: 100%;
         background-color: rgba(255, 177, 0, 0.4);
     }
 

@@ -1,27 +1,41 @@
 import React from 'react'
-import { UserAuth } from '../Context-and-routes/AuthContext';
+import '../PagesCSS/HomePage.css'
+import {Box,  Typography, Button, } from '@mui/material'
+import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
+import { useNavigate } from 'react-router-dom';
+import homepageDashboardBtn from '../Images/HomePage_DashboardBtn.png';
+import homepageLessonBtn from '../Images/HomePage_LessonsBtn.png';
+import homepagePracticeBtn from '../Images/HomePage_PracticeBtn.png';
 
-// FOR TESTING PURPOSES ONLY (ROUTES)
-// EDIT LATER
 
 const HomePage = () => {
-    const { user } = UserAuth();
+    const navigateTo = useNavigate();
+
     return (
         <div>
-            <h1>HomePage</h1>
-            {user ? 
-                <>
-                    <h2>You are signed in</h2>
-                    <h3>Check /login if you can access, if not, good.</h3>
-                    <h3>Check /register if you can access, if not, good.</h3>
-                    <h3>Go to /profile to logout</h3>
-                </>
-            :   
-                <>
-                    <h2>Not signed in</h2>
-                    <h3>Check if you can access /profile, if not, good.</h3>
-                </>
-            }
+            <div class="Homepage">
+                <ReusableAppBar/>
+                <Box>
+                    <Typography class='home-header'>
+                        Hey there, math explorer!
+                    </Typography>
+                    <Typography class='home-paragraph'>
+                        Ready to dive into the world of numbers and have some math fun together?
+                    </Typography>
+                </Box>
+
+                <Box className='image-buttons'>
+                    <Button className='image-buttons-margin'onClick={()=> navigateTo('*')}>
+                        <img src={homepageDashboardBtn} alt="Dashboard" className='img-button-size'/>
+                    </Button>
+                    <Button className='image-buttons-margin' onClick={()=> navigateTo('*')} sx={{marginLeft: 3, marginRight: 3}}>
+                        <img src={homepageLessonBtn} alt="Lessons" className='img-button-size' />
+                    </Button>
+                    <Button className='image-buttons-margin'onClick={()=> navigateTo('*')}>
+                        <img src={homepagePracticeBtn} alt="Practice" className='img-button-size' />
+                    </Button>
+                </Box>
+            </div>       
         </div>
     )
 }

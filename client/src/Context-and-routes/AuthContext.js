@@ -3,7 +3,9 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     signOut, 
-    onAuthStateChanged 
+    onAuthStateChanged, 
+    validatePassword,
+    sendPasswordResetEmail
 } from "firebase/auth";
 
 import { auth } from "../Firebase/firebaseConfig";
@@ -16,13 +18,13 @@ export const AuthContextProvider = ({children}) => {
 
     // REGISTER A USER
     const createUser = (email, password) => {
-        setLoading(true);
+        // setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
     // LOG-IN
     const signIn = (email, password) => {
-        setLoading(true);
+        // setLoading(true);
         return signInWithEmailAndPassword(auth, email, password);
     }
 
@@ -30,6 +32,17 @@ export const AuthContextProvider = ({children}) => {
     const logOut = () => {
         setLoading(true);
         return signOut(auth);
+    }
+
+    // VALIDATE PASSWORD
+
+    const validateUserPassword = async (password) => {
+        return validatePassword(auth, password);
+    }
+    
+    // SEND PASSWORD RESET EMAIL
+    const sendPasswordReset = (email) =>{
+        return sendPasswordResetEmail(auth, email);
     }
 
     useEffect(() => {
@@ -43,7 +56,7 @@ export const AuthContextProvider = ({children}) => {
     },[]);
 
     return (
-        <UserContext.Provider value={{ createUser, user, logOut, signIn, loading }}>
+        <UserContext.Provider value={{ createUser, user, logOut, signIn, loading, validateUserPassword, sendPasswordReset }}>
             {children}
         </UserContext.Provider>
     )

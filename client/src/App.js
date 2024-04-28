@@ -18,7 +18,6 @@ function App() {
           <Routes>
 
             {/* COMMON ROUTES */}
-            <Route path="/home" element={<HomePage/>}/>
 
             {/* GUEST ROUTES */}
             <Route path="/" element={<GuestRoute> <LandingPage/> </GuestRoute>} />
@@ -28,6 +27,7 @@ function App() {
 
             {/* PROTECTED ROUTES */}
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
+            <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
 
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
