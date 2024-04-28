@@ -36,6 +36,7 @@ const LandingPage = () => {
                                 size='large'
                                 onClick={()=>{navigateTo('/register')}} 
                                 sx={{
+                                    fontFamily:'Poppins',
                                     backgroundColor: '#FFB100', 
                                     color: '#181A52', 
                                     fontWeight: '600', 
