@@ -1,52 +1,54 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import landingBodyImage from '../Images/landing-body-image.png';
-import mathMindsHorizontalLogo from '../Images/mathminds-horizontal-logo.png';
 import '../PagesCSS/LandingPage.css';
+import LandingAppBar from '../ReusableComponents/LandingAppBar'
+import { Button } from '@mui/material';
+import teacherImg from '../Images/landing-body-image.png';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
 
-    let navigate = useNavigate();
-
+    const navigateTo = useNavigate();
     return (
-        <div className='body'>
-            <div className='landing-nav'>
-                <div className='mobilelogo-and-rightbutton-container'>
-                <div className='mobile-view-logo'>
-                    <img src={mathMindsHorizontalLogo} alt='Logo'/>
-                </div>
-                <div className='right-buttons'>
-                    <button style={{backgroundColor: '#ffffff'}} className='regbutton' onClick={() => navigate('/register')}>SIGN UP</button>
-                    <button className='logbutton' onClick={() => navigate('/login')}>LOG IN</button>
-                </div>
-                </div>
-            </div>
-
-            <div className='landing-container'>
-                <div className='landing-body-grid-container'>
-                    <div className='container-text-and-image'>
-                    <div className='text-section'>
-                        <div className='first-text'>
-                        <h1>
-                            <span>We Make</span><br/>
-                            <span>Mathematics</span><br/>
-                            <span>Fun.</span>
-                        </h1>
+        <div>
+            <div className='body'>
+                <LandingAppBar/>
+                <div className='landing-wrapper'>
+                    <div className='content-container'>
+                        <div className='content-right-side'>
+                            <div className='right-side-text'>
+                                <p>We Make</p>
+                                <p>Mathematics</p>
+                                <p>Fun</p>
+                            </div>
+                            <div className='right-side-desc'>
+                                <p>We transform the study of mathematics into a wonderful experience 
+                                    through interactive lessons, creative problem-solving, and real-world applications
+                                </p>
+                            </div>
                         </div>
-                        <div className='second-text'>
-                        <p>We transform the study of mathematics into a wonderful<br/>
-                        experience through interactive lessons, creative<br/>
-                        problem-solving, and real-world applications.</p>
+                        <div className='content-left-side'>
+                            <div className='content-left-img'>
+                                <img src={teacherImg} alt='teacher-img'/>
+                            </div>
+                            <div className='content-left-btn'>
+                            <Button 
+                                variant='contained' 
+                                size='large'
+                                onClick={()=>{navigateTo('/register')}} 
+                                sx={{
+                                    backgroundColor: '#FFB100', 
+                                    color: '#181A52', 
+                                    fontWeight: '600', 
+                                    borderRadius: '10px',
+                                    '&:hover': {
+                                        backgroundColor: '#d69500'
+                                    }
+                                }}
+                            >
+                                Get Started
+                            </Button>
+                            </div>
                         </div>
-                    </div>
-                    <div className='image-section'>
-                        <div className='titser'>
-                        <img src={landingBodyImage} alt='Teacher'/>
-                        </div>
-                        <div className='getstartedbutton'>
-                        <button onClick={() => navigate('login')} className='gsbutton'>GET STARTED</button>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
