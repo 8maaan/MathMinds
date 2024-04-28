@@ -1,0 +1,50 @@
+/* ScoreDisplayStyle.css */
+
+.overallContainer {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  width: 100%; 
+}
+
+.table-container {
+  margin-top: 150px;
+  width: 100%; 
+  max-width: 1000px; 
+}
+
+.firstTableCell {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+}
+
+.lastTableCell {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.table-container .MuiPaper-root {
+  overflow: visible; /* Override to make overflow visible */
+}
+
+.tableHeadCell {
+  border: none; /* Removes all borders from header cells */
+}
+
+/* Ensure the table row has no border or outline */
+.tableHeadRow {
+  border: none;
+}
+
+.done-button {
+  margin-top: 20px;
+  width: 100%;
+}
+
+
+ 
+.done-button {
+    margin-top: 20px;
+    color: whitesmoke !important;
+}
