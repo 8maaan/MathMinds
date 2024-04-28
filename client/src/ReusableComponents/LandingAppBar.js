@@ -66,7 +66,7 @@ export default function ReusableAppBar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{backgroundColor: '#EECEA3'}}>
+    <AppBar position="fixed" sx={{backgroundColor: '#fcdd96'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
