@@ -38,7 +38,7 @@ export default function ReusableAppBar() {
     switch(page){
       case 'Home':
         console.log('Home');
-        navigateTo('/*');
+        navigateTo('/home');
         break;
 
       case 'Dashboard':
@@ -88,7 +88,6 @@ export default function ReusableAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
