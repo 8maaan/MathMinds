@@ -76,7 +76,8 @@ const LessonsTopicAccordion = () => {
                             <Box>
                                 {topic.subtopics.map((subtopic, subIndex) => (
                                     <Box className="accordion-details" 
-                                         sx={{ fontSize: '18px', 
+                                         sx={{ fontSize: '18px',
+                                               cursor: 'pointer', 
                                                backgroundColor: colorPalette.accordionColor,
                                                transition: 'background-color', // Add transition for smooth effect
                                                "&:hover": {
