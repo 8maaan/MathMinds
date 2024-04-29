@@ -8,6 +8,7 @@ import LoginPage from './Pages/LoginPage';
 import PageNotFound from './Pages/PageNotFound';
 import ProfilePage from './Pages/ProfilePage';
 import RegisterPage from './Pages/RegisterPage';
+import LessonsPage from './Pages/LessonsPage';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             {/* PROTECTED ROUTES */}
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
+            <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
 
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
