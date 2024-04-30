@@ -1,6 +1,6 @@
 import React from 'react'
 import '../PagesCSS/LessonsBox.css'
-import LessonsTopicAccordion from '../ReusableComponents/LessonsTopicAccordion';
+import LessonsTopicAccordion from './LessonsTopicAccordion';
 import { Box } from '@mui/material';
 
 const lessonsData = [
