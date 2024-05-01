@@ -60,7 +60,7 @@ const LessonsTopicAccordion = () => {
                             id={`panel${index + 1}-header`}
                         >
                             <div>
-                                <Typography className="topic-number" style={{ fontSize: '20px'}}>{`Topic ${topic.tnumber}`}</Typography> 
+                                <Typography className="topic-number" style={{ fontSize: '18px'}}>{`Topic ${topic.tnumber}`}</Typography> 
                                 <Typography className="topic-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins' }}>{topic.topicTitle}</Typography>
                             </div>
                         </AccordionSummary>
@@ -79,7 +79,7 @@ const LessonsTopicAccordion = () => {
                                          sx={{ fontSize: '18px',
                                                cursor: 'pointer', 
                                                backgroundColor: colorPalette.accordionColor,
-                                               transition: 'background-color', // Add transition for smooth effect
+                                               transition: 'background-color',
                                                "&:hover": {
                                                    backgroundColor: `rgba(${parseInt(colorPalette.accordionColor.slice(-6, -4), 16)}, 
                                                                           ${parseInt(colorPalette.accordionColor.slice(-4, -2), 16)}, 
