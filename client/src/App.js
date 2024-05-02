@@ -9,6 +9,7 @@ import PageNotFound from './Pages/PageNotFound';
 import ProfilePage from './Pages/ProfilePage';
 import RegisterPage from './Pages/RegisterPage';
 import LessonsPage from './Pages/LessonsPage';
+import PracticePage from './Pages/PracticePage';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
             <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
+            <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
 
             <Route path="*" element={<PageNotFound/>} />
           </Routes>

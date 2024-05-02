@@ -53,7 +53,7 @@ export default function ReusableAppBar() {
 
       case 'Practice':
         console.log('Practice');
-        navigateTo('/*');
+        navigateTo('/practice');
         break;
 
       default:

@@ -31,7 +31,7 @@ const HomePage = () => {
                     <Button className='image-buttons-margin' onClick={()=> navigateTo('/lessons')} sx={{marginLeft: 3, marginRight: 3}}>
                         <img src={homepageLessonBtn} alt="Lessons" className='img-button-size' />
                     </Button>
-                    <Button className='image-buttons-margin'onClick={()=> navigateTo('*')}>
+                    <Button className='image-buttons-margin'onClick={()=> navigateTo('/practice')}>
                         <img src={homepagePracticeBtn} alt="Practice" className='img-button-size' />
                     </Button>
                 </Box>
