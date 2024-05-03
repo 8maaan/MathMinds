@@ -1,0 +1,150 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+.body {
+    color: #ffffff;
+    background-attachment: fixed;
+    min-height: 100vh; 
+    /* border: solid black 1px; */
+}
+
+.profile-wrapper,
+.profile-content-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-content-container{
+    width: 70%;
+    height: 60vh;
+    background-color: #FAFAFA;
+    padding: 2.5%;
+    border: solid black 1px; 
+}
+
+.personalinfo-right-side,
+.personalinfo-left-side{
+    display: flex;
+    height: 100%;
+    border: solid black 1px; 
+}
+.personalinfo-right-side{
+    flex-direction: column;
+    width: 65%;
+ 
+}
+.personalinfo-left-side{
+    display: flex;
+    width: 35%;
+    border: solid rgb(54, 140, 253) 1px; 
+}
+.choices-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    width: 80%;
+    height: 60%;
+    box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
+    border-radius: 25px;
+    background-color: #d8bc7966;    
+   
+}
+.PI-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 25%;
+    border-radius: 25px 25px 0px 0px;
+    background-color: #F94848;
+    font-family: 'Poppins';
+    font-size: 24px;
+    font-weight: 500;   
+    color: #181A52;
+
+}
+.LessonProg-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 25%;
+    background-color: #518BBC;
+    font-family: 'Poppins';
+    font-size: 24px;
+    font-weight: 500;   
+    color: #181A52;
+}
+.Badges-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 25%;
+    border-radius: 0px 0px 25px 25px;
+    background-color: #4CAE4F;
+    font-family: 'Poppins';
+    font-size: 24px;
+    font-weight: 500;   
+    color: #181A52;
+}
+
+
+.PI-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #0004fd;
+    background-color: #d8bc7966;  
+    box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
+    border-radius: 25px;  
+}
+.PI-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #00ff80;
+    font-family: 'Poppins';
+    font-size: 40px;
+    font-weight: 900;
+    color: #181A52;
+    width: 100%;
+    height: 20%;
+}
+.logo-and-userinfo-container{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: 80%;
+    border: 1px solid #000000;
+}
+
+.profile-logo-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #d80077;
+    width: 50%;
+    height: 50%;
+}
+
+
+.profile-logo-container img{
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 25px;
+}
+
+
+.userinfo-container{
+    border: 1px solid #000000;
+    width: 60%;
+    height: 100%;
+}
