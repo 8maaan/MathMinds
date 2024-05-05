@@ -1,24 +1,9 @@
 /* PracticeEvent.css */
+
 .practiceEventContainer {
   max-width: 1200px;
-  margin: 200px auto; /* Increased top margin to move carousel down */
+  margin: 200px auto; 
   padding: 20px;
-}
-  
-.searchBox {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 100px;
-  width: 100%;
-}
-  
-.searchField {
-  margin-right: 8px;
-  flex-grow: 1;
-}
-  
-.searchButton {
-  padding: 10px;
 }
   
 /* Slider adjustments */
@@ -27,24 +12,19 @@
 }
 
 .sliderContainer {
-  position: relative; /* This sets the new stacking context for your popup */
+  position: relative; 
 }
   
 .slick-slide {
   transition: transform .3s ease-in-out, z-index .3s ease-in-out, margin-top .3s ease-in-out;
-  position: relative; /* Required for z-index to work */
-}
-
-.slick-slide {
-  transform: scale(0.8); /* Default smaller scale */
-  margin-top: 20px; /* Lower position */
-  z-index: 0; /* Behind the center card */
-}
-
-.slick-slide {
+  position: relative; 
+  transform: scale(0.8); 
+  margin-top: 20px; 
+  z-index: 0; 
   padding: 0 !important;
   margin: 0 !important;
 }
+
 
 .slick-list {
   padding: 0 !important;
@@ -52,13 +32,13 @@
 }
 
 .slick-track {
-  margin: 0 auto !important; /* Center the track if it's not aligning properly */
+  margin: 0 auto !important; 
 }
 
 .slick-center {
-  transform: scale(1.2)!important; /* Enlarge the center card */
-  margin-top: 0px!important; /* Raise the position of the center card */
-  z-index: 1!important; /* Ensure it's above the others */
+  transform: scale(1.2)!important; 
+  margin-top: 0px!important;
+  z-index: 1!important; 
 }
 
 
@@ -75,12 +55,12 @@
 
 .slick-slide .topic {
   transform: scale(1)!important;
-  z-index: -1!important; /* Ensuring that non-active slides do not overlap */
+  z-index: -1!important; 
 }
   
 /* Card styling */
 .topic {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 12px 16px rgba(0,0,0,0.2);
   border-radius: 8px;
   overflow: hidden;
   background-color: #fff;
@@ -89,12 +69,13 @@
   justify-content: center;
   align-items: center;
   transition: box-shadow .3s ease-in-out, transform .3s ease-in-out, z-index .3s ease-in-out;
+  
 }
   
 /* Hover effect */
 .topic:hover {
   transform: scale(1.05);
-  z-index: 3; /* Ensure the hovered card is above others */
+  z-index: 3; 
 }
   
 /* Responsive adjustments */
@@ -111,29 +92,28 @@
 }
 
 .backdrop {
-  position: fixed; /* Fixed positioning to cover the screen */
+  position: fixed; 
   top: 0;
   left: 0;
-  width: 100vw; /* Full viewport width */
-  height: 100vh; /* Full viewport height */
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  z-index: 50; /* High z-index to ensure it's on top */
-  display: flex; /* Flex display to center the popup */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  width: 100vw; 
+  height: 100vh; 
+  background: rgba(0, 0, 0, 0.5); 
+  z-index: 50;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 }
 
 .topicCard {
-  width: 100%; /* Make the card fill the popup */
-  max-width: 540px; /* You can set a max-width to prevent it from getting too wide on larger screens */
-  margin: auto; /* Center the card in the popup if there's extra space */
-  /* Adjust padding if needed based on your design */
+  width: 100%; 
+  max-width: 540px; 
+  margin: auto; 
   padding: 20px;
-  box-sizing: border-box; /* Include padding in the width calculation */
-  display: flex; /* Using flex to align the content */
-  flex-direction: column; /* Stack the content vertically */
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
+  box-sizing: border-box; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center; 
 }
 /* Popup styling */
 .topicCardPopup {
@@ -141,39 +121,37 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: 1000px; /* Set a minimum width for the popup */
-  max-width: 80%; /* Use a percentage to make it responsive */
-  height: 600px; /* Let the height grow as needed based on content */
-  max-height: 80%; /* Optionally set a max height */
-  padding: 0px; /* Adjust padding to create more space inside the popup */
-  background: #FFF; /* Background color for the popup */
-  border-radius: 8px; /* Rounded corners for the popup */
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Shadow for the popup */
+  min-width: 1000px; 
+  max-width: 80%; 
+  height: 600px; 
+  max-height: 80%; 
+  padding: 0px; 
+  background: #FFF; 
+  border-radius: 8px; 
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); 
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
-  z-index: 1000; /* High z-index to ensure it's above other content */
+  justify-content: center;
+  align-items: center; 
+  z-index: 1000; 
 }
 
-/* Additional styling for the content inside your popup */
+/* Additional styling for the content inside popup */
 .topicCardPopup .topicCardContent {
-  width: 100%; /* Use the full width of the popup */
-  /* Add other styles for internal content as needed */
+  width: 100%; 
 }
 
 .topicCardHeader,
 .topicCardBody,
 .topicCardFooter {
-  width: 100%; /* Use the full width of the card */
-  padding: 10px; /* Add padding as needed */
+  width: 100%; 
+  padding: 10px; 
 }
 
-/* You might need to adjust the internal elements like input fields, buttons, etc., to match the new size */
+/* might need to adjust the internal elements like input fields, buttons, etc., to match the new size */
 .topicCard input,
 .topicCard button {
-  /* Adjustments for the internal elements */
-  width: 100%; /* Full width for inputs and buttons */
-  margin: 5px 0; /* Space between elements */
+  width: 100%; 
+  margin: 5px 0; 
 }
 
 

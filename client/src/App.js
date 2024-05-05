@@ -9,7 +9,10 @@ import PageNotFound from './Pages/PageNotFound';
 import HomePage from './Pages/HomePage';
 import PracticeEvent from './Pages/practiceEvent';
 import TopicCard from './Pages/TopicCard';
-import ScoreDisplay from './Pages/ScoreDisplay';
+import PracticeChoice from './Pages/PracticeChoice';
+import QuestionForm from './Pages/QuestionForm';
+
+import ScoreTest from './Pages/ScoreTest';
 
 function App() {
   return (
@@ -31,7 +34,9 @@ function App() {
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
             <Route path="/practiceEvent" element={<ProtectedRoute> <PracticeEvent/> </ProtectedRoute>}/>
             <Route path="/topiccard" element={<ProtectedRoute> <TopicCard/> </ProtectedRoute>}/>
-            <Route path="/scoreDisplay" element={<ProtectedRoute> <ScoreDisplay/> </ProtectedRoute>}/>
+            <Route path="/choice" element={<ProtectedRoute> <PracticeChoice/> </ProtectedRoute>}/>
+            <Route path="/questionForm" element={<ProtectedRoute> <QuestionForm/> </ProtectedRoute>}/>
+            <Route path="/scoreTest" element={<ProtectedRoute> <ScoreTest/> </ProtectedRoute>}/>
 
 
             {/* 404 */}
