@@ -11,7 +11,8 @@ import PracticeEvent from './Pages/practiceEvent';
 import TopicCard from './Pages/TopicCard';
 import PracticeChoice from './Pages/PracticeChoice';
 import QuestionForm from './Pages/QuestionForm';
-
+import ScoreTest from './Pages/ScoreTest';
+import LandingPage from './Pages/LandingPage';
 function App() {
   return (
     <div className="App">
