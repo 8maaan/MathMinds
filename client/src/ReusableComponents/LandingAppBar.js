@@ -1,4 +1,4 @@
-import {AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem} from '@mui/material'
+import {AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, MenuItem} from '@mui/material'
 import MenuIcon from '../Images/MenuIcon.png'
 import { useState } from 'react';
 import { UserAuth } from '../Context-and-routes/AuthContext';
@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import mathMindsLogo from '../Images/mathminds-logo.png';
 import mathMindsLogo2 from '../Images/mathminds-logo2.png';
 
-const pages = ['Home', 'Dashboard', 'Lessons', 'Practice'];
+const pages = ['Sign Up', 'Log In'];
 const settings = ['Profile', 'Logout'];
 
 export default function ReusableAppBar() {
@@ -29,31 +29,17 @@ export default function ReusableAppBar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  
 
   const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
     switch(page){
-      case 'Home':
-        console.log('Home');
-        navigateTo('/home');
+      case 'Sign Up':
+        navigateTo('/register');
         break;
 
-      case 'Dashboard':
-        console.log('Dashboard');
-        navigateTo('/*');
-        break;
-
-      case 'Lessons':
-        console.log('Dashboard');
-        navigateTo('/*');
-        break;
-
-      case 'Practice':
-        console.log('Dashboard');
-        navigateTo('/*');
+    case 'Log In':
+        navigateTo('/login');
         break;
 
       default:
@@ -80,7 +66,7 @@ export default function ReusableAppBar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{backgroundColor: '#ffb100'}}> {/*set position to fixed from static -densha */}
+    <AppBar position="fixed" sx={{backgroundColor: '#fcdd96'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
@@ -88,6 +74,7 @@ export default function ReusableAppBar() {
             variant="h6"
             noWrap
             component="a"
+            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -161,9 +148,19 @@ export default function ReusableAppBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             {pages.map((page) => (
               <Button
+                size='large'
+                variant='contained'
                 key={page}
                 onClick={()=>{handleCloseNavMenu(page)}}
-                sx={{ my: 2, ml: 2, mr: 2, color: '#181A52', fontFamily: 'Poppins, sans-serif', display: 'block' }}
+                sx={{ 
+                    my: 2, ml: 2, mr: 2, color: '#181A52', 
+                    fontFamily: 'Poppins, sans-serif', display: 'block', 
+                    backgroundColor: page === 'Sign Up' ? 'white' : (page === 'Log In' ? '#FFB100' : ''),
+                    '&:hover': {
+                    backgroundColor: page === 'Sign Up' ? '#f0efed' : (page === 'Log In' ? '#d69500' : '')
+                    },
+                    borderRadius: '10px'
+                }}
               >
                 {page}
               </Button>
@@ -171,12 +168,12 @@ export default function ReusableAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            {/* <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* AVATAR */}
+                AVATAR
                 <Avatar src="https://imgur.com/ip7Owg9.png" alt='UserDP' />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"

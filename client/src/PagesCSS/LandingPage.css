@@ -1,0 +1,141 @@
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+.body {
+    color: #181A52;
+    background-image: url('../Images/landing-body-background.png');
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh; 
+    /* border: solid black 1px; */
+}
+
+.landing-wrapper,
+.content-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.content-container{
+    width: 70%;
+    height: 60vh;
+    box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
+    border: solid rgba(58, 58, 58, 0.3) 1px;
+    border-radius: 15px;
+    background-color: #FAFAFA;
+    padding: 2.5%;
+}
+
+.content-right-side,
+.content-left-side{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    /* border: solid black 1px; */
+}
+
+.content-right-side{
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+    width: 40%;
+}
+
+.right-side-text{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
+    /* border: solid black 1px; */
+    height: 70%;
+}
+
+.right-side-text p{
+    font-family: 'Poppins';
+    margin: auto 0;
+    font-size: clamp(2rem, 4.5vw, 5rem);
+    font-weight: 700;
+    width: max-content;
+    background-color: rgba(255, 177, 0, 0.4);
+}
+
+.right-side-desc{
+    font-family: 'Poppins';
+    font-size: clamp(0.9rem, 1.25vw, 1.25rem);
+    text-align: justify;
+    margin-top: 1.5%;
+    word-break: break-word; 
+    overflow-wrap: break-word; 
+}
+
+.content-left-side{
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+}
+
+.content-left-img{
+    /* border: solid black 1px; */
+    width: 100%;
+    overflow: hidden; 
+}
+
+.content-left-img img{
+    height: 100%; 
+    width: 100%; 
+    object-fit: contain; 
+    margin: 0; 
+    padding: 0;
+    /* border: solid black 1px; */
+}
+
+.content-left-btn{
+    /* border: solid black 1px; */
+    width: 75%;
+    text-align: right;
+}
+
+@media (max-width: 768px) {
+    .landing-wrapper,
+    .content-container {
+      height: auto;
+      flex-direction: column;
+    }
+  
+    .content-container {
+      width: 90%;
+      height: auto;
+      padding: 5%;
+      border-radius: 0;
+      margin-top: 50px;
+    }
+  
+    .content-right-side,
+    .content-left-side {
+      width: 100%;
+    }
+  
+    .right-side-text p {
+      font-size: 3rem;
+    }
+  
+    .right-side-desc {
+      font-size: 1rem;
+    }
+  
+    .content-left-img {
+      height: auto;
+      max-width: 100%;
+    }
+  
+    .content-left-btn {
+      width: 100%;
+      text-align: center;
+    }
+}
