@@ -24,7 +24,7 @@ const LessonsBox = () => {
             <div className="lessons-container">
                 {lessons.map((lesson, index) => (
                     <Box key={index} className="lesson-box">
-                        <p className="lesson-number">Lesson {lesson.lessonId}</p>
+                        <p className="lesson-number">Lesson {index +1}</p>{/*lesson.lessonId to index+1*/}
                         <h2 className="lesson-title">{lesson.lessonTitle}</h2>
                         <LessonsTopicAccordion lesson={lesson} key={index} />
                     </Box>
