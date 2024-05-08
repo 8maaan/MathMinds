@@ -17,8 +17,8 @@ function PracticeChoice({ topic, onClose }) {
     }
 
     const cardStyles = {
-        maxWidth: '800px',
-        maxHeight: '600px',
+        maxWidth: '50rem',  
+        maxHeight: '37.5rem',  
         width: '80%',
         height: '80%',
         position: 'fixed',  
@@ -39,11 +39,11 @@ function PracticeChoice({ topic, onClose }) {
       });
 
      const BouncingButton = styled(Button)({
-        width: 300,
-        height: 280,
+        width: '18.75rem',  
+        height: '17.5rem',  
         color: '#181a52',
         fontWeight: 'bold',
-        fontSize: 24,
+        fontSize: '1.5rem',  
         backgroundColor: 'lightblue',
         '&:hover': {
           animation: 'bounce 1s infinite',
@@ -55,7 +55,7 @@ function PracticeChoice({ topic, onClose }) {
             animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)'
           },
           '50%': {
-            transform: 'translateY(-20px)',
+            transform: 'translateY(-1.25rem)',  // -20px
             animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
           }
         }
@@ -70,14 +70,14 @@ function PracticeChoice({ topic, onClose }) {
           <div className="containerChoice">
             <div className='backgroundOverlay' onClick={onClose}></div>
             <Card sx={cardStyles}>
-                <CardContent sx={{background:'#ffec86', marginTop: '50px'}}>
-                    <IconButton aria-label="close" onClick={onClose} sx={{ position: 'absolute', right: 8, top: 8, zIndex: 2 }}>
+                <CardContent sx={{background:'#ffec86', marginTop: '3.125rem'}}>  
+                    <IconButton aria-label="close" onClick={onClose} sx={{ position: 'absolute', right: '0.5rem', top: '0.5rem', zIndex: 2 }}>  
                         <CloseIcon />
                     </IconButton>
                     <Typography gutterBottom variant="h5" component="div" align="center">
                         {topic.name}
                     </Typography>
-                    <Typography gutterBottom variant="h7" component="div" align="center" sx={{marginTop: '50px', color: '#181a52'}}>
+                    <Typography gutterBottom variant="h7" component="div" align="center" sx={{marginTop: '3.125rem', color: '#181a52'}}>  
                         Choose a game mode
                     </Typography>
                 </CardContent>
@@ -85,14 +85,14 @@ function PracticeChoice({ topic, onClose }) {
                     <BouncingButton 
                         variant="contained"
                         className="button-hover-effect" 
-                        sx={{ bgcolor: '#518bbc', '&:hover': { bgcolor: 'darkblue' },marginLeft: 15,marginRight: 2, borderRadius: 4 }} 
+                        sx={{ bgcolor: '#518bbc', '&:hover': { bgcolor: 'darkblue' }, marginLeft: '0.9375rem', marginRight: '0.125rem', borderRadius: '0.25rem' }}  // 15px, 2px, 4px
                         onClick={testButtonClick}>
                         SOLO
                     </BouncingButton>
                     <BouncingButton
                         variant="contained" 
                         className="button-hover-effect"
-                        sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' }, marginRight: 15, marginLeft: 2, borderRadius: 4 }} 
+                        sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' }, marginRight: '0.9375rem', marginLeft: '0.125rem', borderRadius: '0.25rem' }}  // 15px, 2px, 4px
                         onClick={testButtonClick}>
                         COLLAB
                     </BouncingButton>
@@ -104,4 +104,5 @@ function PracticeChoice({ topic, onClose }) {
 }
 
 export default PracticeChoice;
+
 

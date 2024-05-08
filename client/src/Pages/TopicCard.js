@@ -53,7 +53,7 @@ function TopicCard({ topic, onClose, onNext, onPrev }) {
 
   return (
     <ThemeProvider theme={theme}>
-    <div className="backgroundOverlay"> {/* Overlay for blurry background */}
+    <div className="backgroundOverlay"> {/* Overlay sa blurry background */}
   <Card sx={cardStyles}>
     <CardContent>
       <IconButton aria-label="close" onClick={onClose} sx={{ position: 'absolute', right: '8px', top: '8px', zIndex: 1 }}>

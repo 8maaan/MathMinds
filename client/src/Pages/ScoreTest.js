@@ -1,6 +1,6 @@
 import React from 'react';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
-import { Paper, Button, Grid, Typography } from '@mui/material';
+import { Paper, Button, Grid, Typography, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../PagesCSS/ScoreTest.css';
 
@@ -17,8 +17,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '20px',
-          padding: '20px',
-          margin: '10px 0',
+          padding: '1.25 rem',
+          margin: '0.5 rem 0',
           background: '#d6c1e3',
           width: 'calc(100% - 40px)',
           height: '90px',
@@ -35,6 +35,8 @@ const ScoreTest = () => {
     { id: 2, name: 'Name', questionsCorrect: 7, totalQuestions: 10, score: 70, totalScore: 100 },
   ];
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <div>
     <ReusableAppBar />
@@ -42,35 +44,35 @@ const ScoreTest = () => {
       
       <div className="overallContainer">
         <div className="scoresContainer">
-          <div className="scoreHeader">
-            <Grid container alignItems="center" style={{paddingTop:'50px'}}>
-              <Grid item xs={1}></Grid> {/* for ID alignment */}
-              <Grid item xs={3}></Grid> {/* for name alignment */}
-              <Grid item xs={4} style={{ textAlign: 'right', paddingLeft:'320px' }}> 
-                <Typography variant="h6">Questions</Typography>
+        <div className="scoreHeader">
+              <Grid container alignItems="center" style={{paddingTop: isMobile ? '1.25 rem' : '3.125 rem'}}>
+                <Grid item xs={12} sm={1} md={1}></Grid>
+                <Grid item xs={6} sm={3} md={3}></Grid>
+                <Grid item xs={2} sm={4} md={4} style={{ textAlign: 'right' }}> 
+                  <Typography variant="h6">Questions</Typography>
+                </Grid>
+                <Grid item xs={3} sm={4} md={4} style={{ textAlign: 'right' }}> 
+                  <Typography variant="h6">Scores</Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={4} style={{ textAlign: 'right', paddingRight:'70px'}}> 
-                <Typography variant="h6">Scores</Typography>
-              </Grid>
-            </Grid>
-          </div>
+            </div>
           {scores.map((score, index) => (
-            <Paper key={index} elevation={3} className="scorePaper" padding='30px'>
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Grid item xs={1} style={{ textAlign: 'left', paddingLeft:'50px' }}>
-                  <Typography variant="h6">{score.id}.</Typography>
-                </Grid>
-                <Grid item xs={3} style={{ paddingLeft: '10px' }}>
-                  <Typography variant="h6">{score.name}</Typography>
-                </Grid>
-                <Grid item xs={4} style={{ textAlign: 'right' }}>
-                  <Typography variant="body1">{`${score.questionsCorrect}/${score.totalQuestions}`}</Typography>
-                </Grid>
-                <Grid item xs={4} style={{ textAlign: 'right', paddingRight:'50px' }}>
-                  <Typography variant="body1">{`${score.score}/${score.totalScore}`}</Typography>
-                </Grid>
-              </Grid>
-            </Paper>
+             <Paper key={index} elevation={3} className="scorePaper">
+             <Grid container justifyContent="space-between" alignItems="center">
+               <Grid item xs={2} sm={1} md={1} style={{ textAlign: 'left' }}>
+                 <Typography variant="h6">{score.id}.</Typography>
+               </Grid>
+               <Grid item xs={4} sm={3} md={3}>
+                 <Typography variant="h6">{score.name}</Typography>
+               </Grid>
+               <Grid item xs={3} sm={4} md={4} style={{ textAlign: 'right' }}>
+                 <Typography variant="body1">{`${score.questionsCorrect}/${score.totalQuestions}`}</Typography>
+               </Grid>
+               <Grid item xs={3} sm={4} md={4} style={{ textAlign: 'right' }}>
+                 <Typography variant="body1">{`${score.score}/${score.totalScore}`}</Typography>
+               </Grid>
+             </Grid>
+           </Paper>
           ))}
           <div className="done-button">
             <Button variant="contained">Done</Button>
