@@ -1,29 +1,37 @@
-import React from 'react'
-import '../PagesCSS/LessonsBox.css'
+import React, { useState, useEffect } from 'react';
+import '../PagesCSS/LessonsBox.css';
 import LessonsTopicAccordion from './LessonsTopicAccordion';
 import { Box } from '@mui/material';
-
-const lessonsData = [
-    { number: 1, title: 'Introduction to React' },
-    { number: 2, title: 'Components and Props' },
-    { number: 3, title: 'Components and Props2' },
-    // Add more lesson objects as needed
-];
+import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
 
 const LessonsBox = () => {
+    const [lessons, setLessons] = useState([]);
+
+    useEffect(() => {
+        const fetchLessons = async () => {
+            const { success, data } = await getAllLessonsFromDb();
+            if (success) {
+                setLessons(data);
+            } else {
+                console.error("Failed to fetch lessons");
+            }
+        };
+        fetchLessons();
+    }, []);
+
     return (
         <div>
             <div className="lessons-container">
-                {lessonsData.map((lesson, index) => (
+                {lessons.map((lesson, index) => (
                     <Box key={index} className="lesson-box">
-                        <p className="lesson-number">Lesson {lesson.number}</p>
-                        <h2 className="lesson-title">{lesson.title}</h2>
-                        <LessonsTopicAccordion/>
+                        <p className="lesson-number">Lesson {lesson.lessonId}</p>
+                        <h2 className="lesson-title">{lesson.lessonTitle}</h2>
+                        <LessonsTopicAccordion lesson={lesson} key={index} />
                     </Box>
                 ))}
             </div>
         </div>
-      )
-}
+    );
+};
 
-export default LessonsBox
+export default LessonsBox;

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
@@ -12,26 +12,67 @@ const colorPalettes = [
     // Add more color palettes as needed
 ];
 
-const lessonsTopicData = [
-    { tnumber: 1, topicTitle: 'Introduction to React', subtopics: ['JSX', 'Components'] },
-    { tnumber: 2, topicTitle: 'Components and Props', subtopics: ['Props', 'State'] },
-    { tnumber: 3, topicTitle: 'Components and Props2', subtopics: ['Props2', 'State2'] },
-    { tnumber: 4, topicTitle: 'Components and Props2', subtopics: ['Props2', 'State2'] },
-    // Add more lesson objects as needed
-];
-
-const LessonsTopicAccordion = () => {
+const LessonsTopicAccordion = ({lesson}) => {
     const navigateTo = useNavigate();
-
     const [expanded, setExpanded] = useState(null);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : null);
     };
+    
 
-    return(
+    return (
         <div>
-            {lessonsTopicData.map((topic, index) => {
+            {lesson.lessonTopics.map((topic, topicIndex) => {
+                const colorPaletteIndex = topicIndex % colorPalettes.length;
+                const colorPalette = colorPalettes[colorPaletteIndex];
+                const isExpanded = expanded === `panel${lesson.lessonId}-${topicIndex + 1}`;
+
+                return (
+                    <Accordion
+                        sx={{
+                            marginTop:'1.5%',
+                            borderRadius: "10px"
+                        }}
+                        key={`${lesson.lessonId}-${topicIndex}`}
+                        expanded={isExpanded}
+                        onChange={handleChange(`panel${lesson.lessonId}-${topicIndex + 1}`)}
+                    >
+                        <AccordionSummary
+                            sx={{
+                                backgroundColor: colorPalette.summaryBgColor,
+                                borderTopRightRadius: "10px",
+                                borderTopLeftRadius: "10px",
+                                borderBottomLeftRadius: isExpanded ? '0px' : '10px',
+                                borderBottomRightRadius: isExpanded ? '0px' : '10px',
+                                textAlign: 'left'
+                            }}
+                            expandIcon={<ArrowDropDownIcon />}
+                        >
+                            <div>
+                                <Typography className="topic-number" style={{ fontSize: '18px'}}>{`Topic ${topicIndex + 1}`}</Typography>
+                                <Typography className="topic-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins' }}>{topic.topicTitle}</Typography>
+                            </div>
+                        </AccordionSummary>
+                        <AccordionDetails
+                            sx={{
+                                backgroundColor: colorPalette.detailsBgColor,
+                                textAlign: 'left',
+                                borderBottomRightRadius: "10px",
+                                borderBottomLeftRadius: "10px"  
+                            }}
+                        >
+                            <Typography>Hello!</Typography>
+                        </AccordionDetails>
+                    </Accordion>
+                );
+            })}
+        </div>
+    );
+    
+    {/*return(
+        <div>
+            {lessonsData && lessonsData.map((topic, index) => {
                 const colorPaletteIndex = index % colorPalettes.length;
                 const colorPalette = colorPalettes[colorPaletteIndex];
                 const isExpanded = expanded === `panel${index + 1}`;
@@ -60,7 +101,7 @@ const LessonsTopicAccordion = () => {
                             id={`panel${index + 1}-header`}
                         >
                             <div>
-                                <Typography className="topic-number" style={{ fontSize: '18px'}}>{`Topic ${topic.tnumber}`}</Typography> 
+                                <Typography className="topic-number" style={{ fontSize: '18px'}}>{`Topic ${topic.tnumber}`}</Typography>
                                 <Typography className="topic-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins' }}>{topic.topicTitle}</Typography>
                             </div>
                         </AccordionSummary>
@@ -98,12 +139,13 @@ const LessonsTopicAccordion = () => {
                                     </Box>
                                 ))}
                             </Box>
+                            <Typography>Hello!</Typography>
                         </AccordionDetails>
                     </Accordion>
                 );
             })}
         </div>
-    )
+    )*/}
 }
 
 export default LessonsTopicAccordion;
