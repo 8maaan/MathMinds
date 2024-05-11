@@ -1,106 +1,101 @@
-import React, { useEffect, useState } from 'react'
-import { UserAuth } from '../Context-and-routes/AuthContext'
+import React, { useEffect, useState } from 'react';
+import { UserAuth } from '../Context-and-routes/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/ProfilePage.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import userprofilepic from '../Images/UserDP.png';
 import { Button, TextField } from '@mui/material';
-import { getUserProfileInfo } from '../API-Services/UserAPI'; 
+import { getUserProfileInfoFromDb } from '../API-Services/UserAPI';
+
 const ProfilePage = () => {
-    const { user, logOut } = UserAuth();
-    const [userinfo, setUserInfo] = useState({
-        fname: "",
-        lname: "",
-        email: ""
-    });
-    const navigateTo = useNavigate();
+    const { user } = UserAuth(); // Access user object from AuthContext
+    const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useState(null);
+    const [userId, setUserId] = useState(null); // State to hold user ID
 
     useEffect(() => {
-       
-        const fetchUserProfileInfo = async () => {
-            try {
-                const response = await getUserProfileInfo(user.uid); 
-                if (response.success) {
-                    const { fname, lname, email } = response.data; 
-                    setUserInfo({ fname, lname, email }); 
-                } else {
-                    console.error("Failed to fetch user profile info:", response.error);
-                }
-            } catch (error) {
-                console.error("Error fetching user profile info:", error);
-            }
-        };
+        if (user) {
+            // Extract user information
+            const { uid, fname, email } = user;
+            // Set user ID to state
+            setUserId(uid);
 
-        fetchUserProfileInfo(); 
-    }, [user.uid]); 
+            // Set user information to state
+            setUserInfo({
+                firstName: fname,
+                email: email
+            });
 
-    const handleSignOut = async () => {
-        try {
-            await logOut();
-            console.log('You are logged out');
-            navigateTo('/login');
-        } catch (e) {
-            console.log(e.message);
+            // Fetch user profile info using user ID
+            fetchUserProfileInfo(uid);
         }
-    }
+    }, [user]); 
+
+    // Function to fetch user profile info
+    const fetchUserProfileInfo = async (uid) => {
+        try {
+            const response = await getUserProfileInfoFromDb(uid);
+            console.log("User profile info response:", response); // Log the response data
+            if (response.success) {
+                // Set user profile info to state
+                setUserInfo(response.data);
+            } else {
+                console.error("Error fetching user profile info: ", response.message);
+            }
+        } catch (error) {
+            console.error("Error fetching user profile info: ", error);
+        }
+    };
+    
+    
 
     return (
-        <div>
-            <div className="Profilepage">
-                <ReusableAppBar />
-                <div className='profile-wrapper'>
-                    <div className='profile-content-container'>
-                        <div className='personalinfo-left-side'>
-                            <div className='choices-container'>
-                                <div className='PI-button'>
-                                    Personal Information
-                                </div>
-                                <div className='LessonProg-button'>
-                                    Lesson Progress
-                                </div>
-                                <div className='Badges-button'>
-                                    Badges
-                                </div>
+        <div className="Profilepage">
+            <ReusableAppBar />
+            <div className='profile-wrapper'>
+                <div className='profile-content-container'>
+                    <div className='personalinfo-left-side'>
+                        <div className='choices-container'>
+                            <div className='PI-button'>
+                                Personal Information
+                            </div>
+                            <div className='LessonProg-button'>
+                                Lesson Progress
+                            </div>
+                            <div className='Badges-button'>
+                                Badges
                             </div>
                         </div>
-                        <div className='personalinfo-right-side'>
-                            <div className='PI-container'>
-                                <div className='PI-title'>PERSONAL INFORMATION</div>
-                                <div className='logo-and-userinfo-container'>
-                                    <div className='profile-logo-container'>
-                                        
-                                        <img src={userprofilepic} alt='logo' />
-                                    </div>
-                                    <div className='userinfo-container'>
-                      
+                    </div>
+                    <div className='personalinfo-right-side'>
+                        <div className='PI-container'>
+                            <div className='PI-title'>PERSONAL INFORMATION</div>
+                            <div className='logo-and-userinfo-container'>
+                                <div className='profile-logo-container'>
+                                    <img src={userprofilepic} alt='logo' />
+                                </div>
+                                <div className='userinfo-container'>
+                                    {userInfo ? (
                                         <div>
                                             <TextField
-                                                label="First Name"
-                                                value={userinfo.fname}
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                label='First Name'
+                                                value={userInfo.firstName}
+                                                disabled
                                             />
-                                        </div>
-                                        <div>
                                             <TextField
-                                                label="Last Name"
-                                                value={userinfo.lname}
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                label='Email'
+                                                value={userInfo.email}
+                                                disabled
                                             />
-                                        </div>
-                                        <div>
                                             <TextField
-                                                label="Email"
-                                                value={userinfo.email}
-                                                InputProps={{
-                                                    readOnly: true,
-                                                }}
+                                                label='User ID'
+                                                value={userId}
+                                                disabled
                                             />
                                         </div>
-                                    </div>
+                                    ) : (
+                                        <div>Loading...</div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -108,7 +103,7 @@ const ProfilePage = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ProfilePage;
