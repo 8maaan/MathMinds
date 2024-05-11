@@ -1,0 +1,102 @@
+
+body, p, h1, h2, h3, h4, h5, h6, button {
+    font-family: 'Poppins', sans-serif;
+    color:#181A52;
+  }
+  
+  .root {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .quiz-container {
+    width: 90%; 
+    max-width: 1000px;
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 25px;
+    background-color: rgba(255, 177, 0, 0.2);
+  }
+  
+  .question-container {
+    margin-bottom: 20px;
+  }
+  
+  .question-container h2 {
+    text-align: left;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .question-container p {
+    text-align: center;
+    padding: 50px 100px 100px 100px;
+    margin-bottom: 15px;
+  }
+  
+  .options-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: center;
+    width: 90%; 
+    max-width: 1000px; 
+    gap: 15px;
+  }
+  
+  .option-button {
+    margin: 5px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 20px;
+    min-width: 200px;
+    padding: 40px; 
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: calc((100% - 45px) / 2);
+  }
+  
+  .option-button:hover {
+    opacity: 0.8;
+  }
+  
+  .option-button.top-left {
+    background-color: #F94848;
+  }
+  
+  .option-button.top-right {
+    background-color: #4CAE4F;
+  }
+  
+  .option-button.bottom-left {
+    background-color: #2874BA;
+  }
+  
+  .option-button.bottom-right {
+    background-color: #F4CC3F;
+  }
+  
+  .lesson-button {
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 12px;
+    background-color: #FFB100;
+    color: #181A52;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto; 
+    margin-top: 50px;
+    width: 300px; 
+  }
+  
+  @media (max-width: 768px) {
+    .option-button {
+      padding: 35px;
+      min-width: unset; 
+      width: 90%; 
+    }
+  }
+  

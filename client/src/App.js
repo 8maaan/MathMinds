@@ -24,7 +24,6 @@ function App() {
             <Route path="/login" element={<GuestRoute> <LoginPage/> </GuestRoute>} />
             <Route path="/register" element={<GuestRoute> <RegisterPage/> </GuestRoute>}/>
 
-
             {/* PROTECTED ROUTES */}
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
