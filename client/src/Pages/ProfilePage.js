@@ -27,26 +27,25 @@ const ProfilePage = () => {
         fetchUserProfileInfo(); // Call the fetchUserProfileInfo function when the component mounts or when the user changes
     }, [user]);
 
-    const InfoTextField=({label,defaultValue})=>{
-        return(
+    const InfoTextField = ({ label, defaultValue }) => {
+        return (
             <div className="profile-info-texts">
-
                 <div className="profile-info-textfields">
                     <TextField
-                    disabled
-                    defaultValue={defaultValue}
-                    size="large"
-                    className="customTextField"
-                    label={<span>{label}<span style={{color: 'black'}}></span></span>}
-                    InputProps={{ 
-                        style: { 
-                            borderBottom: "none", 
-                            borderRadius: "25px", 
-                            width: "400px", 
-                            backgroundColor: "white", 
-                            boxShadow: "0px 5px rgba(184, 184, 184, 0.75)" 
-                        } 
-                    }}
+                        disabled
+                        defaultValue={defaultValue}
+                        size="large"
+                        className="customTextField"
+                        label={<span>{label}<span style={{ color: 'black' }}></span></span>}
+                        InputProps={{
+                            style: {
+                                borderBottom: "none",
+                                borderRadius: "25px",
+                                width: "290px",
+                                backgroundColor: "white",
+                                boxShadow: "0px 5px rgba(184, 184, 184, 0.75)"
+                            }
+                        }}
                     />
                 </div>
             </div>
