@@ -9,8 +9,8 @@ import PageNotFound from './Pages/PageNotFound';
 import ProfilePage from './Pages/ProfilePage';
 import RegisterPage from './Pages/RegisterPage';
 
-
 function App() {
+
   return (
     <div className="App">
       <AuthContextProvider>
