@@ -14,14 +14,14 @@ export const createUserToDb = async(user) => {
 //GET USER PROFILE INFO
 export const getUserProfileInfoFromDb = async (uid) => {
     try {
-        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_USER_PROFILE_INFO.replace("${uid}", uid));
-        console.log("User profile info API response:", response.data); // Log the response data
+        const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_USER_PROFILE_INFO}?uid=${uid}`);
         return { success: true, data: response.data };
     } catch (error) {
         console.error("Error fetching user profile info: ", error);
         return { success: false, message: "Failed to fetch user profile info" };
     }
 };
+
 
 //GET ALL USERS
 export const getAllUsersFromDb = async () => {

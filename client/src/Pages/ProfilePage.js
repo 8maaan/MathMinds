@@ -5,49 +5,53 @@ import '../PagesCSS/ProfilePage.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import userprofilepic from '../Images/UserDP.png';
 import { Button, TextField } from '@mui/material';
-import { getUserProfileInfoFromDb } from '../API-Services/UserAPI';
+import { getUserProfileInfoFromDb } from '../API-Services/UserAPI'; // Import getUserProfileInfoFromDb function
 
 const ProfilePage = () => {
-    const { user } = UserAuth(); // Access user object from AuthContext
-    const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState(null);
-    const [userId, setUserId] = useState(null); // State to hold user ID
+    const { user } = UserAuth(); // Get current user from authentication context
+    const [userProfileInfo, setUserProfileInfo] = useState(null); // State to store user profile information
 
     useEffect(() => {
-        if (user) {
-            // Extract user information
-            const { uid, fname, email } = user;
-            // Set user ID to state
-            setUserId(uid);
-
-            // Set user information to state
-            setUserInfo({
-                firstName: fname,
-                email: email
-            });
-
-            // Fetch user profile info using user ID
-            fetchUserProfileInfo(uid);
-        }
-    }, [user]); 
-
-    // Function to fetch user profile info
-    const fetchUserProfileInfo = async (uid) => {
-        try {
-            const response = await getUserProfileInfoFromDb(uid);
-            console.log("User profile info response:", response); // Log the response data
-            if (response.success) {
-                // Set user profile info to state
-                setUserInfo(response.data);
-            } else {
-                console.error("Error fetching user profile info: ", response.message);
+        // Function to fetch user profile information
+        const fetchUserProfileInfo = async () => {
+            if (user) {
+                const result = await getUserProfileInfoFromDb(user.uid); // Fetch profile info using current user's UID
+                if (result.success) {
+                    setUserProfileInfo(result.data); // Update state with user profile info
+                } else {
+                    console.error("Failed to fetch user profile info");
+                }
             }
-        } catch (error) {
-            console.error("Error fetching user profile info: ", error);
-        }
+        };
+
+        fetchUserProfileInfo(); // Call the fetchUserProfileInfo function when the component mounts or when the user changes
+    }, [user]);
+
+    const InfoTextField=({label,defaultValue})=>{
+        return(
+            <div className="profile-info-texts">
+
+                <div className="profile-info-textfields">
+                    <TextField
+                    disabled
+                    defaultValue={defaultValue}
+                    size="large"
+                    className="customTextField"
+                    label={<span>{label}<span style={{color: 'black'}}></span></span>}
+                    InputProps={{ 
+                        style: { 
+                            borderBottom: "none", 
+                            borderRadius: "25px", 
+                            width: "400px", 
+                            backgroundColor: "white", 
+                            boxShadow: "0px 5px rgba(184, 184, 184, 0.75)" 
+                        } 
+                    }}
+                    />
+                </div>
+            </div>
+        );
     };
-    
-    
 
     return (
         <div className="Profilepage">
@@ -75,27 +79,24 @@ const ProfilePage = () => {
                                     <img src={userprofilepic} alt='logo' />
                                 </div>
                                 <div className='userinfo-container'>
-                                    {userInfo ? (
-                                        <div>
-                                            <TextField
-                                                label='First Name'
-                                                value={userInfo.firstName}
-                                                disabled
-                                            />
-                                            <TextField
-                                                label='Email'
-                                                value={userInfo.email}
-                                                disabled
-                                            />
-                                            <TextField
-                                                label='User ID'
-                                                value={userId}
-                                                disabled
-                                            />
+                                  
+                                    {userProfileInfo && (
+                                        <div >
+                                             <InfoTextField
+                                        label='FIRSTNAME'
+                                        defaultValue={userProfileInfo.fname}
+                                        />
+                                         <InfoTextField
+                                       label='LASTNAME'
+                                        defaultValue={userProfileInfo.lname}
+                                        />
+                                         <InfoTextField
+                                        label='EMAIL'
+                                        defaultValue={userProfileInfo.email}
+                                        />
                                         </div>
-                                    ) : (
-                                        <div>Loading...</div>
                                     )}
+                                    
                                 </div>
                             </div>
                         </div>
