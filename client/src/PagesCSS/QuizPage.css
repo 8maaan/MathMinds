@@ -1,14 +1,12 @@
-
-body, p, h1, h2, h3, h4, h5, h6, button {
-    font-family: 'Poppins', sans-serif;
-    color:#181A52;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
   
   .root {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    color: #181A52;
+    font-family: 'Poppins', sans-serif;
   }
 
   .quiz-container {
@@ -57,6 +55,7 @@ body, p, h1, h2, h3, h4, h5, h6, button {
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: calc((100% - 45px) / 2);
+    font-family: 'Poppins', sans-serif;
   }
   
   .option-button:hover {
