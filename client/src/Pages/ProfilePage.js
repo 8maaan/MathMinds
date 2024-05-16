@@ -9,7 +9,6 @@ import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Serv
 
 const ProfilePage = () => {
     const { user } = UserAuth();
-    const navigate = useNavigate();
     const [userProfileInfo, setUserProfileInfo] = useState(null);
     const [isEditing, setIsEditing] = useState(false); // State to track editing mode
 
@@ -82,7 +81,7 @@ const ProfilePage = () => {
                                 </div>
                                 <div className='userinfo-container'>
                                     {userProfileInfo && (
-                                        <div className='infocontains' style={{ display: 'flex', flexDirection: 'column',width: "330px", gap: '10px'}}>
+                                        <div className='infocontains' style={{ display: 'flex', flexDirection: 'column',width: "330px", gap: '20px'}}>
                                             <TextField
                                                 disabled={!isEditing} 
                                                 name="fname"
