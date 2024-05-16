@@ -159,6 +159,13 @@
 .profile-info-textfields{
     display: flex;
     width: 80%;
+}
+.infocontains{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #3000a0;
+    width: 60%;
+    height: 100%;
 
 }
 @media (max-width: 1024px) {
