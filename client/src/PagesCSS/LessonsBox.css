@@ -33,6 +33,51 @@
     color: #181A52;
 }
 
+.circular-button-container {
+    position: fixed;
+    top: 12%;
+    right: 0.2%;
+}
+
+.circular-add-button {
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+    border-radius: 50%; /* Make it circular */
+    background-color: #ffb100; /* Primary color */
+    color: white; /* Text color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px; /* Adjust font size as needed */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-top: 10%;
+}
+
+.circular-add-button:hover {
+    background-color: #c48e13; /* Darken on hover */
+}
+
+.new-lesson-form {
+    background-color: #F6E6C3;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 2.75%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 2%;
+    width: 80%; /* Set the width to your desired fixed size */
+    height: 50%; /* Set the height to your desired fixed size */
+    border-radius: 20px;
+}
+
+.nlf-button-group {
+    
+    bottom: 20px; /* Adjust as necessary */
+    right: 20px; /* Adjust as necessary */
+}
+
 @media (max-width: 1024px){
     .lessons-container{
         margin-top: 9%;
