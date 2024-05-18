@@ -28,10 +28,10 @@
     top: 40px;
     right: 40px;
     z-index: 1; /* Ensure the button is on top */
-    background-color: transparent !important; /* Remove the background color */
-    border: none !important; /* Remove the border */
-    outline: none !important; /* Remove the outline */
-    padding: 0 !important; /* Remove any padding */
+    background-color: transparent; /* Remove the background color */
+    border: none; /* Remove the border */
+    outline: none; /* Remove the outline */
+    padding: 0; /* Remove any padding */
     color: #181A52;
     cursor: pointer;
 }
@@ -164,10 +164,10 @@
         top: 25px;
         right: 25px;
         z-index: 1; /* Ensure the button is on top */
-        background-color: transparent !important; /* Remove the background color */
-        border: none !important; /* Remove the border */
-        outline: none !important; /* Remove the outline */
-        padding: 0 !important; /* Remove any padding */
+        background-color: transparent; /* Remove the background color */
+        border: none; /* Remove the border */
+        outline: none; /* Remove the outline */
+        padding: 0; /* Remove any padding */
         color: #181A52;
         cursor: pointer;
     }
