@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from "@mui/material";
+import React, { useState } from "react";
+import { Accordion, AccordionSummary, AccordionDetails, Typography } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
@@ -12,65 +12,74 @@ const colorPalettes = [
     // Add more color palettes as needed
 ];
 
-const LessonsTopicAccordion = ({lesson}) => {
+const LessonsTopicAccordion = ({ lesson }) => {
     const navigateTo = useNavigate();
     const [expanded, setExpanded] = useState(null);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : null);
     };
-    
+
+    // Ensure lessonTopics is an array
+    const lessonTopics = lesson.lessonTopics || [];
 
     return (
         <div>
-            {lesson.lessonTopics.map((topic, topicIndex) => {
-                const colorPaletteIndex = topicIndex % colorPalettes.length;
-                const colorPalette = colorPalettes[colorPaletteIndex];
-                const isExpanded = expanded === `panel${lesson.lessonId}-${topicIndex + 1}`;
+            {lessonTopics.length > 0 ? (
+                lessonTopics.map((topic, topicIndex) => {
+                    const colorPaletteIndex = topicIndex % colorPalettes.length;
+                    const colorPalette = colorPalettes[colorPaletteIndex];
+                    const isExpanded = expanded === `panel${lesson.lessonId}-${topicIndex + 1}`;
 
-                return (
-                    <Accordion
-                        sx={{
-                            marginTop:'1.5%',
-                            borderRadius: "10px"
-                        }}
-                        key={`${lesson.lessonId}-${topicIndex}`}
-                        expanded={isExpanded}
-                        onChange={handleChange(`panel${lesson.lessonId}-${topicIndex + 1}`)}
-                    >
-                        <AccordionSummary
+                    return (
+                        <Accordion
                             sx={{
-                                backgroundColor: colorPalette.summaryBgColor,
-                                borderTopRightRadius: "10px",
-                                borderTopLeftRadius: "10px",
-                                borderBottomLeftRadius: isExpanded ? '0px' : '10px',
-                                borderBottomRightRadius: isExpanded ? '0px' : '10px',
-                                textAlign: 'left'
+                                marginTop: '1.5%',
+                                borderRadius: "10px"
                             }}
-                            expandIcon={<ArrowDropDownIcon />}
+                            key={`${lesson.lessonId}-${topicIndex}`}
+                            expanded={isExpanded}
+                            onChange={handleChange(`panel${lesson.lessonId}-${topicIndex + 1}`)}
                         >
-                            <div>
-                                <Typography className="topic-number" style={{ fontSize: '18px'}}>{`Topic ${topicIndex + 1}`}</Typography>
-                                <Typography className="topic-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins' }}>{topic.topicTitle}</Typography>
-                            </div>
-                        </AccordionSummary>
-                        <AccordionDetails
-                            sx={{
-                                backgroundColor: colorPalette.detailsBgColor,
-                                textAlign: 'left',
-                                borderBottomRightRadius: "10px",
-                                borderBottomLeftRadius: "10px"  
-                            }}
-                        >
-                            <Typography>Hello!</Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                );
-            })}
+                            <AccordionSummary
+                                sx={{
+                                    backgroundColor: colorPalette.summaryBgColor,
+                                    borderTopRightRadius: "10px",
+                                    borderTopLeftRadius: "10px",
+                                    borderBottomLeftRadius: isExpanded ? '0px' : '10px',
+                                    borderBottomRightRadius: isExpanded ? '0px' : '10px',
+                                    textAlign: 'left'
+                                }}
+                                expandIcon={<ArrowDropDownIcon />}
+                            >
+                                <div>
+                                    <Typography className="topic-number" style={{ fontSize: '18px' }}>{`Topic ${topicIndex + 1}`}</Typography>
+                                    <Typography className="topic-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins' }}>{topic.topicTitle}</Typography>
+                                </div>
+                            </AccordionSummary>
+                            <AccordionDetails
+                                sx={{
+                                    backgroundColor: colorPalette.detailsBgColor,
+                                    textAlign: 'left',
+                                    borderBottomRightRadius: "10px",
+                                    borderBottomLeftRadius: "10px"
+                                }}
+                            >
+                                <Typography>Hello!</Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                    );
+                })
+            ) : (
+                <Typography style={{color: '#181A52'}}>No topics available yet</Typography>
+            )}
         </div>
     );
-    
-    {/*return(
+}
+
+export default LessonsTopicAccordion;
+
+{/*return(
         <div>
             {lessonsData && lessonsData.map((topic, index) => {
                 const colorPaletteIndex = index % colorPalettes.length;
@@ -146,6 +155,3 @@ const LessonsTopicAccordion = ({lesson}) => {
             })}
         </div>
     )*/}
-}
-
-export default LessonsTopicAccordion;

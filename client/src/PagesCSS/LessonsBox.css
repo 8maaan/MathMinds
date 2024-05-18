@@ -20,6 +20,20 @@
     width: 80%; /* Set the width to your desired fixed size */
     height: 50%; /* Set the height to your desired fixed size */
     border-radius: 20px;
+    position: relative;
+}
+
+.delete-button {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    z-index: 1; /* Ensure the button is on top */
+    background-color: transparent !important; /* Remove the background color */
+    border: none !important; /* Remove the border */
+    outline: none !important; /* Remove the outline */
+    padding: 0 !important; /* Remove any padding */
+    color: #181A52;
+    cursor: pointer;
 }
 
 .lesson-number{
@@ -37,6 +51,7 @@
     position: fixed;
     top: 12%;
     right: 0.2%;
+    z-index: 999; /* Set a high z-index value */
 }
 
 .circular-add-button {
@@ -52,10 +67,15 @@
     border: none; /* Remove border */
     cursor: pointer; /* Pointer cursor on hover */
     margin-top: 10%;
+    z-index: 1000; /* Ensure it's above other elements */
 }
 
 .circular-add-button:hover {
     background-color: #c48e13; /* Darken on hover */
+}
+
+.circular-add-button-size{
+    font-size: 30px;
 }
 
 .new-lesson-form {
@@ -66,7 +86,7 @@
     padding: 2.75%;
     padding-left: 5%;
     padding-right: 5%;
-    padding-bottom: 2%;
+    padding-bottom: 3%;
     width: 80%; /* Set the width to your desired fixed size */
     height: 50%; /* Set the height to your desired fixed size */
     border-radius: 20px;
@@ -95,6 +115,13 @@
         flex-direction: column;
         justify-content: center; /* Center items vertically */
         align-items: center; /* Center items horizontally */
+    }
+
+    .circular-button-container {
+        position: fixed;
+        top: 10%;
+        right: 0.2%;
+        z-index: 999; /* Set a high z-index value */
     }
 }
 
@@ -130,5 +157,60 @@
         margin-bottom:4%;
         font-size:24px;
         color: #181A52;
+    }
+
+    .delete-button {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        z-index: 1; /* Ensure the button is on top */
+        background-color: transparent !important; /* Remove the background color */
+        border: none !important; /* Remove the border */
+        outline: none !important; /* Remove the outline */
+        padding: 0 !important; /* Remove any padding */
+        color: #181A52;
+        cursor: pointer;
+    }
+
+    .circular-button-container {
+        position: fixed;
+        top: 9%;
+        right: 0.2%;
+        z-index: 999; /* Set a high z-index value */
+    }
+
+    .circular-add-button {
+        width: 30px; /* Adjust width as needed */
+        height: 30px; /* Adjust height as needed */
+        font-size: 5px;
+        border-radius: 50%; /* Make it circular */
+        background-color: #ffb100; /* Primary color */
+        color: white; /* Text color */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px; /* Adjust font size as needed */
+        border: none; /* Remove border */
+        cursor: pointer; /* Pointer cursor on hover */
+        margin-top: 10%;
+        z-index: 1000; /* Ensure it's above other elements */
+    }
+
+    .circular-add-button-size{
+        font-size: 16px;
+    }
+
+    .new-lesson-form {
+        background-color: #F6E6C3;
+        font-family: 'Poppins', sans-serif;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        padding: 2.75%;
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-bottom: 6%;
+        width: 80%; /* Set the width to your desired fixed size */
+        height: 50%; /* Set the height to your desired fixed size */
+        border-radius: 20px;
     }
 }
