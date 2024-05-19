@@ -6,10 +6,10 @@ import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 const TopicsPage = () => {
 
   const params = useParams();
-  const lessonId = params.lessonId; {/*assuming lessonId is passed when TopicsPage.js is called?*/}
+  const lessonId = params.lessonId; /*assuming lessonId is passed when TopicsPage.js is called?*/
   const [selectedTopic, setSelectedTopic] = useState(null);
 
-  {/* Test JSON Data */}
+  /* Test JSON Data */
   const [lessonData] = useState([{
       "lessonId": 3,
       "lessonTitle": "New Jeans",
@@ -37,7 +37,7 @@ const TopicsPage = () => {
         ]
         }]);
   
-  {/* here we fetch topics by utilizing the lessonId passed */}
+  /* here we fetch topics by utilizing the lessonId passed */
   const fetchLessons = async() => {
     try {
 
@@ -50,22 +50,22 @@ const TopicsPage = () => {
    console.log(lessonData); 
   })
 
-  {/* for the mini seatwork*/}
+  /* for the mini seatwork*/
   const [selectedOption, setSelectedOption] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [checked, setChecked] = useState(false);
 
-  {/* to get colors for the rectangle containers*/}
+  /* to get colors for the rectangle containers*/
   const colors = ['color-1', 'color-2', 'color-3'];
   let colorIndex = 0;
 
   
-  {/* for the mini seatwork*/}
+  /* for the mini seatwork*/
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
-  {/* for the mini seatwork*/}
+  /* for the mini seatwork*/
   const handleCheckAnswer = (correctAnswer) => {
     if (selectedOption === correctAnswer) {
       setFeedback('Correct!');
@@ -86,7 +86,7 @@ const TopicsPage = () => {
     setSelectedTopic(topic);
   };
 
-  {/* RENDER ALL OF THE TOPICS IN RWD SINCE SIDEBAR DISAPPEARS */}
+  /* RENDER ALL OF THE TOPICS IN RWD SINCE SIDEBAR DISAPPEARS */
   return (
     <div className='root'>
       <ReusableAppBar />

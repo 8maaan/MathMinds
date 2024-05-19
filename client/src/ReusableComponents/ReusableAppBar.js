@@ -80,7 +80,7 @@ export default function ReusableAppBar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{backgroundColor: '#ffb100'}}> {/*set position to fixed from static -densha */}
+    <AppBar position="static" sx={{backgroundColor: '#ffb100'}}> {/*set position to fixed from static -densha */}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
