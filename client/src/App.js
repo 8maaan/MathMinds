@@ -11,6 +11,7 @@ import RegisterPage from './Pages/RegisterPage';
 import CreateTopic from './Pages/CreateTopic';import LessonsPage from './Pages/LessonsPage';
 import TeacherLessonsPage from './Pages/TeacherLessonsPage';
 import PracticePage from './Pages/PracticePage';
+import TopicsPage from './Pages/TopicsPage'
 
 
 function App() {
@@ -31,10 +32,13 @@ function App() {
             {/* PROTECTED ROUTES */}
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
-            <Route path="/createTopic" element={<CreateTopic/>} />
-                        <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
+            <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
             <Route path="/lessons-teacher" element={<ProtectedRoute> <TeacherLessonsPage/> </ProtectedRoute>}/>
+
+            <Route path="/createTopic" element={<CreateTopic/>} />
+            <Route path="/topic" element={<TopicsPage/>} />
+            
 
             <Route path="*" element={<PageNotFound/>} />
           </Routes>

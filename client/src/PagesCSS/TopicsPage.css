@@ -4,11 +4,14 @@
     display: flex;
     flex-direction: row;
     font-family: 'Poppins', sans-serif;
+    min-height: 100vh; /* ALWAYS ADD A DEFAULT HEIGHT UNLESS AUTO*/
+    /* border: solid black 1px; */
   }
   
   .container {
     display: flex;
     margin-top: 80px;
+    width: 100%; /* ALWAYS ADD OR INSTANTIATE A DEFAULT WIDTH UNLESS AUTO*/
   }
 
   .sidebar {
@@ -27,18 +30,22 @@
   .main-content {
     flex: 1;
     padding: 20px;
+    /* width: 100%; */
+    /* border: solid red 1px; */
   }
   
   .lesson-header {
     display: flex;
     flex-direction: column;
     margin-bottom: 50px;
+    /* border: solid black 1px; */
   }
   
   .lesson-content {
     display: flex;
     flex-direction: column;
     padding: 20px;
+    /* border: solid black 1px; */
   }
 
   .lesson-content p {
@@ -54,7 +61,7 @@
     position: relative;
     overflow-wrap: break-word;
     border-radius: 10px; 
-    width: 80%; /* <----- adjust container width here */
+    width: 95%; /* <----- adjust container width here */
     margin: 0 auto;
     margin-bottom: 15px;
   }
@@ -72,7 +79,7 @@
   }
 
   .question-container {
-    border: none;
+    border: solid 1px gray;
     padding: 25px;
     border-radius: 10px;
     margin-top: 10px;
@@ -82,7 +89,7 @@
     align-items: center;
     justify-content: space-between; 
     background-color: #F6ECC9;
-    width: 40%;
+    width: 80%;
     margin: 0 auto;
     margin-top: 10px;
     margin-bottom: 15px;
