@@ -11,10 +11,11 @@ export const getAllLessonsFromDb = async () => {
     }
 };
 
-export const insertLessonToDb = async (newLessonTitle) => {
+export const insertLessonToDb = async (newLessonTitle, newLessonDescription) => {
     try {
         const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_INSERT_LESSON, {
             lessonTitle: newLessonTitle,
+            lessonDescription: newLessonDescription
         });
         return { success: true, data: response.data };
     } catch (error) {

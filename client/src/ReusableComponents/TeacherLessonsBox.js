@@ -10,6 +10,7 @@ const TeacherLessonsBox = () => {
     const [lessons, setLessons] = useState([]);
     const [showLessonForm, setShowLessonForm] = useState(false);
     const [newLessonTitle, setNewLessonTitle] = useState('');
+    const [newLessonDescription, setNewLessonDescription] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedLessonId, setSelectedLessonId] = useState(null);
@@ -28,7 +29,7 @@ const TeacherLessonsBox = () => {
     }, []);
 
     const handleSaveLesson = async () => {
-        const { success, data, error } = await insertLessonToDb(newLessonTitle);
+        const { success, data, error } = await insertLessonToDb(newLessonTitle, newLessonDescription);
         if (success) {
             setLessons([...lessons, data]);
             handleCancelLesson(); // Reset the form
@@ -115,6 +116,13 @@ const TeacherLessonsBox = () => {
                             fullWidth
                             value={newLessonTitle}
                             onChange={(e) => setNewLessonTitle(e.target.value)}
+                            style={{ marginBottom: '20px' }}
+                        />
+                        <TextField
+                            label="Lesson Description"
+                            fullWidth
+                            value={newLessonDescription}
+                            onChange={(e) => setNewLessonDescription(e.target.value)}
                             style={{ marginBottom: '20px' }}
                         />
                         <div className='nlf-button-group'>

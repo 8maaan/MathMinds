@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +65,11 @@ const LessonsTopicAccordion = ({ lesson }) => {
                                     borderBottomLeftRadius: "10px"
                                 }}
                             >
-                                <Typography>Hello!</Typography>
+                                <Typography className="lesson-number" sx={{fontFamily:"Poppins", paddingTop:'1%', paddingLeft:'1%'}}>{topic.topicDescription}</Typography>
+                                
+                                <AccordionActions>
+                                <Button style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }}>Start</Button>
+                            </AccordionActions>
                             </AccordionDetails>
                         </Accordion>
                     );
