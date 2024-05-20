@@ -47,13 +47,13 @@ export default function ReusableAppBar() {
         break;
 
       case 'Lessons':
-        console.log('Dashboard');
-        navigateTo('/*');
+        console.log('Lessons');
+        navigateTo('/lessons');
         break;
 
       case 'Practice':
-        console.log('Dashboard');
-        navigateTo('/*');
+        console.log('Practice');
+        navigateTo('/practice');
         break;
 
       default:
