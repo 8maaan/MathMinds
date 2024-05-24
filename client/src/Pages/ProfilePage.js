@@ -3,11 +3,10 @@ import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/ProfilePage.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import userprofilepic from '../Images/UserDP.png';
-import { Button,TextField } from '@mui/material';
+import { Button, TextField, Snackbar } from '@mui/material';
 import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Services/UserAPI';
 import { isEmailValid } from '../ReusableComponents/txtFieldValidations'; // Assuming you have this validation function
-
-
+import MuiAlert from '@mui/material/Alert';
 
 const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText, disabled }) => {
     return (
@@ -53,6 +52,8 @@ const ProfilePage = () => {
     });
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
         const fetchUserProfileInfo = async () => {
@@ -98,10 +99,16 @@ const ProfilePage = () => {
         try {
             await updateUserProfileInfoToDb(user.uid, updatedProfileInfo);
             setIsEditing(false);
+            handleSnackbarOpen('Your Profile Information is updated');
         } catch (error) {
             console.error("Error updating user profile info: ", error);
             alert("Failed to update profile. Please try again.");
         }
+    };
+
+    const handleSnackbarOpen = (message) => {
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
     };
 
     const handleChange = (e) => {
@@ -216,6 +223,20 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={() => setSnackbarOpen(false)}
+            >
+                <MuiAlert
+                    elevation={6}
+                    variant="filled"
+                    onClose={() => setSnackbarOpen(false)}
+                    severity="success"
+                >
+                    {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 };
