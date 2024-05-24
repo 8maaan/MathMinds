@@ -33,3 +33,29 @@ export const deleteLessonFromDb = async (lessonId) => {
         return { success: false, message: "Failed to delete lesson", error: error.response ? error.response.data : error.message };
     }
 };
+
+export const updateLessonInDb = async (lessonId, lessonTitle, lessonDescription) => {
+    try {
+        const apiUrl = process.env.REACT_APP_SPRINGBOOT_EDIT_LESSON;
+        const response = await fetch(`${apiUrl}${lessonId}`, {
+            method: 'PUT', // or 'POST' if that's what your API expects
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                lessonTitle,
+                lessonDescription,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            return { success: true, data };
+        } else {
+            return { success: false, error: data };
+        }
+    } catch (error) {
+        return { success: false, error };
+    }
+};
