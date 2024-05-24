@@ -73,6 +73,8 @@ const ProfilePage = () => {
 
     const handleEdit = () => {
         setIsEditing(true);
+        setSnackbarMessage("You can now update your Profile Information");
+        setSnackbarOpen(true);
     };
 
     const validateInputs = () => {
