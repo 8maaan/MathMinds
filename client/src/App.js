@@ -36,8 +36,9 @@ function App() {
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
             <Route path="/lessons-teacher" element={<ProtectedRoute> <TeacherLessonsPage/> </ProtectedRoute>}/>
 
-            <Route path="/createTopic" element={<CreateTopic/>} />
-            <Route path="/topic" element={<TopicsPage/>} />
+            {/* WILL CREATE SEPARATE ROUTES */}
+            <Route path="/create-topic" element={<CreateTopic/>} />
+            <Route path="/lesson/:lessonId/:topicId" element={<TopicsPage/>} />
             
 
             <Route path="*" element={<PageNotFound/>} />

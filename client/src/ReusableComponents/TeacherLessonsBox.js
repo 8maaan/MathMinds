@@ -80,7 +80,7 @@ const TeacherLessonsBox = () => {
     };
 
     const handleAddTopicClick = () => {
-        navigate('/*'); // Replace with your actual route
+        navigate('/create-topic'); // Replace with your actual route // Replaced -RIBO
         handleMenuClose();
     };
 

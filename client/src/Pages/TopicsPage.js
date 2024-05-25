@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../PagesCSS/TopicsPage.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { getLessonById } from '../API-Services/LessonAPI';
@@ -7,28 +7,32 @@ import { getLessonById } from '../API-Services/LessonAPI';
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
 // IDEAL REFERENCE IS SIMILAR TO W3SCHOOL
+// TODO: WILL USE <Button> from MUI instead of regular <button> wtf
 
 const TopicsPage = () => {
-  const params = useParams();
-  const lessonId = params.lessonId; /*assuming lessonId is passed when TopicsPage.js is called?*/
+  const { lessonId, topicId } = useParams(); /*assuming lessonId is passed when TopicsPage.js is called?*/
   const [selectedTopic, setSelectedTopic] = useState(null);
-
   /* JSON Data */
   const [lessonData, setLessonData] = useState(null);
+
+  const navigateTo = useNavigate();
 
   // PUT FUNCTION INSIDE CUS WHY SEPARATE ?
   useEffect(() => {
     const fetchLessonTopics = async () => {
       try {
-        const fetchResult = await getLessonById(2); // WILL UTILIZE THE LESSONID ONCE THE LESSON PAGE IS FINISHED
+        const fetchResult = await getLessonById(lessonId);
         setLessonData(fetchResult.data);
-        console.log(fetchResult.data);
+        if (fetchResult.data && fetchResult.data.lessonTopics) {
+          const initialTopic = fetchResult.data.lessonTopics[parseInt(topicId)];
+          setSelectedTopic(initialTopic);
+        }
       } catch (e) {
         console.log(e);
       }
     };
     fetchLessonTopics();
-  }, []);
+  }, [lessonId, topicId]);
 
   const [topicsState, setTopicsState] = useState({});
 
@@ -74,8 +78,9 @@ const TopicsPage = () => {
     return color;
   };
 
-  const handleTopicClick = (topic) => {
+  const handleTopicClick = (topic, index) => {
     setSelectedTopic(topic);
+    navigateTo(`/lesson/${lessonId}/${index}`);
   };
 
   const isLastTopic = () => {
@@ -101,10 +106,10 @@ const TopicsPage = () => {
             <li key={lessonData.lessonId}>
               {lessonData.lessonId}. {lessonData.lessonTitle}
               {lessonData.lessonTopics && (
-                <ul style={{ paddingLeft: '20px' }}>
+                <ul>
                   {lessonData.lessonTopics.map((topic, topicIndex) => (
-                    <li key={topicIndex} onClick={() => handleTopicClick(topic)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-                      {topic.lessonId}.{topic.topicId}. {topic.topicTitle}
+                    <li key={topicIndex} onClick={() => handleTopicClick(topic, topicIndex)} className='sidebar-list-item'>
+                      {topic.lessonId}.{topicIndex}. {topic.topicTitle}
                     </li>
                   ))}
                 </ul>
@@ -120,7 +125,7 @@ const TopicsPage = () => {
             </div>
             {selectedTopic && (
               <div>
-                <h4>Lesson {selectedTopic.lessonId}.{selectedTopic.topicId} - {selectedTopic.topicTitle}</h4>
+                <h4>Lesson {selectedTopic.lessonId}.{lessonData.lessonTopics.indexOf(selectedTopic)} - {selectedTopic.topicTitle}</h4>
                 <div className="lesson-content">
                   {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`}>

@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import axios from "axios";
 import '../PagesCSS/CreateTopic.css';
 import TopicContentContainer from '../ReusableComponents/TopicContentContainer';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
+import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
+import { insertTopic } from '../API-Services/TopicAPI';
+import { useNavigate } from 'react-router-dom';
 
 const CreateTopic = () => {
+    // Separated for simplicity 
+    const [topicLesson, setTopicLesson] = useState('');
     const [topicContents, setTopicContents] = useState([]);
     const [topicTitle, setTopicTitle] = useState('');
+    const [topicDescription, setTopicDescription] = useState('');
+
+    // Lesson list
+    const [lessons, setLessons] = useState(null);
+
+    const navigateTo = useNavigate();
+
+    useEffect(() =>{
+        const getLessonList = async () => {
+            const lessonList = await getAllLessonsFromDb();
+            if(lessonList.success){
+                setLessons(lessonList.data);
+            } else {
+                console.error(lessonList.message);
+            }
+        }
+        getLessonList();
+    }, []);
 
     const handleAddContent = () => {
         setTopicContents([
@@ -52,7 +75,10 @@ const CreateTopic = () => {
             if (item.type === 'content') {
                 acc[index + 1] = { type: 'text', content: item.content };
             } else if (item.type === 'question') {
-                const incorrectAnswersObj = item.incorrectAnswers.reduce((obj, answer, i) => {
+                // Filter out null values from incorrectAnswers
+                const filteredIncorrectAnswers = item.incorrectAnswers.filter(answer => answer !== '');
+    
+                const incorrectAnswersObj = filteredIncorrectAnswers.reduce((obj, answer, i) => {
                     obj[i] = answer;
                     return obj;
                 }, {});
@@ -70,17 +96,23 @@ const CreateTopic = () => {
         const requestBody = {
           lesson: { lessonId: 1 },
           topicTitle: topicTitle,
+          topicDescription: topicDescription,
           topicContent: topicContentObject
         };
 
-        console.log(requestBody);
-      
-        try {
-          const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_CREATE_TOPIC, requestBody);
-          console.log(response.data);
-        } catch (error) {
-          console.error("Error:", error);
+        const response = await insertTopic(requestBody);
+        if(response.success){
+            navigateTo('lessons-teacher');
+            console.log(response.message); // Use this for snackbar message l8er
+        }else{
+            console.log(response.message); // Use this for snackbar message l8er
         }
+
+        // try {
+        //   const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_CREATE_TOPIC, requestBody);
+        // } catch (error) {
+
+        // }
     };
 
     const handleDragEnd = (event) => {
@@ -90,25 +122,36 @@ const CreateTopic = () => {
             setTopicContents((items) => {
                 const oldIndex = items.findIndex(item => item.id === active.id);
                 const newIndex = items.findIndex(item => item.id === over.id);
-                console.log(arrayMove(items, oldIndex, newIndex))
                 return arrayMove(items, oldIndex, newIndex);
             });
         }
     };
-    console.log(topicTitle);
-    console.log(topicContents);
+
     return (
         <div>
             <ReusableAppBar />
             <form onSubmit={handleSubmit}>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
-                        <TextField label="Topic Title" fullWidth required onChange={(event) => {setTopicTitle(event.target.value)}}/>
+                        {/* Topic Lesson */}
+                        <FormControl sx={{minWidth: 180, mt: 3}}>
+                            <InputLabel>Select Lesson</InputLabel>
+                            <Select label='Select Lesson' value={topicLesson} autoWidth onChange={(event) => {setTopicLesson(event.target.value)}} required>
+                                {lessons && lessons.map(lessons => (
+                                    <MenuItem key={lessons.lessonId} value={lessons.lessonId}>{lessons.lessonTitle}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        {/* Topic Title */}
+                        <TextField label='Topic Title' fullWidth required onChange={(event) => {setTopicTitle(event.target.value)}} autoComplete='off'/>
+                        {/* Topic Description */}
+                        <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} onChange={(event) => {setTopicDescription(event.target.value)}} autoComplete='off'/>
                         <div style={{marginTop:'1.5%'}}>
                             <Button onClick={handleAddContent} variant='contained'>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={{ml: 1}}>Add Question</Button>
                         </div>
                     </div>
+                    {/* For topic contents */}
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} >
                         <div className='topic-form-container'>
                             <SortableContext items={topicContents.map(item => item.id)} strategy={verticalListSortingStrategy}>

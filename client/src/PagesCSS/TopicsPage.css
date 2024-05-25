@@ -15,7 +15,7 @@
   }
 
   .sidebar {
-    flex: 0 0 200px;
+    flex: 0 0 250px;
     border-right: 1px solid #ccc;
     padding: 20px;
     background-color: rgba(170, 117, 203, 0.2);
@@ -25,6 +25,20 @@
   .sidebar ul {
     list-style-type: none;
     padding: 0;
+  }
+
+  .sidebar-list-item {
+    margin-top: 10%;
+    text-decoration: underline;
+    cursor: pointer;
+    padding-left: 25px;
+    /* border: solid black 1px; */
+  }
+
+  .sidebar-list-item:hover{
+    background-color: rgba(170, 117, 203, 0.2);
+    transition: 0.15s;
+    scale: 1.05;
   }
   
   .main-content {

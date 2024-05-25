@@ -3,7 +3,7 @@ import axios from "axios";
 export const insertTopic = async(newTopic) => {
     try{
         const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_CREATE_TOPIC, newTopic);
-        return { success: true, data: response.data };
+        return { success: true, message: 'You have successfully created a topic! 🎉',data: response.data };
     }catch(error) {
         return { success: false, message: "Failed to insert a topic. Try again later." };
     }

@@ -20,6 +20,11 @@ const LessonsTopicAccordion = ({ lesson }) => {
         setExpanded(isExpanded ? panel : null);
     };
 
+    const handleStartTopic = (lessonId,topicId) =>{
+        console.log(lessonId)
+        navigateTo(`/lesson/${lessonId}/${topicId}`)
+    }
+
     // Ensure lessonTopics is an array
     const lessonTopics = lesson.lessonTopics || [];
 
@@ -68,7 +73,8 @@ const LessonsTopicAccordion = ({ lesson }) => {
                                 <Typography className="lesson-number" sx={{fontFamily:"Poppins", paddingTop:'1%', paddingLeft:'1%'}}>{topic.topicDescription}</Typography>
                                 
                                 <AccordionActions>
-                                <Button style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }}>Start</Button>
+                                    {/* Added onClick function -Ribo */}
+                                <Button style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }} onClick={()=>{handleStartTopic(topic.lessonId, topic.topicId)}}>Start</Button>
                             </AccordionActions>
                             </AccordionDetails>
                         </Accordion>

@@ -40,12 +40,16 @@ const TopicContentQuestion = ({ id, question, correctAnswer, incorrectAnswers, u
                     value={question}
                     onChange={e => handleUpdate('question', e.target.value)}
                     fullWidth
+                    autoComplete='off'
+                    required
                 />
                 <TextField
                     label="Correct Answer"
                     value={correctAnswer}
                     onChange={e => handleUpdate('correctAnswer', e.target.value)}
                     fullWidth
+                    autoComplete='off'
+                    required
                 />
                 {incorrectAnswers.map((answer, index) => (
                     <TextField
@@ -58,6 +62,8 @@ const TopicContentQuestion = ({ id, question, correctAnswer, incorrectAnswers, u
                             handleUpdate('incorrectAnswers', newIncorrectAnswers);
                         }}
                         fullWidth
+                        autoComplete='off'
+                        required={index===0}
                     />
                 ))}
             </div>
