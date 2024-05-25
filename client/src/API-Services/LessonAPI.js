@@ -11,10 +11,11 @@ export const getAllLessonsFromDb = async () => {
     }
 };
 
-export const insertLessonToDb = async (newLessonTitle) => {
+export const insertLessonToDb = async (newLessonTitle, newLessonDescription) => {
     try {
         const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_INSERT_LESSON, {
             lessonTitle: newLessonTitle,
+            lessonDescription: newLessonDescription
         });
         return { success: true, data: response.data };
     } catch (error) {
@@ -42,3 +43,29 @@ export const getLessonById = async(lessonId) => {
         return { success: false, message: "Failed to fetch lesson. Try again later." };
     }
 }
+
+export const updateLessonInDb = async (lessonId, lessonTitle, lessonDescription) => {
+    try {
+        const apiUrl = process.env.REACT_APP_SPRINGBOOT_EDIT_LESSON;
+        const response = await fetch(`${apiUrl}${lessonId}`, {
+            method: 'PUT', // or 'POST' if that's what your API expects
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                lessonTitle,
+                lessonDescription,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            return { success: true, data };
+        } else {
+            return { success: false, error: data };
+        }
+    } catch (error) {
+        return { success: false, error };
+    }
+};

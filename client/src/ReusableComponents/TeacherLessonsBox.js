@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
 import LessonsTopicAccordion from './LessonsTopicAccordion';
 import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { getAllLessonsFromDb, insertLessonToDb, deleteLessonFromDb } from '../API-Services/LessonAPI';
+import { getAllLessonsFromDb, insertLessonToDb, updateLessonInDb, deleteLessonFromDb } from '../API-Services/LessonAPI'; // Assuming you have updateLessonInDb
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 
 const TeacherLessonsBox = () => {
     const [lessons, setLessons] = useState([]);
     const [showLessonForm, setShowLessonForm] = useState(false);
-    const [newLessonTitle, setNewLessonTitle] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentLesson, setCurrentLesson] = useState({ title: '', description: '', lessonId: null });
     const [anchorEl, setAnchorEl] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedLessonId, setSelectedLessonId] = useState(null);
@@ -28,19 +30,39 @@ const TeacherLessonsBox = () => {
     }, []);
 
     const handleSaveLesson = async () => {
-        const { success, data, error } = await insertLessonToDb(newLessonTitle);
-        if (success) {
-            setLessons([...lessons, data]);
-            handleCancelLesson(); // Reset the form
-        } else {
-            console.error("Failed to save lesson");
-            console.error("Error details:", error);
+        try {
+            if (isEditing && currentLesson.lessonId !== null) {
+                // If editing an existing lesson, call updateLessonInDb
+                const { success, data, error } = await updateLessonInDb(currentLesson.lessonId, currentLesson.title, currentLesson.description);
+                if (success) {
+                    // Update the lessons state with the updated lesson
+                    setLessons(lessons.map(lesson => lesson.lessonId === currentLesson.lessonId ? data : lesson));
+                    // Reset the form and editing state
+                    handleCancelLesson();
+                } else {
+                    console.error("Failed to update lesson", error);
+                }
+            } else {
+                // If creating a new lesson, call insertLessonToDb
+                const { success, data, error } = await insertLessonToDb(currentLesson.title, currentLesson.description);
+                if (success) {
+                    // Add the new lesson to the lessons state
+                    setLessons([...lessons, data]);
+                    // Reset the form
+                    handleCancelLesson();
+                } else {
+                    console.error("Failed to save lesson", error);
+                }
+            }
+        } catch (error) {
+            console.error("Error while saving lesson:", error);
         }
     };
 
     const handleCancelLesson = () => {
         setShowLessonForm(false);
-        setNewLessonTitle('');
+        setCurrentLesson({ title: '', description: '', lessonId: null });
+        setIsEditing(false);
     };
 
     const handleMenuClick = (event) => {
@@ -84,6 +106,13 @@ const TeacherLessonsBox = () => {
         }
     };
 
+    const handleEditLesson = (lesson) => {
+        setCurrentLesson({ title: lesson.lessonTitle, description: lesson.lessonDescription, lessonId: lesson.lessonId });
+        setIsEditing(true);
+        setShowLessonForm(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div>
             <div className='circular-button-container'>
@@ -109,12 +138,19 @@ const TeacherLessonsBox = () => {
             <div className="lessons-container">
                 {showLessonForm && (
                     <Box className="new-lesson-form">
-                        <Typography class="lesson-title">Create a new lesson</Typography>
+                        <Typography class="lesson-title">{isEditing ? 'Edit lesson' : 'Create a new lesson'}</Typography>
                         <TextField
                             label="Lesson Title"
                             fullWidth
-                            value={newLessonTitle}
-                            onChange={(e) => setNewLessonTitle(e.target.value)}
+                            value={currentLesson.title}
+                            onChange={(e) => setCurrentLesson({ ...currentLesson, title: e.target.value })}
+                            style={{ marginBottom: '20px' }}
+                        />
+                        <TextField
+                            label="Lesson Description"
+                            fullWidth
+                            value={currentLesson.description}
+                            onChange={(e) => setCurrentLesson({ ...currentLesson, description: e.target.value })}
                             style={{ marginBottom: '20px' }}
                         />
                         <div className='nlf-button-group'>
@@ -137,13 +173,22 @@ const TeacherLessonsBox = () => {
                 )}
                 {lessons.map((lesson, index) => (
                     <Box key={index} className="lesson-box">
-                        <IconButton 
-                            aria-label="delete"
-                            onClick={() => handleOpenDialog(lesson.lessonId)}
-                            class='delete-button'
-                        >
-                            <CloseIcon />
-                        </IconButton>
+                        <div className="lesson-buttons">
+                            <IconButton 
+                                aria-label="edit"
+                                onClick={() => handleEditLesson(lesson)}
+                                class='edit-button'
+                            >
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton 
+                                aria-label="delete"
+                                onClick={() => handleOpenDialog(lesson.lessonId)}
+                                class='delete-button'
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </div>
                         <div>
                             <p className="lesson-number">Lesson {index + 1}</p>
                             <h2 className="lesson-title">{lesson.lessonTitle}</h2>    

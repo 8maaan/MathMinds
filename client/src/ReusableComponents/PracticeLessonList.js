@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography, Box, Button } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/PracticeLessonList.css';
 import { useNavigate } from 'react-router-dom';
+import { getAllLessonsFromDb } from '../API-Services/LessonAPI'; // Import your API service
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A" },
@@ -12,18 +13,22 @@ const colorPalettes = [
     // Add more color palettes as needed
 ];
 
-const lessonsData = [
-    { number: 1, title: 'Introduction to React' },
-    { number: 2, title: 'Components and Props' },
-    { number: 3, title: 'Components and Props2' },
-    { number: 4, title: 'Components and Props3' },
-    // Add more lesson objects as needed
-];
-
 const PracticeLessonList = () => {
     const navigateTo = useNavigate();
-
+    const [lessons, setLessons] = useState([]);
     const [expanded, setExpanded] = useState(null);
+
+    useEffect(() => {
+        const fetchLessons = async () => {
+            const { success, data } = await getAllLessonsFromDb();
+            if (success) {
+                setLessons(data);
+            } else {
+                console.error("Failed to fetch lessons");
+            }
+        };
+        fetchLessons();
+    }, []);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : null);
@@ -31,7 +36,7 @@ const PracticeLessonList = () => {
 
     return(
         <div className='lesson-list' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            {lessonsData.map((lesson, index) => {
+            {lessons.map((lesson, index) => {
                 const colorPaletteIndex = index % colorPalettes.length;
                 const colorPalette = colorPalettes[colorPaletteIndex];
                 const isExpanded = expanded === `panel${index + 1}`;
@@ -61,8 +66,8 @@ const PracticeLessonList = () => {
                             id={`panel${index + 1}-header`}
                         >
                             <div>
-                                <Typography className="lesson-number" style={{ fontSize: '18px'}}>{`Lesson ${lesson.number}`}</Typography> 
-                                <Typography className="lesson-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins'}}>{lesson.title}</Typography>
+                                <Typography className="lesson-number" style={{ fontSize: '18px'}}>Lesson {index + 1}</Typography> 
+                                <Typography className="lesson-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins'}}>{lesson.lessonTitle}</Typography>
                             </div>
                         </AccordionSummary>
                         <AccordionDetails
@@ -74,7 +79,7 @@ const PracticeLessonList = () => {
                             }}
                         >
                             <Box>
-                                <Typography className="lesson-number" sx={{fontFamily:"Poppins", paddingTop:'1%', paddingLeft:'1%'}}>Are you ready to put your newfound skills to the test? Let's practice what we've learned and become masters!</Typography>
+                                <Typography className="lesson-number" sx={{fontFamily:"Poppins", paddingTop:'1%', paddingLeft:'1%'}}>{lesson.lessonDescription}</Typography>
                             </Box>
 
                             <AccordionActions>
