@@ -40,9 +40,9 @@
 .personalinfo-left-side{
     display: flex;
     width: 35%;
-    /* border: solid rgb(54, 140, 253) 1px;  */
+    /* border: solid rgb(54, 140, 253) 1px;    */
 }
-.choices-container{
+.choicess-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -53,7 +53,6 @@
     box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
     border-radius: 25px;
     background-color: #d8bc7966;    
-    /* border: solid rgb(0, 0, 0); */
 }
 .PI-button{
     display: flex;
