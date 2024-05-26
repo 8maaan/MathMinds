@@ -3,7 +3,6 @@ import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import axios from "axios";
 import '../PagesCSS/CreateTopic.css';
 import TopicContentContainer from '../ReusableComponents/TopicContentContainer';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
@@ -94,7 +93,7 @@ const CreateTopic = () => {
         }, {});
       
         const requestBody = {
-          lesson: { lessonId: 1 },
+          lesson: { lessonId: topicLesson },
           topicTitle: topicTitle,
           topicDescription: topicDescription,
           topicContent: topicContentObject
@@ -102,7 +101,7 @@ const CreateTopic = () => {
 
         const response = await insertTopic(requestBody);
         if(response.success){
-            navigateTo('lessons-teacher');
+            navigateTo('/lessons-teacher');
             console.log(response.message); // Use this for snackbar message l8er
         }else{
             console.log(response.message); // Use this for snackbar message l8er
