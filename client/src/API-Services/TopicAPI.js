@@ -19,3 +19,12 @@ export const getTopicById = async(topicId) => {
     }
 }
 
+export const updateTopic = async (topicId, updatedTopic) => {
+    try {
+        const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_TOPIC}${topicId}`, updatedTopic);
+        return { success: true, message: 'Topic updated successfully!', data: response.data };
+    } catch (error) {
+        console.error("Error updating topic: ", error);
+        return { success: false, message: "Failed to update topic. Try again later." };
+    }
+};

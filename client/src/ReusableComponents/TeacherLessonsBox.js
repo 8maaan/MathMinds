@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
-import LessonsTopicAccordion from './LessonsTopicAccordion';
+import TeacherLessonsTopicAccordion from './TeacherLessonsTopicAccordion';
 import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { getAllLessonsFromDb, insertLessonToDb, updateLessonInDb, deleteLessonFromDb } from '../API-Services/LessonAPI'; // Assuming you have updateLessonInDb
 import CloseIcon from '@mui/icons-material/Close';
@@ -193,7 +193,7 @@ const TeacherLessonsBox = () => {
                             <p className="lesson-number">Lesson {index + 1}</p>
                             <h2 className="lesson-title">{lesson.lessonTitle}</h2>    
                         </div>
-                        <LessonsTopicAccordion lesson={lesson} />
+                        <TeacherLessonsTopicAccordion lesson={lesson} />
                     </Box>
                 ))}
             </div>

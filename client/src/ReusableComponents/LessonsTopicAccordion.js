@@ -74,7 +74,7 @@ const LessonsTopicAccordion = ({ lesson }) => {
                                 
                                 <AccordionActions>
                                     {/* Added onClick function -Ribo */}
-                                <Button style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }} onClick={()=>{handleStartTopic(topic.lessonId, topic.topicId)}}>Start</Button>
+                                    <Button style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }} onClick={()=>{handleStartTopic(topic.lessonId, topic.topicId)}}>Start</Button>
                             </AccordionActions>
                             </AccordionDetails>
                         </Accordion>

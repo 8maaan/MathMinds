@@ -8,10 +8,12 @@ import LoginPage from './Pages/LoginPage';
 import PageNotFound from './Pages/PageNotFound';
 import ProfilePage from './Pages/ProfilePage';
 import RegisterPage from './Pages/RegisterPage';
-import CreateTopic from './Pages/CreateTopic';import LessonsPage from './Pages/LessonsPage';
+import CreateTopic from './Pages/CreateTopic';
+import LessonsPage from './Pages/LessonsPage';
 import TeacherLessonsPage from './Pages/TeacherLessonsPage';
 import PracticePage from './Pages/PracticePage';
 import TopicsPage from './Pages/TopicsPage'
+import EditTopic from './Pages/EditTopic';
 
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
             {/* WILL CREATE SEPARATE ROUTES */}
             <Route path="/create-topic" element={<CreateTopic/>} />
             <Route path="/lesson/:lessonId/:topicId" element={<TopicsPage/>} />
+            <Route path="/edit-topic/:topicId" element={<EditTopic />} />
             
 
             <Route path="*" element={<PageNotFound/>} />
