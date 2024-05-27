@@ -5,51 +5,43 @@ import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import userprofilepic from '../Images/UserDP.png';
 import { Button, TextField, Snackbar } from '@mui/material';
 import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Services/UserAPI';
-import { isEmailValid } from '../ReusableComponents/txtFieldValidations'; // Assuming you have this validation function
+import { isEmailValid } from '../ReusableComponents/txtFieldValidations';
 import MuiAlert from '@mui/material/Alert';
 
-const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText, disabled }) => {
-    return (
-        <div className='profile-txtField'>
-            <TextField
-                required
-                type={type}
-                variant='filled'
-                label={<span>{label}<span style={{ color: 'red' }}> *</span></span>}
-                fullWidth
-                InputProps={{
-                    style: {
-                        borderBottom: "none",
-                        borderRadius: "25px",
-                        width: "290px",
-                        backgroundColor: "white",
-                        boxShadow: "0px 5px rgba(184, 184, 184, 0.75)"
-                    }
-                }}
-                InputLabelProps={{ required: false }}
-                name={name}
-                value={value}
-                onChange={onChange}
-                error={error}
-                helperText={helperText}
-                disabled={disabled}
-            />
-        </div>
-    )
-}
+const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText, disabled }) => (
+    <div className='profile-txtField'>
+        <TextField
+            required
+            type={type}
+            variant='filled'
+            label={<span>{label}<span style={{ color: 'red' }}> *</span></span>}
+            fullWidth
+            InputProps={{
+                style: {
+                    borderBottom: "none",
+                    borderRadius: "25px",
+                    width: "290px",
+                    backgroundColor: "white",
+                    boxShadow: "0px 5px rgba(184, 184, 184, 0.75)"
+                }
+            }}
+            InputLabelProps={{ required: false }}
+            name={name}
+            value={value}
+            onChange={onChange}
+            error={error}
+            helperText={helperText}
+            disabled={disabled}
+        />
+    </div>
+);
 
 const ProfilePage = () => {
     const { user } = UserAuth();
-    const [userProfileInfo, setUserProfileInfo] = useState({
-        fname: '',
-        lname: '',
-        email: ''
-    });
-    const [userError, setUserError] = useState({
-        fname: null,
-        lname: null,
-        email: null
-    });
+    const [userProfileInfo, setUserProfileInfo] = useState({ fname: '', lname: '', email: '', password: '***********' });
+    const [newPassword, setNewPassword] = useState('');
+    const [retypePassword, setRetypePassword] = useState('');
+    const [userError, setUserError] = useState({ fname: false, lname: false, email: false, newPassword: false, retypePassword: false });
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -67,35 +59,33 @@ const ProfilePage = () => {
                 setLoading(false);
             }
         };
-
         fetchUserProfileInfo();
     }, [user]);
 
     const handleEdit = () => {
         setIsEditing(true);
-        setSnackbarMessage("You can now update your Profile Information");
-        setSnackbarOpen(true);
+        handleSnackbarOpen("You can now update your Profile Information");
     };
 
     const validateInputs = () => {
         const errors = {
             fname: userProfileInfo.fname.trim() === '',
             lname: userProfileInfo.lname.trim() === '',
-            email: !isEmailValid(userProfileInfo.email)
+            email: !isEmailValid(userProfileInfo.email),
+            newPassword: isEditing && newPassword.trim() === '',
+            retypePassword: isEditing && retypePassword.trim() === '',
+            passwordsMatch: isEditing && newPassword !== retypePassword
         };
         setUserError(errors);
         return !Object.values(errors).some(error => error);
     };
 
     const handleUpdate = async () => {
-        if (!validateInputs()) {
-            return;
-        }
+        if (!validateInputs()) return;
 
         const updatedProfileInfo = {
-            fname: userProfileInfo.fname,
-            lname: userProfileInfo.lname,
-            email: userProfileInfo.email
+            ...userProfileInfo,
+            password: isEditing ? newPassword : userProfileInfo.password
         };
 
         try {
@@ -104,7 +94,7 @@ const ProfilePage = () => {
             handleSnackbarOpen('Your Profile Information is updated');
         } catch (error) {
             console.error("Error updating user profile info: ", error);
-            alert("Failed to update profile. Please try again.");
+            handleSnackbarOpen("Failed to update profile. Please try again.");
         }
     };
 
@@ -128,15 +118,9 @@ const ProfilePage = () => {
                 <div className='profile-content-container'>
                     <div className='personalinfo-left-side'>
                         <div className='choicess-container'>
-                            <div className='PI-button'>
-                                Personal Information
-                            </div>
-                            <div className='LessonProg-button'>
-                                Lesson Progress
-                            </div>
-                            <div className='Badges-button'>
-                                Badges
-                            </div>
+                            <div className='PI-button'>Personal Information</div>
+                            <div className='LessonProg-button'>Lesson Progress</div>
+                            <div className='Badges-button'>Badges</div>
                         </div>
                     </div>
                     <div className='personalinfo-right-side'>
@@ -179,43 +163,77 @@ const ProfilePage = () => {
                                                 disabled={!isEditing}
                                             />
                                             {isEditing ? (
-                                                <Button
-                                                    onClick={handleUpdate}
-                                                    variant='contained'
-                                                    size='medium'
-                                                    sx={{
-                                                        width: "50%",
-                                                        fontFamily: 'Poppins',
-                                                        backgroundColor: '#FFB100',
-                                                        color: '#181A52',
-                                                        fontWeight: '600',
-                                                        borderRadius: '10px',
-                                                        '&:hover': {
-                                                            backgroundColor: '#d69500'
-                                                        }
-                                                    }}
-                                                >
-                                                    Update
-                                                </Button>
+                                                <>
+                                                    <ProfileTxtField
+                                                        name="newPassword"
+                                                        label="New Password"
+                                                        type="password"
+                                                        value={newPassword}
+                                                        onChange={(e) => setNewPassword(e.target.value)}
+                                                        error={userError.newPassword}
+                                                        helperText={userError.newPassword ? 'New password is required' : ''}
+                                                        disabled={!isEditing}
+                                                    />
+                                                    <ProfileTxtField
+                                                        name="retypePassword"
+                                                        label="Retype Password"
+                                                        type="password"
+                                                        value={retypePassword}
+                                                        onChange={(e) => setRetypePassword(e.target.value)}
+                                                        error={userError.retypePassword || userError.passwordsMatch}
+                                                        helperText={userError.retypePassword ? 'Retype password is required' : userError.passwordsMatch ? 'Passwords do not match' : ''}
+                                                        disabled={!isEditing}
+                                                    />
+                                                    <Button
+                                                        onClick={handleUpdate}
+                                                        variant='contained'
+                                                        size='medium'
+                                                        sx={{
+                                                            width: "50%",
+                                                            fontFamily: 'Poppins',
+                                                            backgroundColor: '#FFB100',
+                                                            color: '#181A52',
+                                                            fontWeight: '600',
+                                                            borderRadius: '10px',
+                                                            '&:hover': {
+                                                                backgroundColor: '#d69500'
+                                                            }
+                                                        }}
+                                                    >
+                                                        Update
+                                                    </Button>
+                                                </>
                                             ) : (
-                                                <Button
-                                                    onClick={handleEdit}
-                                                    variant='contained'
-                                                    size='medium'
-                                                    sx={{
-                                                        width: "50%",
-                                                        fontFamily: 'Poppins',
-                                                        backgroundColor: '#FFB100',
-                                                        color: '#181A52',
-                                                        fontWeight: '600',
-                                                        borderRadius: '10px',
-                                                        '&:hover': {
-                                                            backgroundColor: '#d69500'
-                                                        }
-                                                    }}
-                                                >
-                                                    Edit
-                                                </Button>
+                                                <>
+                                                    <ProfileTxtField
+                                                        name="password"
+                                                        label="Password"
+                                                        type="password"
+                                                        value="***********"
+                                                        onChange={handleChange}
+                                                        error={false}
+                                                        helperText=""
+                                                        disabled
+                                                    />
+                                                    <Button
+                                                        onClick={handleEdit}
+                                                        variant='contained'
+                                                        size='medium'
+                                                        sx={{
+                                                            width: "50%",
+                                                            fontFamily: 'Poppins',
+                                                            backgroundColor: '#FFB100',
+                                                            color: '#181A52',
+                                                            fontWeight: '600',
+                                                            borderRadius: '10px',
+                                                            '&:hover': {
+                                                                backgroundColor: '#d69500'
+                                                            }
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </Button>
+                                                </>
                                             )}
                                         </div>
                                     )}
