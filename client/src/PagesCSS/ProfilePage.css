@@ -42,59 +42,6 @@
     width: 35%;
     /* border: solid rgb(54, 140, 253) 1px;    */
 }
-.choicess-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    align-items: center;
-    width: 80%;
-    height: 60%;
-    box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
-    border-radius: 25px;
-    background-color: #d8bc7966;    
-}
-.PI-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    height: 25%;
-    border-radius: 25px 25px 0px 0px;
-    background-color: #F94848;
-    font-family: 'Poppins';
-    font-size: 24px;
-    font-weight: 500;   
-    color: #181A52;
-
-}
-.LessonProg-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    height: 25%;
-    background-color: #518BBC;
-    font-family: 'Poppins';
-    font-size: 24px;
-    font-weight: 500;   
-    color: #181A52;
-}
-.Badges-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    height: 25%;
-    border-radius: 0px 0px 25px 25px;
-    background-color: #4CAE4F;
-    font-family: 'Poppins';
-    font-size: 24px;
-    font-weight: 500;   
-    color: #181A52;
-}
-
-
 .PI-container{
     display: flex;
     flex-direction: column;

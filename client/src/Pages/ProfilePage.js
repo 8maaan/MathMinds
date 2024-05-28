@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/ProfilePage.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
+import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import userprofilepic from '../Images/UserDP.png';
 import { Button, TextField, Snackbar } from '@mui/material';
 import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Services/UserAPI';
@@ -72,13 +73,14 @@ const ProfilePage = () => {
             fname: userProfileInfo.fname.trim() === '',
             lname: userProfileInfo.lname.trim() === '',
             email: !isEmailValid(userProfileInfo.email),
-            newPassword: isEditing && newPassword.trim() === '',
-            retypePassword: isEditing && retypePassword.trim() === '',
+            newPassword: isEditing && newPassword.trim() !== '' && newPassword.trim().length < 6, // Only validate if not empty and less than 6 characters
+            retypePassword: isEditing && (retypePassword.trim() !== '' || newPassword.trim() !== ''), // Validate if either field is not empty
             passwordsMatch: isEditing && newPassword !== retypePassword
         };
         setUserError(errors);
         return !Object.values(errors).some(error => error);
     };
+    
 
     const handleUpdate = async () => {
         if (!validateInputs()) return;
@@ -117,11 +119,7 @@ const ProfilePage = () => {
             <div className='profile-wrapper'>
                 <div className='profile-content-container'>
                     <div className='personalinfo-left-side'>
-                        <div className='choicess-container'>
-                            <div className='PI-button'>Personal Information</div>
-                            <div className='LessonProg-button'>Lesson Progress</div>
-                            <div className='Badges-button'>Badges</div>
-                        </div>
+                        <ReusableChoices/>
                     </div>
                     <div className='personalinfo-right-side'>
                         <div className='PI-container'>
