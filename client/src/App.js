@@ -8,7 +8,7 @@ import LoginPage from './Pages/LoginPage';
 import PageNotFound from './Pages/PageNotFound';
 import ProfilePage from './Pages/ProfilePage';
 import RegisterPage from './Pages/RegisterPage';
-
+import BadgesPage from './Pages/BadgesPage';
 
 function App() {
   return (
@@ -24,10 +24,11 @@ function App() {
             <Route path="/login" element={<GuestRoute> <LoginPage/> </GuestRoute>} />
             <Route path="/register" element={<GuestRoute> <RegisterPage/> </GuestRoute>}/>
 
-
             {/* PROTECTED ROUTES */}
+       
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
+            <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
 
             <Route path="*" element={<PageNotFound/>} />
           </Routes>

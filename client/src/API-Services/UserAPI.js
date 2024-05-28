@@ -27,7 +27,7 @@ export const updateUserProfileInfoToDb = async (uid, updatedProfileInfo) => {
     try {
         // Send a PUT request to update the user's profile information
         const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_UPDATE_USER_PROFILE}?uid=${uid}`, updatedProfileInfo);
-        return { success: true, message: "User profile updated successfully" };
+        return { success: true, message: "User profile updated successfully", data: response.data };
     } catch (error) {
         console.error("Error updating user profile info: ", error);
         return { success: false, message: "Failed to update user profile info" };
