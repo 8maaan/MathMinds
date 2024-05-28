@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../PagesCSS/TopicsPage.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { getLessonById } from '../API-Services/LessonAPI';
+import { Button } from '@mui/material';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -12,8 +13,11 @@ import { getLessonById } from '../API-Services/LessonAPI';
 const TopicsPage = () => {
   const { lessonId, topicId } = useParams(); /*assuming lessonId is passed when TopicsPage.js is called?*/
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [feedBackColor, setFeedBackColor] = useState(null);
   /* JSON Data */
   const [lessonData, setLessonData] = useState(null);
+
+  // console.log(lessonData);
 
   const navigateTo = useNavigate();
 
@@ -24,7 +28,7 @@ const TopicsPage = () => {
         const fetchResult = await getLessonById(lessonId);
         setLessonData(fetchResult.data);
         if (fetchResult.data && fetchResult.data.lessonTopics) {
-          const initialTopic = fetchResult.data.lessonTopics[parseInt(topicId)];
+          const initialTopic = fetchResult.data.lessonTopics[parseInt(topicId)-1]; /* Subtracted by 1 to get the */
           setSelectedTopic(initialTopic);
         }
       } catch (e) {
@@ -69,6 +73,7 @@ const TopicsPage = () => {
         },
       },
     }));
+    setFeedBackColor(isCorrect ? 'green' : 'maroon');
   };
 
   /* to get colors for the rectangle containers*/
@@ -80,7 +85,7 @@ const TopicsPage = () => {
 
   const handleTopicClick = (topic, index) => {
     setSelectedTopic(topic);
-    navigateTo(`/lesson/${lessonId}/${index}`);
+    navigateTo(`/lesson/${lessonId}/${index+1}`); /* */
   };
 
   const isLastTopic = () => {
@@ -109,7 +114,7 @@ const TopicsPage = () => {
                 <ul>
                   {lessonData.lessonTopics.map((topic, topicIndex) => (
                     <li key={topicIndex} onClick={() => handleTopicClick(topic, topicIndex)} className='sidebar-list-item'>
-                      {topic.lessonId}.{topicIndex}. {topic.topicTitle}
+                      {topic.lessonId}.{topicIndex+1} {topic.topicTitle}
                     </li>
                   ))}
                 </ul>
@@ -120,12 +125,12 @@ const TopicsPage = () => {
         <div className="main-content">
           <div>
             <div className="lesson-header">
-              <h4>Lesson {lessonData.lessonId}</h4>
-              <h1>{lessonData.lessonTitle}</h1>
+              <h4 style={{color: '#181A52'}}>Lesson {lessonData.lessonId}</h4>
+              <h1 style={{color: '#181A52'}}>{lessonData.lessonTitle}</h1>
             </div>
             {selectedTopic && (
               <div>
-                <h4>Lesson {selectedTopic.lessonId}.{lessonData.lessonTopics.indexOf(selectedTopic)} - {selectedTopic.topicTitle}</h4>
+                <h4 style={{color: '#404040'}}>Lesson {selectedTopic.lessonId}.{lessonData.lessonTopics.indexOf(selectedTopic)+1} - {selectedTopic.topicTitle}</h4>
                 <div className="lesson-content">
                   {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`}>
@@ -136,44 +141,49 @@ const TopicsPage = () => {
                           <div className="question-container">
                             <div className="option-container">
                               {Object.values(value.incorrectAnswers).map((option, idx) => (
-                                <button
+                                <Button
                                   key={idx}
                                   onClick={() => handleOptionClick(selectedTopic.topicId, key, option)}
-                                  className="option-button"
+                                  variant='contained'
+                                  fullWidth
+                                  size='large'
                                 >
                                   {option}
-                                </button>
+                                </Button>
                               ))}
-                              <button
+                              <Button
                                 onClick={() => handleOptionClick(selectedTopic.topicId, key, value.correctAnswer)}
-                                className="option-button"
+                                variant='contained'
+                                fullWidth
+                                size='large'
                               >
                                 {value.correctAnswer}
-                              </button>
+                              </Button>
                             </div>
                             <div className="check-container">
-                              <button
-                                onClick={() => handleCheckAnswer(selectedTopic.topicId, key, value.correctAnswer)}
-                                className="confirm-button"
+                              <Button
+                                onClick={() => selectedTopic?.topicId != null && key != null && value?.correctAnswer != null && handleCheckAnswer(selectedTopic.topicId, key, value.correctAnswer)}
+                                variant='contained'
+                                sx={{color:'#101436', backgroundColor:'#FFB100', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}
                               >
                                 Check
-                              </button>
+                              </Button>
                             </div>
                           </div>
                           {topicsState[selectedTopic.topicId]?.[key]?.checked && (
-                            <p>{topicsState[selectedTopic.topicId][key].feedback}</p>
+                            <p style={{fontWeight: '600', color:`${feedBackColor}` }}>{topicsState[selectedTopic.topicId][key].feedback}</p>
                           )}
                         </div>
                       )}
                       {index === array.length - 1 && isLastTopic() ? (
-                        <p style={{ fontWeight: 'bold', textAlign: 'center' }}>END OF LESSON</p>
+                        <p style={{ fontWeight: 'bold', textAlign: 'center', color:'#2f3163'}}>END OF LESSON</p>
                       ) : null}
                     </div>
                   ))}
                 </div>
                 {isLastTopic() && (
                   <div className="proceed-to-quiz">
-                    <button className="proceed-button">Proceed to Quiz</button>
+                    <Button variant='contained' size='large' sx={{color:'#101436', backgroundColor:'#FFB100', minWidth:'40%', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}>Proceed to Quiz</Button>
                   </div>
                 )}
               </div>
