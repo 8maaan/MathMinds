@@ -8,6 +8,7 @@ import { txtFieldInputProps } from './LoginPage'
 import { UserAuth } from '../Context-and-routes/AuthContext'
 import { isPasswordValid, isEmailValid, isPasswordMatch} from '../ReusableComponents/txtFieldValidations';
 import ForwardIcon from '@mui/icons-material/Forward';
+import { createUserToDb } from '../API-Services/UserAPI';
 
 const RegisterTxtField = ({name, label, type, value, onChange, error, helperText}) =>{
     return(
@@ -99,17 +100,38 @@ const RegisterPage = () => {
         event.preventDefault();
 
         if(userError.email || userError.password || userError.retypePassword){
-            console.log('invalid');
             return;
         }
         try{
             setEmailAlreadyUsed(false)
-            await createUser(user.email, user.password)
+            const authUser = await createUser(user.email, user.password)
+            await handleRegisterToDb(authUser.user.uid);
             navigateTo('/home', {replace : true});    
         }catch(error){
-            console.log(error.message);
-            console.log(error.code)
+            console.error(error.message);
+            console.error(error.code)
             setEmailAlreadyUsed(true);
+        }
+    }
+
+    const handleRegisterToDb = async (userid) => {
+        const registeredUserToDB = {
+            uid: userid,
+            fname: user.firstName,
+            lname: user.lastName,
+            email: user.email,
+        };
+        
+        try {
+            const insertToDb = await createUserToDb(registeredUserToDB);
+
+            if (insertToDb.success) {
+                console.log(insertToDb.message);
+            } else {
+                console.log(insertToDb.message);
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
