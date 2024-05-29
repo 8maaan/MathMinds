@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
@@ -107,26 +107,30 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
 
                                 <AccordionActions>
-                                    <EditIcon
-                                        onClick={() => handleEditTopic(topic.topicId)}
-                                        sx={{
-                                            color: "#181A52",
-                                            '&:hover': {
-                                                color: colorPalette.hoverColor,
-                                                cursor: 'pointer'
-                                            }
-                                        }}
-                                    />
-                                    <CloseIcon
-                                        onClick={() => handleOpenDialog(topic.topicId)}
-                                        sx={{
-                                            color: "#181A52",
-                                            '&:hover': {
-                                                color: "#FF0000",
-                                                cursor: 'pointer'
-                                            }
-                                        }}
-                                    />
+                                    <IconButton>
+                                        <EditIcon
+                                            onClick={() => handleEditTopic(topic.topicId)}
+                                            sx={{
+                                                color: "#181A52",
+                                                '&:hover': {
+                                                    color: colorPalette.hoverColor,
+                                                    cursor: 'pointer'
+                                                }
+                                            }}
+                                        />
+                                    </IconButton>
+                                    <IconButton>
+                                        <CloseIcon
+                                            onClick={() => handleOpenDialog(topic.topicId)}
+                                            sx={{
+                                                color: "#181A52",
+                                                '&:hover': {
+                                                    color: "#FF0000",
+                                                    cursor: 'pointer'
+                                                }
+                                            }}
+                                        />
+                                    </IconButton>
                                     <Button
                                         sx={{
                                             backgroundColor: colorPalette.accordionColor,
