@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import '../PagesCSS/Loading.css'
 
 const LoadingAnimations = () => {
-    const [randomLoader, setRandomLoader] = useState(null);
-    const [mathFactsIndex, setMathFactsIndex] = useState(0);
+    const randomLoaderNum = Math.floor((Math.random() * 3) + 1); // Adjust based on the number of loader/loading animations in Loading.css
+    const mathFactsRandomIndex = Math.floor((Math.random() * 4) + 1) - 1;
 
     // SAMPLE ONLY, ADD STUFF L8ER
     const mathFacts = [
@@ -13,24 +13,16 @@ const LoadingAnimations = () => {
         "Zero is Special: Zero is the only number that can't be represented by Roman numerals. The concept of zero was invented by ancient mathematicians from India."
     ]
 
-    useEffect(() =>{
-
-        // Adjust depending on how many animation options in Loading.css
-        const randomLoaderNum = Math.floor((Math.random() * 3) + 1);
-        const mathFactsRandomIndex = Math.floor((Math.random() * mathFacts.length) + 1);
-        
-        setRandomLoader(`loader${randomLoaderNum}`);
-        setMathFactsIndex(mathFactsRandomIndex - 1);
-    },[mathFacts.length])
+    const randomLoader = `loader${randomLoaderNum}`;
+    const mathFact = mathFacts[mathFactsRandomIndex];
 
     return (
         <div className='loading-body'>
             <div className='loader-container'>
                 <div className={randomLoader}/>
             </div>
-            {/* Temporary only, change l8er */}
             <div className='loading-fun-facts'>
-                {mathFacts[mathFactsIndex]}
+                {mathFact}
             </div>
         </div>
     )
