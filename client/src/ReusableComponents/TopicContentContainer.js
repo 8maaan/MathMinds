@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import DOMPurify from 'dompurify'; /*npm install dompurify -den*/
 import '../PagesCSS/CreateTopic.css';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,7 +12,8 @@ const TopicContentContainer = ({ id, content, updateContent, deleteContent }) =>
     const style = { transform: CSS.Transform.toString(transform), transition };
 
     const handleBlur = (e) => {
-        updateContent(id, e.target.innerHTML);
+        const sanitizedContent = DOMPurify.sanitize(e.target.innerHTML); /*used to clean the HTML before saving it -den*/
+        updateContent(id, sanitizedContent);
         setIsEditing(false);
     };
 
@@ -33,7 +35,7 @@ const TopicContentContainer = ({ id, content, updateContent, deleteContent }) =>
                 onFocus={handleFocus}
                 placeholder='Add a content here'
             >
-                {content}
+                <div dangerouslySetInnerHTML={{ __html: content }} /> {/*ensure html is displayed correctly -den*/}
             </div>
             <div 
                 className='topic-content-actions'

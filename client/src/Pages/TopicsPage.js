@@ -11,7 +11,7 @@ import { Button } from '@mui/material';
 // TODO: WILL USE <Button> from MUI instead of regular <button> wtf
 
 const TopicsPage = () => {
-  const { lessonId, topicId } = useParams(); /*assuming lessonId is passed when TopicsPage.js is called?*/
+  const { lessonId, topicId } = useParams();
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [feedBackColor, setFeedBackColor] = useState(null);
   /* JSON Data */
@@ -20,6 +20,9 @@ const TopicsPage = () => {
   // console.log(lessonData);
 
   const navigateTo = useNavigate();
+  const [topicsState, setTopicsState] = useState({});
+  const colors = ['color-1', 'color-2', 'color-3'];
+  let colorIndex = 0; /*from above sa handleOptionClick, ako lang gi move dri -den*/
 
   // PUT FUNCTION INSIDE CUS WHY SEPARATE ?
   useEffect(() => {
@@ -38,13 +41,6 @@ const TopicsPage = () => {
     fetchLessonTopics();
   }, [lessonId, topicId]);
 
-  const [topicsState, setTopicsState] = useState({});
-
-  /* to get colors for the rectangle containers*/
-  const colors = ['color-1', 'color-2', 'color-3'];
-  let colorIndex = 0;
-
-  /*  for the mini seatwork */
   const handleOptionClick = (topicId, questionKey, option) => {
     setTopicsState((prevState) => ({
       ...prevState,
@@ -134,7 +130,7 @@ const TopicsPage = () => {
                 <div className="lesson-content">
                   {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`}>
-                      {value.type === "text" && <p>{value.content}</p>}
+                      {value.type === "text" && <div style={{ textAlign: 'left', marginLeft:'30px' }} dangerouslySetInnerHTML={{ __html: value.content }} />} {/*ensure html is displayed correctly -den*/}
                       {value.type === "question" && (
                         <div>
                           <p>{value.question}</p>
@@ -183,7 +179,13 @@ const TopicsPage = () => {
                 </div>
                 {isLastTopic() && (
                   <div className="proceed-to-quiz">
-                    <Button variant='contained' size='large' sx={{color:'#101436', backgroundColor:'#FFB100', minWidth:'40%', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}>Proceed to Quiz</Button>
+                    <Button
+                      variant='contained'
+                      sx={{color:'#101436', backgroundColor:'#FFB100', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}
+                      onClick={() => navigateTo(`/lesson/${lessonId}/quiz`)}
+                    >
+                      Proceed to Quiz
+                    </Button>
                   </div>
                 )}
               </div>
