@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import { UserAuth } from './AuthContext'
+import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 
 // TO BE OPTIMIZED
 
@@ -8,7 +9,7 @@ export const ProtectedRoute = ({children}) => {
     const { user, loading } = UserAuth();
 
     if(loading){
-        return <div>Loading...</div>;
+        return <LoadingAnimations/>
     }
 
     if(user){
@@ -23,7 +24,7 @@ export const GuestRoute = ({children}) => {
     const { user, loading} = UserAuth();
 
     if(loading){
-        return <div>Loading...</div>;
+        return <LoadingAnimations/>
     }
     
     if(!user){
