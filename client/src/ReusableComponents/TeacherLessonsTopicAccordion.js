@@ -1,37 +1,66 @@
 import React, { useState } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
+import { deleteTopicFromDb } from '../API-Services/TopicAPI';
 
 const colorPalettes = [
-    { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A" },
-    { summaryBgColor: "#518BBC", detailsBgColor: "#A4C3CF", accordionColor: "#77A4C5" },
-    { summaryBgColor: "#4CAE4F", detailsBgColor: "#9BC88B", accordionColor: "#69B865" },
-    { summaryBgColor: "#FFB100", detailsBgColor: "#F9D37D", accordionColor: "#FCC13B" }
+    { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A", hoverColor: "#F94848" },
+    { summaryBgColor: "#518BBC", detailsBgColor: "#A4C3CF", accordionColor: "#77A4C5", hoverColor: "#518BBC" },
+    { summaryBgColor: "#4CAE4F", detailsBgColor: "#9BC88B", accordionColor: "#69B865", hoverColor: "#4CAE4F" },
+    { summaryBgColor: "#FFB100", detailsBgColor: "#F9D37D", accordionColor: "#FCC13B", hoverColor: "#FFB100" }
     // Add more color palettes as needed
 ];
 
 const TeacherLessonsTopicAccordion = ({ lesson }) => {
     const navigateTo = useNavigate();
     const [expanded, setExpanded] = useState(null);
+    const [selectedTopicId, setSelectedTopicId] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [lessonTopics, setLessonTopics] = useState(lesson.lessonTopics || []);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : null);
     };
 
-    const handleStartTopic = (lessonId,topicId) =>{
-        console.log(lessonId)
-        navigateTo(`/lesson/${lessonId}/${topicId}`)
-    }
+    const handleStartTopic = (lessonId, topicId) => {
+        navigateTo(`/lesson/${lessonId}/${topicId}`);
+    };
 
     const handleEditTopic = (topicId) => {
         navigateTo(`/edit-topic/${topicId}`);
     };
 
-    // Ensure lessonTopics is an array
-    const lessonTopics = lesson.lessonTopics || [];
+    const handleOpenDialog = (topicId) => {
+        setSelectedTopicId(topicId);
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+        setSelectedTopicId(null);
+    };
+
+    const handleDeleteTopic = async () => {
+        if (selectedTopicId) {
+            try {
+                console.log("Deleting topic ID:", selectedTopicId); // Debugging log
+                const { success, message } = await deleteTopicFromDb(selectedTopicId);
+                if (success) {
+                    console.log("Topic deleted successfully:", selectedTopicId);
+                    setLessonTopics(lessonTopics.filter(topic => topic.topicId !== selectedTopicId));
+                    handleCloseDialog();
+                } else {
+                    console.error("Failed to delete topic:", message);
+                }
+            } catch (error) {
+                console.error("An error occurred while deleting the topic:", error);
+            }
+        }
+    };
 
     return (
         <div>
@@ -75,23 +104,73 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                     borderBottomLeftRadius: "10px"
                                 }}
                             >
-                                <Typography className="lesson-number" sx={{fontFamily:"Poppins", paddingTop:'1%', paddingLeft:'1%'}}>{topic.topicDescription}</Typography>
-                                
+                                <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
+
                                 <AccordionActions>
-                                    {/* Added edit -den */}
-                                    <EditIcon onClick={() => handleEditTopic(topic.topicId)} style={{color:"#181A52"}}/>
-                                    {/* Added onClick function -Ribo */}
-                                    <Button style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }} onClick={()=>{handleStartTopic(topic.lessonId, topic.topicId)}}>Start</Button>
-                            </AccordionActions>
+                                    <EditIcon
+                                        onClick={() => handleEditTopic(topic.topicId)}
+                                        sx={{
+                                            color: "#181A52",
+                                            '&:hover': {
+                                                color: colorPalette.hoverColor,
+                                                cursor: 'pointer'
+                                            }
+                                        }}
+                                    />
+                                    <CloseIcon
+                                        onClick={() => handleOpenDialog(topic.topicId)}
+                                        sx={{
+                                            color: "#181A52",
+                                            '&:hover': {
+                                                color: "#FF0000",
+                                                cursor: 'pointer'
+                                            }
+                                        }}
+                                    />
+                                    <Button
+                                        sx={{
+                                            backgroundColor: colorPalette.accordionColor,
+                                            fontFamily: 'Poppins',
+                                            color: '#181A52',
+                                            fontWeight: 'bold',
+                                            '&:hover': {
+                                                backgroundColor: `${colorPalette.hoverColor}` // Slightly darken color on hover
+                                            }
+                                        }}
+                                        onClick={() => handleStartTopic(topic.lessonId, topic.topicId)}
+                                    >
+                                        Start
+                                    </Button>
+                                </AccordionActions>
                             </AccordionDetails>
                         </Accordion>
                     );
                 })
             ) : (
-                <Typography style={{color: '#181A52'}}>No topics available yet</Typography>
+                <Typography style={{ color: '#181A52' }}>No topics available yet</Typography>
             )}
+
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+            >
+                <DialogTitle style={{ color: '#181A52' }}>Confirm Delete</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this topic?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} style={{ color: '#ffb100' }}>
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDeleteTopic} style={{ color: '#813cb9' }}>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
-}
+};
 
 export default TeacherLessonsTopicAccordion;
