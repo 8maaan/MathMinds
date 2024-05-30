@@ -21,7 +21,7 @@ const HomePage = () => {
     }
 
     return (
-        <div>
+        <div style={{marginTop: '10%'}}>
             {/* TESTING ONLY, TO BE REMOVED L8ER */}
             {user ? <p>Hello {user.email} </p> : <p>Not found user</p>}
             <Button variant='contained' size='large' onClick={handleSignOut}> SIGN OUT</Button>

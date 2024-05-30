@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import axios from "axios"
 
-const useUserRoles = (uid) => {
+export const useUserRoles = (uid) => {
     // add other roles later 
     const [isTeacher, setIsTeacher]= useState(null);
 
@@ -22,5 +22,3 @@ const useUserRoles = (uid) => {
     
     return { isTeacher }
 }
-
-export default useUserRoles

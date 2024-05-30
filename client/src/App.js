@@ -35,13 +35,13 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
             <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
+            <Route path="/lesson/:lessonId/:topicId" element={<ProtectedRoute><TopicsPage/></ProtectedRoute>} />
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
-            <Route path="/lessons-teacher" element={<ProtectedRoute> <TeacherLessonsPage/> </ProtectedRoute>}/>
 
-            {/* WILL CREATE SEPARATE ROUTES */}
-            <Route path="/create-topic" element={<CreateTopic/>} />
-            <Route path="/lesson/:lessonId/:topicId" element={<TopicsPage/>} />
-            <Route path="/edit-topic/:topicId" element={<EditTopic />} />
+            {/* FOR TEACHERS */}
+            <Route path="/create-topic" element={<ProtectedRoute requireTeacher><CreateTopic/></ProtectedRoute>} />
+            <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
+            <Route path="/edit-topic/:topicId" element={<ProtectedRoute requireTeacher><EditTopic /></ProtectedRoute>} />
             
 
             <Route path="*" element={<PageNotFound/>} />

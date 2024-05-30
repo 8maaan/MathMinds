@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
 import TeacherLessonsTopicAccordion from './TeacherLessonsTopicAccordion';
-import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton } from '@mui/material';
 import { getAllLessonsFromDb, insertLessonToDb, updateLessonInDb, deleteLessonFromDb } from '../API-Services/LessonAPI'; // Assuming you have updateLessonInDb
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
+import ReusableDialog from './ReusableDialog';
+import ReusableSnackbar from './ReusableSnackbar'
 
 const TeacherLessonsBox = () => {
     const [lessons, setLessons] = useState([]);
@@ -15,6 +17,8 @@ const TeacherLessonsBox = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedLessonId, setSelectedLessonId] = useState(null);
+    const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -89,9 +93,11 @@ const TeacherLessonsBox = () => {
         setOpenDialog(true);
     };
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = (confirmed) => {
         setOpenDialog(false);
-        setSelectedLessonId(null);
+        if (confirmed && selectedLessonId) {
+            handleDeleteLesson(selectedLessonId);
+        }
     };
 
     const handleDeleteLesson = async () => {
@@ -99,9 +105,11 @@ const TeacherLessonsBox = () => {
             const { success, message } = await deleteLessonFromDb(selectedLessonId);
             if (success) {
                 setLessons(lessons.filter(lesson => lesson.lessonId !== selectedLessonId));
-                handleCloseDialog();
+                handleSnackbarOpen('success', 'Lesson has been deleted successfully.');
+
             } else {
                 console.error("Failed to delete lesson:", message);
+                handleSnackbarOpen('srror', 'Error deleting a lesson, try again later.');
             }
         }
     };
@@ -111,6 +119,18 @@ const TeacherLessonsBox = () => {
         setIsEditing(true);
         setShowLessonForm(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // For snackbar
+    const handleSnackbarOpen = (severity, message) => {
+        setSnackbar({ status: true, severity, message });
+    };
+
+    const handleSnackbarClose = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar(false);
     };
 
     return (
@@ -211,26 +231,11 @@ const TeacherLessonsBox = () => {
                     </Box>
                 ))}
             </div>
+            
+            {/* REPLACED OLD DIALOG TO A REUSABLE DIALOG */}
 
-            <Dialog
-                open={openDialog}
-                onClose={handleCloseDialog}
-            >
-                <DialogTitle style={{ color: '#181A52' }}>Confirm Delete</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this lesson?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog} style={{ color: '#ffb100' }}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleDeleteLesson} style={{ color: '#813cb9' }}>
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ReusableDialog status={openDialog} onClose={handleCloseDialog} title="Confirm Delete" context="Are you sure you want to delete this lesson?"/>
+            <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
     );
 };

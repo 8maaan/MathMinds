@@ -5,13 +5,17 @@ import { UserAuth } from '../Context-and-routes/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import mathMindsLogo from '../Images/mathminds-logo.png';
 import mathMindsLogo2 from '../Images/mathminds-logo2.png';
-
-const pages = ['Home', 'Dashboard', 'Lessons', 'Practice'];
-const settings = ['Profile', 'Logout'];
+import { useUserRoles } from './useUserRoles';
 
 export default function ReusableAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const {user} = UserAuth();
+  const {isTeacher} = useUserRoles(user ? user.uid : null);
+
+  const pages = isTeacher ? ['Home', 'Dashboard', 'Manage Lessons', 'Practice'] : ['Home', 'Dashboard', 'Lessons', 'Practice'];
+  const settings = ['Profile', 'Logout'];
 
   const { logOut } = UserAuth();
 
@@ -49,6 +53,10 @@ export default function ReusableAppBar() {
       case 'Lessons':
         console.log('Lessons');
         navigateTo('/lessons');
+        break;
+
+      case 'Manage Lessons':
+        navigateTo('/lessons-teacher');
         break;
 
       case 'Practice':

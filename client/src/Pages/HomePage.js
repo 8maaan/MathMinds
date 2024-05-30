@@ -1,7 +1,6 @@
 import React from 'react'
 import '../PagesCSS/HomePage.css'
 import {Box,  Typography, Button, } from '@mui/material'
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { useNavigate } from 'react-router-dom';
 import homepageDashboardBtn from '../Images/HomePage_DashboardBtn.png';
 import homepageLessonBtn from '../Images/HomePage_LessonsBtn.png';
@@ -14,7 +13,7 @@ const HomePage = () => {
     return (
         <div>
             <div class="Homepage">
-                <ReusableAppBar/>
+                {/* <ReusableAppBar/> */}
                 <Box>
                     <Typography class='home-header'>
                         Hey there, math explorer!

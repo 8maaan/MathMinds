@@ -1,40 +1,49 @@
 import { Navigate } from 'react-router-dom'
 import { UserAuth } from './AuthContext'
 import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
-import useUserRoles from '../ReusableComponents/useUserRoles';
+import { useUserRoles } from '../ReusableComponents/useUserRoles';
+import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 
 // TO BE OPTIMIZED
 
 // IF USER NOT LOGGED IN, PREVENT ACCESS, REDIRECT TO /LOGIN
-export const TeacherRoute = ({children}) => {
-    const { user } = UserAuth();
-    const { isTeacher } = useUserRoles(user ? user.uid : null);
+// export const TeacherRoute = ({children}) => {
+//     const { user } = UserAuth();
+//     const { isTeacher } = useUserRoles(user ? user.uid : null);
 
-    if(!user){
-        return <div> Error 403 Forbidden</div> // CREATE SEPARATE PAGE FOR THIS L8ER
-    }
+//     if(!user){
+//         return <div> Error 403 Forbidden</div> // CREATE SEPARATE PAGE FOR THIS L8ER
+//     }
 
-    if (isTeacher === null) {
-        return null;
-    }
+//     if (isTeacher === null) {
+//         return <LoadingAnimations/>;
+//     }
 
-    return isTeacher ? children : <div> Error 403 Forbidden </div>
-}
+//     return isTeacher ? <AppBarWrapper>{children}</AppBarWrapper> : <div> Error 403 Forbidden </div>
+// }
 
 
-export const ProtectedRoute = ({children}) => {
-    const { user, loading } = UserAuth();
+export const ProtectedRoute = ({ children, requireTeacher = false }) => {
+  const { user, loading } = UserAuth();
+  const { isTeacher } = useUserRoles(user ? user.uid : null);
 
-    if(loading){
-        return null;
-    }
+  if (loading) {
+    return <LoadingAnimations />;
+  }
 
-    if(user){
-        return children;
-    }
+  if (!user) {
+    return <Navigate to='/login' />;  }
 
-    return <Navigate to='/login'/>
-}
+  if (requireTeacher && isTeacher === null) {
+    return <LoadingAnimations />;
+  }
+
+  if (requireTeacher && !isTeacher) {
+    return <div>Error 403 Forbidden</div>;
+  }
+
+  return <AppBarWrapper>{children}</AppBarWrapper>;
+};
 
 // SIMILAR TO ProtectedRoute() BUT FOR LOGGED IN USERS
 export const GuestRoute = ({children}) => {
@@ -49,4 +58,13 @@ export const GuestRoute = ({children}) => {
     }
 
     return <Navigate to='/home'/>
+}
+
+export const AppBarWrapper = ({ children }) => {
+    return(
+        <>
+            <ReusableAppBar/>
+            {children}
+        </>
+    )
 }

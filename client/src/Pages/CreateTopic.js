@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
@@ -128,7 +127,6 @@ const CreateTopic = () => {
 
     return (
         <div>
-            <ReusableAppBar />
             <form onSubmit={handleSubmit}>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>

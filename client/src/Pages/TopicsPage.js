@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../PagesCSS/TopicsPage.css';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { getLessonById } from '../API-Services/LessonAPI';
 import { Button } from '@mui/material';
 
@@ -100,7 +99,6 @@ const TopicsPage = () => {
   /* WHY REMOVE SIDEBAR WHEN RESIZED? HOW WOULD THE USER NAVIGATE TO OTHER TOPICS? MYBE USE DRAWER FROM MUI? -RIBO*/
   return (
     <div className='root'>
-      <ReusableAppBar />
       <div className="container">
         <div className="sidebar">
           <ul style={{ listStyleType: 'none', padding: 0 }}>
