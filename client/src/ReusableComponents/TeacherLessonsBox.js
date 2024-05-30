@@ -179,26 +179,28 @@ const TeacherLessonsBox = () => {
                                 onClick={() => handleEditLesson(lesson)}
                                 class='edit-button'
                             >
-                                <EditIcon sx={{
-                                            color: "#181A52",
-                                            '&:hover': {
-                                                color: "#FFB100",
-                                                cursor: 'pointer'
-                                            }
-                                        }}/>
+                                <EditIcon 
+                                    sx={{
+                                        color: "#181A52",
+                                        '&:hover': {
+                                            color: "#FFB100",
+                                            cursor: 'pointer'
+                                        }
+                                    }}/>
                             </IconButton>
                             <IconButton 
                                 aria-label="delete"
                                 onClick={() => handleOpenDialog(lesson.lessonId)}
                                 class='delete-button'
                             >
-                                <CloseIcon sx={{
-                                            color: "#181A52",
-                                            '&:hover': {
-                                                color: "#FF0000",
-                                                cursor: 'pointer'
-                                            }
-                                        }}/>
+                                <CloseIcon 
+                                    sx={{
+                                        color: "#181A52",
+                                        '&:hover': {
+                                            color: "#FF0000",
+                                            cursor: 'pointer'
+                                        }
+                                    }}/>
                             </IconButton>
                         </div>
                         <div>
