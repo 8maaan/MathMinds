@@ -56,7 +56,7 @@ const QuestionForm = () => {
     const fetchTopic = async () => {
       try {
         const topicData = await getTopicById(topicId);
-        console.log('Topic Data:', topicData); // Log the entire topicData object
+        console.log('Topic Data:', topicData); 
         setTopic(topicData.data);
       } catch (error) {
         console.error('Error fetching topic:', error);
@@ -117,9 +117,9 @@ const QuestionForm = () => {
       }));
       setTimeout(() => {
         handleNextQuestion();
-      }, 2000); // Delay to show the message before moving to the next question
+      }, 2000); 
     } else {
-      setIsConfirming(true); // Show the confirmation dialog for incorrect answer
+      setIsConfirming(true); 
     }
   };
 
@@ -158,7 +158,7 @@ const QuestionForm = () => {
   const currentQuestion = practices[currentQuestionIndex].practice_qa[1];
   const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
 
-  // Shuffle the options array
+  
   const shuffledOptions = [...options];
   const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
   shuffledOptions.sort(() => Math.random() - 0.5);

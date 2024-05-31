@@ -70,7 +70,7 @@ z-index: 3;
 /* Responsive adjustments */
 @media (max-width: 1280px) {
   .slick-slide {
-  margin-right: -2rem;
+  margin-right: -1.875rem;
   }
   }
   
