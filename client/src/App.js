@@ -10,9 +10,14 @@ import HomePage from './Pages/HomePage';
 import PracticeEvent from './Pages/practiceEvent';
 import TopicCard from './Pages/TopicCard';
 import PracticeChoice from './Pages/PracticeChoice';
-import QuestionForm from './Pages/QuestionForm';
+import QuestionForm from './Pages/PracticeQuestionForm';
 import ScoreTest from './Pages/ScoreTest';
 import LandingPage from './Pages/LandingPage';
+import CreateTopic from './Pages/CreateTopic';
+import LessonsPage from './Pages/LessonsPage';
+import PracticePage from './Pages/PracticePage';
+import TopicsPage from './Pages/TopicsPage'
+import EditTopic from './Pages/EditTopic';
 function App() {
   return (
     <div className="App">
@@ -26,16 +31,22 @@ function App() {
             <Route path="/" element={<GuestRoute> <LandingPage/> </GuestRoute>} />
             <Route path="/login" element={<GuestRoute> <LoginPage/> </GuestRoute>} />
             <Route path="/register" element={<GuestRoute> <RegisterPage/> </GuestRoute>}/>
+            <Route path="/questionForm/:topicId" element={<QuestionForm />} />
+
+            <Route path="/create-topic" element={<CreateTopic/>} />
+            <Route path="/lesson/:lessonId/:topicId" element={<TopicsPage/>} />
+            <Route path="/edit-topic/:topicId" element={<EditTopic />} />
             
 
 
             {/* PROTECTED ROUTES */}
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
-            <Route path="/practiceEvent" element={<ProtectedRoute> <PracticeEvent/> </ProtectedRoute>}/>
+            <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
+            <Route path="/practice-event/:lessonId/:topicId" element={<PracticeEvent />} />
+            <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
             <Route path="/topiccard" element={<ProtectedRoute> <TopicCard/> </ProtectedRoute>}/>
             <Route path="/choice" element={<ProtectedRoute> <PracticeChoice/> </ProtectedRoute>}/>
-            <Route path="/questionForm" element={<ProtectedRoute> <QuestionForm/> </ProtectedRoute>}/>
             <Route path="/scoreTest" element={<ProtectedRoute> <ScoreTest/> </ProtectedRoute>}/>
 
 

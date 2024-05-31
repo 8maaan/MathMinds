@@ -48,12 +48,12 @@ export default function ReusableAppBar() {
 
       case 'Lessons':
         console.log('Dashboard');
-        navigateTo('/*');
+        navigateTo('/lessons');
         break;
 
       case 'Practice':
         console.log('Dashboard');
-        navigateTo('/*');
+        navigateTo('/practice');
         break;
 
       default:

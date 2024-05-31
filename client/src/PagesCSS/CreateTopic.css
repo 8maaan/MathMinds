@@ -1,0 +1,74 @@
+.createTopic-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 64px; 
+    height: calc(100vh - 64px); 
+    /* padding-top: 64px; */
+}
+
+.topic-config-container{
+    width: 80%;
+    text-align: left;
+    margin-bottom: 1%;
+    /* border: solid black 1px; */
+}
+
+.topic-config-container .MuiTextField-root{
+    margin-top: 1.5%;
+}
+
+/* .topic-config-container > *:not(:last-child) {
+    margin-bottom: 1%;
+} */
+
+/* .topic-config-container > *:not(:last-child) {
+    margin-bottom: 1%;
+} */
+
+.topic-form-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 50%;
+    width: 80%;
+    border: solid gray 2px;
+    border-radius: 15px;
+    overflow-y: auto;
+}
+.topicQuestionContainer,
+.topicContentContainer{
+    border: solid black 1px;
+    border-radius: 1rem;
+    width: 75%;
+    min-height: 20vh;
+    text-align: justify;
+    padding: 1rem;
+    margin-top: 1.5%;
+}
+
+.topicContentContainer{
+    overflow-y: auto;
+}
+
+.topicQuestionContainer{
+    min-height: auto;
+
+}
+
+.topicQuestionContainer .MuiTextField-root{
+    margin-bottom: 1.5%;
+}
+
+.topicContentContainer:empty:not(:focus)::before {
+    content: attr(placeholder);
+    color: gray; 
+}
+
+.topic-content-actions{
+    /* border: solid black 1px; */
+    width: 75%;
+    text-align: left;
+}
+  

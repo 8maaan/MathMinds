@@ -15,22 +15,7 @@
     background-color: #cc8f00 !important; 
   }
 
-  
-  .cardStyles {
-    max-Width: '800px';
-    max-Height: '600px';
-    width: '80%'; 
-    height: '80%';
-    padding: '20px';
-    position: 'fixed';
-    top: '50%';
-    left: '50%';
-    transform: 'translate(-50%, -50%)';
-    z-index: 1300;
-    background-color: '#ffec86';
-    border-radius: '20px';
-    box-shadow: '0 4px 8px rgba(0, 0, 0, 0.2)';
-  }
+
 
   .backgroundOverlay {
     position: fixed;

@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import Slider from 'react-slick';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Slider from 'react-slick';
+import '../PagesCSS/PracticeEvent.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
-import '../PagesCSS/PracticeEvent.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TopicCard from './TopicCard';
 import PracticeChoice from './PracticeChoice';
+import { getLessonById } from '../API-Services/LessonAPI';
 
 function NextArrow(props) {
   const { onClick } = props;
@@ -20,7 +22,7 @@ function NextArrow(props) {
     <IconButton
       className="slick-next"
       onClick={onClick}
-      style={{ position: 'absolute', top: '50%', right: '-1.6rem', zIndex: 1 }} // Use rem for consistency
+      style={{ position: 'absolute', top: '50%', right: '-1.6rem', zIndex: 1 }}
     >
       <ArrowForwardIosIcon />
     </IconButton>
@@ -33,7 +35,7 @@ function PrevArrow(props) {
     <IconButton
       className="slick-prev"
       onClick={onClick}
-      style={{ position: 'absolute', top: '50%', left: '-1.6rem', zIndex: 1 }} // Use rem for consistency
+      style={{ position: 'absolute', top: '50%', left: '-1.6rem', zIndex: 1 }}
     >
       <ArrowBackIosIcon />
     </IconButton>
@@ -41,17 +43,13 @@ function PrevArrow(props) {
 }
 
 function PracticeEvent() {
+  const { lessonId } = useParams();
+  const [lesson, setLesson] = useState(null);
+  const [topics, setTopics] = useState([]);
   const [showCard, setShowCard] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [showPracticeChoice, setShowPracticeChoice] = useState(false);
-  const [topics] = useState([
-    { id: 1, name: 'Topic 1' },
-    { id: 2, name: 'Topic 2' },
-    { id: 3, name: 'Topic 3' },
-    { id: 4, name: 'Topic 4' },
-    { id: 5, name: 'Topic 5' },
-  ]);
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const navigate = useNavigate();
 
   const theme = createTheme({
     typography: {
@@ -64,6 +62,23 @@ function PracticeEvent() {
       }
     }
   });
+
+  useEffect(() => {
+    const fetchLesson = async () => {
+      try {
+        const { success, data } = await getLessonById(lessonId);
+        if (success) {
+          setLesson(data);
+          setTopics(data.lessonTopics || []);
+        } else {
+          throw new Error("Failed to fetch lesson");
+        }
+      } catch (error) {
+        console.error("Error fetching lesson:", error);
+      }
+    };
+    fetchLesson();
+  }, [lessonId]);
 
   const settings = {
     dots: true,
@@ -104,13 +119,10 @@ function PracticeEvent() {
 
   const handleCloseCard = () => {
     setShowCard(false);
-    setShowPracticeChoice(false);
   };
 
-  const openPracticeChoice = () => {
-    console.log("Opening Practice Choice with topic:", selectedTopic);
-    setShowPracticeChoice(true);
-    setShowCard(false);
+  const handleStart = (lessonId, topicId) => {
+    navigate(`/questionForm/${lessonId}/${topicId}`);
   };
 
   const generateBackgroundColor = (index) => {
@@ -145,8 +157,8 @@ function PracticeEvent() {
   return (
     <ThemeProvider theme={theme}>
       <div className="container">
-        <ReusableAppBar style={{ zIndex: 1400, position: 'relative' }}/>
-        {showCard || showPracticeChoice ? (
+        <ReusableAppBar style={{ zIndex: 1400, position: 'relative' }} />
+        {showCard ? (
           <div style={backdropStyle} onClick={handleCloseCard}></div>
         ) : null}
         <Box className="practiceEventContainer">
@@ -155,24 +167,30 @@ function PracticeEvent() {
           </Typography>
           <div className="sliderContainer">
             <Slider {...settings}>
+              {topics.length <= 3 ? (
+                Array.from({ length: 4 - topics.length }).map((_, index) => (
+                  <Box key={`default-${index}`} className="slideItem">
+                    <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
+                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>No topics yet</Typography>
+                    </Paper>
+                  </Box>
+                ))
+              ) : null}
               {topics.map((topic, index) => (
                 <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
                   <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }}>
-                    <Typography variant="h5">{topic.name}</Typography>
+                    <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>
               ))}
             </Slider>
             {showCard && selectedTopic && (
               <TopicCard
+                lessonId={lessonId}
                 topic={selectedTopic}
                 onClose={handleCloseCard}
-                onNext={openPracticeChoice}
-                onPrev={() => console.log("Previous Clicked")}
+                onNext={handleStart}
               />
-            )}
-            {showPracticeChoice && selectedTopic && (
-              <PracticeChoice topic={selectedTopic} onClose={handleCloseCard} />
             )}
           </div>
         </Box>
@@ -182,9 +200,5 @@ function PracticeEvent() {
 }
 
 export default PracticeEvent;
-
-
-
-
 
 
