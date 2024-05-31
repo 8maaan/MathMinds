@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
 import TeacherLessonsTopicAccordion from './TeacherLessonsTopicAccordion';
-import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton } from '@mui/material';
+import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Tooltip } from '@mui/material';
 import { getAllLessonsFromDb, insertLessonToDb, updateLessonInDb, deleteLessonFromDb } from '../API-Services/LessonAPI'; // Assuming you have updateLessonInDb
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import ReusableDialog from './ReusableDialog';
-import ReusableSnackbar from './ReusableSnackbar'
+import ReusableSnackbar from './ReusableSnackbar';
+import QuizIcon from '@mui/icons-material/Quiz';
 
 const TeacherLessonsBox = () => {
     const [lessons, setLessons] = useState([]);
@@ -36,23 +37,17 @@ const TeacherLessonsBox = () => {
     const handleSaveLesson = async () => {
         try {
             if (isEditing && currentLesson.lessonId !== null) {
-                // If editing an existing lesson, call updateLessonInDb
                 const { success, data, error } = await updateLessonInDb(currentLesson.lessonId, currentLesson.title, currentLesson.description);
                 if (success) {
-                    // Update the lessons state with the updated lesson
                     setLessons(lessons.map(lesson => lesson.lessonId === currentLesson.lessonId ? data : lesson));
-                    // Reset the form and editing state
                     handleCancelLesson();
                 } else {
                     console.error("Failed to update lesson", error);
                 }
             } else {
-                // If creating a new lesson, call insertLessonToDb
                 const { success, data, error } = await insertLessonToDb(currentLesson.title, currentLesson.description);
                 if (success) {
-                    // Add the new lesson to the lessons state
                     setLessons([...lessons, data]);
-                    // Reset the form
                     handleCancelLesson();
                 } else {
                     console.error("Failed to save lesson", error);
@@ -84,12 +79,12 @@ const TeacherLessonsBox = () => {
     };
 
     const handleAddTopicClick = () => {
-        navigate('/create-topic'); // Replace with your actual route // Replaced -RIBO
+        navigate('/create-topic');
         handleMenuClose();
     };
 
     const handleAddQuizClick = () => {
-        navigate('/create-lesson-quiz'); // Replace with your actual route // Replaced -RIBO
+        navigate('/create-lesson-quiz');
         handleMenuClose();
     };
 
@@ -111,10 +106,9 @@ const TeacherLessonsBox = () => {
             if (success) {
                 setLessons(lessons.filter(lesson => lesson.lessonId !== selectedLessonId));
                 handleSnackbarOpen('success', 'Lesson has been deleted successfully.');
-
             } else {
                 console.error("Failed to delete lesson:", message);
-                handleSnackbarOpen('srror', 'Error deleting a lesson, try again later.');
+                handleSnackbarOpen('error', 'Error deleting a lesson, try again later.');
             }
         }
     };
@@ -124,6 +118,10 @@ const TeacherLessonsBox = () => {
         setIsEditing(true);
         setShowLessonForm(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleEditQuiz = (lesson) => {
+        navigate(`/edit-lesson-quiz/${lesson.lessonQuizId}`);
     };
 
     // For snackbar
@@ -200,46 +198,65 @@ const TeacherLessonsBox = () => {
                 {lessons.map((lesson, index) => (
                     <Box key={index} className="lesson-box">
                         <div className="lesson-buttons">
-                            <IconButton 
-                                aria-label="edit"
-                                onClick={() => handleEditLesson(lesson)}
-                                class='edit-button'
-                            >
-                                <EditIcon 
-                                    sx={{
-                                        color: "#181A52",
-                                        '&:hover': {
-                                            color: "#FFB100",
-                                            cursor: 'pointer'
-                                        }
-                                    }}/>
-                            </IconButton>
-                            <IconButton 
-                                aria-label="delete"
-                                onClick={() => handleOpenDialog(lesson.lessonId)}
-                                class='delete-button'
-                            >
-                                <CloseIcon 
-                                    sx={{
-                                        color: "#181A52",
-                                        '&:hover': {
-                                            color: "#FF0000",
-                                            cursor: 'pointer'
-                                        }
-                                    }}/>
-                            </IconButton>
+                            <Tooltip title="Edit Quiz">
+                                <IconButton
+                                    aria-label="edit-quiz"
+                                    onClick={() => handleEditQuiz(lesson)}
+                                    className='edit-quiz-button'
+                                >
+                                    <QuizIcon
+                                        sx={{
+                                            color: "#181A52",
+                                            '&:hover': {
+                                                color: "#4CAE4F",
+                                                cursor: 'pointer'
+                                            }
+                                        }} />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Edit Lesson">
+                                <IconButton
+                                    aria-label="edit"
+                                    onClick={() => handleEditLesson(lesson)}
+                                    className='edit-button'
+                                >
+                                    <EditIcon
+                                        sx={{
+                                            color: "#181A52",
+                                            '&:hover': {
+                                                color: "#FFB100",
+                                                cursor: 'pointer'
+                                            }
+                                        }} />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete Lesson">
+                                <IconButton
+                                    aria-label="delete"
+                                    onClick={() => handleOpenDialog(lesson.lessonId)}
+                                    className='delete-button'
+                                >
+                                    <CloseIcon
+                                        sx={{
+                                            color: "#181A52",
+                                            '&:hover': {
+                                                color: "#FF0000",
+                                                cursor: 'pointer'
+                                            }
+                                        }} />
+                                </IconButton>
+                            </Tooltip>
+                            
                         </div>
                         <div>
                             <p className="lesson-number">Lesson {index + 1}</p>
-                            <h2 className="lesson-title">{lesson.lessonTitle}</h2>    
+                            <h2 className="lesson-title">{lesson.lessonTitle}</h2>
                         </div>
                         <TeacherLessonsTopicAccordion lesson={lesson} />
                     </Box>
                 ))}
             </div>
             
-            {/* REPLACED OLD DIALOG TO A REUSABLE DIALOG */}
-
             <ReusableDialog status={openDialog} onClose={handleCloseDialog} title="Confirm Delete" context="Are you sure you want to delete this lesson?"/>
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

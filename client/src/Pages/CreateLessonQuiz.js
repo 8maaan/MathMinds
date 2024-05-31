@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import '../PagesCSS/CreateTopic.css';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 
 const CreateLessonQuiz = () => {
     const [quizLesson, setQuizLesson] = useState('');
-    const [quizTitle, setQuizTitle] = useState('');
     const [quizQuestions, setQuizQuestions] = useState([]);
     const [lessons, setLessons] = useState([]);
 
@@ -99,15 +98,6 @@ const CreateLessonQuiz = () => {
                                 ))}
                             </Select>
                         </FormControl>
-                        {/* Quiz Title */}
-                        <TextField 
-                            label='Quiz Title' 
-                            fullWidth 
-                            required 
-                            onChange={(event) => { setQuizTitle(event.target.value) }} 
-                            autoComplete='off' 
-                            value={quizTitle}
-                        />
                         <div style={{ marginTop: '1.5%' }}>
                             <Button onClick={handleAddQuestion} variant='contained'>Add Question</Button>
                         </div>
