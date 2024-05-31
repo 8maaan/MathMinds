@@ -88,6 +88,11 @@ const TeacherLessonsBox = () => {
         handleMenuClose();
     };
 
+    const handleAddQuizClick = () => {
+        navigate('/create-lesson-quiz'); // Replace with your actual route // Replaced -RIBO
+        handleMenuClose();
+    };
+
     const handleOpenDialog = (lessonId) => {
         setSelectedLessonId(lessonId);
         setOpenDialog(true);
@@ -152,6 +157,7 @@ const TeacherLessonsBox = () => {
                 >
                     <MenuItem onClick={handleAddLessonClick}>Add a Lesson</MenuItem>
                     <MenuItem onClick={handleAddTopicClick}>Add a Topic</MenuItem>
+                    <MenuItem onClick={handleAddQuizClick}>Add a Quiz</MenuItem>
                 </Menu>
             </div>
             
