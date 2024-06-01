@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import '../PagesCSS/CreateTopic.css';
 import TopicContentContainer from '../ReusableComponents/TopicContentContainer';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
@@ -127,6 +127,7 @@ const CreateTopic = () => {
 
     return (
         <div>
+            <Typography class='createTopic-title'>Create a Topic</Typography>
             <form onSubmit={handleSubmit}>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
@@ -144,8 +145,8 @@ const CreateTopic = () => {
                         {/* Topic Description */}
                         <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} onChange={(event) => {setTopicDescription(event.target.value)}} autoComplete='off'/>
                         <div style={{marginTop:'1.5%'}}>
-                            <Button onClick={handleAddContent} variant='contained'>Add Text</Button>
-                            <Button onClick={handleAddQuestion} variant='contained' sx={{ml: 1}}>Add Question</Button>
+                            <Button onClick={handleAddContent} variant='contained' sx={{fontFamily:'Poppins'}}>Add Text</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={{ml: 1, fontFamily:'Poppins'}}>Add Question</Button>
                         </div>
                     </div>
                     {/* For topic contents */}
@@ -179,10 +180,10 @@ const CreateTopic = () => {
                                     return null;
                                 })}
                             </SortableContext>
-                            {topicContents.length === 0 ? <p style={{color: 'gray', margin:'10%'}}>No contents currently 📝</p> : null}
+                            {topicContents.length === 0 ? <p style={{color: 'gray', margin:'10%', fontFamily:'Poppins'}}>No contents currently 📝</p> : null}
                         </div>
                     </DndContext>
-                    <Button type="submit" variant='contained' sx={{mt: 2}}>Submit</Button>
+                    <Button type="submit" variant='contained' sx={{mt: 2, fontFamily:'Poppins'}}>Submit</Button>
                 </div>
             </form>
         </div>

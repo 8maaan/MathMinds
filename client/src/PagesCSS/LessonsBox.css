@@ -11,7 +11,7 @@
 .lesson-box {
     background-color: #F6E6C3;
     font-family: 'Poppins', sans-serif;
-    margin-top: 2%;
+    /*margin-top: 2%;*/
     margin-bottom: 2%;
     padding: 2.75%;
     padding-left: 5%;
@@ -76,7 +76,7 @@
 .new-lesson-form {
     background-color: #F6E6C3;
     font-family: 'Poppins', sans-serif;
-    margin-top: 2%;
+    /*margin-top: 2%;*/
     margin-bottom: 2%;
     padding: 2.75%;
     padding-left: 5%;
@@ -110,7 +110,7 @@
 
 @media (max-width: 600px) {
     .lessons-container {
-        padding-top: 25%;
+        margin-top: 2%;
     }
 
     .lesson-box {

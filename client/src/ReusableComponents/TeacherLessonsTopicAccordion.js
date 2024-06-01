@@ -105,7 +105,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 }}
                             >
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
-
+                                
                                 <AccordionActions>
                                     <Tooltip title="Edit Topic">
                                         <IconButton>
@@ -127,6 +127,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                                 onClick={() => handleOpenDialog(topic.topicId)}
                                                 sx={{
                                                     color: "#181A52",
+                                                    marginRight: "12px",
                                                     '&:hover': {
                                                         color: "#FF0000",
                                                         cursor: 'pointer'
@@ -150,6 +151,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                         Start
                                     </Button>
                                 </AccordionActions>
+                              
                             </AccordionDetails>
                         </Accordion>
                     );

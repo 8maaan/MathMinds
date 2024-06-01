@@ -180,7 +180,7 @@ const TeacherLessonsBox = () => {
             <div className="lessons-container">
                 {showLessonForm && (
                     <Box className="new-lesson-form">
-                        <Typography className="lesson-title">{isEditing ? 'Edit lesson' : 'Create a new lesson'}</Typography>
+                        <Typography class="lesson-title">{isEditing ? 'Edit lesson' : 'Create a new lesson'}</Typography>
                         <TextField
                             label="Lesson Title"
                             fullWidth

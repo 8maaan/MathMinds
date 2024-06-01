@@ -124,17 +124,19 @@ const QuizQuestionForm = () => {
             transform: 'translate(-50%, -50%)',
             width: 400,
             bgcolor: 'background.paper',
-            border: '2px solid #000',
+            //border: '2px solid #000',
             boxShadow: 24,
-            p: 4
+            p: 4,
+            radius: '20px',
+            textAlign: 'center'
           }}>
-            <Typography id="modal-title" variant="h6" component="h2">
+            <Typography id="modal-title" variant="h6" component="h2" sx={{color: '#181a52'}}>
               Quiz Completed!
             </Typography>
-            <Typography id="modal-description" sx={{ mt: 2 }}>
+            <Typography id="modal-description" sx={{ mt: 2, color: '#181a52' }}>
               You scored {score} out of {questions.length}.
             </Typography>
-            <Button onClick={handleClose} variant="contained" sx={{ mt: 2 }}>
+            <Button onClick={handleClose} variant="contained" sx={{ mt: 2, backgroundColor:'#ffb100', color: '#181a52'}}>
               Close
             </Button>
           </Box>
