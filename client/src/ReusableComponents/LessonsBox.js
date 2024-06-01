@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
 import LessonsTopicAccordion from './LessonsTopicAccordion';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
 
 const LessonsBox = () => {
     const [lessons, setLessons] = useState([]);
+    const location = useLocation();
 
     useEffect(() => {
         const fetchLessons = async () => {
@@ -19,14 +21,31 @@ const LessonsBox = () => {
         fetchLessons();
     }, []);
 
+    useEffect(() => {
+        if (location.state && location.state.lessonId !== undefined && location.state.score !== undefined) {
+            setLessons(prevLessons =>
+                prevLessons.map(lesson =>
+                    lesson.lessonId === location.state.lessonId
+                        ? { ...lesson, score: location.state.score }
+                        : lesson
+                )
+            );
+        }
+    }, [location.state]);
+
     return (
         <div>
             <div className="lessons-container">
                 {lessons.map((lesson, index) => (
                     <Box key={index} className="lesson-box">
-                        <p className="lesson-number">Lesson {index +1}</p>{/*lesson.lessonId to index+1*/}
+                        <p className="lesson-number">Lesson {index + 1}</p>
                         <h2 className="lesson-title">{lesson.lessonTitle}</h2>
-                        <LessonsTopicAccordion lesson={lesson} key={index} />
+                        {lesson.score !== undefined && (
+                            <Typography variant="body1" sx={{ mt: 1, color: '#181A52' }}>
+                                Quiz Score: {lesson.score}
+                            </Typography>
+                        )}
+                        <LessonsTopicAccordion lesson={lesson} />
                     </Box>
                 ))}
             </div>

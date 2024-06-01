@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
 import TeacherLessonsTopicAccordion from './TeacherLessonsTopicAccordion';
 import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Tooltip } from '@mui/material';
@@ -21,6 +21,7 @@ const TeacherLessonsBox = () => {
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const fetchLessons = async () => {
@@ -33,6 +34,18 @@ const TeacherLessonsBox = () => {
         };
         fetchLessons();
     }, []);
+
+    useEffect(() => {
+        if (location.state && location.state.lessonId !== undefined && location.state.score !== undefined) {
+            setLessons(prevLessons =>
+                prevLessons.map(lesson =>
+                    lesson.lessonId === location.state.lessonId
+                        ? { ...lesson, score: location.state.score }
+                        : lesson
+                )
+            );
+        }
+    }, [location.state]);
 
     const handleSaveLesson = async () => {
         try {
@@ -122,7 +135,7 @@ const TeacherLessonsBox = () => {
 
     const handleEditQuiz = (lesson) => {
         if (lesson.lessonQuiz && lesson.lessonQuiz.length > 0) {
-            const lessonQuizId = lesson.lessonQuiz[0].lessonQuizId; // Adjust this if there are multiple quizzes per lesson
+            const lessonQuizId = lesson.lessonQuiz[0].lessonQuizId;
             navigate(`/edit-lesson-quiz/${lessonQuizId}`);
         } else {
             handleSnackbarOpen('error', 'Lesson quiz ID is missing');
@@ -130,7 +143,6 @@ const TeacherLessonsBox = () => {
         }
     };
 
-    // For snackbar
     const handleSnackbarOpen = (severity, message) => {
         setSnackbar({ status: true, severity, message });
     };
@@ -207,7 +219,7 @@ const TeacherLessonsBox = () => {
                             <Tooltip title="Edit Quiz">
                                 <IconButton
                                     aria-label="edit-quiz"
-                                    onClick={() => handleEditQuiz(lesson) }
+                                    onClick={() => handleEditQuiz(lesson)}
                                     className='edit-quiz-button'
                                 >
                                     <QuizIcon
@@ -257,6 +269,11 @@ const TeacherLessonsBox = () => {
                         <div>
                             <p className="lesson-number">Lesson {index + 1}</p>
                             <h2 className="lesson-title">{lesson.lessonTitle}</h2>
+                            {lesson.score !== undefined && (
+                                <Typography variant="body1" sx={{ mt: 1, color: '#181A52' }}>
+                                    Quiz Score: {lesson.score}
+                                </Typography>
+                            )}
                         </div>
                         <TeacherLessonsTopicAccordion lesson={lesson} />
                     </Box>
