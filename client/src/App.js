@@ -18,6 +18,7 @@ import LessonsPage from './Pages/LessonsPage';
 import PracticePage from './Pages/PracticePage';
 import TopicsPage from './Pages/TopicsPage'
 import EditTopic from './Pages/EditTopic';
+import ProfileLesson from './Pages/ProfileLesson';
 function App() {
   return (
     <div className="App">
@@ -36,6 +37,7 @@ function App() {
             <Route path="/create-topic" element={<CreateTopic/>} />
             <Route path="/lesson/:lessonId/:topicId" element={<TopicsPage/>} />
             <Route path="/edit-topic/:topicId" element={<EditTopic />} />
+            <Route path="/profilelesson" element={<ProfileLesson />} />
             
 
 

@@ -26,3 +26,4 @@ const PracticeAnswerModal = ({ open, handleClose, message, handleConfirm, handle
 };
 
 export default PracticeAnswerModal;
+
