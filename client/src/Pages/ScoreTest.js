@@ -46,7 +46,7 @@ const ScoreTest = () => {
       questionsCorrect: correctAnswers,
       totalQuestions: totalQuestions,
       score: correctAnswers * 10,
-      totalScore: 100,
+      totalScore: totalQuestions * 10,
     },
   ];
 

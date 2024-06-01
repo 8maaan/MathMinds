@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button, Card, CardContent, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../PagesCSS/PracticeChoice.css';
-
+{/*{ useState }*/}
+{/* import { useNavigate } from 'react-router-dom'; */}
 function PracticeChoice({onClose}) {
-    const navigate = useNavigate();
+   {/*} const navigate = useNavigate();
     const [showPracticeChoice, setShowPracticeChoice] = useState(true);
-
+*/}
     const cardStyles = {
         maxWidth: '50rem',
         maxHeight: '37.5rem',
@@ -59,6 +59,10 @@ function PracticeChoice({onClose}) {
       onClose(); // Close the modal when "SOLO" is clicked
   };
 
+  const handleCloseIconClick =() =>{
+    onClose(); 
+  }
+
     return (
         <ThemeProvider theme={theme}>
             <div className="containerChoice">
@@ -66,9 +70,9 @@ function PracticeChoice({onClose}) {
                 <Card sx={cardStyles}>
                     <CardContent sx={{ background: '#ffec86', marginTop: '3.125rem' }}>
                         <IconButton aria-label="close" sx={{ position: 'absolute', right: '0.5rem', top: '0.5rem', zIndex: 2 }}>
-                            <CloseIcon />
+                            <CloseIcon  onClick={handleCloseIconClick}/>
                         </IconButton>
-                        <Typography gutterBottom variant="h5" component="div" align="center">
+                        <Typography gutterBottom variant="h5" component="div" align="center" sx={{color: '#181a52', fontFamily: 'Poppins', fontSize:'35px'}}>
                             Choose a game mode
                         </Typography>
                     </CardContent>
@@ -76,16 +80,16 @@ function PracticeChoice({onClose}) {
                         <BouncingButton
                             variant="contained"
                             className="button-hover-effect"
-                            sx={{ bgcolor: '#518bbc', '&:hover': { bgcolor: 'darkblue' }, marginLeft: '0.9375rem', marginRight: '0.125rem', borderRadius: '0.25rem' }}
+                            sx={{ bgcolor: '#518bbc', '&:hover': { bgcolor: 'darkblue' }, marginLeft: '4rem', marginRight: '0.125rem', borderRadius: '0.25rem' }}
                             onClick={() => handleButtonClick('SOLO')}>
                             SOLO
                         </BouncingButton>
                         <BouncingButton
                             variant="contained"
                             className="button-hover-effect"
-                            sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' }, marginRight: '0.9375rem', marginLeft: '0.125rem', borderRadius: '0.25rem' }}
+                            sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' }, marginRight: '4rem', marginLeft: '0.125rem', borderRadius: '0.25rem' }}
                             onClick={() => handleButtonClick('COLLAB')}
-                            disable={true}>
+                            disabled={true}>
                             COLLAB
                         </BouncingButton>
                     </Box>

@@ -3,7 +3,7 @@ import { Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typogr
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/PracticeLessonList.css';
 import { useNavigate } from 'react-router-dom';
-import { getAllLessonsFromDb } from '../API-Services/LessonAPI'; // Import your API service
+import { getAllLessonsFromDb } from '../API-Services/LessonAPI'; 
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A" },
@@ -37,7 +37,7 @@ const PracticeLessonList = ({ onLessonStart }) => {
     const handleStartClick = (lesson) =>{
         const { lessonId, lessonTopics } = lesson;
         console.log("Lesson ID:", lessonId);
-        const topicId = lessonTopics.length > 0 ? lessonTopics[0].topicId : null; // Assuming you want the first topic ID
+        const topicId = lessonTopics.length > 0 ? lessonTopics[0].topicId : null; 
         console.log("Topic ID:", topicId);
         navigateTo(`/practice-event/${lessonId}/${topicId}`);
     }

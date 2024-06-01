@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinearProgress, Box } from '@mui/material';
+import { LinearProgress} from '@mui/material';
 import '../PagesCSS/ProfilePage.css'; 
 import '../PagesCSS/ProfileLesson.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
@@ -46,9 +46,8 @@ const ProfileLesson = () => {
             <div className='personalinfo-right-side'>
                 <div className="PI-container-lesson">
                     <div className="PI-title">LEARNING PROGRESS</div>
-                    <div className="lesson-container">
                         {lessons.map((lesson, index) => (
-                            <div key={index} className="lesson-container-bar">
+                            <div key={index} className="lesson-container">
                                 <div className="lesson-title">{lesson.title}</div>
                                 <div className="progress-bar-wrapper">
                                     <LinearProgress 
@@ -67,7 +66,6 @@ const ProfileLesson = () => {
                                 </div>
                             </div>
                         ))}
-                        </div>
                 </div>
             </div>
         </div>

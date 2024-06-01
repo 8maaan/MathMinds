@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import PracticeQuestion from '../ReusableComponents/PracticeQuestions';
 import { getAllTopicsFromDb } from '../API-Services/TopicAPI';
 import { insertPracticeToDb } from '../API-Services/PracticeAPI';
-import { useNavigate } from 'react-router-dom';
+import'../PagesCSS/CreatePractice.css';
 
 const CreatePractice = () => {
     const [practiceTopic, setPracticeTopic] = useState('');
     const [practiceQuestions, setPracticeQuestions] = useState([]);
     const [topics, setTopics] = useState(null);
-    const navigateTo = useNavigate();
 
     useEffect(() => {
         const fetchTopics = async () => {
@@ -55,18 +54,21 @@ const CreatePractice = () => {
             };
             return acc;
         }, {});
-
+    
         const requestBody = {
             topic: { topicId: practiceTopic },
             practice_qa: practiceQAObject
         };
-
+    
+        console.log('Request Body:', requestBody);
+    
         const response = await insertPracticeToDb(requestBody);
+        console.log('Response:', response);
+    
         if (response.success) {
-            navigateTo('/practices');
-            console.log(response.message); // Use this for snackbar message later
+            console.log(response.message); 
         } else {
-            console.log(response.message); // Use this for snackbar message later
+            console.error(response.message); 
         }
     };
 

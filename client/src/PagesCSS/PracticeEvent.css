@@ -2,56 +2,58 @@
   max-width: 75rem;
   margin: 12.5rem auto;
   padding: 1.25rem;
-  }
-  
-  .slick-slider {
-  margin: 0 -1.6rem;
-  }
-  
-  .sliderContainer {
+}
+
+.sliderContainer {
   position: relative;
-  }
-  
-  .slick-slide {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slick-slider {
+  margin: 0 -1.6rem;
+}
+
+.slick-slide {
   transition: transform 0.3s ease-in-out, z-index 0.3s ease-in-out, margin-top 0.3s ease-in-out;
   position: relative;
   transform: scale(0.8);
   margin-top: 1.25rem;
   z-index: 0;
   padding: 0 !important;
-  }
-  
-  .slick-list {
+}
+
+.slick-list {
   padding: 0 !important;
   margin: 0 !important;
-  }
-  
-  .slick-track {
+}
+
+.slick-track {
   margin: 0 auto !important;
-  }
-  
-  .slick-center {
+}
+
+.slick-center {
   transform: scale(1.2) !important;
   margin-top: 0 !important;
   z-index: 1 !important;
-  }
-  
-  .slick-center .topic {
+}
+
+.slick-center .topic {
   transform: scale(1.2) !important;
   z-index: 2 !important;
-  }
-  
-  .slick-center + .slick-slide .topic,
-  .slick-center.prev + .slick-slide .topic {
-  transform: scale(1.05)!important;
-  z-index: 1!important;
-  }
-  
-  .slick-slide .topic {
-  transform: scale(1)!important;
-  z-index: -1!important;
-  }
-  
+}
+
+.slick-center + .slick-slide .topic,
+.slick-center.prev + .slick-slide .topic {
+  transform: scale(1.05) !important;
+  z-index: 1 !important;
+}
+
+.slick-slide .topic {
+  transform: scale(1) !important;
+  z-index: -1 !important;
+}
+
 /* Card styling */
 .topic {
   box-shadow: 0 0.75rem 1rem rgba(0,0,0,0.2);
@@ -64,78 +66,73 @@
   align-items: center;
   transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out, z-index 0.3s ease-in-out;
   transform: scale(1.05);
-z-index: 3;
-  }
-  
+  z-index: 3;
+}
+
 /* Responsive adjustments */
-@media (max-width: 1280px) {
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .sliderContainer .slick-slider {
+    width: 100% !important; /* Make the slider take up the full width */
+    height: 100vh !important; /* Set the slider height to full viewport height */
+  }
+
+  .sliderContainer .slick-track {
+    display: flex !important; /* Use flexbox for the track */
+    flex-direction: column !important; /* Stack the slides vertically */
+    align-items: center !important; /* Center the slides vertically */
+    height: auto !important; /* Set the height to auto */
+  }
+
+  .sliderContainer .slick-slide {
+    width: 100% !important; /* Make each slide take up the full width */
+    margin: 0 0.5rem; /* Add margin between the slides */
+  }
+
+  .sliderContainer .slick-list {
+    margin: 0 auto; /* Center the list */
+    overflow: visible !important; /* Ensure the slides are visible */
+  }
+
+  .sliderContainer .slick-slide > div {
+    width: 100% !important; /* Make the slide content take up the full width */
+  }
+
+  .sliderContainer .slick-slide img {
+    max-height: 100%; /* Ensure images maintain aspect ratio */
+    width: auto;
+    height: auto;
+  }
+
   .slick-slide {
-  margin-right: -1.875rem;
-  }
-  }
-  
-  .backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 50;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  }
-  
-  .topicCard {
-  width: 100%;
-  max-width: 33.75rem;
-  margin: auto;
-  padding: 1.25rem;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  }
-/* Popup styling */
-.topicCardPopup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 62.5rem;
-  max-width: 80%;
-  height: 37.5rem;
-  max-height: 80%;
-  padding: 0;
-  background: #FFF;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  }
-  
-  /* Additional styling for the content inside popup */
-  .topicCardPopup .topicCardContent {
-  width: 100%;
-  }
-  
-  .topicCardHeader,
-  .topicCardBody,
-  .topicCardFooter {
-  width: 100%;
-  padding: 10px;
-  }
-  
-  /* might need to adjust the internal elements like input fields, buttons, etc., to match the new size */
-  .topicCard input,
-  .topicCard button {
-  width: 100%;
-  margin: 5px 0;
+    transition: transform 0.3s ease-in-out, z-index 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+    position: relative;
+    transform: scale(0.8);
+    margin-top: 1.25rem;
+    z-index: 0;
+    padding: 0 !important;
   }
 
+  .slick-center {
+    transform: scale(1.2) !important;
+    margin-top: 0 !important;
+    z-index: 1 !important;
+  }
 
+  .slick-center .topic {
+    transform: scale(1.2) !important;
+    z-index: 2 !important;
+  }
+
+  .slick-center + .slick-slide .topic,
+  .slick-center.prev + .slick-slide .topic {
+    transform: scale(1.05) !important;
+    z-index: 1 !important;
+  }
+
+  .slick-slide .topic {
+    transform: scale(1) !important;
+    z-index: -1 !important;
+  }
+}
 

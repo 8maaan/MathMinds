@@ -19,6 +19,17 @@ export const getTopicById = async(topicId) => {
     }
 }
 
+export const getAllTopicsFromDb = async () => {
+    try {
+        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_TOPICS);
+        //console.log(response.data)
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error("Error fetching topics: ", error);
+        return { success: false, message: "Failed to fetch topics" };
+    }
+};
+
 export const updateTopic = async (topicId, updatedTopic) => {
     try {
         const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_TOPIC}${topicId}`, updatedTopic);

@@ -49,6 +49,7 @@ function PracticeEvent() {
   const [showCard, setShowCard] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [showPracticeChoice, setShowPracticeChoice] = useState(true);
   const navigate = useNavigate();
 
   const theme = createTheme({
@@ -84,9 +85,9 @@ function PracticeEvent() {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: topics.length > 1 ? 3 : 1,
     slidesToScroll: 1,
-    centerMode: true,
+    centerMode: topics.length > 1,
     centerPadding: '0px',
     beforeChange: () => setIsDragging(true),
     afterChange: () => setIsDragging(false),
@@ -96,19 +97,34 @@ function PracticeEvent() {
       {
         breakpoint: 1280,
         settings: {
-          slidesToShow: 2,
-          centerPadding: '2.5rem',
+          slidesToShow: topics.length > 1 ? 2 : 1,
+          centerMode: topics.length > 1,
+          vertical: true,
+          verticalSwiping: true,
         },
       },
       {
         breakpoint: 960,
         settings: {
+          slidesToShow: topics.length > 1 ? 1 : 1,
+          centerMode: topics.length > 1,
+          vertical: true,
+          verticalSwiping: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
           slidesToShow: 1,
-          centerPadding: '1.25rem',
+          slidesToScroll: 1,
+          vertical: true,
+          verticalSwiping: true,
+          centerMode: false,
         },
       },
     ],
   };
+  
 
   const handleTopicClick = (topic) => {
     if (!isDragging) {
@@ -154,6 +170,10 @@ function PracticeEvent() {
     zIndex: 1200
   };
 
+  useEffect(() => {
+    setShowPracticeChoice(true); 
+  }, []); 
+
   return (
     <ThemeProvider theme={theme}>
       <div className="container">
@@ -166,6 +186,7 @@ function PracticeEvent() {
             Choose a topic to practice
           </Typography>
           <div className="sliderContainer">
+            {showPracticeChoice && <PracticeChoice onClose={() => setShowPracticeChoice(false)} />}
             <Slider {...settings}>
               {topics.length <= 3 ? (
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
@@ -200,5 +221,3 @@ function PracticeEvent() {
 }
 
 export default PracticeEvent;
-
-

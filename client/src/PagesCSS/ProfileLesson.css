@@ -1,11 +1,3 @@
-.lesson-container-bar{
-    background-color: #ffb100;
-    width: 90%;
-
-}
-
 .lesson-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #ffb100;
 }

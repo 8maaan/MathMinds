@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTopicById } from '../API-Services/TopicAPI';
@@ -9,6 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import PracticeAnswerModal from '../ReusableComponents/PracticeAnswerModal';
+import CongratulatoryModal from '../ReusableComponents/CongratulatoryModal';
 
 const theme = createTheme({
   typography: {
@@ -37,8 +39,8 @@ const iconStyle = {
   color: '#ffb100'
 };
 
-const QuestionForm = () => {
-  const { lessonId, topicId } = useParams();
+const PracticeQuestionForm = () => {
+  const { topicId } = useParams();
   const [practices, setPractices] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [topic, setTopic] = useState(null);
@@ -47,7 +49,9 @@ const QuestionForm = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [isAnswerWrong, setIsAnswerWrong] = useState(false);
-  const [answeredQuestions, setAnsweredQuestions] = useState(new Array(practices.length).fill(false));
+  const [answeredQuestions, setAnsweredQuestions] = useState([]);
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  const [isEndOfPractice, setIsEndOfPractice] = useState(false);
 
   const navigate = useNavigate();
 
@@ -72,7 +76,7 @@ const QuestionForm = () => {
           const filteredPractices = fetchResult.data.filter(practice => practice.topic.topicId === parseInt(topicId, 10));
           setPractices(filteredPractices);
           setTotalQuestions(filteredPractices.length);
-          setAnsweredQuestions(new Array(filteredPractices.length).fill(false)); // Reset answeredQuestions array
+          setAnsweredQuestions(new Array(filteredPractices.length).fill(false));
         }
       } catch (e) {
         console.log(e);
@@ -90,29 +94,39 @@ const QuestionForm = () => {
     setIsConfirming(false);
     const currentQuestion = practices[currentQuestionIndex].practice_qa[1];
     const isCorrect = selectedOption === currentQuestion.correctAnswer;
-    const answeredQuestion = {
-      questionId: currentQuestion.questionId,
-      isCorrect,
-    };
+
     setAnsweredQuestions(prevAnswers => {
       const updatedAnswers = [...prevAnswers];
       updatedAnswers[currentQuestionIndex] = true;
       return updatedAnswers;
     });
 
-    console.log(`Answered Question: ${currentQuestionIndex + 1}, Is Correct: ${isCorrect}`);
-    
-    if (!isCorrect) {
-      setIsAnswerWrong(true);
+    if (isCorrect) {
+      setIsCorrectAnswer(true);
+      setCorrectAnswers(prevCorrectAnswers => {
+        const updatedCorrectAnswers = prevCorrectAnswers + 1;
+        if (currentQuestionIndex === totalQuestions - 1) {
+          setIsEndOfPractice(true);
+        }
+        return updatedCorrectAnswers;
+      });
     } else {
-      setCorrectAnswers(correctAnswers + 1);
-      handleNextQuestion();
+      setIsAnswerWrong(true);
     }
   };
 
   const handleContinueAfterWrongAnswer = () => {
-    console.log(`Moving to the next question after wrong answer on question: ${currentQuestionIndex + 1}`);
     setIsAnswerWrong(false);
+    setIsConfirming(false);
+    if (currentQuestionIndex < totalQuestions - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      setIsEndOfPractice(true);
+    }
+  };
+
+  const handleContinueAfterCorrectAnswer = () => {
+    setIsCorrectAnswer(false);
     handleNextQuestion();
   };
 
@@ -123,18 +137,26 @@ const QuestionForm = () => {
   };
 
   const handleNextQuestion = () => {
-    console.log(`Moving to question: ${currentQuestionIndex + 2}`);
-    if (currentQuestionIndex < practices.length - 1) {
+    if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      console.log('Finished all questions. Navigating to score page.');
-      navigate('/scoreTest', { state: { correctAnswers, totalQuestions } });
+      setIsEndOfPractice(true);
     }
-    setSelectedOption(null); // Clear selected option for the next question
+    setSelectedOption(null);
   };
 
   const handleCancelWrongAnswer = () => {
-    console.log('User decided not to continue. Navigating to practice page.');
+    setIsAnswerWrong(false);
+    setIsEndOfPractice(true);
+  };
+
+  const handleEndOfPractice = () => {
+    setIsEndOfPractice(false);
+    navigate('/scoreTest', { state: { correctAnswers, totalQuestions } });
+  };
+
+  const handleContinuePractice = () => {
+    setIsEndOfPractice(false);
     navigate('/practice');
   };
 
@@ -170,54 +192,74 @@ const QuestionForm = () => {
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
               {currentQuestion.question}
-            </Typography>
+              </Typography>
             <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
-Question {currentQuestionIndex + 1}
-</Typography>
-</Paper>
-<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '115%', marginTop: '20px' }}>
-<Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-{shuffledOptions.map((option, idx) => (
-<OptionButton
-key={option}
-onClick={() => handleOptionClick(option)}
-sx={{
-bgcolor: optionColors[idx % optionColors.length],
-color: '#181a52',
-minWidth: '100px',
-marginBottom: '20px',
-pointerEvents: isAnswered ? 'none' : 'auto',
-opacity: isAnswered ? 0.5 : 1,
-}}
-disabled={isAnswered}
->
-{option}
-</OptionButton>
-))}
-</Box>
-</Box>
-<PracticeAnswerModal
-open={isConfirming}
-handleClose={() => setIsConfirming(false)}
-message={{
-title: 'Confirm Answer',
-content: 'Are you sure you want to select this option?',
-}}
-handleConfirm={handleOptionConfirmation}
-/>
-<PracticeAnswerModal
-open={isAnswerWrong}
-handleClose={() => setIsAnswerWrong(false)}
-message={{
-title: 'Wrong Answer',
-content: 'Your answer is wrong. Moving to the next question.',
-}}
-handleConfirm={handleContinueAfterWrongAnswer}
-/>
-</Container>
-</div>
-</ThemeProvider>
-);
+              Question {currentQuestionIndex + 1}
+            </Typography>
+          </Paper>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '115%', marginTop: '20px' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
+              {shuffledOptions.map((option, idx) => (
+                <OptionButton
+                  key={option}
+                  onClick={() => handleOptionClick(option)}
+                  sx={{
+                    bgcolor: optionColors[idx % optionColors.length],
+                    color: '#181a52',
+                    minWidth: '100px',
+                    marginBottom: '20px',
+                    pointerEvents: isAnswered ? 'none' : 'auto',
+                    opacity: isAnswered ? 0.5 : 1,
+                  }}
+                  disabled={isAnswered}
+                >
+                  {option}
+                </OptionButton>
+              ))}
+            </Box>
+          </Box>
+          <PracticeAnswerModal
+            open={isConfirming}
+            handleClose={() => setIsConfirming(false)}
+            message={{
+              title: 'Confirm Answer',
+              content: 'Are you sure?',
+            }}
+            handleConfirm={handleOptionConfirmation}
+          />
+          <PracticeAnswerModal
+            open={isAnswerWrong}
+            handleClose={handleCancelWrongAnswer}
+            message={{
+              title: 'Wrong Answer',
+              content: 'lets get some payback with the next Question!',
+            }}
+            handleConfirm={handleContinueAfterWrongAnswer}
+          />
+          <CongratulatoryModal
+            open={isCorrectAnswer}
+            handleClose={() => setIsCorrectAnswer(false)}
+            message={{
+              title: 'Correct Answer',
+              content: 'Amazing, You got it right!',
+            }}
+            handleConfirm={handleContinueAfterCorrectAnswer}
+          />
+          <PracticeAnswerModal
+            open={isEndOfPractice}
+            handleEndOfPractice={handleEndOfPractice}
+            message={{
+              title: 'End of Practice',
+              content: 'Would you like to continue practicing?',
+            }}
+            handleContinuePractice={handleContinuePractice}
+            isEndOfPractice
+          />
+        </Container>
+      </div>
+    </ThemeProvider>
+  );
 };
 
-export default QuestionForm;
+export default PracticeQuestionForm;
+
