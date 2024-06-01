@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
 import TeacherLessonsTopicAccordion from './TeacherLessonsTopicAccordion';
 import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Tooltip } from '@mui/material';
-import { getAllLessonsFromDb, insertLessonToDb, updateLessonInDb, deleteLessonFromDb } from '../API-Services/LessonAPI'; // Assuming you have updateLessonInDb
+import { getAllLessonsFromDb, insertLessonToDb, updateLessonInDb, deleteLessonFromDb } from '../API-Services/LessonAPI';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import ReusableDialog from './ReusableDialog';
@@ -19,7 +19,7 @@ const TeacherLessonsBox = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedLessonId, setSelectedLessonId] = useState(null);
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
-    
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -121,7 +121,13 @@ const TeacherLessonsBox = () => {
     };
 
     const handleEditQuiz = (lesson) => {
-        navigate(`/edit-lesson-quiz/${lesson.lessonQuizId}`);
+        if (lesson.lessonQuiz && lesson.lessonQuiz.length > 0) {
+            const lessonQuizId = lesson.lessonQuiz[0].lessonQuizId; // Adjust this if there are multiple quizzes per lesson
+            navigate(`/edit-lesson-quiz/${lessonQuizId}`);
+        } else {
+            handleSnackbarOpen('error', 'Lesson quiz ID is missing');
+            console.error("Lesson quiz ID is missing");
+        }
     };
 
     // For snackbar
@@ -162,7 +168,7 @@ const TeacherLessonsBox = () => {
             <div className="lessons-container">
                 {showLessonForm && (
                     <Box className="new-lesson-form">
-                        <Typography class="lesson-title">{isEditing ? 'Edit lesson' : 'Create a new lesson'}</Typography>
+                        <Typography className="lesson-title">{isEditing ? 'Edit lesson' : 'Create a new lesson'}</Typography>
                         <TextField
                             label="Lesson Title"
                             fullWidth
@@ -201,7 +207,7 @@ const TeacherLessonsBox = () => {
                             <Tooltip title="Edit Quiz">
                                 <IconButton
                                     aria-label="edit-quiz"
-                                    onClick={() => handleEditQuiz(lesson)}
+                                    onClick={() => handleEditQuiz(lesson) }
                                     className='edit-quiz-button'
                                 >
                                     <QuizIcon

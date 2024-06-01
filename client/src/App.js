@@ -12,9 +12,10 @@ import CreateTopic from './Pages/CreateTopic';
 import LessonsPage from './Pages/LessonsPage';
 import TeacherLessonsPage from './Pages/TeacherLessonsPage';
 import PracticePage from './Pages/PracticePage';
-import TopicsPage from './Pages/TopicsPage'
+import TopicsPage from './Pages/TopicsPage';
 import EditTopic from './Pages/EditTopic';
 import CreateLessonQuiz from './Pages/CreateLessonQuiz';
+import EditLessonQuiz from './Pages/EditLessonQuiz'; // Import EditLessonQuiz component
 import QuizQuestionForm from './Pages/QuizQuestionForm';
 
 function App() {
@@ -45,8 +46,8 @@ function App() {
             <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
             <Route path="/edit-topic/:topicId" element={<ProtectedRoute requireTeacher><EditTopic /></ProtectedRoute>} />
             <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuiz /></ProtectedRoute>} />
-                  
-
+            <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuiz /></ProtectedRoute>} /> {/* Add this line */}
+            
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
         </BrowserRouter>

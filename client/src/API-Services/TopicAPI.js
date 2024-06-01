@@ -35,7 +35,7 @@ export const deleteTopicFromDb = async (topicId) => {
         const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_TOPIC}${topicId}`);
         return { success: true, data: response.data };
     } catch (error) {
-        console.error("Error deleting lesson: ", error.response ? error.response.data : error.message);
-        return { success: false, message: "Failed to delete lesson", error: error.response ? error.response.data : error.message };
+        console.error("Error deleting topic: ", error.response ? error.response.data : error.message);
+        return { success: false, message: "Failed to delete topic", error: error.response ? error.response.data : error.message };
     }
 };
