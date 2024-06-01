@@ -10,15 +10,15 @@
      /* border: solid black 1px;  */
 }
 
-.badges-wrapper,
-.badges-content-container{
+.lessonprog-wrapper,
+.lessonprog-content-container{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.badges-content-container{
+.lessonprog-content-container{
     width: 70%;
     height: 60vh;
     background-color: #FAFAFA;
@@ -26,36 +26,23 @@
      /* border: solid black 1px;   */
 }
 
-.badgesinfo-right-side,
-.badgesinfo-left-side{
+.lessonproginfo-right-side,
+.lessonproginfo-left-side{
     display: flex;
     height: 100%;
      /* border: solid black 1px;   */
 }
-.badgesinfo-right-side{
+.lessonproginfo-right-side{
     flex-direction: column;
     width: 65%;
  
 }
-.badgesinfo-left-side{
+.lessonproginfo-left-side{
     display: flex;
     width: 35%;
      /* border: solid rgb(54, 140, 253) 1px;   */
 }
-.choices-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    align-items: center;
-    width: 80%;
-    height: 60%;
-    box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
-    border-radius: 25px;
-    background-color: #d8bc7966;    
-     /* border: solid rgb(0, 0, 0);  */
-}
-.badges-container{
+.lessonprog-container{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -65,7 +52,7 @@
     border-radius: 25px;  
         /* border: 1px solid #0004fd;  */
 }
-.badges-title{
+.lessonprog-title{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,7 +64,7 @@
     height: 20%;
     /* border: 1px solid #00ff80;  */
 }
-.userbadges-container{
+.userlessonprog-container{
     display:flex;
     flex-direction: row;
     width: 100%;
@@ -85,7 +72,7 @@
     /* border: 1px solid #d608aa;  */
 }
 
-.userinfo-badges-container{
+.userinfo-lessonprog-container{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -93,27 +80,27 @@
     /* border: 1px solid #e00000;  */
 }
 @media (max-width: 1024px) {
-    .badges-content-container{   
+    .lessonprog-content-container{   
         width: 90%;
     }
 
 }
 @media (max-width: 900px) {
 
-    .badges-content-container{
+    .lessonprog-content-container{
         margin-top: 700px;
         display: flex;
         flex-direction: column;
         height: 150vh;
         width: 50%;
     }
-    .badgesinfo-left-side{
+    .lessonproginfo-left-side{
         height: 50vh;
         width: 100%;
         justify-content: center;
     }
 
-    .badgesinfo-right-side{
+    .lessonproginfo-right-side{
         margin-top: 50px;
         width: 100%;
     }
@@ -122,29 +109,30 @@
 }
 @media (max-width: 700px) {
 
-    .badges-content-container{
+    .lessonprog-content-container{
         width: 60%;
     }
 
 }
 @media (max-width: 600px) {
 
-    .badges-content-container{
+    .lessonprog-content-container{
         width: 70%;
     }
 
 }
 @media (max-width: 500px) {
 
-    .badges-content-container{
+    .lessonprog-content-container{
         width: 90%;
     }
 
 }
 @media (max-width: 400px) {
 
-    .badges-content-container{
+    .lessonprog-content-container{
         width: 100%;
     }
 
 }
+

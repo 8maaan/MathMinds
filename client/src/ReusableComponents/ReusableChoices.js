@@ -13,7 +13,7 @@ export default function ReusableChoices(){
         
                         <div className='choicess-container'>
                             <div className='PI-button' onClick={()=> navigateTo('/profile')}>Personal Information</div>
-                            <div className='LessonProg-button'>Lesson Progress</div>
+                            <div className='LessonProg-button' onClick={()=> navigateTo('/lesson-progress')}>Lesson Progress</div>
                             <div className='Badges-button' onClick={()=> navigateTo('/badges')}>Badges</div>
                         </div>
             

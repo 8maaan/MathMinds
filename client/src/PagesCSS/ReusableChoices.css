@@ -69,3 +69,16 @@
 .Badges-button:active {
     transform: scale(0.9); 
 }
+@media (max-width: 1024px) {
+
+    .choicess-container{
+        width: 90%;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .choicess-container{
+        height: 100%;
+    }
+}
