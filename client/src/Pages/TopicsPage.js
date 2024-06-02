@@ -17,6 +17,8 @@ const TopicsPage = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [feedBackColor, setFeedBackColor] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const [shuffledOptionsState, setShuffledOptionsState] = useState({});
   
   /* JSON Data */
   const [lessonData, setLessonData] = useState(null);
@@ -25,6 +27,17 @@ const TopicsPage = () => {
   const [topicsState, setTopicsState] = useState({});
   const colors = ['color-1', 'color-2', 'color-3'];
   let colorIndex = 0; /*from above sa handleOptionClick, ako lang gi move dri -den*/
+
+  const updateTopicProgress = async (topicId) => {
+    if (allQuestionsAnswered(selectedTopic)) {
+      const result = await updateProgress(getUid(), topicId, true);
+      if (result.success) {
+        console.log(result.message); 
+      } else {
+        console.error("Failed to update progress:", result.message);
+      }
+    }
+  };
 
   // PUT FUNCTION INSIDE CUS WHY SEPARATE ?
   useEffect(() => {
@@ -43,6 +56,23 @@ const TopicsPage = () => {
     fetchLessonTopics();
   }, [lessonId, topicId]);
 
+  // FOR THE CHOICES
+  useEffect(() => {
+    if (selectedTopic && selectedTopic.topicContent) {
+      const newShuffledOptions = {};
+      Object.entries(selectedTopic.topicContent)
+        .filter(([_, value]) => value.type === "question")
+        .forEach(([key, value]) => {
+          const allOptions = [
+            ...Object.values(value.incorrectAnswers),
+            value.correctAnswer
+          ];
+          newShuffledOptions[key] = shuffleArray(allOptions);
+        });
+      setShuffledOptionsState(newShuffledOptions);
+    }
+  }, [selectedTopic]);
+
   const handleOptionClick = (topicId, questionKey, option) => {
     setTopicsState((prevState) => ({
       ...prevState,
@@ -51,8 +81,9 @@ const TopicsPage = () => {
         [questionKey]: {
           ...prevState[topicId]?.[questionKey],
           selectedOption: option,
-          checked: false,
-          feedback: null,
+          // Preserve the existing checked and feedback state (remove if error)
+          checked: prevState[topicId]?.[questionKey]?.checked || false,
+          feedback: prevState[topicId]?.[questionKey]?.feedback || null,
         },
       },
     }));
@@ -97,14 +128,7 @@ const TopicsPage = () => {
 
   const handleNextClick = async () => {
     setLoading(true);
-    if (allQuestionsAnswered(selectedTopic)) {
-      const result = await updateProgress(getUid(), selectedTopic.topicId, true);
-      if (result.success) {
-        console.log(result.message); 
-      } else {
-        console.error("Failed to update progress:", result.message);
-      }
-    }
+    await updateTopicProgress(selectedTopic.topicId);
     setLoading(false);
   
     const nextTopic = getNextTopic();
@@ -112,10 +136,15 @@ const TopicsPage = () => {
       const nextIndex = lessonData.lessonTopics.indexOf(nextTopic);
       handleTopicClick(nextTopic, nextIndex);
     }
-
   };
 
-  console.log(loading);
+  const handleProceedToQuiz = async () => {
+    setLoading(true);
+    await updateTopicProgress(selectedTopic.topicId);
+    setLoading(false);
+    navigateTo(`/lesson/${lessonId}/quiz`);
+  };
+
   const isLastTopic = () => {
     if (!lessonData || !lessonData.lessonTopics || !selectedTopic) return false;
     const lastTopic = lessonData.lessonTopics[lessonData.lessonTopics.length - 1];
@@ -141,6 +170,15 @@ const TopicsPage = () => {
       const questionState = topicsState[topic.topicId]?.[key];
       return questionState?.checked && questionState?.feedback === 'Correct!';
     });
+  };
+
+  const shuffleArray = (array) => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
   };
 
   if (!lessonData || !getUid()) {
@@ -188,9 +226,9 @@ const TopicsPage = () => {
                           <p>{value.question}</p>
                           <div className="question-container">
                             <div className="option-container">
-                              {Object.values(value.incorrectAnswers).map((option, idx) => (
+                              {shuffledOptionsState[key]?.map((option, idx) => (
                                 <Button
-                                  key={idx}
+                                  key={`${selectedTopic.topicId}-${key}-option-${idx}`}
                                   onClick={() => handleOptionClick(selectedTopic.topicId, key, option)}
                                   variant='contained'
                                   fullWidth
@@ -199,18 +237,10 @@ const TopicsPage = () => {
                                   {option}
                                 </Button>
                               ))}
-                              <Button
-                                onClick={() => handleOptionClick(selectedTopic.topicId, key, value.correctAnswer)}
-                                variant='contained'
-                                fullWidth
-                                size='large'
-                              >
-                                {value.correctAnswer}
-                              </Button>
                             </div>
                             <div className="check-container">
                               <Button
-                                onClick={() => selectedTopic?.topicId != null && key != null && value?.correctAnswer != null && handleCheckAnswer(selectedTopic.topicId, key, value.correctAnswer)}
+                                onClick={() => handleCheckAnswer(selectedTopic.topicId, key, value.correctAnswer)}
                                 variant='contained'
                                 sx={{color:'#101436', backgroundColor:'#FFB100', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}
                               >
@@ -234,7 +264,8 @@ const TopicsPage = () => {
                     <Button
                       variant='contained'
                       sx={{color:'#101436', backgroundColor:'#FFB100', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}
-                      onClick={() => navigateTo(`/lesson/${lessonId}/quiz`)}
+                      onClick={handleProceedToQuiz}
+                      disabled={hasQuestions(selectedTopic) && !allQuestionsAnswered(selectedTopic)}
                     >
                       Proceed to Quiz
                     </Button>
