@@ -19,6 +19,7 @@ const TopicsPage = () => {
   const [loading, setLoading] = useState(false);
 
   const [shuffledOptionsState, setShuffledOptionsState] = useState({});
+  const [animateFeedback, setAnimateFeedback] = useState(false);
   
   /* JSON Data */
   const [lessonData, setLessonData] = useState(null);
@@ -103,6 +104,11 @@ const TopicsPage = () => {
       },
     }));
     setFeedBackColor(isCorrect ? 'green' : 'maroon');
+
+    if (!isCorrect) {
+      setAnimateFeedback(true); // Trigger the shake animation
+      setTimeout(() => setAnimateFeedback(false), 500); // Reset the animation state after 500ms
+    }
   };
 
   /* to get colors for the rectangle containers*/
@@ -249,12 +255,12 @@ const TopicsPage = () => {
                             </div>
                           </div>
                           {topicsState[selectedTopic.topicId]?.[key]?.checked && (
-                            <p style={{fontWeight: '600', color:`${feedBackColor}` }}>{topicsState[selectedTopic.topicId][key].feedback}</p>
+                            <p style={{fontWeight: '600', color:`${feedBackColor}` }} className={animateFeedback ? 'feedback-shake' : ''}>{topicsState[selectedTopic.topicId][key].feedback}</p>
                           )}
                         </div>
                       )}
                       {index === array.length - 1 && isLastTopic() ? (
-                        <p style={{ fontWeight: 'bold', textAlign: 'center', color:'#2f3163'}}>END OF LESSON</p>
+                        <p style={{ fontWeight: 'bold', textAlign: 'center', color:'#2f3163'}} >END OF LESSON</p>
                       ) : null}
                     </div>
                   ))}
