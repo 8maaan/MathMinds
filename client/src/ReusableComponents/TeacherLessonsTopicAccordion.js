@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, IconButton } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, IconButton, Tooltip } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
@@ -128,30 +128,35 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 }}
                             >
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
-
+                                
                                 <AccordionActions>
-                                    <IconButton onClick={() => handleEditTopic(topic.topicId)}>
-                                        <EditIcon
-                                            sx={{
-                                                color: "#181A52",
-                                                '&:hover': {
-                                                    color: colorPalette.hoverColor,
-                                                    cursor: 'pointer'
-                                                }
-                                            }}
-                                        />
-                                    </IconButton>
-                                    <IconButton onClick={() => handleOpenDialog(topic.topicId)}>
-                                        <CloseIcon
-                                            sx={{
-                                                color: "#181A52",
-                                                '&:hover': {
-                                                    color: "#FF0000",
-                                                    cursor: 'pointer'
-                                                }
-                                            }}
-                                        />
-                                    </IconButton>
+                                    <Tooltip title="Edit Topic">
+                                        <IconButton onClick={() => handleEditTopic(topic.topicId)}>
+                                            <EditIcon
+                                                    sx={{
+                                                    color: "#181A52",
+                                                    '&:hover': {
+                                                        color: colorPalette.hoverColor,
+                                                        cursor: 'pointer'
+                                                    }
+                                                }}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Delete Topic">
+                                        <IconButton onClick={() => handleOpenDialog(topic.topicId)}>
+                                            <CloseIcon
+                                                    sx={{
+                                                    color: "#181A52",
+                                                    marginRight: "12px",
+                                                    '&:hover': {
+                                                        color: "#FF0000",
+                                                        cursor: 'pointer'
+                                                    }
+                                                }}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
                                     <Button
                                         sx={{
                                             backgroundColor: colorPalette.accordionColor,
@@ -167,6 +172,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                         Start
                                     </Button>
                                 </AccordionActions>
+                              
                             </AccordionDetails>
                         </Accordion>
                     );

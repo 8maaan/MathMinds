@@ -13,9 +13,11 @@ import CreateTopic from './Pages/CreateTopic';
 import LessonsPage from './Pages/LessonsPage';
 import TeacherLessonsPage from './Pages/TeacherLessonsPage';
 import PracticePage from './Pages/PracticePage';
-import TopicsPage from './Pages/TopicsPage'
+import TopicsPage from './Pages/TopicsPage';
 import EditTopic from './Pages/EditTopic';
-
+import CreateLessonQuiz from './Pages/CreateLessonQuiz';
+import EditLessonQuiz from './Pages/EditLessonQuiz'; // Import EditLessonQuiz component
+import QuizQuestionForm from './Pages/QuizQuestionForm';
 
 function App() {
 
@@ -37,14 +39,16 @@ function App() {
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
             <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
             <Route path="/lesson/:lessonId/:topicId" element={<ProtectedRoute><TopicsPage/></ProtectedRoute>} />
+            <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
 
             {/* FOR TEACHERS */}
             <Route path="/create-topic" element={<ProtectedRoute requireTeacher><CreateTopic/></ProtectedRoute>} />
             <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
             <Route path="/edit-topic/:topicId" element={<ProtectedRoute requireTeacher><EditTopic /></ProtectedRoute>} />
+            <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuiz /></ProtectedRoute>} />
+            <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuiz /></ProtectedRoute>} /> {/* Add this line */}
             
-
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
         </BrowserRouter>

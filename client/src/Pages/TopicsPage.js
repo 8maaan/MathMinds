@@ -23,6 +23,7 @@ const TopicsPage = () => {
   
   /* JSON Data */
   const [lessonData, setLessonData] = useState(null);
+  const [lessonQuizzes, setLessonQuizzes] = useState([]); // State to hold the quizzes
 
   const navigateTo = useNavigate();
   const [topicsState, setTopicsState] = useState({});
@@ -40,7 +41,6 @@ const TopicsPage = () => {
     }
   };
 
-  // PUT FUNCTION INSIDE CUS WHY SEPARATE ?
   useEffect(() => {
     const fetchLessonTopics = async () => {
       try {
@@ -50,10 +50,14 @@ const TopicsPage = () => {
           const initialTopic = fetchResult.data.lessonTopics.find(topic => topic.topicId === parseInt(topicId));
           setSelectedTopic(initialTopic);
         }
+        if (fetchResult.data && fetchResult.data.lessonQuiz) {
+          setLessonQuizzes(fetchResult.data.lessonQuiz);
+        }
       } catch (e) {
         console.log(e);
       }
     };
+
     fetchLessonTopics();
   }, [lessonId, topicId]);
 
@@ -111,7 +115,6 @@ const TopicsPage = () => {
     }
   };
 
-  /* to get colors for the rectangle containers*/
   const getNextColor = () => {
     const color = colors[colorIndex];
     colorIndex = (colorIndex + 1) % colors.length;
@@ -157,6 +160,15 @@ const TopicsPage = () => {
     return lastTopic.topicId === selectedTopic.topicId;
   };
 
+  const handleProceedToQuiz = () => {
+    const quiz = lessonQuizzes.length ? lessonQuizzes[0] : null; // Assuming you take the first quiz associated with the lesson
+    if (quiz) {
+      navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`); // Pass the quiz ID to the quiz form
+    } else {
+      alert('No quiz available for this lesson.');
+    }
+  };
+
   const hasQuestions = (topic) => {
     if (!topic || !topic.topicContent) return false;
     return Object.values(topic.topicContent).some(value => value.type === "question");
@@ -191,10 +203,6 @@ const TopicsPage = () => {
     return <div>Loading...</div>;
   }
 
-  // NEEDS NEXT BUTTON - RIBO
-
-  /* RENDER ALL OF THE TOPICS IN RWD SINCE SIDEBAR DISAPPEARS */
-  /* WHY REMOVE SIDEBAR WHEN RESIZED? HOW WOULD THE USER NAVIGATE TO OTHER TOPICS? MYBE USE DRAWER FROM MUI? -RIBO*/
   return (
     <div className='root'>
       <div className="container">
@@ -206,7 +214,7 @@ const TopicsPage = () => {
                 <ul>
                   {lessonData.lessonTopics.map((topic, topicIndex) => (
                     <li key={topicIndex} onClick={() => handleTopicClick(topic, topicIndex)} className='sidebar-list-item'>
-                      {topic.lessonId}.{topicIndex+1} {topic.topicTitle}
+                      {topic.lessonId}.{topicIndex + 1} {topic.topicTitle}
                     </li>
                   ))}
                 </ul>
@@ -217,16 +225,16 @@ const TopicsPage = () => {
         <div className="main-content">
           <div>
             <div className="lesson-header">
-              <h4 style={{color: '#181A52'}}>Lesson {lessonData.lessonId}</h4>
-              <h1 style={{color: '#181A52'}}>{lessonData.lessonTitle}</h1>
+              <h4 style={{ color: '#181A52' }}>Lesson {lessonData.lessonId}</h4>
+              <h1 style={{ color: '#181A52' }}>{lessonData.lessonTitle}</h1>
             </div>
             {selectedTopic && (
               <div>
-                <h4 style={{color: '#404040'}}>Lesson {selectedTopic.lessonId}.{lessonData.lessonTopics.indexOf(selectedTopic)+1} - {selectedTopic.topicTitle}</h4>
+                <h4 style={{ color: '#404040' }}>Lesson {selectedTopic.lessonId}.{lessonData.lessonTopics.indexOf(selectedTopic) + 1} - {selectedTopic.topicTitle}</h4>
                 <div className="lesson-content">
-                  {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
+                  {Object.entries(selectedTopic.topicContent).map(([key, value]) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`}>
-                      {value.type === "text" && <div style={{ textAlign: 'left', marginLeft:'30px' }} dangerouslySetInnerHTML={{ __html: value.content }} />} {/*ensure html is displayed correctly -den*/}
+                      {value.type === "text" && <div style={{ textAlign: 'left', marginLeft: '30px' }} dangerouslySetInnerHTML={{ __html: value.content }} />}
                       {value.type === "question" && (
                         <div>
                           <p>{value.question}</p>
@@ -248,7 +256,7 @@ const TopicsPage = () => {
                               <Button
                                 onClick={() => handleCheckAnswer(selectedTopic.topicId, key, value.correctAnswer)}
                                 variant='contained'
-                                sx={{color:'#101436', backgroundColor:'#FFB100', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}
+                                sx={{ color: '#101436', backgroundColor: '#FFB100', fontFamily: 'Poppins', '&:hover': { backgroundColor: '#e9a402' } }}
                               >
                                 Check
                               </Button>

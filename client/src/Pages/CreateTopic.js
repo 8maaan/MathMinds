@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import '../PagesCSS/CreateTopic.css';
 import TopicContentContainer from '../ReusableComponents/TopicContentContainer';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
@@ -158,6 +158,7 @@ const CreateTopic = () => {
 
     return (
         <div>
+            <Typography class='createTopic-title'>Create a Topic</Typography>
             <form onSubmit={handleOpenDialog}>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
@@ -210,7 +211,7 @@ const CreateTopic = () => {
                                     return null;
                                 })}
                             </SortableContext>
-                            {topicContents.length === 0 ? <p style={{color: 'gray', margin:'10%'}}>No contents currently 📝</p> : null}
+                            {topicContents.length === 0 ? <p style={{color: 'gray', margin:'10%', fontFamily:'Poppins'}}>No contents currently 📝</p> : null}
                         </div>
                     </DndContext>
                     <Button 
