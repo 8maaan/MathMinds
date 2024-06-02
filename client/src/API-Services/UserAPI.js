@@ -46,3 +46,16 @@ export const getAllUsersFromDb = async () => {
         return { success: false, message: "Failed to fetch users" };
     }
 };
+
+//GET USER'S LESSON PROGRESS
+export const getProgressForAllLessonsFromDb = async (uid) => {
+    try {
+        // Send a GET request to fetch lesson progress data for a user
+        const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_LESSONS}?uid=${uid}`);
+        return { success: true, data: response.data };
+    } catch (error) {
+        // Handle errors
+        console.error("Error fetching lesson progress data for user: ", error);
+        return { success: false, message: "Failed to fetch lesson progress data for user" };
+    }
+};
