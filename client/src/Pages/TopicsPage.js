@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../PagesCSS/TopicsPage.css';
 import { getLessonById } from '../API-Services/LessonAPI';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
+import { UserAuth } from '../Context-and-routes/AuthContext';
+import { updateProgress } from '../API-Services/UserProgressAPI';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -10,13 +12,14 @@ import { Button } from '@mui/material';
 // TODO: WILL USE <Button> from MUI instead of regular <button> wtf
 
 const TopicsPage = () => {
+  const { getUid } = UserAuth();
   const { lessonId, topicId } = useParams();
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [feedBackColor, setFeedBackColor] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
   /* JSON Data */
   const [lessonData, setLessonData] = useState(null);
-
-  // console.log(lessonData);
 
   const navigateTo = useNavigate();
   const [topicsState, setTopicsState] = useState({});
@@ -30,7 +33,7 @@ const TopicsPage = () => {
         const fetchResult = await getLessonById(lessonId);
         setLessonData(fetchResult.data);
         if (fetchResult.data && fetchResult.data.lessonTopics) {
-          const initialTopic = fetchResult.data.lessonTopics[parseInt(topicId)-1]; /* Subtracted by 1 to get the */
+          const initialTopic = fetchResult.data.lessonTopics.find(topic => topic.topicId === parseInt(topicId));
           setSelectedTopic(initialTopic);
         }
       } catch (e) {
@@ -78,18 +81,69 @@ const TopicsPage = () => {
     return color;
   };
 
-  const handleTopicClick = (topic, index) => {
-    setSelectedTopic(topic);
-    navigateTo(`/lesson/${lessonId}/${index+1}`); /* */
+  const getNextTopic = () => {
+    if (!lessonData || !lessonData.lessonTopics || !selectedTopic) return null;
+
+    const currentIndex = lessonData.lessonTopics.findIndex(topic => topic.topicId === selectedTopic.topicId);
+    if (currentIndex === -1 || currentIndex === lessonData.lessonTopics.length - 1) return null;
+
+    return lessonData.lessonTopics[currentIndex + 1];
   };
 
+  const handleTopicClick = (topic, index) => {
+    setSelectedTopic(topic);
+    navigateTo(`/lesson/${lessonId}/${topic.topicId}`); /* */
+  };
+
+  const handleNextClick = async () => {
+    setLoading(true);
+    if (allQuestionsAnswered(selectedTopic)) {
+      const result = await updateProgress(getUid(), selectedTopic.topicId, true);
+      if (result.success) {
+        console.log(result.message); 
+      } else {
+        console.error("Failed to update progress:", result.message);
+      }
+    }
+    setLoading(false);
+  
+    const nextTopic = getNextTopic();
+    if (nextTopic) {
+      const nextIndex = lessonData.lessonTopics.indexOf(nextTopic);
+      handleTopicClick(nextTopic, nextIndex);
+    }
+
+  };
+
+  console.log(loading);
   const isLastTopic = () => {
     if (!lessonData || !lessonData.lessonTopics || !selectedTopic) return false;
     const lastTopic = lessonData.lessonTopics[lessonData.lessonTopics.length - 1];
     return lastTopic.topicId === selectedTopic.topicId;
   };
 
-  if (!lessonData) {
+  const hasQuestions = (topic) => {
+    if (!topic || !topic.topicContent) return false;
+    return Object.values(topic.topicContent).some(value => value.type === "question");
+  };
+
+  const allQuestionsAnswered = (topic) => {
+    if (!topic) return false;
+  
+    const topicQuestions = Object.entries(topic.topicContent)
+      .filter(([key, value]) => value.type === "question");
+
+    // If there are no questions, consider it "mastered" as there's nothing to answer
+    if (topicQuestions.length === 0) return true;
+
+    // If there are questions, check if all are answered correctly
+    return topicQuestions.every(([key, value]) => {
+      const questionState = topicsState[topic.topicId]?.[key];
+      return questionState?.checked && questionState?.feedback === 'Correct!';
+    });
+  };
+
+  if (!lessonData || !getUid()) {
     return <div>Loading...</div>;
   }
 
@@ -175,7 +229,7 @@ const TopicsPage = () => {
                     </div>
                   ))}
                 </div>
-                {isLastTopic() && (
+                {isLastTopic() ? (
                   <div className="proceed-to-quiz">
                     <Button
                       variant='contained'
@@ -185,7 +239,17 @@ const TopicsPage = () => {
                       Proceed to Quiz
                     </Button>
                   </div>
-                )}
+                ) :
+                  <div className="proceed-to-quiz">
+                    <Button
+                      variant='contained'
+                      sx={{color:'#101436', backgroundColor:'#FFB100', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}
+                      onClick={handleNextClick}
+                      disabled={hasQuestions(selectedTopic) && !allQuestionsAnswered(selectedTopic)}
+                    >
+                      {loading ? <CircularProgress color="inherit" size="1.5rem" /> : "Next"}
+                    </Button>
+                  </div>}
               </div>
             )}
           </div>

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, IconButton } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import { deleteTopicFromDb } from '../API-Services/TopicAPI';
+import ReusableDialog from "./ReusableDialog";
+import ReusableSnackbar from './ReusableSnackbar'
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A", hoverColor: "#F94848" },
@@ -21,6 +23,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
     const [selectedTopicId, setSelectedTopicId] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [lessonTopics, setLessonTopics] = useState(lesson.lessonTopics || []);
+    const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : null);
@@ -39,11 +42,15 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
         setOpenDialog(true);
     };
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = (confirmed) => {
         setOpenDialog(false);
+        if (confirmed && selectedTopicId) {
+            handleDeleteTopic();
+        }
         setSelectedTopicId(null);
     };
 
+    console.log(selectedTopicId);
     const handleDeleteTopic = async () => {
         if (selectedTopicId) {
             try {
@@ -52,14 +59,30 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                 if (success) {
                     console.log("Topic deleted successfully:", selectedTopicId);
                     setLessonTopics(lessonTopics.filter(topic => topic.topicId !== selectedTopicId));
-                    handleCloseDialog();
+                    handleSnackbarOpen('success', 'Topic has been deleted successfully.');
                 } else {
                     console.error("Failed to delete topic:", message);
+                    handleSnackbarOpen('error', 'Error deleting a topic, try again later.');
                 }
             } catch (error) {
                 console.error("An error occurred while deleting the topic:", error);
             }
         }
+    };
+
+    // For snackbar
+    const handleSnackbarOpen = (severity, message) => {
+        setSnackbar({ status: true, severity, message });
+    };
+
+    const handleSnackbarClose = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar((prevSnackbar) => ({
+            ...prevSnackbar,
+            status: false
+        }))
     };
 
     return (
@@ -107,9 +130,8 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
 
                                 <AccordionActions>
-                                    <IconButton>
+                                    <IconButton onClick={() => handleEditTopic(topic.topicId)}>
                                         <EditIcon
-                                            onClick={() => handleEditTopic(topic.topicId)}
                                             sx={{
                                                 color: "#181A52",
                                                 '&:hover': {
@@ -119,9 +141,8 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                             }}
                                         />
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton onClick={() => handleOpenDialog(topic.topicId)}>
                                         <CloseIcon
-                                            onClick={() => handleOpenDialog(topic.topicId)}
                                             sx={{
                                                 color: "#181A52",
                                                 '&:hover': {
@@ -154,25 +175,13 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                 <Typography style={{ color: '#181A52' }}>No topics available yet</Typography>
             )}
 
-            <Dialog
-                open={openDialog}
-                onClose={handleCloseDialog}
-            >
-                <DialogTitle style={{ color: '#181A52' }}>Confirm Delete</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this topic?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog} style={{ color: '#ffb100' }}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleDeleteTopic} style={{ color: '#813cb9' }}>
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ReusableDialog
+                status={openDialog} 
+                onClose={handleCloseDialog} 
+                title="Confirm Delete" 
+                context="Are you sure you want to delete this topic?"
+            />
+            <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
     );
 };

@@ -34,8 +34,9 @@ const TopicContentContainer = ({ id, content, updateContent, deleteContent }) =>
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 placeholder='Add a content here'
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content)}} // transferred 
             >
-                <div dangerouslySetInnerHTML={{ __html: content }} /> {/*ensure html is displayed correctly -den*/}
+                {/* <div dangerouslySetInnerHTML={{ __html: content }} /> ensure html is displayed correctly -den */}
             </div>
             <div 
                 className='topic-content-actions'

@@ -9,6 +9,9 @@ import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
 import { getTopicById, updateTopic } from '../API-Services/TopicAPI';
 
+import ReusableDialog from '../ReusableComponents/ReusableDialog';
+import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
+
 const EditTopic = () => {
     const { topicId } = useParams();
     const [topicLesson, setTopicLesson] = useState('');
@@ -120,8 +123,7 @@ const EditTopic = () => {
         setTopicContents(topicContents.filter(item => item.id !== id));
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async () => {
         const topicContentObject = topicContents.reduce((acc, item, index) => {
             if (item.type === 'content') {
                 acc[index + 1] = { type: 'text', content: item.content };
@@ -151,10 +153,42 @@ const EditTopic = () => {
 
         const response = await updateTopic(topicId, requestBody);
         if (response.success) {
-            navigateTo('/lessons-teacher');
+            handleSnackbarOpen('success', 'Topic has been updated successfully.');
+            setTimeout(() => {
+                navigateTo('/lessons-teacher');
+            }, 1250)
         } else {
             console.error(response.message);
+            handleSnackbarOpen('error', 'Could not update this topic, try again later.');
         }
+    };
+
+    const handleOpenDialog = (event) => {
+        event.preventDefault();
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = (confirmed) => {
+        setOpenDialog(false);
+        if (confirmed) {
+            handleSubmit();
+        }
+    };
+    const [openDialog, setOpenDialog] = useState(false);
+    const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
+
+    const handleSnackbarOpen = (severity, message) => {
+        setSnackbar({ status: true, severity, message });
+    };
+
+    const handleSnackbarClose = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar((prevSnackbar) => ({
+            ...prevSnackbar,
+            status: false
+        }))
     };
 
     const handleDragEnd = (event) => {
@@ -178,7 +212,7 @@ const EditTopic = () => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleOpenDialog}>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
@@ -192,8 +226,8 @@ const EditTopic = () => {
                         <TextField label='Topic Title' fullWidth required value={topicTitle} onChange={(event) => { setTopicTitle(event.target.value) }} autoComplete='off' />
                         <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} value={topicDescription} onChange={(event) => { setTopicDescription(event.target.value) }} autoComplete='off' />
                         <div style={{ marginTop: '1.5%' }}>
-                            <Button onClick={handleAddContent} variant='contained'>Add Text</Button>
-                            <Button onClick={handleAddQuestion} variant='contained' sx={{ ml: 1 }}>Add Question</Button>
+                            <Button onClick={handleAddContent} variant='contained' sx={{backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Text</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={{ ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Question</Button>
                         </div>
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -229,9 +263,23 @@ const EditTopic = () => {
                             {topicContents.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No contents currently 📝</p> : null}
                         </div>
                     </DndContext>
-                    <Button type="submit" variant='contained' sx={{ mt: 2 }}>Submit</Button>
+                    <Button 
+                        type="submit" 
+                        variant='contained' 
+                        sx={{mt: 2, backgroundColor:'#ffb100', fontWeight:'600', color: '#181A52', '&:hover': {backgroundColor: '#e39e02'}}} 
+                        size='large'
+                    >
+                            Update
+                    </Button>
                 </div>
             </form>
+            <ReusableDialog
+                status={openDialog} 
+                onClose={handleCloseDialog} 
+                title="Confirm Topic Creation" 
+                context={`Are you sure you want to create the topic titled "${topicTitle}"`}
+            />
+            <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
     );
 };

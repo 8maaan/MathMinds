@@ -109,7 +109,7 @@ const TeacherLessonsBox = () => {
 
             } else {
                 console.error("Failed to delete lesson:", message);
-                handleSnackbarOpen('srror', 'Error deleting a lesson, try again later.');
+                handleSnackbarOpen('error', 'Error deleting a lesson, try again later.');
             }
         }
     };
@@ -130,7 +130,10 @@ const TeacherLessonsBox = () => {
         if (reason === 'clickaway') {
             return;
         }
-        setSnackbar(false);
+        setSnackbar((prevSnackbar) => ({
+            ...prevSnackbar,
+            status: false
+        }))
     };
 
     return (
@@ -234,7 +237,12 @@ const TeacherLessonsBox = () => {
             
             {/* REPLACED OLD DIALOG TO A REUSABLE DIALOG */}
 
-            <ReusableDialog status={openDialog} onClose={handleCloseDialog} title="Confirm Delete" context="Are you sure you want to delete this lesson?"/>
+            <ReusableDialog 
+                status={openDialog} 
+                onClose={handleCloseDialog} 
+                title="Confirm Delete" 
+                context="Are you sure you want to delete this lesson? All of its content including the topics, quizzes and progress will also be deleted."
+            />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
     );

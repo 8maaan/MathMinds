@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import './PagesCSS/Global.css'
 import { AuthContextProvider } from './Context-and-routes/AuthContext';
 import { GuestRoute, ProtectedRoute } from './Context-and-routes/Routes';
 import HomePage from './Pages/HomePage';

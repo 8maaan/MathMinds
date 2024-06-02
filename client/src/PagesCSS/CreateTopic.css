@@ -48,6 +48,10 @@
     margin-top: 1.5%;
 }
 
+.topicContentContainer:focus{
+    border: solid #ffb100;
+}
+
 .topicContentContainer{
     overflow-y: auto;
 }
