@@ -151,22 +151,19 @@ const TopicsPage = () => {
     setLoading(true);
     await updateTopicProgress(selectedTopic.topicId);
     setLoading(false);
-    navigateTo(`/lesson/${lessonId}/quiz`);
+
+    const quiz = lessonQuizzes.length ? lessonQuizzes[0] : null;
+    if (quiz) {
+      navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`); // Pass the quiz ID to the quiz form
+    } else {
+      alert('No quiz available for this lesson.');
+    }
   };
 
   const isLastTopic = () => {
     if (!lessonData || !lessonData.lessonTopics || !selectedTopic) return false;
     const lastTopic = lessonData.lessonTopics[lessonData.lessonTopics.length - 1];
     return lastTopic.topicId === selectedTopic.topicId;
-  };
-
-  const handleProceedToQuiz = () => {
-    const quiz = lessonQuizzes.length ? lessonQuizzes[0] : null; // Assuming you take the first quiz associated with the lesson
-    if (quiz) {
-      navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`); // Pass the quiz ID to the quiz form
-    } else {
-      alert('No quiz available for this lesson.');
-    }
   };
 
   const hasQuestions = (topic) => {
@@ -232,7 +229,7 @@ const TopicsPage = () => {
               <div>
                 <h4 style={{ color: '#404040' }}>Lesson {selectedTopic.lessonId}.{lessonData.lessonTopics.indexOf(selectedTopic) + 1} - {selectedTopic.topicTitle}</h4>
                 <div className="lesson-content">
-                  {Object.entries(selectedTopic.topicContent).map(([key, value]) => (
+                  {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`}>
                       {value.type === "text" && <div style={{ textAlign: 'left', marginLeft: '30px' }} dangerouslySetInnerHTML={{ __html: value.content }} />}
                       {value.type === "question" && (
