@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LinearProgress } from '@mui/material';
 import '../PagesCSS/LessonProgressPage.css';
 import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
@@ -16,6 +17,7 @@ const LessonProgressPage = () => {
                 const result = await getProgressForAllLessonsFromDb(user.uid);
                 if (result.success) {
                     setLessonProgress(result.data);
+                    console.log("Lesson Progress Data:", result.data);
                 } else {
                     console.error("Failed to fetch lesson progress:", result.message);
                 }
@@ -28,27 +30,40 @@ const LessonProgressPage = () => {
     return (
         <div className="Profilepage">
             <ReusableAppBar />
-            <div className='lessonprog-wrapper'>
-                <div className='lessonprog-content-container'>
-                    <div className='lessonproginfo-left-side'>
+            <div className='profile-wrapper'>
+                <div className='profile-content-container'>
+                    <div className='personalinfo-left-side'>
                         <ReusableChoices />
                     </div>
-                    <div className='lessonproginfo-right-side'>
-                        <div className='lessonprog-container'>
-                            <div className='lessonprog-title'>Learning Progress</div>
-                            <div className='userlessonprog-container'>
+                    <div className='personalinfo-right-side'>
+                        <div className="PI-container-lesson">
+                            <div className="PI-title">LEARNING PROGRESS</div>
+                            <div className="lesson-container">
                                 {loading ? (
                                     <p>Loading lesson progress...</p>
                                 ) : (
                                     lessonProgress ? (
-                                        <ul>
-                                            {lessonProgress.map(lesson => (
-                                                <div key={lesson.lessonId}>
-                                                    <div>Title: {lesson.lessonTitle}</div>
-                                                    <div>Progress: {lesson.progress}%</div>
+                                        Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
+                                            <div key={lessonTitle} className="lesson-container-bar">
+                                                <div className="lesson-title">{lessonTitle}: {progress}%</div>
+                                                <div className="progress-bar-wrapper">
+                                                    <LinearProgress
+                                                        variant="determinate"
+                                                        value={progress}
+                                                        sx={{
+                                                            height: '0.75rem',
+                                                            width: '98%',
+                                                            backgroundColor: '#ffffff',
+                                                            '& .MuiLinearProgress-bar': {
+                                                                backgroundColor: '#76c043',
+                                                                marginTop: '1.5px',
+                                                                borderRadius: 25,
+                                                            }
+                                                        }}
+                                                    />
                                                 </div>
-                                            ))}
-                                        </ul>
+                                            </div>
+                                        ))
                                     ) : (
                                         <p>No lesson progress data available.</p>
                                     )
