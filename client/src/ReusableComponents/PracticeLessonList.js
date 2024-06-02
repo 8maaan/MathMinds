@@ -3,7 +3,7 @@ import { Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typogr
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/PracticeLessonList.css';
 import { useNavigate } from 'react-router-dom';
-import { getAllLessonsFromDb } from '../API-Services/LessonAPI'; // Import your API service
+import { getAllLessonsFromDb } from '../API-Services/LessonAPI'; 
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A" },
@@ -13,7 +13,7 @@ const colorPalettes = [
     // Add more color palettes as needed
 ];
 
-const PracticeLessonList = () => {
+const PracticeLessonList = ({ onLessonStart }) => {
     const navigateTo = useNavigate();
     const [lessons, setLessons] = useState([]);
     const [expanded, setExpanded] = useState(null);
@@ -33,6 +33,15 @@ const PracticeLessonList = () => {
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : null);
     };
+
+    const handleStartClick = (lesson) =>{
+        const { lessonId, lessonTopics } = lesson;
+        console.log("Lesson ID:", lessonId);
+        const topicId = lessonTopics.length > 0 ? lessonTopics[0].topicId : null; 
+        console.log("Topic ID:", topicId);
+        navigateTo(`/practice-event/${lessonId}/${topicId}`);
+    }
+    
 
     return(
         <div className='lesson-list' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -83,7 +92,12 @@ const PracticeLessonList = () => {
                             </Box>
 
                             <AccordionActions>
-                                <Button style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }}>Start</Button>
+                                <Button
+                                    style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }}
+                                    onClick={() => handleStartClick(lesson)}
+                                >
+                                    Start
+                                </Button>
                             </AccordionActions>
                         </AccordionDetails>
                     </Accordion>
@@ -94,3 +108,4 @@ const PracticeLessonList = () => {
 }
 
 export default PracticeLessonList;
+

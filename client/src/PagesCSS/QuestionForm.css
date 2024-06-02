@@ -1,0 +1,8 @@
+/* nakalimut nako para asa ni */
+
+.container{
+    display: flex;
+    align-items: center;
+    align-self: center;
+}
+  

@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .button-hover-effect:hover {
+    animation: pulse 1s infinite;
+  }
+
+  .containerChoice {
+    background-color: #ffec86 !important;
+  }
+
+  /* wala koy sure kung naa bani effect pero murag wala man nag respond ani sa js*/
+
+
+.myButton:hover {
+    background-color: darkblue;  
+}

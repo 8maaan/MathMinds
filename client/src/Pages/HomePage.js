@@ -6,9 +6,8 @@ import homepageDashboardBtn from '../Images/HomePage_DashboardBtn.png';
 import homepageLessonBtn from '../Images/HomePage_LessonsBtn.png';
 import homepagePracticeBtn from '../Images/HomePage_PracticeBtn.png';
 
-
 const HomePage = () => {
-    const navigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
     return (
         <div>

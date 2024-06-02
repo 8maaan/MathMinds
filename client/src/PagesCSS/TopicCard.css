@@ -1,0 +1,29 @@
+.playButton {
+    background-color: #ffb100 !important; 
+    color: #181a52 !important; 
+    font-weight: bold !important;
+    padding: 12px 60px !important; 
+    border-radius: 20px !important; 
+    font-size: 16px !important; 
+    text-transform: uppercase !important; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important; 
+    transition: background-color 0.3s !important;
+    width: 380px !important;
+  }
+  
+  .playButton:hover {
+    background-color: #cc8f00 !important; 
+  }
+
+
+
+  .backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px); /* Adjust blur level kung feel nga needed */
+    background-color: rgb(255, 255, 255, 0.3); /*blur effect ari*/
+    z-index: 1200;
+  }
