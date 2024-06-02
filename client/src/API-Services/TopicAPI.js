@@ -39,3 +39,14 @@ export const deleteTopicFromDb = async (topicId) => {
         return { success: false, message: "Failed to delete topic", error: error.response ? error.response.data : error.message };
     }
 };
+
+export const getAllTopicsFromDb = async () => {
+    try {
+        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_TOPICS);
+        //console.log(response.data)
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error("Error fetching topics: ", error);
+        return { success: false, message: "Failed to fetch topics" };
+    }
+};
