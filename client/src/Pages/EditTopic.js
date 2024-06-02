@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../PagesCSS/CreateTopic.css';
 import TopicContentContainer from '../ReusableComponents/TopicContentContainer';
@@ -179,6 +179,7 @@ const EditTopic = () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
+                <Typography class='createTopic-title'>Edit a Topic</Typography>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>

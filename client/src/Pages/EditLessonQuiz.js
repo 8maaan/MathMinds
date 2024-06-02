@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import '../PagesCSS/CreateTopic.css';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
@@ -124,7 +124,8 @@ const EditLessonQuiz = () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <div className='createTopic-body'>
+                <Typography class='createTopic-title'>Edit a quiz</Typography>
+                <div className='createTopic-body' sx={{marginTop:'2%'}}>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Lesson</InputLabel>
@@ -135,7 +136,7 @@ const EditLessonQuiz = () => {
                             </Select>
                         </FormControl>
                         <div style={{ marginTop: '1.5%' }}>
-                            <Button onClick={handleAddQuestion} variant='contained'>Add Question</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={{fontFamily:'Poppins'}}>Add Question</Button>
                         </div>
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} >
@@ -156,7 +157,7 @@ const EditLessonQuiz = () => {
                             {quizQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No questions currently 📝</p> : null}
                         </div>
                     </DndContext>
-                    <Button type="submit" variant='contained' sx={{ mt: 2 }}>Submit</Button>
+                    <Button type="submit" variant='contained' sx={{ mt: 2, fontFamily:'Poppins' }}>Submit</Button>
                 </div>
             </form>
         </div>
