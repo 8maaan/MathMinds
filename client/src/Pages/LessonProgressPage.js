@@ -8,7 +8,7 @@ import { UserAuth } from '../Context-and-routes/AuthContext';
 
 const LessonProgressPage = () => {
     const { user } = UserAuth();
-    const [lessonProgress, setLessonProgress] = useState(null);
+    const [lessonProgress, setLessonProgress] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -39,35 +39,30 @@ const LessonProgressPage = () => {
                         <div className="PI-container-lesson">
                             <div className="PI-title">LEARNING PROGRESS</div>
                             <div className="lesson-container">
-                                {loading ? (
-                                    <p>Loading lesson progress...</p>
-                                ) : (
-                                    lessonProgress ? (
-                                        Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
-                                            <div key={lessonTitle} className="lesson-container-bar">
-                                                <div className="lesson-title">{lessonTitle}: {progress}%</div>
+                                    <ul>
+                                        {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
+                                            <li key={lessonTitle}>
+                                                {lessonTitle}: {progress}%
                                                 <div className="progress-bar-wrapper">
-                                                    <LinearProgress
-                                                        variant="determinate"
-                                                        value={progress}
-                                                        sx={{
-                                                            height: '0.75rem',
-                                                            width: '98%',
-                                                            backgroundColor: '#ffffff',
-                                                            '& .MuiLinearProgress-bar': {
-                                                                backgroundColor: '#76c043',
-                                                                marginTop: '1.5px',
-                                                                borderRadius: 25,
-                                                            }
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p>No lesson progress data available.</p>
-                                    )
-                                )}
+                                                <LinearProgress 
+                                            variant="determinate" 
+                                            value={Number(progress)} // Convert progress to a number
+                                            sx={{
+                                                height: '0.75rem',
+                                                borderRadius: 5,
+                                                backgroundColor: '#ffffff',
+                                                '& .MuiLinearProgress-bar': {
+                                                    backgroundColor: '#76c043',
+                                                    borderRadius: 5,
+                                                }
+                                            }}
+                                        />
+                                      </div>
+
+                                            </li>
+                                        ))}
+                                    </ul>
+                               
                             </div>
                         </div>
                     </div>
