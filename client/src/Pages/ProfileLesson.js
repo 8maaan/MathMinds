@@ -2,7 +2,6 @@ import React from 'react';
 import { LinearProgress} from '@mui/material';
 import '../PagesCSS/ProfilePage.css'; 
 import '../PagesCSS/ProfileLesson.css';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { useNavigate } from 'react-router-dom';
 
 const ProfileLesson = () => {
@@ -27,7 +26,6 @@ const ProfileLesson = () => {
 
     return (
         <div className="Profilepage">
-    <ReusableAppBar />
     <div className='profile-wrapper'>
         <div className='profile-content-container'>
             <div className='personalinfo-left-side'>

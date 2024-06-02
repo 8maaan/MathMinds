@@ -6,7 +6,6 @@ const LessonsPage = () => {
 
     return (
         <div>
-            {/* <ReusableAppBar/> */}
             <LessonsBox/>
         </div>
       )

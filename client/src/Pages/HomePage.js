@@ -12,7 +12,6 @@ const HomePage = () => {
     return (
         <div>
             <div class="Homepage">
-                {/* <ReusableAppBar/> */}
                 <Box>
                     <Typography class='home-header'>
                         Hey there, math explorer!

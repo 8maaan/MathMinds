@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography, Paper, Grid, Button } from '@mui/material';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../PagesCSS/ScoreTest.css';
 
@@ -56,7 +55,6 @@ const ScoreTest = () => {
 
   return (
     <div>
-      <ReusableAppBar />
       <ThemeProvider theme={theme}>
         <div className="overallContainer">
           <div className="scoresContainer">

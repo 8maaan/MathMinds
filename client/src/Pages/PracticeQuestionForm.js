@@ -8,9 +8,9 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import PracticeAnswerModal from '../ReusableComponents/PracticeAnswerModal';
 import CongratulatoryModal from '../ReusableComponents/CongratulatoryModal';
+import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 
 const theme = createTheme({
   typography: {
@@ -161,7 +161,7 @@ const PracticeQuestionForm = () => {
   };
 
   if (!topic || practices.length === 0) {
-    return <div>Loading...</div>;
+    return <LoadingAnimations/>
   }
 
   const currentQuestion = practices[currentQuestionIndex].practice_qa[1];
@@ -174,7 +174,6 @@ const PracticeQuestionForm = () => {
   return (
     <ThemeProvider theme={theme}>
       <div className='container'>
-        <ReusableAppBar />
         <Box style={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
           <IconButton onClick={handlePrevQuestion}>
             <ArrowBackIosIcon style={iconStyle} />

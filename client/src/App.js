@@ -15,6 +15,8 @@ import TeacherLessonsPage from './Pages/TeacherLessonsPage';
 import PracticePage from './Pages/PracticePage';
 import TopicsPage from './Pages/TopicsPage'
 import EditTopicPage from './Pages/EditTopic';
+import CreateLessonQuizPage from './Pages/CreateLessonQuiz';
+import EditLessonQuizPage from './Pages/EditLessonQuiz'; 
 
 import ProfileLessonPage from './Pages/ProfileLesson';
 import CreatePracticePage from './Pages/CreatePractice';
@@ -60,6 +62,8 @@ function App() {
             <Route path="/create-topic" element={<ProtectedRoute requireTeacher><CreateTopic/></ProtectedRoute>} />
             <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
             <Route path="/edit-topic/:topicId" element={<ProtectedRoute requireTeacher><EditTopicPage /></ProtectedRoute>} />
+            <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuizPage /></ProtectedRoute>} />
             
 
             <Route path="*" element={<PageNotFound/>} />

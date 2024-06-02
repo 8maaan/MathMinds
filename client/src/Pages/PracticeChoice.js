@@ -80,7 +80,7 @@ function PracticeChoice({onClose}) {
                         <BouncingButton
                             variant="contained"
                             className="button-hover-effect"
-                            sx={{ bgcolor: '#518bbc', '&:hover': { bgcolor: 'darkblue' }, marginLeft: '4rem', marginRight: '0.125rem', borderRadius: '0.25rem' }}
+                            sx={{ bgcolor: '#5999cf', '&:hover': { bgcolor: '#497eab' }, marginLeft: '4rem', marginRight: '0.125rem', borderRadius: '0.25rem' }}
                             onClick={() => handleButtonClick('SOLO')}>
                             SOLO
                         </BouncingButton>

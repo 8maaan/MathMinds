@@ -59,7 +59,7 @@ function PracticeEvent() {
     },
     palette: {
       text: {
-        primary: '#181a52'
+        primary: '#f5f5f5'
       }
     }
   });
@@ -192,14 +192,14 @@ function PracticeEvent() {
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
                   <Box key={`default-${index}`} className="slideItem">
                     <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
-                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>No topics yet</Typography>
+                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>TBA</Typography>
                     </Paper>
                   </Box>
                 ))
               ) : null}
               {topics.map((topic, index) => (
                 <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
-                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }}>
+                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{'&hover':{cursor:'pointer'}}}>
                     <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>

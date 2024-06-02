@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography, Container, Paper, Modal } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import { getAllLessonsQuiz } from '../API-Services/LessonQuizAPI';
+import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 
 const theme = createTheme({
   typography: {
@@ -47,15 +47,12 @@ const QuizQuestionForm = () => {
     fetchQuiz();
   }, [quizId]);
 
-  if (!quiz) {
-    return <div>Loading...</div>;
-  }
 
   const questions = Object.values(quiz.lessonQuizQA);
   const currentQuestion = questions[currentQuestionIndex];
 
-  if (!currentQuestion) {
-    return <div>Loading...</div>;
+  if (!quiz || !currentQuestion) {
+    return <LoadingAnimations/>
   }
 
   const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
@@ -85,7 +82,6 @@ const QuizQuestionForm = () => {
   return (
     <ThemeProvider theme={theme}>
       <div className='container'>
-        <ReusableAppBar />
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '120px', position: 'relative' }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
             {quiz.lessonTitle} - Final Assessment
