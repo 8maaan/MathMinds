@@ -36,7 +36,7 @@
 .personalinfo-right-side{
     flex-direction: column;
     width: 65%;
-    border: solid black 1px;
+    /* border: solid black 1px; */
     background-color:  #FFFACD; 
     border-radius:25px ;
     height: 100%;
@@ -266,13 +266,15 @@
 
 .lesson-container {
     display: flex;
+    justify-content: center;
     flex-direction: column;
     /* Light yellow background as per design */
     padding: 10px;
     border-radius: 10px; /* Rounded corners */
     /* border: 2px solid #FF4500;  */
-    margin: 10px 0;
+    margin: 5% 0% 0% 3.3%;
     height: 100%;
+    width: 90%;
 }   
 
 .lesson-title {
@@ -289,23 +291,18 @@
 .MuiLinearProgress-root {
     height: 20px;
     border-radius: 5px;
+
     /* border: solid black 1px; */
 }
 
-.MuiLinearProgress-colorPrimary {
-    background-color: #e0e0e0; /* Light grey for unfilled part */
-}
-
-.MuiLinearProgress-barColorPrimary {
-    background-color: #76c043; /* Green progress part */
-}
 
 .lesson-container-bar{
     background-color: #ffb100;
-    width: 90%;
+    width: 80%;
     margin-bottom: 20px; 
     height: 100%;
     border-radius:15px ;
+    
 }
 
 .lesson-container{
@@ -316,11 +313,9 @@
 }
 
 .progress-bar-wrapper{
-    display: flex;
-    justify-content: center;
-    margin-left: 5%;
-    height: 20%;
-    width: 92%;
+  
+    height: 2rem;
+    width: 25rem;
     background-color: #e0e0e0; 
     border-radius: 20px;
     /* border:solid black 1px; */

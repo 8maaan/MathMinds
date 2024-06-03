@@ -22,7 +22,7 @@ const HomePage = () => {
                 </Box>
 
                 <Box className='image-buttons'>
-                    <Button className='image-buttons-margin'onClick={()=> navigateTo('*')}>
+                    <Button className='image-buttons-margin'onClick={()=> navigateTo('/profile')}>
                         <img src={homepageDashboardBtn} alt="Dashboard" className='img-button-size'/>
                     </Button>
                     <Button className='image-buttons-margin' onClick={()=> navigateTo('/lessons')} sx={{marginLeft: 3, marginRight: 3}}>

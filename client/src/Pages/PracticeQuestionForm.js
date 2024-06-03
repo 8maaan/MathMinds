@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTopicById } from '../API-Services/TopicAPI';
@@ -52,7 +51,7 @@ const PracticeQuestionForm = () => {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [isEndOfPractice, setIsEndOfPractice] = useState(false);
-
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,15 +91,30 @@ const PracticeQuestionForm = () => {
 
   const handleOptionConfirmation = () => {
     setIsConfirming(false);
-    const currentQuestion = practices[currentQuestionIndex].practice_qa[1];
-    const isCorrect = selectedOption === currentQuestion.correctAnswer;
+    const currentPractice = practices[currentQuestionIndex];
+    if (!currentPractice || !currentPractice.practice_qa) {
+      console.error("Practice data is missing or invalid");
+      return;
+    }
 
+    const currentQuestionData = currentPractice.practice_qa;
+    const questionKeys = Object.keys(currentQuestionData);
+    const currentQuestionKey = questionKeys[0]; // Assuming only one question per practice for now
+    const currentQuestion = currentQuestionData[currentQuestionKey];
+  
+    if (!currentQuestion) {
+      console.error("Current question is undefined");
+      return;
+    }
+  
+    const isCorrect = selectedOption === currentQuestion.correctAnswer;
+  
     setAnsweredQuestions(prevAnswers => {
       const updatedAnswers = [...prevAnswers];
       updatedAnswers[currentQuestionIndex] = true;
       return updatedAnswers;
     });
-
+  
     if (isCorrect) {
       setIsCorrectAnswer(true);
       setCorrectAnswers(prevCorrectAnswers => {
@@ -164,7 +178,22 @@ const PracticeQuestionForm = () => {
     return <LoadingAnimations/>
   }
 
-  const currentQuestion = practices[currentQuestionIndex].practice_qa[1];
+  const currentPractice = practices[currentQuestionIndex];
+  if (!currentPractice || !currentPractice.practice_qa) {
+
+    return null;
+  }
+
+  const currentQuestionData = currentPractice.practice_qa;
+  const questionKeys = Object.keys(currentQuestionData);
+  const currentQuestionKey = questionKeys[0]; 
+  const currentQuestion = currentQuestionData[currentQuestionKey];
+
+  if (!currentQuestion) {
+   
+    return null;
+  }
+
   const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
   const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
   const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
@@ -191,7 +220,7 @@ const PracticeQuestionForm = () => {
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
               {currentQuestion.question}
-              </Typography>
+            </Typography>
             <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
               Question {currentQuestionIndex + 1}
             </Typography>
@@ -261,4 +290,5 @@ const PracticeQuestionForm = () => {
 };
 
 export default PracticeQuestionForm;
+
 

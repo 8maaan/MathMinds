@@ -37,27 +37,29 @@ const LessonProgressPage = () => {
                     </div>
                     <div className='personalinfo-right-side'>
                         <div className="PI-container-lesson">
-                            <div className="PI-title">LEARNING PROGRESS</div>
+                            <div className="PI-title">Lesson Progress</div>
                             <div className="lesson-container">
                                     <ul>
                                         {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
                                             <li key={lessonTitle}>
                                                 {lessonTitle}: {progress}%
-                                                <div className="progress-bar-wrapper">
+                                                
                                                 <LinearProgress 
+                                            className="progress-bar-wrapper"
                                             variant="determinate" 
-                                            value={(progress)} // Convert progress to a number
+                                            value={(progress)} 
                                             sx={{
                                                 height: '0.75rem',
                                                 borderRadius: 5,
                                                 backgroundColor: '#ffffff',
                                                 '& .MuiLinearProgress-bar': {
                                                     backgroundColor: '#76c043',
+                                                   
                                                     borderRadius: 5,
                                                 }
                                             }}
                                         />
-                                      </div>
+                                      
 
                                             </li>
                                         ))}

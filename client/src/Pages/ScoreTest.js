@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography, Paper, Grid, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../PagesCSS/ScoreTest.css';
+import { getUserProfileInfoFromDb } from '../API-Services/UserAPI';
+import { UserAuth } from '../Context-and-routes/AuthContext';
 
 const theme = createTheme({
   typography: {
@@ -36,22 +38,41 @@ const theme = createTheme({
 const ScoreTest = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { correctAnswers, totalQuestions } = location.state;
+  const { user } = UserAuth();
+  const [loading, setLoading] = useState(true);
+  const { correctAnswers, totalQuestions } = location.state || {};
+  const [userProfileInfo, setUserProfileInfo] = useState({ fname: '' });
 
-  const scores = [
+  // Fetch user profile info
+  useEffect(() => {
+    const fetchUserProfileInfo = async () => {
+      if (user) {
+        const result = await getUserProfileInfoFromDb(user.uid);
+        if (result.success) {
+          setUserProfileInfo(result.data);
+        } else {
+          console.error("Failed to fetch user profile info");
+        }
+        setLoading(false);
+      }
+    };
+    fetchUserProfileInfo();
+  }, [user]);
+
+  const scores = correctAnswers !== undefined && totalQuestions !== undefined ? [
     {
       id: 1,
-      name: 'Name',
+      name: userProfileInfo.fname, 
       questionsCorrect: correctAnswers,
       totalQuestions: totalQuestions,
       score: correctAnswers * 10,
       totalScore: totalQuestions * 10,
     },
-  ];
+  ] : [];
 
-  const onClickDone = ()=>{
-     navigate('/practice');
-  }
+  const onClickDone = () => {
+    navigate('/practice');
+  };
 
   return (
     <div>
