@@ -25,7 +25,8 @@ import PracticeChoicePage from './Pages/PracticeChoice';
 import QuestionFormPage from './Pages/PracticeQuestionForm';
 import ScoreTestPage from './Pages/ScoreTest';
 import PracticeEventPage from './Pages/practiceEvent';
-
+import BadgesPage from './Pages/BadgesPage';
+import LessonProgressPage from './Pages/LessonProgressPage';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="/register" element={<GuestRoute> <RegisterPage/> </GuestRoute>}/>
 
             {/* PROTECTED ROUTES */}
+       
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
             <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
@@ -65,6 +67,8 @@ function App() {
             <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuizPage /></ProtectedRoute>} />
             <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuizPage /></ProtectedRoute>} />
             
+            <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
+            <Route path="/lesson-progress" element={<ProtectedRoute> <LessonProgressPage/> </ProtectedRoute>}/>
 
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
