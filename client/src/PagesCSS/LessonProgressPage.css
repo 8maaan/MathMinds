@@ -45,7 +45,6 @@
 .personalinfo-left-side{
     display: flex;
     width: 35%;
-    border: solid rgb(54, 140, 253) 1px; 
     /* border: solid black 1px; */
 }
 .choices-container{
@@ -119,7 +118,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #00ff80;
     font-family: 'Poppins';
     font-size: 40px;
     font-weight: 900;
@@ -168,7 +166,7 @@
 }
 .profile-info-textfields{
     width: 80%;
-    border: solid black 1px;
+    /* border: solid black 1px; */
    
 }
 
@@ -272,7 +270,7 @@
     /* Light yellow background as per design */
     padding: 10px;
     border-radius: 10px; /* Rounded corners */
-    border: 2px solid #FF4500; /* Red border as per design */
+    /* border: 2px solid #FF4500;  */
     margin: 10px 0;
     height: 100%;
 }   

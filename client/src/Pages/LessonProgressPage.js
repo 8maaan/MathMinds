@@ -46,7 +46,7 @@ const LessonProgressPage = () => {
                                                 <div className="progress-bar-wrapper">
                                                 <LinearProgress 
                                             variant="determinate" 
-                                            value={Number(progress)} // Convert progress to a number
+                                            value={(progress)} // Convert progress to a number
                                             sx={{
                                                 height: '0.75rem',
                                                 borderRadius: 5,
