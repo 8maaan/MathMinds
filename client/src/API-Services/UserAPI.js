@@ -51,7 +51,7 @@ export const getAllUsersFromDb = async () => {
 export const getProgressForAllLessonsFromDb = async (uid) => {
     try {
         // Send a GET request to fetch lesson progress data for a user
-        const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_ALL_LESSON_PROGRESS}?uid=${uid}`);
+        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_ALL_LESSON_PROGRESS.replace("{uid}", uid));
         return { success: true, data: response.data };
     } catch (error) {
         // Handle errors
