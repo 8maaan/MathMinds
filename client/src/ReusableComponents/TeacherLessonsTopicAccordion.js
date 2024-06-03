@@ -148,7 +148,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                             <CloseIcon
                                                     sx={{
                                                     color: "#181A52",
-                                                    marginRight: "12px",
+                                                   // marginRight: "12px",
                                                     '&:hover': {
                                                         color: "#FF0000",
                                                         cursor: 'pointer'
