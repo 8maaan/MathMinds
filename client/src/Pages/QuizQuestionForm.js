@@ -47,12 +47,19 @@ const QuizQuestionForm = () => {
     fetchQuiz();
   }, [quizId]);
 
+  if (!quiz) {
+
+    return <div>Loading...</div>;
+
+  }
 
   const questions = Object.values(quiz.lessonQuizQA);
   const currentQuestion = questions[currentQuestionIndex];
 
-  if (!quiz || !currentQuestion) {
-    return <LoadingAnimations/>
+  if (!currentQuestion) {
+
+    return <div>Loading...</div>;
+
   }
 
   const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];

@@ -17,6 +17,7 @@ import TopicsPage from './Pages/TopicsPage'
 import EditTopicPage from './Pages/EditTopic';
 import CreateLessonQuizPage from './Pages/CreateLessonQuiz';
 import EditLessonQuizPage from './Pages/EditLessonQuiz'; 
+import QuizQuestionForm from './Pages/QuizQuestionForm';
 
 import ProfileLessonPage from './Pages/ProfileLesson';
 import CreatePracticePage from './Pages/CreatePractice';
@@ -66,6 +67,7 @@ function App() {
             <Route path="/edit-topic/:topicId" element={<ProtectedRoute requireTeacher><EditTopicPage /></ProtectedRoute>} />
             <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuizPage /></ProtectedRoute>} />
             <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
             <Route path="/lesson-progress" element={<ProtectedRoute> <LessonProgressPage/> </ProtectedRoute>}/>

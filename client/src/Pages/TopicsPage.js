@@ -61,6 +61,9 @@ const TopicsPage = () => {
     fetchLessonTopics();
   }, [lessonId, topicId]);
 
+  // console.log(lessonQuizzes);
+  // console.log(lessonData);
+
   // FOR THE CHOICES
   useEffect(() => {
     if (selectedTopic && selectedTopic.topicContent) {
@@ -153,6 +156,7 @@ const TopicsPage = () => {
     setLoading(false);
 
     const quiz = lessonQuizzes.length ? lessonQuizzes[0] : null;
+    console.log(quiz);
     if (quiz) {
       navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`); // Pass the quiz ID to the quiz form
     } else {
