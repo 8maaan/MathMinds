@@ -1,12 +1,23 @@
+.App-practice-body{
+    background-image: url('../Images/BG2.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: repeat-y;  
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+}
+
 .practice-header {
     color: #181A52;
     font-family: 'Poppins', sans-serif;
     font-weight: 900;
     font-size: 50px;
     text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-    margin-top: 8.5%; /* CHANGED TO 8.5% -densha*/
+    padding-top: 5%; /* CHANGED TO padding and 5% -densha*/
     text-align: left;
     margin-left: 11.5%;  /* CHANGED FROM 10% TO 11.5% -RIBO*/
+    z-index: 4;
 }
 
 .practice-paragraph {
@@ -17,6 +28,7 @@
     margin-left: 11.5%; /* CHANGED FROM 10% TO 11.5% -RIBO*/
     margin-right: 5%;
     margin-top: 3%;
+    z-index: 4;
 }
 
 @media (max-width: 1024px){
@@ -26,7 +38,7 @@
         font-weight: 900;
         font-size: 40px;
         text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        margin-top: 12%;
+        padding-top: 12%;
         text-align: left;
         margin-left: 8%;
     }
@@ -47,7 +59,7 @@
         font-weight: 900;
         font-size: 35px;
         text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        margin-top: 13%;
+        padding-top: 13%;
         text-align: left;
         margin-left: 8%;
     }
@@ -68,7 +80,7 @@
         font-weight: 900;
         font-size: 30px;
         text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        margin-top: 19%; /* CHANGED FROM 20% TO 15%*/
+        padding-top: 19%; /* CHANGED FROM 20% TO 15%*/
         text-align: left;
         margin-left: 8%;
     }

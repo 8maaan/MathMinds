@@ -8,7 +8,7 @@ import homepagePracticeBtn from '../Images/HomePage_PracticeBtn.png';
 
 const HomePage = () => {
     return (
-        <div>
+        <div className='App-home-body'>
             <div className="Homepage">
                 <Box>
                     <Typography class="home-header">

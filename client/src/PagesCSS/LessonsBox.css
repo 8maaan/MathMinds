@@ -5,7 +5,7 @@
     align-items: center; /* Center items horizontally */
     min-height: 100vh; /* Take the full height of the viewport */
     width: 100%; /* Ensure it takes full width */
-    margin-top: 7%;
+    padding-top: 7%;
 }
 
 .lesson-box {

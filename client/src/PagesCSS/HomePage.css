@@ -1,14 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
+.App-home-body{
+    background-image: url('../Images/BG2.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: repeat-y;  
+    position: relative;
+    z-index: 1;
+}
+
 .Homepage{
     justify-content: center;
     min-height: 100vh;
+    z-index: 2;
+    position: relative;
 }
 
 .image-buttons{
     align-items: 'center';
     justify-content: 'center';
     margin-top: 4%;
+    padding-bottom: 2%;
 }
 
 
@@ -27,9 +39,10 @@
     font-weight: 900;
     font-size: 50px;
     text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-    margin-top: 8.5%; /* CHANGED TO 8.5% -densha*/
+    padding-top: 5%; /* CHANGED TO padding then 5% -densha*/
     text-align: left;
     margin-left: 11.5%;  /* CHANGED FROM 10% TO 11.5% -RIBO*/
+    z-index: 3;
 }
 
 .home-paragraph {
@@ -39,6 +52,7 @@
     text-align: left;
     margin-left: 11.5%; /* CHANGED FROM 10% TO 11.5% -RIBO*/
     margin-right: 5%;
+    z-index: 3;
 }
 
 .image-bg-size {
@@ -95,7 +109,7 @@
         font-weight: 900;
         font-size: 40px;
         text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        margin-top: 12%;
+        padding-top: 7%; /* changed to padding and 7%*/
         text-align: left;
         margin-left: 8%;
     }
@@ -143,7 +157,7 @@
         font-weight: 900;
         font-size: 35px;
         text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        margin-top: 13%;
+        padding-top: 9%; /* changed to padding */
         text-align: left;
         margin-left: 8%;
     }
@@ -217,7 +231,7 @@
         font-weight: 900;
         font-size: 30px;
         text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        margin-top: 19%; /* CHANGED FROM 20% TO 15%*/
+        padding-top: 15%; /* changed to padding and to 15%*/
         text-align: left;
         margin-left: 8%;
     }

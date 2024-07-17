@@ -115,7 +115,6 @@ const ProfilePage = () => {
 
     return (
         <div className="Profilepage">
-            <ReusableAppBar />
             <div className='profile-wrapper'>
                 <div className='profile-content-container'>
                     <div className='personalinfo-left-side'>

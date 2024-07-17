@@ -8,7 +8,6 @@ import ReusableChoices from '../ReusableComponents/ReusableChoices';
 const BadgesPage = () => {
     return (
         <div className="Profilepage">
-            <ReusableAppBar />
             <div className='badges-wrapper'>
                 <div className='badges-content-container'>
                     <div className='badgesinfo-left-side'>
