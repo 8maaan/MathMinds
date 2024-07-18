@@ -3,6 +3,16 @@
     src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
 }
 
+.Profilepage{
+    background-image: url('../Images/BG2.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: repeat-y;  
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+}
+
 .body {
    
     background-attachment: fixed;
