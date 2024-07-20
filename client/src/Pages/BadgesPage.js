@@ -1,6 +1,5 @@
 import React from 'react';
 import '../PagesCSS/BadgesPage.css';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 
 

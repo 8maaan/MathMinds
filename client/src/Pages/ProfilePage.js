@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/ProfilePage.css';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import userprofilepic from '../Images/UserDP.png';
 import { Button, TextField, Snackbar } from '@mui/material';
@@ -122,10 +121,10 @@ const ProfilePage = () => {
                     </div>
                     <div className='personalinfo-right-side'>
                         <div className='PI-container'>
-                            <div className='PI-title'>PERSONAL INFORMATION</div>
+                            <div className='PI-title'>Personal Information</div>
                             <div className='logo-and-userinfo-container'>
                                 <div className='profile-logo-container'>
-                                    <img src={userprofilepic} alt='logo' />
+                                    <img src={userprofilepic} alt='display picture' />
                                 </div>
                                 <div className='userinfo-container'>
                                     {loading ? (

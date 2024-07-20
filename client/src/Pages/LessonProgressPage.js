@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 import '../PagesCSS/LessonProgressPage.css';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import { getProgressForAllLessonsFromDb } from '../API-Services/UserAPI';
 import { UserAuth } from '../Context-and-routes/AuthContext';
@@ -34,9 +33,9 @@ const LessonProgressPage = () => {
                     <div className='personalinfo-left-side'>
                         <ReusableChoices />
                     </div>
-                    <div className='personalinfo-right-side'>
+                    <div className='personalinfo-right-side-lesson'>
                         <div className="PI-container-lesson">
-                            <div className="PI-title">Lesson Progress</div>
+                            <div className="PI-title-lesson">Lesson Progress</div>
                             <div className="lesson-container">
                                     <ul>
                                         {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (

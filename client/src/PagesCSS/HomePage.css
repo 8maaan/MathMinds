@@ -70,16 +70,6 @@
     padding: 20px;
 }
 
-.box1 {
-    margin-top: 4%;
-    text-align: left;
-    z-index: 2; /* This box will be on top */
-}
-
-.box2 {
-    left: 0px;
-    z-index: 1; /* This box will be on bottom */
-}
 
 /* effects -densha */
 .image-buttons-margin:hover img{
