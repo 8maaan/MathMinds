@@ -19,11 +19,11 @@ const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText
             InputProps={{
                 style: {
                     borderBottom: "none",
-                    borderRadius: "25px",
-                    width: "290px",
+                    borderRadius: "20px",
                     backgroundColor: "white",
-                    boxShadow: "0px 5px rgba(184, 184, 184, 0.75)"
-                }
+                    boxShadow: "0px 3px rgba(184, 184, 184, 0.75)"
+                },
+                disableUnderline: true // Add this line to remove the underline
             }}
             InputLabelProps={{ required: false }}
             name={name}
@@ -32,6 +32,14 @@ const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText
             error={error}
             helperText={helperText}
             disabled={disabled}
+            sx={{
+                '& .MuiFilledInput-root': {
+                    '&:before, &:after': {
+                        borderBottom: 'none',
+                    },
+                    borderRadius: '25px', // Apply your rounded edges here if needed
+                }
+            }}
         />
     </div>
 );
