@@ -5,7 +5,7 @@ import LessonsBox from '../ReusableComponents/LessonsBox';
 const LessonsPage = () => {
 
     return (
-        <div>
+        <div className='App-lessons-body'>
             <LessonsBox/>
         </div>
       )

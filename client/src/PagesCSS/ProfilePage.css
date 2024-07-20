@@ -45,7 +45,7 @@
 .personalinfo-right-side{
     flex-direction: column;
     width: 65%;
- 
+    /*overflow-y: auto;*/
 }
 .personalinfo-left-side{
     display: flex;
