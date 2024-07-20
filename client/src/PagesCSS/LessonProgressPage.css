@@ -4,51 +4,45 @@
 }
 
 .body {
-    
     background-attachment: fixed;
-    min-height: 100vh; 
-    /* border: solid black 1px; */
+    min-height: 100vh;
 }
 
 .profile-wrapper,
-.profile-content-container{
+.profile-content-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /* border: solid black 1px; */
 }
 
-.profile-content-container{
+.profile-content-container {
     width: 70%;
     height: 60vh;
-    /*background-color: #FAFAFA;*/
     padding: 2.5%;
-    /* border: solid black 1px;  */
 }
 
 .personalinfo-right-side,
-.personalinfo-left-side{
+.personalinfo-left-side {
     display: flex;
     height: 100%;
-    /* border: solid black 1px;  */
 }
-.personalinfo-right-side-lesson{
+
+.personalinfo-right-side-lesson {
     flex-direction: column;
     width: 65%;
-    /* border: solid black 1px; */
-    background-color:  #F6E6C3;
-    box-shadow: 0px 3px rgba(184, 184, 184, 0.75); 
-    border-radius:25px ;
+    background-color: #F6E6C3;
+    box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
+    border-radius: 25px;
     height: 100%;
- 
 }
-.personalinfo-left-side{
+
+.personalinfo-left-side {
     display: flex;
     width: 35%;
-    /* border: solid black 1px; */
 }
-.choices-container{
+
+.choices-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -58,63 +52,48 @@
     height: 60%;
     box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
     border-radius: 25px;
-    background-color: #d8bc7966;    
-    /* border: solid rgb(0, 0, 0); */
+    background-color: #d8bc7966;
 }
-.PI-button{
+
+.PI-button,
+.LessonProg-button,
+.Badges-button {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 85%;
     height: 25%;
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-weight: 500;
+    color: #181A52;
+}
+
+.PI-button {
     border-radius: 20px 20px 0px 0px;
     background-color: #F94848;
-    font-family: 'Poppins';
-    font-size: 20px;
-    font-weight: 500;   
-    color: #181A52;
-    /* border: solid black 1px; */
 }
-.LessonProg-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85%;
-    height: 25%;
+
+.LessonProg-button {
     background-color: #518BBC;
-    font-family: 'Poppins';
-    font-size: 20px;
-    font-weight: 500;   
-    color: #181A52;
-    /* border: solid black 1px; */
 }
-.Badges-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85%;
-    height: 25%;
+
+.Badges-button {
     border-radius: 0px 0px 20px 20px;
     background-color: #4CAE4F;
-    font-family: 'Poppins';
-    font-size: 20px;
-    font-weight: 500;   
-    color: #181A52;
-    /* border: solid black 1px; */
 }
 
-
-.PI-container{
+.PI-container-lesson {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: #F6E6C3;  
+    background-color: #F6E6C3;
     box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
-    border-radius: 25px;  
-    /* border: solid black 1px; */
+    border-radius: 25px;
 }
-.PI-title-lesson{
+
+.PI-title-lesson {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -124,201 +103,158 @@
     color: #181A52;
     width: 100%;
     height: 20%;
-    padding-top: 3.5%;
-    /* border: solid black 1px; */
-}
-.logo-and-userinfo-container{
-    display:flex;
-    flex-direction: row;
-    width: 100%;
-    height: 80%;
-    /* border: 1px solid #000000; */
+    padding-top: 1%;
 }
 
-.profile-logo-container{
+.lessons-scrollable-container {
+    overflow-y: auto;
+    max-height: 80vh; /* Adjust this value based on your layout */
+}
+
+/* Styling the scrollbar for WebKit browsers (e.g., Chrome, Safari) */
+.lessons-scrollable-container::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+.lessons-scrollable-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.lessons-scrollable-container::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.lessons-scrollable-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+/* Styling the scrollbar for Firefox */
+.lessons-scrollable-container {
+    scrollbar-width: thin; /* Thin scrollbar */
+    scrollbar-color: #888 #f1f1f1; /* Thumb and track colors */
+}
+
+/* For IE and Edge */
+.lessons-scrollable-container {
+    -ms-overflow-style: none; /* Hide default scrollbar */
+}
+
+.lessons-scrollable-container::-ms-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+.lessons-scrollable-container::-ms-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+}
+
+.lessons-scrollable-container::-ms-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+}
+
+.lessons-scrollable-container::-ms-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+
+.lesson-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    /* border: 1px solid #d80077; */
-    width: 40%;
-    height: 50%;
-}
-
-
-.profile-logo-container img{
-    max-width: 100%;
-    max-height: 100%;
+    align-items: flex-start;
+    background-color: #Ffb100;
+    padding: 20px;
+    margin: 10px 0;
     border-radius: 25px;
-    /* border: solid black 1px; */
+    width: 94%;
 }
 
-
-.userinfo-container{
-    /* border: 1px solid #000000; */
-    width: 60%;
-    height: 100%;
-}
-.profile-info-texts{
-    display: flex;
-    flex-direction: row;
+.lesson-title {
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-weight: 700;
+    color: #181A52;
     margin-bottom: 10px;
-    /* border: solid black 1px; */
-    
-}
-.profile-info-textfields{
-    width: 80%;
-    /* border: solid black 1px; */
-   
 }
 
-.customTextField {
-    width: 100%; 
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
-    /* border: solid black 1px; */
-  }
+.progress-bar-wrapper {
+    width: 100%;
+    margin-bottom: 10px;
+}
 
+.progress-percentage {
+    font-family: 'Poppins';
+    font-size: 14px;
+    font-weight: 400;
+    color: #181A52;
+}
 
-
+.lessons-wrapper {
+    padding: 10px;
+    border-radius: 10px;
+    width: 90%;
+    margin: 0% 0% 1% 3.3%;
+}
 
 @media (max-width: 1024px) {
-    .profile-content-container{   
+    .profile-content-container {
         width: 90%;
     }
-
 }
-@media (max-width: 900px) {
 
-    .profile-content-container{
+@media (max-width: 900px) {
+    .profile-content-container {
         margin-top: 700px;
-        display: flex;
         flex-direction: column;
         height: 150vh;
         width: 50%;
     }
-    .personalinfo-left-side{
+    .personalinfo-left-side {
         height: 50vh;
         width: 100%;
         justify-content: center;
     }
-    .choices-container{
+    .choices-container {
         height: 100%;
     }
-
-    .personalinfo-right-side{
+    .personalinfo-right-side {
         margin-top: 50px;
         width: 100%;
     }
-    .logo-and-userinfo-container{
-        display: flex;
+    .logo-and-userinfo-container {
         flex-direction: column;
-
     }
-    .profile-logo-container{
+    .profile-logo-container {
         width: 100%;
         height: 30%;
     }
-    .userinfo-container{
+    .userinfo-container {
         width: 100%;
         height: 70%;
     }
-
 }
-@media (max-width: 700px) {
 
-    .profile-content-container{
+@media (max-width: 700px) {
+    .profile-content-container {
         width: 60%;
     }
-
 }
-@media (max-width: 600px) {
 
-    .profile-content-container{
+@media (max-width: 600px) {
+    .profile-content-container {
         width: 70%;
     }
-
 }
-@media (max-width: 500px) {
 
-    .profile-content-container{
+@media (max-width: 500px) {
+    .profile-content-container {
         width: 90%;
     }
-
 }
-@media (max-width: 400px) {
 
-    .profile-content-container{
+@media (max-width: 400px) {
+    .profile-content-container {
         width: 100%;
     }
-
-}
-
-.profile-progress-bar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #FF4500; /* bright border for visibility */
-    width: 100%; /* Full width of the container */
-    padding: 20px; /* Padding for internal spacing */
-    border-radius: 15px; /* Rounded corners */
-    background-color: #FFFACD; /* Light yellow background */
-}
-
-.lesson-container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    /* Light yellow background as per design */
-    padding: 10px;
-    border-radius: 10px; /* Rounded corners */
-    /* border: 2px solid #FF4500;  */
-    margin: 5% 0% 0% 3.3%;
-    height: 100%;
-    width: 90%;
-}   
-
-.lesson-title {
-    font-family: 'Poppins';
-    display: flex;
-    margin-left: 20px;
-    justify-content: flex-start;
-    font-size: 20px;
-    margin-bottom: 5px;
-    align-self: self-start;
-    height: 20%;
-    /* border: solid black 1px; */
-}
-
-.MuiLinearProgress-root {
-    height: 20px;
-    border-radius: 5px;
-
-    /* border: solid black 1px; */
-}
-
-
-.lesson-container-bar{
-    background-color: #ffb100;
-    width: 80%;
-    margin-bottom: 20px; 
-    height: 100%;
-    border-radius:15px ;
-    
-}
-
-.lesson-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80%;
-}
-
-.progress-bar-wrapper{
-  
-    height: 2rem;
-    width: 25rem;
-    background-color: #e0e0e0; 
-    border-radius: 20px;
-    /* border:solid black 1px; */
 }

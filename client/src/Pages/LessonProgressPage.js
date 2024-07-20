@@ -36,33 +36,30 @@ const LessonProgressPage = () => {
                     <div className='personalinfo-right-side-lesson'>
                         <div className="PI-container-lesson">
                             <div className="PI-title-lesson">Lesson Progress</div>
-                            <div className="lesson-container">
-                                    <ul>
-                                        {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
-                                            <li key={lessonTitle}>
-                                                {lessonTitle}: {progress}%
-                                                
-                                                <LinearProgress 
-                                            className="progress-bar-wrapper"
-                                            variant="determinate" 
-                                            value={(progress)} 
-                                            sx={{
-                                                height: '0.75rem',
-                                                borderRadius: 5,
-                                                backgroundColor: '#ffffff',
-                                                '& .MuiLinearProgress-bar': {
-                                                    backgroundColor: '#76c043',
-                                                   
+                            <div className="lessons-scrollable-container">
+                                <div className="lessons-wrapper">
+                                    {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
+                                        <div className="lesson-container" key={lessonTitle}>
+                                            <div className="lesson-title">{lessonTitle}</div>
+                                            <LinearProgress 
+                                                className="progress-bar-wrapper"
+                                                variant="determinate" 
+                                                value={progress} 
+                                                sx={{
+                                                    height: '0.75rem',
                                                     borderRadius: 5,
-                                                }
-                                            }}
-                                        />
-                                      
-
-                                            </li>
-                                        ))}
-                                    </ul>
-                               
+                                                    backgroundColor: '#ffffff',
+                                                    '& .MuiLinearProgress-bar': {
+                                                        backgroundColor: '#4CAE4F',
+                                                        borderRadius: 5,
+                                                        margin: "3px"
+                                                    }
+                                                }}
+                                            />
+                                            <div className="progress-percentage">{progress}%</div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
