@@ -225,7 +225,7 @@ const EditTopic = () => {
                             </Select>
                         </FormControl>
                         <TextField label='Topic Title' fullWidth required value={topicTitle} onChange={(event) => { setTopicTitle(event.target.value) }} autoComplete='off' />
-                        <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} value={topicDescription} onChange={(event) => { setTopicDescription(event.target.value) }} autoComplete='off' />
+                        <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} value={topicDescription} onChange={(event) => { setTopicDescription(event.target.value) }} autoComplete='off' InputProps={{disableUnderline:true}}/>
                         <div style={{ marginTop: '1.5%' }}>
                             <Button onClick={handleAddContent} variant='contained' sx={{backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={{ ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Question</Button>
@@ -233,35 +233,38 @@ const EditTopic = () => {
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                         <div className='topic-form-container'>
-                            <SortableContext items={topicContents.map(item => item.id)} strategy={verticalListSortingStrategy}>
-                                {topicContents.map(item => {
-                                    if (item.type === 'content') {
-                                        return (
-                                            <TopicContentContainer
-                                                key={item.id}
-                                                id={item.id}
-                                                content={item.content}
-                                                updateContent={updateContent}
-                                                deleteContent={deleteContent}
-                                            />
-                                        );
-                                    } else if (item.type === 'question') {
-                                        return (
-                                            <TopicContentQuestion
-                                                key={item.id}
-                                                id={item.id}
-                                                question={item.question}
-                                                correctAnswer={item.correctAnswer}
-                                                incorrectAnswers={item.incorrectAnswers}
-                                                updateQuestion={updateQuestion}
-                                                deleteContent={deleteContent}
-                                            />
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </SortableContext>
-                            {topicContents.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No contents currently 📝</p> : null}
+                            <div className='topic-scrollable'>
+                                <SortableContext items={topicContents.map(item => item.id)} strategy={verticalListSortingStrategy}>
+                                    {topicContents.map(item => {
+                                        if (item.type === 'content') {
+                                            return (
+                                                <TopicContentContainer
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    content={item.content}
+                                                    updateContent={updateContent}
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
+                                        } else if (item.type === 'question') {
+                                            return (
+                                                <TopicContentQuestion
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    question={item.question}
+                                                    correctAnswer={item.correctAnswer}
+                                                    incorrectAnswers={item.incorrectAnswers}
+                                                    updateQuestion={updateQuestion}
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
+                                        }
+                                        return null;
+                                    })}
+                                </SortableContext>
+                                {topicContents.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No contents currently 📝</p> : null}
+                            </div>
+                            
                         </div>
                     </DndContext>
                     <Button 

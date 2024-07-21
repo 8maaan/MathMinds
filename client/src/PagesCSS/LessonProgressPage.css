@@ -111,52 +111,13 @@
     max-height: 80vh; /* Adjust this value based on your layout */
 }
 
-/* Styling the scrollbar for WebKit browsers (e.g., Chrome, Safari) */
-.lessons-scrollable-container::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-}
-
-.lessons-scrollable-container::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background of the scrollbar track */
-    border-radius: 10px; /* Rounded corners for the track */
-}
-
-.lessons-scrollable-container::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
-}
-
-.lessons-scrollable-container::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color of the scrollbar thumb on hover */
-}
-
 /* Styling the scrollbar for Firefox */
 .lessons-scrollable-container {
     scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #888 #f1f1f1; /* Thumb and track colors */
+    scrollbar-color: #888 #F6E6C3; /* Thumb and track colors */
+    height: 45vh;
+    margin-right: 2px;
 }
-
-/* For IE and Edge */
-.lessons-scrollable-container {
-    -ms-overflow-style: none; /* Hide default scrollbar */
-}
-
-.lessons-scrollable-container::-ms-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-}
-
-.lessons-scrollable-container::-ms-scrollbar-track {
-    background: #f1f1f1; /* Background of the scrollbar track */
-}
-
-.lessons-scrollable-container::-ms-scrollbar-thumb {
-    background: #888; /* Color of the scrollbar thumb */
-}
-
-.lessons-scrollable-container::-ms-scrollbar-thumb:hover {
-    background: #555; /* Color of the scrollbar thumb on hover */
-}
-
 
 .lesson-container {
     display: flex;

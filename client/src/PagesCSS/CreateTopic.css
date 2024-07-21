@@ -46,8 +46,41 @@
     width: 80%;
     border: solid gray 2px;
     border-radius: 15px;
-    overflow-y: auto;
+    
 }
+
+.topic-scrollable{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 99%;
+    width: 99%;
+    overflow-y: auto;
+
+}
+
+.topic-scrollable::-webkit-scrollbar {
+    width: 6.5px; /* Width of the scrollbar */
+    border-radius: 10px;
+    
+}
+
+.topic-scrollable::-webkit-scrollbar-track {
+    background: none; /* Background of the scrollbar track */
+    border-radius: 5px; /* Rounded corners for the track */
+    
+}
+
+.topic-scrollable::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+
+}
+
+.topic-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+}
+
 .topicQuestionContainer,
 .topicContentContainer{
     border: solid black 1px;

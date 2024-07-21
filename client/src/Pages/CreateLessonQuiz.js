@@ -106,20 +106,22 @@ const CreateLessonQuiz = () => {
                     {/* For quiz questions */}
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} >
                         <div className='topic-form-container'>
-                            <SortableContext items={quizQuestions.map(item => item.id)} strategy={verticalListSortingStrategy}>
-                                {quizQuestions.map(item => (
-                                    <TopicContentQuestion
-                                        key={item.id}
-                                        id={item.id}
-                                        question={item.question}
-                                        correctAnswer={item.correctAnswer}
-                                        incorrectAnswers={item.incorrectAnswers}
-                                        updateQuestion={updateQuestion}
-                                        deleteContent={deleteQuestion}
-                                    />
-                                ))}
-                            </SortableContext>
-                            {quizQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%', fontFamily:'Poppins' }}>No questions currently 📝</p> : null}
+                            <div className='topic-scrollable'>
+                                <SortableContext items={quizQuestions.map(item => item.id)} strategy={verticalListSortingStrategy}>
+                                    {quizQuestions.map(item => (
+                                        <TopicContentQuestion
+                                            key={item.id}
+                                            id={item.id}
+                                            question={item.question}
+                                            correctAnswer={item.correctAnswer}
+                                            incorrectAnswers={item.incorrectAnswers}
+                                            updateQuestion={updateQuestion}
+                                            deleteContent={deleteQuestion}
+                                        />
+                                    ))}
+                                </SortableContext>
+                                {quizQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%', fontFamily:'Poppins' }}>No questions currently 📝</p> : null}
+                            </div>  
                         </div>
                     </DndContext>
                     <Button type="submit" variant='contained' sx={{ mt: 2, fontFamily:'Poppins' }}>Submit</Button>
