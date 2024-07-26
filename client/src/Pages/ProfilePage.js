@@ -138,7 +138,7 @@ const ProfilePage = () => {
                                     {loading ? (
                                         <p>Loading...</p>
                                     ) : (
-                                        <div className='infocontains' style={{ display: 'flex', flexDirection: 'column', width: "330px", gap: '20px' }}>
+                                        <div className='infocontains' style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                             <ProfileTxtField
                                                 name="fname"
                                                 label="First Name"

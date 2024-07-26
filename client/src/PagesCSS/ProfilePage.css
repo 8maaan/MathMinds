@@ -10,14 +10,6 @@
     background-repeat: repeat-y;  
     position: relative;
     z-index: 1;
-    height: 100vh;
-}
-
-.body {
-   
-    background-attachment: fixed;
-    min-height: 100vh; 
-    /* border: solid black 1px; */
 }
 
 .profile-wrapper,
@@ -25,7 +17,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
 }
 
 .profile-content-container{
@@ -34,6 +26,7 @@
     /*background-color: #FAFAFA;*/
     padding: 2.5%;
     /* border: solid black 1px;  */
+    
 }
 
 .personalinfo-right-side,
@@ -59,7 +52,7 @@
     height: 100%;
     /* border: 1px solid #0004fd; */
     background-color: #F6E6C3;  
-    /*box-shadow: 0px 3px rgba(184, 184, 184, 0.75);*/
+    box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
     border-radius: 25px;  
 }
 .PI-title{
@@ -74,6 +67,7 @@
     width: 100%;
     height: 20%;
 }
+
 .logo-and-userinfo-container{
     display:flex;
     flex-direction: row;
@@ -91,13 +85,12 @@
     height: 50%;
 }
 
-
 .profile-logo-container img{
     max-width: 100%;
     max-height: 100%;
     border-radius: 25px;
+    margin-left: 20px;
 }
-
 
 .userinfo-container{
     display: flex;
@@ -106,23 +99,12 @@
     width: 60%;
     height: 100%;
 }
-.profile-info-texts{
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
 
-}
-.profile-info-textfields{
-    display: flex;
-    width: 80%;
-}
 .infocontains{
     display: flex;
     flex-direction: column;
     /* border: 1px solid #3000a0; */
-    width: 60%;
-    height: 100%;
-
+    width: 88%;
 }
 
 .MuiFilledInput-root {
@@ -134,27 +116,32 @@
 
 @media (max-width: 1024px) {
     .profile-content-container{   
-        width: 90%;
+        width: 80%;
     }
 
+    .PI-title{ 
+        font-size: 25px;   
+    }
 }
-@media (max-width: 900px) {
+
+@media (max-width: 768px) {
 
     .profile-content-container{
-        margin-top: 700px;
+        margin-top: 300px;
         display: flex;
         flex-direction: column;
         height: 150vh;
-        width: 50%;
+        width: 70%;
+       
     }
     .personalinfo-left-side{
-        height: 50vh;
+        height: 100%;
         width: 100%;
         justify-content: center;
     }
 
     .personalinfo-right-side{
-        margin-top: 50px;
+        margin-top: 10px;
         width: 100%;
     }
     .logo-and-userinfo-container{
@@ -172,34 +159,18 @@
         height: 70%;
         align-items: center;
     }
-    
-
-}
-@media (max-width: 700px) {
-
-    .profile-content-container{
-        width: 60%;
+    .profile-logo-container img{
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 25px;
+        margin-left: 0px;
     }
-
 }
+
 @media (max-width: 600px) {
 
     .profile-content-container{
-        width: 70%;
-    }
-
-}
-@media (max-width: 500px) {
-
-    .profile-content-container{
-        width: 90%;
-    }
-
-}
-@media (max-width: 400px) {
-
-    .profile-content-container{
-        width: 100%;
+        width: 60%;
     }
 
 }
