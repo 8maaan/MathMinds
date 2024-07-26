@@ -33,8 +33,9 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
         navigateTo(`/lesson/${lessonId}/${topicId}`);
     };
 
-    const handleEditTopic = (topicId) => {
-        navigateTo(`/edit-topic/${topicId}`);
+    const handleEditTopic = (topicId, currentTopicTitle) => {
+        console.log(currentTopicTitle);
+        navigateTo(`/edit-topic/${topicId}/${currentTopicTitle}`);
     };
 
     const handleOpenDialog = (topicId) => {
@@ -50,7 +51,6 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
         setSelectedTopicId(null);
     };
 
-    console.log(selectedTopicId);
     const handleDeleteTopic = async () => {
         if (selectedTopicId) {
             try {
@@ -131,7 +131,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 
                                 <AccordionActions>
                                     <Tooltip title="Edit Topic">
-                                        <IconButton onClick={() => handleEditTopic(topic.topicId)}>
+                                        <IconButton onClick={() => handleEditTopic(topic.topicId, topic.topicTitle)}>
                                             <EditIcon
                                                     sx={{
                                                     color: "#181A52",

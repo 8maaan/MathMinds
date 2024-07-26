@@ -11,9 +11,11 @@ import { getTopicById, updateTopic } from '../API-Services/TopicAPI';
 
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
+import TopicContentImage from '../ReusableComponents/TopicContentImage';
+import ImageUploader from '../ReusableComponents/ImageUploader';
 
 const EditTopic = () => {
-    const { topicId } = useParams();
+    const { topicId, currentTopicTitle } = useParams();
     const [topicLesson, setTopicLesson] = useState('');
     const [topicContents, setTopicContents] = useState([]);
     const [topicTitle, setTopicTitle] = useState('');
@@ -70,6 +72,13 @@ const EditTopic = () => {
                                     ? value.incorrectAnswers 
                                     : Object.values(value.incorrectAnswers)
                             };
+                        } else if (value.type === 'image') {
+                            return {
+                                id: index.toString(),
+                                type: 'image',
+                                imageUrl: value.imageUrl || '',
+                                imageDescription: value.imageDescription || '',
+                            };
                         }
                         return null;
                     });
@@ -103,6 +112,13 @@ const EditTopic = () => {
         ]);
     };
 
+    const handleAddImage = (imageUrl) => {
+        setTopicContents([
+            ...topicContents,
+            { id: topicContents.length.toString(), type: 'image', imageUrl: imageUrl, imageDescription: '' }
+        ]);
+    };
+
     const updateContent = (id, newContent) => {
         setTopicContents(
             topicContents.map(item =>
@@ -115,6 +131,14 @@ const EditTopic = () => {
         setTopicContents(
             topicContents.map(item =>
                 item.id === id ? { ...item, ...updatedQuestion, incorrectAnswers: Array.isArray(updatedQuestion.incorrectAnswers) ? updatedQuestion.incorrectAnswers : ['', '', ''] } : item
+            )
+        );
+    };
+
+    const updateImageDescription = (id, description) => {
+        setTopicContents(
+            topicContents.map(item =>
+                item.id === id && item.type === 'image' ? { ...item, imageDescription: description } : item
             )
         );
     };
@@ -140,7 +164,10 @@ const EditTopic = () => {
                     correctAnswer: item.correctAnswer,
                     incorrectAnswers: incorrectAnswersObj
                 };
+            } else if (item.type === 'image') {
+                acc[index + 1] = { type: 'image', imageUrl: item.imageUrl, imageDescription: item.imageDescription };
             }
+            
             return acc;
         }, {});
 
@@ -210,10 +237,12 @@ const EditTopic = () => {
         return <div>Error: {error}</div>;
     }
 
+    console.log(currentTopicTitle);
+
     return (
         <div>
             <form onSubmit={handleOpenDialog}>
-                <Typography class='createTopic-title'>Edit a Topic</Typography>
+                <Typography class='createTopic-title'>Edit {currentTopicTitle}</Typography>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
@@ -226,9 +255,10 @@ const EditTopic = () => {
                         </FormControl>
                         <TextField label='Topic Title' fullWidth required value={topicTitle} onChange={(event) => { setTopicTitle(event.target.value) }} autoComplete='off' />
                         <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} value={topicDescription} onChange={(event) => { setTopicDescription(event.target.value) }} autoComplete='off' />
-                        <div style={{ marginTop: '1.5%' }}>
+                        <div className='topic-content-choices'>
                             <Button onClick={handleAddContent} variant='contained' sx={{backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={{ ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Question</Button>
+                            <ImageUploader onImageUpload={handleAddImage} />
                         </div>
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -254,6 +284,17 @@ const EditTopic = () => {
                                                 correctAnswer={item.correctAnswer}
                                                 incorrectAnswers={item.incorrectAnswers}
                                                 updateQuestion={updateQuestion}
+                                                deleteContent={deleteContent}
+                                            />
+                                        );
+                                    } else if (item.type === 'image') {
+                                        return (
+                                            <TopicContentImage
+                                                key={item.id}
+                                                id={item.id}
+                                                imageUrl={item.imageUrl}
+                                                imageDescription={item.imageDescription}
+                                                updateImageDescription={updateImageDescription}
                                                 deleteContent={deleteContent}
                                             />
                                         );

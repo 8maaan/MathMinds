@@ -69,3 +69,16 @@ export const updateLessonInDb = async (lessonId, lessonTitle, lessonDescription)
         return { success: false, error };
     }
 };
+
+export const getLessonWithProgress = async (lessonId, uid) => {
+    try{
+        const endPoint = process.env.REACT_APP_SPRINGBOOT_GET_LESSON_WITH_PROGRESS
+            .replace('{lessonId}', lessonId)
+            .replace('{uid}', uid)
+
+        const response = await axios.get(endPoint);
+        return { success: true, message: "Progress successfully updated.", data: response.data };
+    }catch(error){
+        return { success: false, message: "Failed to get lesson with progress.", error: error.response ? error.response.data : error.message };
+    }
+}

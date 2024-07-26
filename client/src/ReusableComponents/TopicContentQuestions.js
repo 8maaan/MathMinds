@@ -67,7 +67,7 @@ const TopicContentQuestion = ({ id, question, correctAnswer, incorrectAnswers, u
                     />
                 ))}
             </div>
-            <div className='topic-content-actions'>
+            <div className='topic-content-actions' style={style}>
                 <IconButton onClick={() => deleteContent(id)} size="large"><DeleteIcon fontSize='rem' color='error' /></IconButton>
             </div>
         </>

@@ -64,7 +64,7 @@ function App() {
             {/* FOR TEACHERS */}
             <Route path="/create-topic" element={<ProtectedRoute requireTeacher><CreateTopic/></ProtectedRoute>} />
             <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
-            <Route path="/edit-topic/:topicId" element={<ProtectedRoute requireTeacher><EditTopicPage /></ProtectedRoute>} />
+            <Route path="/edit-topic/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher><EditTopicPage /></ProtectedRoute>} />
             <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuizPage /></ProtectedRoute>} />
             <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuizPage /></ProtectedRoute>} />
             <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />

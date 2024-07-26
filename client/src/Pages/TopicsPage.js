@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../PagesCSS/TopicsPage.css';
-import { getLessonById } from '../API-Services/LessonAPI';
+import { getLessonWithProgress } from '../API-Services/LessonAPI';
 import { Button, CircularProgress } from '@mui/material';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { updateProgress } from '../API-Services/UserProgressAPI';
+import ResponsiveDrawer from '../ReusableComponents/ResponsiveDrawer';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -30,28 +31,32 @@ const TopicsPage = () => {
   const colors = ['color-1', 'color-2', 'color-3'];
   let colorIndex = 0; /*from above sa handleOptionClick, ako lang gi move dri -den*/
 
+  const [userTopicProgress, setUserTopicProgress] = useState({});
+
   const updateTopicProgress = async (topicId) => {
     if (allQuestionsAnswered(selectedTopic)) {
       const result = await updateProgress(getUid(), topicId, true);
-      if (result.success) {
-        console.log(result.message); 
-      } else {
+      if (!result.success) {
         console.error("Failed to update progress:", result.message);
-      }
+      } 
     }
   };
+
+
 
   useEffect(() => {
     const fetchLessonTopics = async () => {
       try {
-        const fetchResult = await getLessonById(lessonId);
-        setLessonData(fetchResult.data);
-        if (fetchResult.data && fetchResult.data.lessonTopics) {
-          const initialTopic = fetchResult.data.lessonTopics.find(topic => topic.topicId === parseInt(topicId));
+        const fetchResult = await getLessonWithProgress(lessonId, getUid());
+        setLessonData(fetchResult.data.lesson);
+        setUserTopicProgress(fetchResult.data.progress);
+
+        if (fetchResult.data.lesson && fetchResult.data.lesson.lessonTopics) {
+          const initialTopic = fetchResult.data.lesson.lessonTopics.find(topic => topic.topicId === parseInt(topicId));
           setSelectedTopic(initialTopic);
         }
-        if (fetchResult.data && fetchResult.data.lessonQuiz) {
-          setLessonQuizzes(fetchResult.data.lessonQuiz);
+        if (fetchResult.data.lesson && fetchResult.data.lesson.lessonQuiz) {
+          setLessonQuizzes(fetchResult.data.lesson.lessonQuiz);
         }
       } catch (e) {
         console.log(e);
@@ -59,7 +64,7 @@ const TopicsPage = () => {
     };
 
     fetchLessonTopics();
-  }, [lessonId, topicId]);
+  }, [lessonId, topicId, getUid]);
 
   // console.log(lessonQuizzes);
   // console.log(lessonData);
@@ -203,25 +208,15 @@ const TopicsPage = () => {
   if (!lessonData || !getUid()) {
     return <div>Loading...</div>;
   }
-
+  console.log(userTopicProgress);
   return (
     <div className='root'>
       <div className="container">
         <div className="sidebar">
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
-            <li key={lessonData.lessonId}>
-              {lessonData.lessonId}. {lessonData.lessonTitle}
-              {lessonData.lessonTopics && (
-                <ul>
-                  {lessonData.lessonTopics.map((topic, topicIndex) => (
-                    <li key={topicIndex} onClick={() => handleTopicClick(topic, topicIndex)} className='sidebar-list-item'>
-                      {topic.lessonId}.{topicIndex + 1} {topic.topicTitle}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          </ul>
+          <ResponsiveDrawer 
+            lessonData={lessonData} 
+            handleTopicClick={handleTopicClick} 
+            userTopicProgress={userTopicProgress}/>
         </div>
         <div className="main-content">
           <div>
@@ -235,7 +230,11 @@ const TopicsPage = () => {
                 <div className="lesson-content">
                   {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`}>
+                      {/* FOR TEXTS/PARAGRAPH */}
+
                       {value.type === "text" && <div style={{ textAlign: 'left', marginLeft: '30px' }} dangerouslySetInnerHTML={{ __html: value.content }} />}
+
+                      {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
                         <div>
                           <p>{value.question}</p>
@@ -264,10 +263,20 @@ const TopicsPage = () => {
                             </div>
                           </div>
                           {topicsState[selectedTopic.topicId]?.[key]?.checked && (
-                            <p style={{fontWeight: '600', color:`${feedBackColor}` }} className={animateFeedback ? 'feedback-shake' : ''}>{topicsState[selectedTopic.topicId][key].feedback}</p>
+                            <p style={{fontWeight: '600', color:`${feedBackColor}`, textAlign:'center' }} className={animateFeedback ? 'feedback-shake' : ''}>{topicsState[selectedTopic.topicId][key].feedback}</p>
                           )}
                         </div>
                       )}
+                      
+                      {value.type ==="image" && (
+                        <div>
+                          <div className='topic-image-container'>
+                            <img src={value.imageUrl} alt="Topic Content"/>
+                          </div>
+                          <p>{value.imageDescription}</p>
+                        </div>
+                      )}
+
                       {index === array.length - 1 && isLastTopic() ? (
                         <p style={{ fontWeight: 'bold', textAlign: 'center', color:'#2f3163'}} >END OF LESSON</p>
                       ) : null}

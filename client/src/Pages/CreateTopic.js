@@ -10,6 +10,8 @@ import { insertTopic } from '../API-Services/TopicAPI';
 import { useNavigate } from 'react-router-dom';
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
+import ImageUploader from '../ReusableComponents/ImageUploader';
+import TopicContentImage from '../ReusableComponents/TopicContentImage';
 
 const CreateTopic = () => {
     // Separated for simplicity 
@@ -53,6 +55,13 @@ const CreateTopic = () => {
         ]);
     };
 
+    const handleAddImage = (imageUrl) => {
+        setTopicContents([
+          ...topicContents,
+          { id: topicContents.length.toString(), type: 'image', imageUrl: imageUrl, imageDescription: '' }
+        ]);
+    }
+
     const updateContent = (id, newContent) => {
         setTopicContents(
             topicContents.map(item =>
@@ -66,6 +75,14 @@ const CreateTopic = () => {
             topicContents.map(item =>
                 item.id === id ? { ...item, ...updatedQuestion } : item
             )
+        );
+    };
+
+    const updateImageDescription = (id, imageDescription) => {
+        setTopicContents(
+          topicContents.map(item =>
+            item.id === id && item.type === 'image' ? { ...item, imageDescription: imageDescription } : item
+          )
         );
     };
 
@@ -93,6 +110,8 @@ const CreateTopic = () => {
                     correctAnswer: item.correctAnswer,
                     incorrectAnswers: incorrectAnswersObj
                 };
+            } else if (item.type === 'image') {
+                acc[index + 1] = { type: 'image', imageUrl: item.imageUrl, imageDescription: item.imageDescription };
             }
             return acc;
         }, {});
@@ -175,9 +194,10 @@ const CreateTopic = () => {
                         <TextField label='Topic Title' fullWidth required onChange={(event) => {setTopicTitle(event.target.value)}} autoComplete='off'/>
                         {/* Topic Description */}
                         <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} onChange={(event) => {setTopicDescription(event.target.value)}} autoComplete='off'/>
-                        <div style={{marginTop:'1.5%'}}>
+                        <div className='topic-content-choices'>
                             <Button onClick={handleAddContent} variant='contained' sx={{backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={{ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Question</Button>
+                            <ImageUploader onImageUpload={handleAddImage} />
                         </div>
                     </div>
                     {/* For topic contents */}
@@ -207,6 +227,17 @@ const CreateTopic = () => {
                                                 deleteContent={deleteContent}
                                             />
                                         );
+                                    } else if (item.type === 'image') {
+                                        return (
+                                          <TopicContentImage
+                                            key={item.id}
+                                            id={item.id}
+                                            imageUrl={item.imageUrl}
+                                            imageDescription={item.imageDescription}
+                                            updateImageDescription={updateImageDescription}
+                                            deleteContent={deleteContent}
+                                          />
+                                        );
                                     }
                                     return null;
                                 })}
@@ -220,7 +251,7 @@ const CreateTopic = () => {
                         sx={{mt: 2, backgroundColor:'#ffb100', fontWeight:'600', color: '#181A52', '&:hover': {backgroundColor: '#e39e02'}}} 
                         size='large'
                     >
-                            {loading ? <CircularProgress color="inherit" size="1.5rem" /> : 'Submit'}
+                            {loading ? <CircularProgress color="inherit" size="1.5rem" /> : 'Create'}
                     </Button>
                 </div>
             </form>
