@@ -3,6 +3,15 @@
     src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
 }
 
+.Profilepage{
+    background-image: url('../Images/BG2.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: repeat-y;  
+    position: relative;
+    z-index: 1;
+}
+
 .body {
     background-attachment: fixed;
     min-height: 100vh;
@@ -35,6 +44,7 @@
     box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
     border-radius: 25px;
     height: 100%;
+    border-color: #4CAE4F;
 }
 
 .personalinfo-left-side {
@@ -42,18 +52,6 @@
     width: 35%;
 }
 
-.choices-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    align-items: center;
-    width: 80%;
-    height: 60%;
-    box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
-    border-radius: 25px;
-    background-color: #d8bc7966;
-}
 
 .PI-button,
 .LessonProg-button,
@@ -72,6 +70,7 @@
 .PI-button {
     border-radius: 20px 20px 0px 0px;
     background-color: #F94848;
+   
 }
 
 .LessonProg-button {
@@ -91,6 +90,7 @@
     background-color: #F6E6C3;
     box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
     border-radius: 25px;
+    
 }
 
 .PI-title-lesson {
@@ -164,27 +164,23 @@
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
     .profile-content-container {
         margin-top: 700px;
         flex-direction: column;
         height: 150vh;
         width: 50%;
+        
     }
     .personalinfo-left-side {
         height: 50vh;
         width: 100%;
         justify-content: center;
     }
-    .choices-container {
-        height: 100%;
-    }
+    
     .personalinfo-right-side {
         margin-top: 50px;
         width: 100%;
-    }
-    .logo-and-userinfo-container {
-        flex-direction: column;
     }
     .profile-logo-container {
         width: 100%;
@@ -193,6 +189,39 @@
     .userinfo-container {
         width: 100%;
         height: 70%;
+    }
+    .PI-title-lesson{ 
+        font-size: 25px;   
+    }
+    .PI-container-lesson {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        background-color: #F6E6C3;
+        box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
+        border-radius: 25px;    
+    }
+    .personalinfo-right-side-lesson {
+        margin-top: 50px;
+        width: 100%;
+    }
+    .lesson-container {
+        padding: 20px;
+        margin: 10px 0 0 0;
+        border-radius: 25px;
+        width: 85%;
+    }
+    .lessons-scrollable-container {
+        scrollbar-width: thin; /* Thin scrollbar */
+        scrollbar-color: #888 #F6E6C3; /* Thumb and track colors */
+        height: 90vh;
+        margin-right: 2px;
+    }
+    .lesson-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 5px;
     }
 }
 

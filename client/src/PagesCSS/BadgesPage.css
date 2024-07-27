@@ -86,7 +86,7 @@
     }
 
 }
-@media (max-width: 900px) {
+@media (max-width: 768px) {
 
     .badges-content-container{
         margin-top: 700px;
@@ -100,12 +100,13 @@
         width: 100%;
         justify-content: center;
     }
-
     .badgesinfo-right-side{
         margin-top: 50px;
         width: 100%;
     }
-    
+    .badges-title{ 
+        font-size: 25px;   
+    }
 
 }
 @media (max-width: 700px) {
