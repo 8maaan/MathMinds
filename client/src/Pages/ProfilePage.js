@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/ProfilePage.css';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import userprofilepic from '../Images/UserDP.png';
 import { Button, TextField, Snackbar } from '@mui/material';
@@ -20,11 +19,11 @@ const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText
             InputProps={{
                 style: {
                     borderBottom: "none",
-                    borderRadius: "25px",
-                    width: "290px",
+                    borderRadius: "20px",
                     backgroundColor: "white",
-                    boxShadow: "0px 5px rgba(184, 184, 184, 0.75)"
-                }
+                    boxShadow: "0px 3px rgba(184, 184, 184, 0.75)"
+                },
+                disableUnderline: true // Add this line to remove the underline
             }}
             InputLabelProps={{ required: false }}
             name={name}
@@ -33,6 +32,14 @@ const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText
             error={error}
             helperText={helperText}
             disabled={disabled}
+            sx={{
+                '& .MuiFilledInput-root': {
+                    '&:before, &:after': {
+                        borderBottom: 'none',
+                    },
+                    borderRadius: '25px', // Apply your rounded edges here if needed
+                }
+            }}
         />
     </div>
 );
@@ -115,7 +122,6 @@ const ProfilePage = () => {
 
     return (
         <div className="Profilepage">
-            <ReusableAppBar />
             <div className='profile-wrapper'>
                 <div className='profile-content-container'>
                     <div className='personalinfo-left-side'>
@@ -123,16 +129,16 @@ const ProfilePage = () => {
                     </div>
                     <div className='personalinfo-right-side'>
                         <div className='PI-container'>
-                            <div className='PI-title'>PERSONAL INFORMATION</div>
+                            <div className='PI-title'>Personal Information</div>
                             <div className='logo-and-userinfo-container'>
                                 <div className='profile-logo-container'>
-                                    <img src={userprofilepic} alt='logo' />
+                                    <img src={userprofilepic} alt='display picture' />
                                 </div>
                                 <div className='userinfo-container'>
                                     {loading ? (
                                         <p>Loading...</p>
                                     ) : (
-                                        <div className='infocontains' style={{ display: 'flex', flexDirection: 'column', width: "330px", gap: '20px' }}>
+                                        <div className='infocontains' style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                             <ProfileTxtField
                                                 name="fname"
                                                 label="First Name"

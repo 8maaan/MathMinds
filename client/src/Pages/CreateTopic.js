@@ -203,27 +203,28 @@ const CreateTopic = () => {
                     {/* For topic contents */}
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} >
                         <div className='topic-form-container'>
-                            <SortableContext items={topicContents.map(item => item.id)} strategy={verticalListSortingStrategy}>
-                                {topicContents.map(item => {
-                                    if (item.type === 'content') {
-                                        return (
-                                            <TopicContentContainer
-                                                key={item.id}
-                                                id={item.id}
-                                                content={item.content}
-                                                updateContent={updateContent}
-                                                deleteContent={deleteContent}
-                                            />
-                                        );
-                                    } else if (item.type === 'question') {
-                                        return (
-                                            <TopicContentQuestion
-                                                key={item.id}
-                                                id={item.id}
-                                                question={item.question}
-                                                correctAnswer={item.correctAnswer}
-                                                incorrectAnswers={item.incorrectAnswers}
-                                                updateQuestion={updateQuestion}
+                            <div className='topic-scrollable'>
+                                <SortableContext items={topicContents.map(item => item.id)} strategy={verticalListSortingStrategy}>
+                                    {topicContents.map(item => {
+                                        if (item.type === 'content') {
+                                            return (
+                                                <TopicContentContainer
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    content={item.content}
+                                                    updateContent={updateContent}
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
+                                        } else if (item.type === 'question') {
+                                            return (
+                                                <TopicContentQuestion
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    question={item.question}
+                                                    correctAnswer={item.correctAnswer}
+                                                    incorrectAnswers={item.incorrectAnswers}
+                                                    updateQuestion={updateQuestion}
                                                 deleteContent={deleteContent}
                                             />
                                         );
@@ -235,14 +236,16 @@ const CreateTopic = () => {
                                             imageUrl={item.imageUrl}
                                             imageDescription={item.imageDescription}
                                             updateImageDescription={updateImageDescription}
-                                            deleteContent={deleteContent}
-                                          />
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </SortableContext>
-                            {topicContents.length === 0 ? <p style={{color: 'gray', margin:'10%', fontFamily:'Poppins'}}>No contents currently 📝</p> : null}
+                                                deleteContent={deleteContent}
+                                              />
+                                            );
+                                        }
+                                        return null;
+                                    })}
+                                </SortableContext>
+                                {topicContents.length === 0 ? <p style={{color: 'gray', margin:'10%', fontFamily:'Poppins'}}>No contents currently 📝</p> : null}
+                            </div>
+                            
                         </div>
                     </DndContext>
                     <Button 

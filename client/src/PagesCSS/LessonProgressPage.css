@@ -4,50 +4,45 @@
 }
 
 .body {
-    
     background-attachment: fixed;
-    min-height: 100vh; 
-    /* border: solid black 1px; */
+    min-height: 100vh;
 }
 
 .profile-wrapper,
-.profile-content-container{
+.profile-content-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /* border: solid black 1px; */
 }
 
-.profile-content-container{
+.profile-content-container {
     width: 70%;
     height: 60vh;
-    background-color: #FAFAFA;
     padding: 2.5%;
-    /* border: solid black 1px;  */
 }
 
 .personalinfo-right-side,
-.personalinfo-left-side{
+.personalinfo-left-side {
     display: flex;
     height: 100%;
-    /* border: solid black 1px;  */
 }
-.personalinfo-right-side{
+
+.personalinfo-right-side-lesson {
     flex-direction: column;
     width: 65%;
-    /* border: solid black 1px; */
-    background-color:  #FFFACD; 
-    border-radius:25px ;
+    background-color: #F6E6C3;
+    box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
+    border-radius: 25px;
     height: 100%;
- 
 }
-.personalinfo-left-side{
+
+.personalinfo-left-side {
     display: flex;
     width: 35%;
-    /* border: solid black 1px; */
 }
-.choices-container{
+
+.choices-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -57,266 +52,170 @@
     height: 60%;
     box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
     border-radius: 25px;
-    background-color: #d8bc7966;    
-    /* border: solid rgb(0, 0, 0); */
+    background-color: #d8bc7966;
 }
-.PI-button{
+
+.PI-button,
+.LessonProg-button,
+.Badges-button {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 85%;
     height: 25%;
-    border-radius: 25px 25px 0px 0px;
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-weight: 500;
+    color: #181A52;
+}
+
+.PI-button {
+    border-radius: 20px 20px 0px 0px;
     background-color: #F94848;
-    font-family: 'Poppins';
-    font-size: 24px;
-    font-weight: 500;   
-    color: #181A52;
-    /* border: solid black 1px; */
 }
-.LessonProg-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    height: 25%;
+
+.LessonProg-button {
     background-color: #518BBC;
-    font-family: 'Poppins';
-    font-size: 24px;
-    font-weight: 500;   
-    color: #181A52;
-    /* border: solid black 1px; */
 }
-.Badges-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    height: 25%;
-    border-radius: 0px 0px 25px 25px;
+
+.Badges-button {
+    border-radius: 0px 0px 20px 20px;
     background-color: #4CAE4F;
-    font-family: 'Poppins';
-    font-size: 24px;
-    font-weight: 500;   
-    color: #181A52;
-    /* border: solid black 1px; */
 }
 
-
-.PI-container{
+.PI-container-lesson {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    border: 1px solid #0004fd;
-    background-color: #d8bc7966;  
-    box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
-    border-radius: 25px;  
-    /* border: solid black 1px; */
+    background-color: #F6E6C3;
+    box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
+    border-radius: 25px;
 }
-.PI-title{
+
+.PI-title-lesson {
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: 'Poppins';
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 900;
     color: #181A52;
     width: 100%;
-    height: 30%;
-    /* border: solid black 1px; */
-}
-.logo-and-userinfo-container{
-    display:flex;
-    flex-direction: row;
-    width: 100%;
-    height: 80%;
-    /* border: 1px solid #000000; */
+    height: 20%;
+    padding-top: 1%;
 }
 
-.profile-logo-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* border: 1px solid #d80077; */
-    width: 40%;
-    height: 50%;
+.lessons-scrollable-container {
+    overflow-y: auto;
+    max-height: 80vh; /* Adjust this value based on your layout */
 }
 
-
-.profile-logo-container img{
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 25px;
-    /* border: solid black 1px; */
-}
-
-
-.userinfo-container{
-    /* border: 1px solid #000000; */
-    width: 60%;
-    height: 100%;
-}
-.profile-info-texts{
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
-    /* border: solid black 1px; */
-    
-}
-.profile-info-textfields{
-    width: 80%;
-    /* border: solid black 1px; */
-   
-}
-
-.customTextField {
-    width: 100%; 
-    background-color: #ffffff;
-    border-radius: 25px;
-    box-shadow: 0px 5px rgba(184, 184, 184, 0.75);
-    /* border: solid black 1px; */
-  }
-
-
-
-
-@media (max-width: 1024px) {
-    .profile-content-container{   
-        width: 90%;
-    }
-
-}
-@media (max-width: 900px) {
-
-    .profile-content-container{
-        margin-top: 700px;
-        display: flex;
-        flex-direction: column;
-        height: 150vh;
-        width: 50%;
-    }
-    .personalinfo-left-side{
-        height: 50vh;
-        width: 100%;
-        justify-content: center;
-    }
-    .choices-container{
-        height: 100%;
-    }
-
-    .personalinfo-right-side{
-        margin-top: 50px;
-        width: 100%;
-    }
-    .logo-and-userinfo-container{
-        display: flex;
-        flex-direction: column;
-
-    }
-    .profile-logo-container{
-        width: 100%;
-        height: 30%;
-    }
-    .userinfo-container{
-        width: 100%;
-        height: 70%;
-    }
-
-}
-@media (max-width: 700px) {
-
-    .profile-content-container{
-        width: 60%;
-    }
-
-}
-@media (max-width: 600px) {
-
-    .profile-content-container{
-        width: 70%;
-    }
-
-}
-@media (max-width: 500px) {
-
-    .profile-content-container{
-        width: 90%;
-    }
-
-}
-@media (max-width: 400px) {
-
-    .profile-content-container{
-        width: 100%;
-    }
-
-}
-
-.profile-progress-bar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #FF4500; /* bright border for visibility */
-    width: 100%; /* Full width of the container */
-    padding: 20px; /* Padding for internal spacing */
-    border-radius: 15px; /* Rounded corners */
-    background-color: #FFFACD; /* Light yellow background */
+/* Styling the scrollbar for Firefox */
+.lessons-scrollable-container {
+    scrollbar-width: thin; /* Thin scrollbar */
+    scrollbar-color: #888 #F6E6C3; /* Thumb and track colors */
+    height: 45vh;
+    margin-right: 2px;
 }
 
 .lesson-container {
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    /* Light yellow background as per design */
-    padding: 10px;
-    border-radius: 10px; /* Rounded corners */
-    /* border: 2px solid #FF4500;  */
-    margin: 5% 0% 0% 3.3%;
-    height: 100%;
-    width: 90%;
-}   
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #Ffb100;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 25px;
+    width: 94%;
+}
 
 .lesson-title {
     font-family: 'Poppins';
-    display: flex;
-    margin-left: 20px;
-    justify-content: flex-start;
     font-size: 20px;
-    margin-bottom: 5px;
-    align-self: self-start;
-    /* border: solid black 1px; */
+    font-weight: 700;
+    color: #181A52;
+    margin-bottom: 10px;
 }
 
-.MuiLinearProgress-root {
-    height: 20px;
-    border-radius: 5px;
-
-    /* border: solid black 1px; */
+.progress-bar-wrapper {
+    width: 100%;
+    margin-bottom: 10px;
 }
 
-
-.lesson-container-bar{
-    background-color: #ffb100;
-    width: 80%;
-    margin-bottom: 20px; 
-    height: 100%;
-    border-radius:15px ;
-    
+.progress-percentage {
+    font-family: 'Poppins';
+    font-size: 14px;
+    font-weight: 400;
+    color: #181A52;
 }
 
-.lesson-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80%;
+.lessons-wrapper {
+    padding: 10px;
+    border-radius: 10px;
+    width: 90%;
+    margin: 0% 0% 1% 3.3%;
 }
 
-.progress-bar-wrapper{
-  
-    height: 2rem;
-    width: 25rem;
-    background-color: #e0e0e0; 
-    border-radius: 20px;
-    /* border:solid black 1px; */
+@media (max-width: 1024px) {
+    .profile-content-container {
+        width: 90%;
+    }
+}
+
+@media (max-width: 900px) {
+    .profile-content-container {
+        margin-top: 700px;
+        flex-direction: column;
+        height: 150vh;
+        width: 50%;
+    }
+    .personalinfo-left-side {
+        height: 50vh;
+        width: 100%;
+        justify-content: center;
+    }
+    .choices-container {
+        height: 100%;
+    }
+    .personalinfo-right-side {
+        margin-top: 50px;
+        width: 100%;
+    }
+    .logo-and-userinfo-container {
+        flex-direction: column;
+    }
+    .profile-logo-container {
+        width: 100%;
+        height: 30%;
+    }
+    .userinfo-container {
+        width: 100%;
+        height: 70%;
+    }
+}
+
+@media (max-width: 700px) {
+    .profile-content-container {
+        width: 60%;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-content-container {
+        width: 70%;
+    }
+}
+
+@media (max-width: 500px) {
+    .profile-content-container {
+        width: 90%;
+    }
+}
+
+@media (max-width: 400px) {
+    .profile-content-container {
+        width: 100%;
+    }
 }

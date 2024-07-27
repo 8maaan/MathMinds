@@ -12,15 +12,15 @@ const PracticePage = () => {
     };
 
     return (
-        <div>
+        <div className='App-practice-body'>
             <Box>
                 <Typography class='practice-header'>Welcome to the Practice Area!</Typography>
                 <Typography class='practice-paragraph'>Dive into our practice zone for a fun-filled journey through numbers!</Typography>
             </Box>
-            <PracticeLessonList onLessonStart={handleLessonStart} />
-            {selectedLesson && (
-                <PracticeEvent lessonId={selectedLesson.id} topicId={selectedLesson.selectedTopic.id} />
-            )}
+                <PracticeLessonList onLessonStart={handleLessonStart} />
+                {selectedLesson && (
+                    <PracticeEvent lessonId={selectedLesson.id} topicId={selectedLesson.selectedTopic.id} />
+                )}
         </div>
     );
 };

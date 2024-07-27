@@ -263,30 +263,31 @@ const EditTopic = () => {
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                         <div className='topic-form-container'>
-                            <SortableContext items={topicContents.map(item => item.id)} strategy={verticalListSortingStrategy}>
-                                {topicContents.map(item => {
-                                    if (item.type === 'content') {
-                                        return (
-                                            <TopicContentContainer
-                                                key={item.id}
-                                                id={item.id}
-                                                content={item.content}
-                                                updateContent={updateContent}
-                                                deleteContent={deleteContent}
-                                            />
-                                        );
-                                    } else if (item.type === 'question') {
-                                        return (
-                                            <TopicContentQuestion
-                                                key={item.id}
-                                                id={item.id}
-                                                question={item.question}
-                                                correctAnswer={item.correctAnswer}
-                                                incorrectAnswers={item.incorrectAnswers}
-                                                updateQuestion={updateQuestion}
-                                                deleteContent={deleteContent}
-                                            />
-                                        );
+                            <div className='topic-scrollable'>
+                                <SortableContext items={topicContents.map(item => item.id)} strategy={verticalListSortingStrategy}>
+                                    {topicContents.map(item => {
+                                        if (item.type === 'content') {
+                                            return (
+                                                <TopicContentContainer
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    content={item.content}
+                                                    updateContent={updateContent}
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
+                                        } else if (item.type === 'question') {
+                                            return (
+                                                <TopicContentQuestion
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    question={item.question}
+                                                    correctAnswer={item.correctAnswer}
+                                                    incorrectAnswers={item.incorrectAnswers}
+                                                    updateQuestion={updateQuestion}
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
                                     } else if (item.type === 'image') {
                                         return (
                                             <TopicContentImage
@@ -298,11 +299,13 @@ const EditTopic = () => {
                                                 deleteContent={deleteContent}
                                             />
                                         );
-                                    }
-                                    return null;
-                                })}
-                            </SortableContext>
-                            {topicContents.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No contents currently 📝</p> : null}
+                                        }
+                                        return null;
+                                    })}
+                                </SortableContext>
+                                {topicContents.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No contents currently 📝</p> : null}
+                            </div>
+                            
                         </div>
                     </DndContext>
                     <Button 

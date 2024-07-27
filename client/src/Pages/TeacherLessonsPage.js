@@ -5,7 +5,7 @@ import TeacherLessonsBox from '../ReusableComponents/TeacherLessonsBox';
 const TeacherLessonsPage = () => {
 
     return (
-        <div>
+        <div className='App-lessons-body'>
             <TeacherLessonsBox/>
         </div>
       )
