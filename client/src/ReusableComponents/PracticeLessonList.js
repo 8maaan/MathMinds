@@ -93,7 +93,8 @@ const PracticeLessonList = ({ onLessonStart }) => {
 
                             <AccordionActions>
                                 <Button
-                                    style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }}
+                                    
+                                    style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold'}}
                                     onClick={() => handleStartClick(lesson)}
                                 >
                                     Start

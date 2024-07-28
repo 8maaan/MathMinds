@@ -10,19 +10,22 @@
     100% {
       transform: scale(1);
     }
-  }
-  
-  .button-hover-effect:hover {
-    animation: pulse 1s infinite;
-  }
-
-  .containerChoice {
-    background-color: #ffec86 !important;
-  }
-
-  /* wala koy sure kung naa bani effect pero murag wala man nag respond ani sa js*/
-
-
-.myButton:hover {
-    background-color: darkblue;  
 }
+
+.button-hover-effect:hover {
+    animation: pulse 1s infinite;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1299;
+}
+
