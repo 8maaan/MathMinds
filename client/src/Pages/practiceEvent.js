@@ -20,11 +20,20 @@ function NextArrow(props) {
   const { onClick } = props;
   return (
     <IconButton
-      className="slick-next"
+      className="slick-arrow slick-next"
       onClick={onClick}
-      style={{ position: 'absolute', top: '50%', right: '-1.6rem', zIndex: 1 }}
+      style={{
+        position: 'absolute',
+        top: '50%',
+        right: '-20px', // Adjust this value to position the arrow correctly
+        transform: 'translateY(-50%)',
+        zIndex: 2,
+        backgroundColor: 'transparent', // Make the background transparent
+        borderRadius: '50%',
+        padding: '0.5rem', // Add padding for better click area
+      }}
     >
-      <ArrowForwardIosIcon />
+      <ArrowForwardIosIcon style={{ color: 'black' }} />
     </IconButton>
   );
 }
@@ -33,11 +42,20 @@ function PrevArrow(props) {
   const { onClick } = props;
   return (
     <IconButton
-      className="slick-prev"
+      className="slick-arrow slick-prev"
       onClick={onClick}
-      style={{ position: 'absolute', top: '50%', left: '-1.6rem', zIndex: 1 }}
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '-15px', // Adjust this value to position the arrow correctly
+        transform: 'translateY(-50%)',
+        zIndex: 2,
+        backgroundColor: 'transparent', // Make the background transparent
+        borderRadius: '50%',
+        padding: '0.5rem', // Add padding for better click area
+      }}
     >
-      <ArrowBackIosIcon />
+      <ArrowBackIosIcon style={{ color: 'black' }} />
     </IconButton>
   );
 }
@@ -59,9 +77,9 @@ function PracticeEvent() {
     },
     palette: {
       text: {
-        primary: '#f5f5f5'
-      }
-    }
+        primary: '#181a52',
+      },
+    },
   });
 
   useEffect(() => {
@@ -72,10 +90,10 @@ function PracticeEvent() {
           setLesson(data);
           setTopics(data.lessonTopics || []);
         } else {
-          throw new Error("Failed to fetch lesson");
+          throw new Error('Failed to fetch lesson');
         }
       } catch (error) {
-        console.error("Error fetching lesson:", error);
+        console.error('Error fetching lesson:', error);
       }
     };
     fetchLesson();
@@ -87,29 +105,26 @@ function PracticeEvent() {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    centerMode:  1,
+    centerMode: true,
     centerPadding: '0px',
     beforeChange: () => setIsDragging(true),
     afterChange: () => setIsDragging(false),
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1280,
         settings: {
-          slidesToShow: topics.length > 1 ? 2 : 1,
-          centerMode: topics.length > 1,
-          vertical: true,
-          verticalSwiping: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
         },
       },
       {
         breakpoint: 960,
         settings: {
-          slidesToShow: topics.length > 1 ? 1 : 1,
-          centerMode: topics.length > 1,
-          vertical: true,
-          verticalSwiping: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: '40px',
         },
       },
       {
@@ -117,14 +132,21 @@ function PracticeEvent() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          vertical: true,
-          verticalSwiping: true,
-          centerMode: false,
+          centerMode: true,
+          centerPadding: '20px',
+        },
+      },
+      {
+        breakpoint: 400,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: '10px',
         },
       },
     ],
   };
-  
 
   const handleTopicClick = (topic) => {
     if (!isDragging) {
@@ -171,40 +193,43 @@ function PracticeEvent() {
   };
 
   useEffect(() => {
-    setShowPracticeChoice(true); 
-  }, []); 
+    setShowPracticeChoice(true);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="container">
+      <div className="practice-background">
+      <div className="outerContainer">
         <ReusableAppBar style={{ zIndex: 1400, position: 'relative' }} />
         {showCard ? (
           <div style={backdropStyle} onClick={handleCloseCard}></div>
         ) : null}
-        <Box className="practiceEventContainer">
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52', marginBottom: '2.5rem' }}>
+        <Box className="practiceEventContainer" sx={{ padding: '1rem' }}>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52', marginBottom: '1.5rem', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
             Choose a topic to practice
           </Typography>
-          <div className="sliderContainer">
+          <div className="sliderWrapper" style={{ position: 'relative' }}>
             {showPracticeChoice && <PracticeChoice onClose={() => setShowPracticeChoice(false)} />}
             <Slider {...settings}>
               {topics.length <= 3 ? (
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
                   <Box key={`default-${index}`} className="slideItem">
                     <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
-                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>TBA</Typography>
+                      <Typography variant="h5" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>TBA</Typography>
                     </Paper>
                   </Box>
                 ))
               ) : null}
               {topics.map((topic, index) => (
                 <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
-                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{'&hover':{cursor:'pointer'}}}>
-                    <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
+                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }}>
+                    <Typography variant="h5" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>
               ))}
             </Slider>
+            <NextArrow onClick={() => document.querySelector('.slick-next').click()} />
+            <PrevArrow onClick={() => document.querySelector('.slick-prev').click()} />
             {showCard && selectedTopic && (
               <TopicCard
                 lessonId={lessonId}
@@ -216,8 +241,12 @@ function PracticeEvent() {
           </div>
         </Box>
       </div>
+      </div>
     </ThemeProvider>
   );
 }
 
 export default PracticeEvent;
+
+
+

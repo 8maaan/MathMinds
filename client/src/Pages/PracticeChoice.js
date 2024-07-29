@@ -1,26 +1,28 @@
 import React from 'react';
-import { Box, Button, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, IconButton, Typography, Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../PagesCSS/PracticeChoice.css';
-{/*{ useState }*/}
-{/* import { useNavigate } from 'react-router-dom'; */}
-function PracticeChoice({onClose}) {
-   {/*} const navigate = useNavigate();
-    const [showPracticeChoice, setShowPracticeChoice] = useState(true);
-*/}
+
+function PracticeChoice({ onClose }) {
     const cardStyles = {
-        maxWidth: '50rem',
-        maxHeight: '37.5rem',
-        width: '80%',
-        height: '80%',
+        width: '60%',
+        maxWidth: '900px',
+        height: '90%',
+        maxHeight: '600px',
         position: 'fixed',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         zIndex: 1300,
-        backgroundColor: '#ffec86'
+        backgroundColor: '#ffec86',
+        padding: '1rem',
+        borderRadius: '16px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     };
 
     const theme = createTheme({
@@ -33,12 +35,14 @@ function PracticeChoice({onClose}) {
     });
 
     const BouncingButton = styled(Button)({
-        width: '18.75rem',
-        height: '17.5rem',
+        width: '80%', // Ensure the buttons take up the full width of their container
+        height: '15rem', // Adjust height for a more prominent size
         color: '#181a52',
         fontWeight: 'bold',
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         backgroundColor: 'lightblue',
+        borderRadius: '12px', // More square-like shape
+        margin: '0 0.5rem',
         '&:hover': {
             animation: 'bounce 1s infinite',
             backgroundColor: 'blue'
@@ -56,42 +60,47 @@ function PracticeChoice({onClose}) {
     });
 
     const handleButtonClick = () => {
-      onClose(); // Close the modal when "SOLO" is clicked
-  };
+        onClose(); // Close the modal when "SOLO" is clicked
+    };
 
-  const handleCloseIconClick =() =>{
-    onClose(); 
-  }
+    const handleCloseIconClick = () => {
+        onClose();
+    };
 
     return (
         <ThemeProvider theme={theme}>
-            <div className="containerChoice">
-                <div className='backgroundOverlay'></div>
+            <div className="overlay">
                 <Card sx={cardStyles}>
-                    <CardContent sx={{ background: '#ffec86', marginTop: '3.125rem' }}>
-                        <IconButton aria-label="close" sx={{ position: 'absolute', right: '0.5rem', top: '0.5rem', zIndex: 2 }}>
-                            <CloseIcon  onClick={handleCloseIconClick}/>
+                    <CardContent sx={{ width: '100%', textAlign: 'center' }}>
+                        <IconButton aria-label="close" sx={{ position: 'absolute', right: '1rem', top: '1rem', zIndex: 2 }} onClick={handleCloseIconClick}>
+                            <CloseIcon />
                         </IconButton>
-                        <Typography gutterBottom variant="h5" component="div" align="center" sx={{color: '#181a52', fontFamily: 'Poppins', fontSize:'35px'}}>
+                        <Typography gutterBottom variant="h5" component="div" align="center" sx={{ color: '#181a52', fontFamily: 'Poppins', fontSize: '2rem' }}>
                             Choose a game mode
                         </Typography>
                     </CardContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, background: '#ffec86' }}>
-                        <BouncingButton
-                            variant="contained"
-                            className="button-hover-effect"
-                            sx={{ bgcolor: '#5999cf', '&:hover': { bgcolor: '#497eab' }, marginLeft: '4rem', marginRight: '0.125rem', borderRadius: '0.25rem' }}
-                            onClick={() => handleButtonClick('SOLO')}>
-                            SOLO
-                        </BouncingButton>
-                        <BouncingButton
-                            variant="contained"
-                            className="button-hover-effect"
-                            sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' }, marginRight: '4rem', marginLeft: '0.125rem', borderRadius: '0.25rem' }}
-                            onClick={() => handleButtonClick('COLLAB')}
-                            disabled={true}>
-                            COLLAB
-                        </BouncingButton>
+                    <Box sx={{ width: '80%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
+                        <Grid container spacing={2} justifyContent="center">
+                            <Grid item xs={12} sm={6} display="flex" justifyContent="center">
+                                <BouncingButton
+                                    variant="contained"
+                                    className="button-hover-effect"
+                                    sx={{ bgcolor: '#5999cf', '&:hover': { bgcolor: '#497eab' } }}
+                                    onClick={() => handleButtonClick('SOLO')}>
+                                    SOLO
+                                </BouncingButton>
+                            </Grid>
+                            <Grid item xs={12} sm={6} display="flex" justifyContent="center">
+                                <BouncingButton
+                                    variant="contained"
+                                    className="button-hover-effect"
+                                    sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' } }}
+                                    onClick={() => handleButtonClick('COLLAB')}
+                                    disabled={true}>
+                                    COLLAB
+                                </BouncingButton>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Card>
             </div>
@@ -100,5 +109,6 @@ function PracticeChoice({onClose}) {
 }
 
 export default PracticeChoice;
+
 
 

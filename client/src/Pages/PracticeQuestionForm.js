@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTopicById } from '../API-Services/TopicAPI';
 import { getAllPractices } from '../API-Services/PracticeAPI';
-import { Box, Button, Typography, Container, Paper, IconButton } from '@mui/material';
+import { Box, Button, Typography, Container, Paper, IconButton, Grid, useMediaQuery } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -24,19 +24,13 @@ const theme = createTheme({
 });
 
 const OptionButton = styled(Button)({
-  height: 80,
-  width: '45%',
+  height: '6rem',
+  width: '100%',
   fontSize: '1rem',
   margin: '5px',
   color: 'white',
   borderRadius: '10px'
 });
-
-const iconStyle = {
-  fontSize: '60px',
-  padding: '60px',
-  color: '#ffb100'
-};
 
 const PracticeQuestionForm = () => {
   const { topicId } = useParams();
@@ -51,8 +45,14 @@ const PracticeQuestionForm = () => {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [isEndOfPractice, setIsEndOfPractice] = useState(false);
-  
+
   const navigate = useNavigate();
+
+  const isExtraSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const arrowSize = isExtraSmallScreen ? '30px' : isSmallScreen ? '40px' : isMediumScreen ? '50px' : '60px';
 
   useEffect(() => {
     const fetchTopic = async () => {
@@ -180,7 +180,6 @@ const PracticeQuestionForm = () => {
 
   const currentPractice = practices[currentQuestionIndex];
   if (!currentPractice || !currentPractice.practice_qa) {
-
     return null;
   }
 
@@ -190,7 +189,6 @@ const PracticeQuestionForm = () => {
   const currentQuestion = currentQuestionData[currentQuestionKey];
 
   if (!currentQuestion) {
-   
     return null;
   }
 
@@ -202,93 +200,107 @@ const PracticeQuestionForm = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='container'>
-        <Box style={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
-          <IconButton onClick={handlePrevQuestion}>
-            <ArrowBackIosIcon style={iconStyle} />
-          </IconButton>
-        </Box>
-        <Box style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
-          <IconButton onClick={handleNextQuestion}>
-            <ArrowForwardIosIcon style={iconStyle} />
-          </IconButton>
-        </Box>
-        <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
-            {topic.topicTitle}
-          </Typography>
-          <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
-              {currentQuestion.question}
-            </Typography>
-            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
-              Question {currentQuestionIndex + 1}
-            </Typography>
-          </Paper>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '115%', marginTop: '20px' }}>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-              {shuffledOptions.map((option, idx) => (
-                <OptionButton
-                  key={option}
-                  onClick={() => handleOptionClick(option)}
-                  sx={{
-                    bgcolor: optionColors[idx % optionColors.length],
-                    color: '#181a52',
-                    minWidth: '100px',
-                    marginBottom: '20px',
-                    pointerEvents: isAnswered ? 'none' : 'auto',
-                    opacity: isAnswered ? 0.5 : 1,
-                  }}
-                  disabled={isAnswered}
-                >
-                  {option}
-                </OptionButton>
-              ))}
+      <Container className='container' sx={{ mt: 4, minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'flex-start', position: 'relative' }}>
+            <IconButton onClick={handlePrevQuestion} sx={{
+              fontSize: arrowSize,
+              color: '#ffb100',
+              position: 'fixed',
+              left: { xs: '0.5rem', sm: '1rem', md: '1.5rem', lg: '2rem' },
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 1
+            }}>
+              <ArrowBackIosIcon fontSize="inherit" />
+            </IconButton>
+          </Grid>
+          <Grid item xs={10}>
+            <Box sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52', textAlign: 'center' }} gutterBottom>
+                {topic.topicTitle}
+              </Typography>
+              <Paper elevation={3} sx={{ flexGrow: 1, minHeight: '40vh', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '20px', width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                <Typography variant="h6" sx={{ textAlign: 'center' }}>
+                  {currentQuestion.question}
+                </Typography>
+                <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
+                  Question {currentQuestionIndex + 1}
+                </Typography>
+              </Paper>
+              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '94%', marginTop: '20px' }}>
+                {shuffledOptions.map((option, idx) => (
+                  <OptionButton
+                    key={option}
+                    onClick={() => handleOptionClick(option)}
+                    sx={{
+                      bgcolor: optionColors[idx % optionColors.length],
+                      color: '#181a52',
+                      pointerEvents: isAnswered ? 'none' : 'auto',
+                      opacity: isAnswered ? 0.5 : 1,
+                    }}
+                    disabled={isAnswered}
+                  >
+                    {option}
+                  </OptionButton>
+                ))}
+              </Box>
             </Box>
-          </Box>
-          <PracticeAnswerModal
-            open={isConfirming}
-            handleClose={() => setIsConfirming(false)}
-            message={{
-              title: 'Confirm Answer',
-              content: 'Are you sure?',
-            }}
-            handleConfirm={handleOptionConfirmation}
-          />
-          <PracticeAnswerModal
-            open={isAnswerWrong}
-            handleClose={handleCancelWrongAnswer}
-            message={{
-              title: 'Wrong Answer',
-              content: 'lets get some payback with the next Question!',
-            }}
-            handleConfirm={handleContinueAfterWrongAnswer}
-          />
-          <CongratulatoryModal
-            open={isCorrectAnswer}
-            handleClose={() => setIsCorrectAnswer(false)}
-            message={{
-              title: 'Correct Answer',
-              content: 'Amazing, You got it right!',
-            }}
-            handleConfirm={handleContinueAfterCorrectAnswer}
-          />
-          <PracticeAnswerModal
-            open={isEndOfPractice}
-            handleEndOfPractice={handleEndOfPractice}
-            message={{
-              title: 'End of Practice',
-              content: 'Would you like to continue practicing?',
-            }}
-            handleContinuePractice={handleContinuePractice}
-            isEndOfPractice
-          />
-        </Container>
-      </div>
+          </Grid>
+          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'flex-end', position: 'relative' }}>
+            <IconButton onClick={handleNextQuestion} sx={{
+              fontSize: arrowSize,
+              color: '#ffb100',
+              position: 'fixed',
+              right: { xs: '0.5rem', sm: '1rem', md: '1.5rem', lg: '2rem' },
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 1
+            }}>
+              <ArrowForwardIosIcon fontSize="inherit" />
+            </IconButton>
+          </Grid>
+        </Grid>
+        <PracticeAnswerModal
+          open={isConfirming}
+          handleClose={() => setIsConfirming(false)}
+          message={{
+            title: 'Confirm Answer',
+            content: 'Are you sure?',
+          }}
+          handleConfirm={handleOptionConfirmation}
+        />
+        <PracticeAnswerModal
+          open={isAnswerWrong}
+          handleClose={handleCancelWrongAnswer}
+          message={{
+            title: 'Wrong Answer',
+            content: 'lets get some payback with the next Question!',
+          }}
+          handleConfirm={handleContinueAfterWrongAnswer}
+        />
+        <CongratulatoryModal
+          open={isCorrectAnswer}
+          handleClose={() => setIsCorrectAnswer(false)}
+          message={{
+            title: 'Correct Answer',
+            content: 'Amazing, You got it right!',
+          }}
+          handleConfirm={handleContinueAfterCorrectAnswer}
+        />
+        <PracticeAnswerModal
+          open={isEndOfPractice}
+          handleEndOfPractice={handleEndOfPractice}
+          message={{
+            title: 'End of Practice',
+            content: 'Would you like to continue practicing?',
+          }}
+          handleContinuePractice={handleContinuePractice}
+          isEndOfPractice
+        />
+      </Container>
     </ThemeProvider>
   );
 };
 
 export default PracticeQuestionForm;
-
-

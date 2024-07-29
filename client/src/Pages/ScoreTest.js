@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Typography, Paper, Grid, Button } from '@mui/material';
+import { Typography, Paper, Grid, Button, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../PagesCSS/ScoreTest.css';
 import { getUserProfileInfoFromDb } from '../API-Services/UserAPI';
@@ -20,7 +20,6 @@ const theme = createTheme({
           margin: '0.5rem 0',
           background: '#d6c1e3',
           width: 'calc(100% - 40px)',
-          height: '90px',
           color: '#181a52',
         },
       },
@@ -43,7 +42,8 @@ const ScoreTest = () => {
   const { correctAnswers, totalQuestions } = location.state || {};
   const [userProfileInfo, setUserProfileInfo] = useState({ fname: '' });
 
-  // Fetch user profile info
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
+
   useEffect(() => {
     const fetchUserProfileInfo = async () => {
       if (user) {
@@ -81,29 +81,26 @@ const ScoreTest = () => {
           <div className="scoresContainer">
             <div className="scoreHeader">
               <Grid container alignItems="center">
-                <Grid item xs={12} sm={1} md={1}></Grid>
-                <Grid item xs={6} sm={3} md={3}></Grid>
-                <Grid item xs={2} sm={4} md={4} style={{ textAlign: 'right', marginLeft: '1.5rem' }}>
+                <Grid item xs={6} />
+                <Grid item xs={3} style={{ textAlign: 'right', paddingRight: isSmallScreen ? '0.5rem' : '1rem', marginLeft: isSmallScreen ? '10px' : '15px' }}>
                   <Typography variant="h6">Questions</Typography>
                 </Grid>
-                <Grid item xs={3} sm={4} md={4} style={{ textAlign: 'right', marginLeft: '-11.8rem' }}>
+                <Grid item xs={3} style={{ textAlign: 'right', paddingLeft: isSmallScreen ? '0.5rem' : '1rem', marginLeft: isSmallScreen ? '-20px' : '-29px' }}>
                   <Typography variant="h6">Scores</Typography>
                 </Grid>
               </Grid>
             </div>
             {scores.map((score, index) => (
               <Paper key={index} elevation={3} className="scorePaper">
-                <Grid container justifyContent="space-between" alignItems="center">
-                  <Grid item xs={2} sm={1} md={1} style={{ textAlign: 'left' }}>
-                    <Typography variant="h6">{score.id}.</Typography>
+                <Grid container alignItems="center">
+                  <Grid item xs={3} style={{ textAlign: 'left' }}>
+                    <Typography variant="h6">{score.id}. {score.name}</Typography>
                   </Grid>
-                  <Grid item xs={4} sm={3} md={3}>
-                    <Typography variant="h6">{score.name}</Typography>
-                  </Grid>
-                  <Grid item xs={3} sm={4} md={4} style={{ textAlign: 'right', marginRight:'-150px' }}>
+                  <Grid item xs={3} />
+                  <Grid item xs={3} style={{ textAlign: 'right' }}>
                     <Typography variant="body1" style={{ fontSize: '16px' }}>{`${score.questionsCorrect}/${score.totalQuestions}`}</Typography>
                   </Grid>
-                  <Grid item xs={3} sm={4} md={4} style={{ textAlign: 'right', marginRight:'150px' }}>
+                  <Grid item xs={3} style={{ textAlign: 'right' }}>
                     <Typography variant="body1" style={{ fontSize: '16px'}}>{`${score.score}/${score.totalScore}`}</Typography>
                   </Grid>
                 </Grid>
@@ -120,4 +117,3 @@ const ScoreTest = () => {
 };
 
 export default ScoreTest;
-
