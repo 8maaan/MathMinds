@@ -21,6 +21,7 @@
     font-weight: 500;   
     color: #181A52;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 .PI-button:hover {
     transform: scale(1.08); 
@@ -40,6 +41,7 @@
     font-weight: 500;   
     color: #181A52;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 .LessonProg-button:hover {
     transform: scale(1.08); 
@@ -54,12 +56,12 @@
     width: 90%;
     height: 25%;
     border-radius: 0px 0px 25px 25px;
-    background-color: #4CAE4F;
     font-family: 'Poppins';
     font-size: 24px;
     font-weight: 500;   
     color: #181A52;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 .Badges-button:hover {
     transform: scale(1.08); 
