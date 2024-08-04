@@ -59,3 +59,17 @@ export const getProgressForAllLessonsFromDb = async (uid) => {
         return { success: false, message: "Failed to fetch lesson progress data for user" };
     }
 };
+
+
+//GET USER'S BADGES
+export const getBadgesForUser = async (uid) => {
+    try {
+        const response = await axios.get(
+            process.env.REACT_APP_SPRINGBOOT_GET_USER_BADGES.replace("{uid}", uid)
+        );
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error("Error fetching badges data for user: ", error);
+        return { success: false, message: "Failed to fetch badges data for user" };
+    }
+};
