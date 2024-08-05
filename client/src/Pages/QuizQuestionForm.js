@@ -4,7 +4,9 @@ import { Box, Button, Typography, Container, Paper, Modal } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { getAllLessonsQuiz } from '../API-Services/LessonQuizAPI';
+import { checkUserBadge, awardBadge } from '../API-Services/UserAPI'; // Import the new functions
 import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
+import { UserAuth } from '../Context-and-routes/AuthContext'; // Assuming you have access to user context here
 
 const theme = createTheme({
   typography: {
@@ -28,6 +30,7 @@ const OptionButton = styled(Button)({
 });
 
 const QuizQuestionForm = () => {
+  const { user } = UserAuth(); // Get user information
   const { lessonId, quizId } = useParams();
   const navigate = useNavigate();
   const [quiz, setQuiz] = useState(null);
@@ -35,6 +38,8 @@ const QuizQuestionForm = () => {
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [open, setOpen] = useState(false);
+  const [badgeNotification, setBadgeNotification] = useState(false); // State for badge notification
+  const [badgeAwarded, setBadgeAwarded] = useState(false); // State to check if badge was awarded
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -48,18 +53,14 @@ const QuizQuestionForm = () => {
   }, [quizId]);
 
   if (!quiz) {
-
     return <div>Loading...</div>;
-
   }
 
   const questions = Object.values(quiz.lessonQuizQA);
   const currentQuestion = questions[currentQuestionIndex];
 
   if (!currentQuestion) {
-
     return <div>Loading...</div>;
-
   }
 
   const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
@@ -81,8 +82,29 @@ const QuizQuestionForm = () => {
     }, 500);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     setOpen(false);
+    const passingScore = questions.length * 0.6; // Calculate the passing score as 60% of the total questions
+
+    if (user && score >= passingScore) {
+      const badgeCheck = await checkUserBadge(user.uid, lessonId);
+      if (badgeCheck.success && !badgeCheck.data) { // If user hasn't earned the badge yet
+        const awardResponse = await awardBadge(user.uid, lessonId);
+        if (awardResponse.success) {
+          console.log("Badge awarded successfully!");
+          setBadgeAwarded(true); // Mark the badge as awarded
+        } else {
+          console.error("Failed to award badge:", awardResponse.message);
+        }
+      }
+      setBadgeNotification(true); // Show badge notification
+    } else {
+      setBadgeNotification(true); // Show notification even if failed
+    }
+  };
+
+  const handleBadgeNotificationClose = () => {
+    setBadgeNotification(false);
     navigate('/lessons', { state: { lessonId: parseInt(lessonId, 10), score } });
   };
 
@@ -127,7 +149,6 @@ const QuizQuestionForm = () => {
             transform: 'translate(-50%, -50%)',
             width: 400,
             bgcolor: 'background.paper',
-            //border: '2px solid #000',
             boxShadow: 24,
             p: 4,
             radius: '20px',
@@ -140,6 +161,57 @@ const QuizQuestionForm = () => {
               You scored {score} out of {questions.length}.
             </Typography>
             <Button onClick={handleClose} variant="contained" sx={{ mt: 2, backgroundColor:'#ffb100', color: '#181a52'}}>
+              Close
+            </Button>
+          </Box>
+        </Modal>
+        
+        {/* Badge Notification Modal */}
+        <Modal
+          open={badgeNotification}
+          onClose={handleBadgeNotificationClose}
+          aria-labelledby="badge-modal-title"
+          aria-describedby="badge-modal-description"
+        >
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: '10px',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2 // Add some space between items
+          }}>
+            {badgeAwarded ? (
+              <>
+                <Typography id="badge-modal-title" variant="h6" component="h2" sx={{color: '#181a52'}}>
+                  Congratulations!
+                </Typography>
+                <Typography id="badge-modal-description" sx={{ mt: 2, color: '#181a52' }}>
+                  You've passed the quiz and earned a badge!
+                </Typography>
+                {/* Replace with actual badge image */}
+                <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-badge-png-image_996483.jpg" alt="Badge" style={{ width: '100px', margin: '20px 0' }} />
+              </>
+            ) : (
+              <>
+                <Typography id="badge-modal-title" variant="h6" component="h2" sx={{color: '#181a52'}}>
+                  Quiz Result
+                </Typography>
+                <Typography id="badge-modal-description" sx={{ mt: 2, color: '#181a52' }}>
+                  {score >= questions.length * 0.6 ? "You've passed the quiz!" : "You've failed the quiz."}
+                </Typography>
+              </>
+            )}
+            <Button onClick={handleBadgeNotificationClose} variant="contained" sx={{ mt: 2, backgroundColor:'#ffb100', color: '#181a52'}}>
               Close
             </Button>
           </Box>

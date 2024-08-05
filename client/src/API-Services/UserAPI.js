@@ -73,3 +73,25 @@ export const getBadgesForUser = async (uid) => {
         return { success: false, message: "Failed to fetch badges data for user" };
     }
 };
+
+// CHECK IF USER HAS EARNED A BADGE
+export const checkUserBadge = async (uid, lessonId) => {
+    try {
+      const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_CHECK_USER_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error("Error checking user badge:", error);
+      return { success: false, message: "Failed to check user badge" };
+    }
+  };
+  
+  // AWARD BADGE TO USER
+  export const awardBadge = async (uid, lessonId) => {
+    try {
+      const response = await axios.put(process.env.REACT_APP_SPRINGBOOT_AWARD_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error("Error awarding badge:", error);
+      return { success: false, message: "Failed to award badge" };
+    }
+  };
