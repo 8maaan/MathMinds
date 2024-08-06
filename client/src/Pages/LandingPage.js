@@ -2,7 +2,7 @@ import React from 'react';
 import '../PagesCSS/LandingPage.css';
 import LandingAppBar from '../ReusableComponents/LandingAppBar'
 import { Button } from '@mui/material';
-import teacherImg from '../Images/landing-body-image.png';
+import teacherImg from '../Images/landing-body-image2.png';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {

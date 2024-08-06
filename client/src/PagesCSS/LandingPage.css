@@ -6,7 +6,7 @@
 
 .body {
     color: #181A52;
-    background-image: url('../Images/landing-body-background.png');
+    background-image: url('../Images/BG2.png');
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh; 
@@ -138,4 +138,11 @@
       width: 100%;
       text-align: center;
     }
+
+    .body {
+      background-image: url('../Images/BG2.png');
+      background-size: cover;
+      background-attachment: fixed;
+      
+  }
 }

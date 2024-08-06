@@ -64,9 +64,9 @@ export default function ReusableAppBar() {
         break;
     }
   };
-
+/*fcdd96*/
   return (
-    <AppBar position="fixed" sx={{backgroundColor: '#fcdd96'}}>
+    <AppBar position="fixed" sx={{backgroundColor: '#ffb100'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
@@ -155,7 +155,7 @@ export default function ReusableAppBar() {
                 sx={{ 
                     my: 2, ml: 2, mr: 2, color: '#181A52', 
                     fontFamily: 'Poppins, sans-serif', display: 'block', 
-                    backgroundColor: page === 'Sign Up' ? 'white' : (page === 'Log In' ? '#FFB100' : ''),
+                    backgroundColor: page === 'Sign Up' ? 'white' : (page === 'Log In' ? '#fcdd96' : ''),
                     '&:hover': {
                     backgroundColor: page === 'Sign Up' ? '#f0efed' : (page === 'Log In' ? '#d69500' : '')
                     },
