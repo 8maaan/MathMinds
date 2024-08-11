@@ -11,10 +11,13 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 import TopicCard from './TopicCard';
 import PracticeChoice from './PracticeChoice';
 import { getLessonById } from '../API-Services/LessonAPI';
+import { firebaseRTDB } from '../Firebase/firebaseConfig'
+import { ref, set, get } from "firebase/database";
+import { UserAuth } from '../Context-and-routes/AuthContext';
+import { useUserInfo } from '../ReusableComponents/useUserInfo';
 
 function NextArrow(props) {
   const { onClick } = props;
@@ -49,8 +52,11 @@ function PracticeEvent() {
   const [showCard, setShowCard] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const [showPracticeChoice, setShowPracticeChoice] = useState(true);
-  const navigate = useNavigate();
+  const [showPracticeChoice, setShowPracticeChoice] = useState(false);
+
+  const navigateTo = useNavigate();
+  const { user } = UserAuth();
+  const { userData } = useUserInfo(user ? user.uid : null);
 
   const theme = createTheme({
     typography: {
@@ -137,9 +143,81 @@ function PracticeEvent() {
     setShowCard(false);
   };
 
-  const handleStart = (lessonId, topicId) => {
-    navigate(`/questionForm/${lessonId}/${topicId}`);
+
+  const handleStart = () => {
+    setShowPracticeChoice(true);
+    setShowCard(false);
   };
+
+  const generateRoomCode = () => {
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
+  };
+
+  const handleModeChoice = async (choice, roomCode = null) => {
+    console.log("Mode choice:", choice);
+  
+    if (!user) {
+      console.error("User not authenticated");
+      return;
+    }
+  
+    console.log("Authenticated user:", user.uid);
+  
+    if (choice === 'SOLO') {
+      console.log(selectedTopic.topicTitle, selectedTopic.topicId);
+      navigateTo(`/questionForm/${selectedTopic.topicId}`, { state: { topicTitle: selectedTopic.topicTitle } });
+    } else if (choice === 'CREATE ROOM') {
+      const generatedRoomCode = generateRoomCode();
+      console.log("Generated room code:", generatedRoomCode);
+      const roomRef = ref(firebaseRTDB, `rooms/${generatedRoomCode}`);
+      
+      try {
+        console.log("Attempting to create room...");
+        await set(roomRef, {
+          host: user.uid,
+          topicId: selectedTopic.topicId,
+          topicTitle: selectedTopic.topicTitle,
+          players: {
+            [user.uid]: { name: userData.fname + " " + userData.lname || "Host" }
+          },
+          state: "waiting",
+          currentQuestion: null,
+          scores: {},
+        });
+        console.log('Room created successfully');
+        navigateTo(`/lobby/${generatedRoomCode}`, { state: { isHost: true } });
+      } catch (error) {
+        console.error("Error creating room:", error);
+        console.error("Error details:", error.message);
+        // You might want to show an error message to the user here
+      }
+    } else if (choice === 'JOIN_ROOM') {
+      if (!roomCode) {
+        console.error("Room code is required to join a room");
+        return;
+      }
+      const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
+      try {
+        const snapshot = await get(roomRef);
+        if (snapshot.exists()) {
+          const roomData = snapshot.val();
+          if (roomData.topicId === selectedTopic.topicId) {
+            await set(ref(firebaseRTDB, `rooms/${roomCode}/players/${user.uid}`), {
+              name: userData.fname + " " + userData.lname || "Player"
+            });
+            navigateTo(`/lobby/${roomCode}`, { state: { isHost: false } });
+          } else {
+            throw new Error("Room topic does not match selected topic");
+          }
+        } else {
+          throw new Error("Room does not exist");
+        }
+      } catch (error) {
+        console.error("Error joining room:", error);
+        throw error; // Rethrow the error so it can be caught in the PracticeChoice component
+      }
+    }
+  }
 
   const generateBackgroundColor = (index) => {
     const colorVariations = [
@@ -170,14 +248,10 @@ function PracticeEvent() {
     zIndex: 1200
   };
 
-  useEffect(() => {
-    setShowPracticeChoice(true); 
-  }, []); 
-
   return (
     <ThemeProvider theme={theme}>
       <div className="container">
-        <ReusableAppBar style={{ zIndex: 1400, position: 'relative' }} />
+        {/* <ReusableAppBar style={{ zIndex: 1400, position: 'relative' }} /> */}
         {showCard ? (
           <div style={backdropStyle} onClick={handleCloseCard}></div>
         ) : null}
@@ -186,7 +260,9 @@ function PracticeEvent() {
             Choose a topic to practice
           </Typography>
           <div className="sliderContainer">
-            {showPracticeChoice && <PracticeChoice onClose={() => setShowPracticeChoice(false)} />}
+
+            {showPracticeChoice && <PracticeChoice onClose={() => setShowPracticeChoice(false)} modeChoice={handleModeChoice} />} 
+            
             <Slider {...settings}>
               {topics.length <= 3 ? (
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
@@ -207,10 +283,9 @@ function PracticeEvent() {
             </Slider>
             {showCard && selectedTopic && (
               <TopicCard
-                lessonId={lessonId}
                 topic={selectedTopic}
                 onClose={handleCloseCard}
-                onNext={handleStart}
+                onStart={handleStart}
               />
             )}
           </div>

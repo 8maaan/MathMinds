@@ -28,6 +28,8 @@ import ScoreTestPage from './Pages/ScoreTest';
 import PracticeEventPage from './Pages/practiceEvent';
 import BadgesPage from './Pages/BadgesPage';
 import LessonProgressPage from './Pages/LessonProgressPage';
+import PracticeTempLobby from './Pages/PracticeTempLobby';
+import PracticeQuestionFormMultiplayer from './Pages/PracticeQuestionFormMultiplayer';
 
 function App() {
 
@@ -56,7 +58,7 @@ function App() {
             <Route path="/profilelesson" element={<ProfileLessonPage />} />
             <Route path="/createPractice" element={<CreatePracticePage />} />
 
-            <Route path="/practice-event/:lessonId/:topicId" element={<PracticeEventPage />} />
+            <Route path="/practice-event/:lessonId/:topicId" element={<ProtectedRoute><PracticeEventPage /></ProtectedRoute>} />
             <Route path="/topiccard" element={<ProtectedRoute> <TopicCardPage/> </ProtectedRoute>}/>
             <Route path="/choice" element={<ProtectedRoute> <PracticeChoicePage/> </ProtectedRoute>}/>
             <Route path="/scoreTest" element={<ProtectedRoute> <ScoreTestPage/> </ProtectedRoute>}/>
@@ -71,6 +73,9 @@ function App() {
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
             <Route path="/lesson-progress" element={<ProtectedRoute> <LessonProgressPage/> </ProtectedRoute>}/>
+
+            <Route path="/lobby/:roomCode" element={<PracticeTempLobby/>}/>
+            <Route path="/game/:roomCode" element={<PracticeQuestionFormMultiplayer/>} />
 
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
