@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { ref, onValue, off, update } from "firebase/database";
+import { ref, onValue, off, update, serverTimestamp, get } from "firebase/database";
 import { firebaseRTDB } from '../Firebase/firebaseConfig';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
@@ -30,11 +30,18 @@ const PracticeQuestionFormMultiplayer = () => {
     
             if (data && data.state === "playing") {
                 setGameData(data);
+
+                if (data.currentQuestionStartTime) {
+                    const currentTime = Date.now();
+                    const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
+                    const remainingTime = Math.max(0, 9 - elapsedTime);
+                    setTimer(Math.round(remainingTime));
+                }
     
                 // Only update the current question and reset the timer if the question changes
                 if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
                     setCurrentQuestion(data.questions[data.currentQuestionIndex]);
-                    setTimer(10); // Reset timer for all players when question changes
+                    // setTimer(10); // Reset timer for all players when question changes
                     setHasAnswered(false); // Reset answer state for the new question
                     setSelectedAnswer(null); // Reset selected answer for the new question
                     setAnswerTime(null);
@@ -67,34 +74,47 @@ const PracticeQuestionFormMultiplayer = () => {
         let timerId;
         if (timer > 0 && gameData?.state === "playing") {
             timerId = setTimeout(() => setTimer(timer - 1), 1000);
-            
-        } else if(timer === 0 && !currentQuestion) {
+        }else if(timer === 0 && !currentQuestion) {
             moveToNextQuestion();
-        
         } else if (timer === 0) {
-            calculateScore();
-            if (isHost) {
-                setTimeout(moveToNextQuestion, 5000); // Wait 5 seconds before moving to the next question
-            }
-            
+            calculateScore()
+            setTimeout(moveToNextQuestion, 5000); // Automatically move to the next question after a delay
         }
-
         return () => clearTimeout(timerId);
-    }, [timer, gameData, isHost]);
+    }, [timer, gameData]);
 
 
     const moveToNextQuestion = async () => {
-        if (!isHost) return; // Only the host can move to the next question
+        if (!gameData) return; // Ensure gameData is available
+        
+        // Random delay between 0 and 300 milliseconds
+        await new Promise(resolve => setTimeout(resolve, Math.random() * 300));
 
-        const nextIndex = gameData.currentQuestionIndex + 1;
-        if (nextIndex <= Object.keys(gameData.questions).length) {
-            await update(ref(firebaseRTDB, `rooms/${roomCode}`), {
+        const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
+        
+        // Get the current state from the database
+        const snapshot = await get(roomRef);
+        const currentData = snapshot.val();
+    
+        // Check if the question has already been updated
+        if (currentData.currentQuestionIndex > gameData.currentQuestionIndex) {
+            console.log("Yep");
+            console.log("Question has already been updated by another client");
+            return; // Exit the function if the question has already been updated
+        }
+    
+        const nextIndex = currentData.currentQuestionIndex + 1;
+    
+        if (nextIndex <= Object.keys(currentData.questions).length) {
+            // Update to next question
+            await update(roomRef, {
                 currentQuestionIndex: nextIndex,
-                playerAnswers: {}
+                playerAnswers: {},
+                currentQuestionStartTime: serverTimestamp(),
             });
         } else {
             // End the game
-            await update(ref(firebaseRTDB, `rooms/${roomCode}`), { state: "finished" });
+            await update(roomRef, { state: "finished" });
         }
     };
 
@@ -135,8 +155,8 @@ const PracticeQuestionFormMultiplayer = () => {
         navigateTo(`/lobby/${roomCode}`)
     }
 
-    console.log("Total Score:", totalScore);
-    console.log("Answer Time:", answerTime);
+    // console.log("Total Score:", totalScore);
+    // console.log("Answer Time:", answerTime);
 
     if (!currentQuestion) {
         return (     

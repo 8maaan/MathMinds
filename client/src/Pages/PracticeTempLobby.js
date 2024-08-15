@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { firebaseRTDB } from '../Firebase/firebaseConfig'
-import { ref, onValue, off, update } from "firebase/database";
+import { ref, onValue, off, update, serverTimestamp, push, set } from "firebase/database";
 import { getPracticeByTopicId } from "../API-Services/PracticeAPI"
 import { UserAuth } from '../Context-and-routes/AuthContext';
 
@@ -13,8 +13,12 @@ const PracticeTempLobby = () => {
     const navigateTo = useNavigate();
     const { user } = UserAuth();
 
+    const [messages, setMessages] = useState([]);
+    const [chatInput, setChatInput] = useState("");
+
     useEffect(() => {
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
+        const messagesRef = ref(firebaseRTDB, `rooms/${roomCode}/messages`);
         
         const unsubscribe = onValue(roomRef, (snapshot) => {
             const data = snapshot.val();
@@ -30,8 +34,16 @@ const PracticeTempLobby = () => {
             }
         });
 
+        const messagesUnsubscribe = onValue(messagesRef, (snapshot) => {
+            const messagesData = snapshot.val();
+            if (messagesData) {
+                setMessages(Object.values(messagesData));
+            }
+        });
+
         return () => {
             off(roomRef);
+            off(messagesRef);
         };
     }, [roomCode, navigateTo]);
 
@@ -57,7 +69,8 @@ const PracticeTempLobby = () => {
                     currentQuestionIndex: 0,
                     questions: questions,
                     playerAnswers: {},
-                    playerScores: initialPlayerScores
+                    playerScores: initialPlayerScores,
+                    currentQuestionStartTime: serverTimestamp()
                 });
             } else {
                 console.error("Failed to fetch questions");
@@ -66,6 +79,22 @@ const PracticeTempLobby = () => {
             console.error("Error starting game:", error);
         }
         
+    };
+
+    const handleSendMessage = async () => {
+        if (chatInput.trim() === "") return;
+    
+        const messagesRef = ref(firebaseRTDB, `rooms/${roomCode}/messages`);
+        const newMessageRef = push(messagesRef);
+    
+        await set(newMessageRef, {
+            userId: user.uid,
+            userName: players[user.uid]?.name || "Anonymous",
+            message: chatInput,
+            timestamp: serverTimestamp()
+        });
+    
+        setChatInput(""); // Clear input after sending
     };
 
     return (
@@ -81,6 +110,23 @@ const PracticeTempLobby = () => {
                 ))}
             </ul>
             {isHost && <button onClick={startGame}>Start Game</button>}
+    
+            {/* Chat Section */}
+            <div>
+                <h3>Chat</h3>
+                <div>
+                    {messages.map((msg, index) => (
+                        <p key={index}><strong>{msg.userName}:</strong> {msg.message}</p>
+                    ))}
+                </div>
+                <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Type your message"
+                />
+                <button onClick={handleSendMessage}>Send</button>
+            </div>
         </div>
     );
 }
