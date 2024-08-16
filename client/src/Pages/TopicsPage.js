@@ -6,6 +6,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { updateProgress } from '../API-Services/UserProgressAPI';
 import ResponsiveDrawer from '../ReusableComponents/ResponsiveDrawer';
+import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -161,11 +162,20 @@ const TopicsPage = () => {
     setLoading(false);
 
     const quiz = lessonQuizzes.length ? lessonQuizzes[0] : null;
-    console.log(quiz);
     if (quiz) {
-      navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`); // Pass the quiz ID to the quiz form
+        try {
+            const result = await isQuizAdministered(quiz.lessonQuizId);
+            if (result.success && result.data === 1) { // Assuming 1 means administered
+                navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`);
+            } else {
+                alert('The quiz is not yet open or available.');
+            }
+        } catch (error) {
+            console.error("Error checking quiz:", error);
+            alert('An error occurred while checking quiz availability.');
+        }
     } else {
-      alert('No quiz available for this lesson.');
+        alert('No quiz available for this lesson.');
     }
   };
 
