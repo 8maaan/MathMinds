@@ -16,6 +16,7 @@ import PracticePage from './Pages/PracticePage';
 import TopicsPage from './Pages/TopicsPage'
 import EditTopicPage from './Pages/EditTopic';
 import CreateLessonQuizPage from './Pages/CreateLessonQuiz';
+import CreateQuizPracticePage from './Pages/CreatePractice';
 import EditLessonQuizPage from './Pages/EditLessonQuiz'; 
 import QuizQuestionForm from './Pages/QuizQuestionForm';
 
@@ -49,14 +50,14 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute> <ProfilePage/> </ProtectedRoute>}/>
             <Route path="/home" element={<ProtectedRoute> <HomePage/> </ProtectedRoute>}/>
             <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
-            <Route path="/lesson/:lessonId/:topicId" element={<ProtectedRoute><TopicsPage/></ProtectedRoute>} />
+            <Route path="/lesson/:lessonId/:topicId" element={<ProtectedRoute><TopicsPage/></ProtectedRoute>} />   {/* sa topic katong with questions */}
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
           
-            <Route path="/questionForm/:topicId" element={<QuestionFormPage />} />
+            <Route path="/questionForm/:topicId" element={<QuestionFormPage />} /> {/* mao ni ang quiz para sa practice */}
             <Route path="/profilelesson" element={<ProfileLessonPage />} />
             <Route path="/createPractice" element={<CreatePracticePage />} />
 
-            <Route path="/practice-event/:lessonId/:topicId" element={<PracticeEventPage />} />
+            <Route path="/practice-event/:lessonId/:topicId" element={<PracticeEventPage />} />  {/* mao ni sa katong wheels2 dapit para play */}
             <Route path="/topiccard" element={<ProtectedRoute> <TopicCardPage/> </ProtectedRoute>}/>
             <Route path="/choice" element={<ProtectedRoute> <PracticeChoicePage/> </ProtectedRoute>}/>
             <Route path="/scoreTest" element={<ProtectedRoute> <ScoreTestPage/> </ProtectedRoute>}/>
@@ -66,8 +67,9 @@ function App() {
             <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
             <Route path="/edit-topic/:topicId" element={<ProtectedRoute requireTeacher><EditTopicPage /></ProtectedRoute>} />
             <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/create-practice-quiz" element={<ProtectedRoute requireTeacher><CreateQuizPracticePage /></ProtectedRoute>} />
             <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuizPage /></ProtectedRoute>} />
-            <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />
+            <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />  {/* mao ni ang quiz sa lesson after ma submit  */}
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
             <Route path="/lesson-progress" element={<ProtectedRoute> <LessonProgressPage/> </ProtectedRoute>}/>
