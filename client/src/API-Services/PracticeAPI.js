@@ -42,7 +42,7 @@ export const deletePracticeFromDb = async (practiceId) => {
 
 export const updatePracticeInDb = async (practiceId, updatedPracticeData) => {
   try {
-    const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_PRACTICE}/${practiceId}`, updatedPracticeData);
+    const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_PRACTICE}${practiceId}`, updatedPracticeData);
     return { success: true, data: response.data };
   } catch (error) {
     console.error("Error updating practice: ", error.response ? error.response.data : error.message);

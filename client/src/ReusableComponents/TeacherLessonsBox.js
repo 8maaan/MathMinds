@@ -101,6 +101,11 @@ const TeacherLessonsBox = () => {
         handleMenuClose();
     };
 
+    const handleAddQuizPracticeClick = () => {
+        navigate('/create-practice-quiz');
+        handleMenuClose();
+    };
+
     const handleOpenDialog = (lessonId) => {
         setSelectedLessonId(lessonId);
         setOpenDialog(true);
@@ -134,6 +139,7 @@ const TeacherLessonsBox = () => {
     };
 
     const handleEditQuiz = (lesson) => {
+        console.log(lesson.lessonQuiz);
         if (lesson.lessonQuiz && lesson.lessonQuiz.length > 0) {
             const lessonQuizId = lesson.lessonQuiz[0].lessonQuizId;
             navigate(`/edit-lesson-quiz/${lessonQuizId}`);
@@ -177,6 +183,7 @@ const TeacherLessonsBox = () => {
                     <MenuItem onClick={handleAddLessonClick}>Add a Lesson</MenuItem>
                     <MenuItem onClick={handleAddTopicClick}>Add a Topic</MenuItem>
                     <MenuItem onClick={handleAddQuizClick}>Add a Quiz</MenuItem>
+                    <MenuItem onClick={handleAddQuizPracticeClick}>Add a Quiz For Practice</MenuItem>
                 </Menu>
             </div>
             

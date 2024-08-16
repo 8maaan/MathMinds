@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import'../PagesCSS/CreatePractice.css';
 import PracticeQuestion from '../ReusableComponents/PracticeQuestions';
 import { getAllTopicsFromDb } from '../API-Services/TopicAPI';
 import { insertPracticeToDb } from '../API-Services/PracticeAPI';
-import'../PagesCSS/CreatePractice.css';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePractice = () => {
     const [practiceTopic, setPracticeTopic] = useState('');
     const [practiceQuestions, setPracticeQuestions] = useState([]);
     const [topics, setTopics] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTopics = async () => {
@@ -23,6 +26,7 @@ const CreatePractice = () => {
         };
         fetchTopics();
     }, []);
+
 
     const handleAddQuestion = () => {
         setPracticeQuestions([
@@ -66,6 +70,7 @@ const CreatePractice = () => {
         console.log('Response:', response);
     
         if (response.success) {
+            navigate('/lessons-teacher');
             console.log(response.message); 
         } else {
             console.error(response.message); 
