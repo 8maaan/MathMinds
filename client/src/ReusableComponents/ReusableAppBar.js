@@ -11,21 +11,23 @@ export default function ReusableAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const {user} = UserAuth();
-  const {isTeacher} = useUserRoles(user ? user.uid : null);
+  const { user } = UserAuth();
+  const { isTeacher, isAdmin } = useUserRoles(user ? user.uid : null);
 
-  const pages = isTeacher ? ['Home', 'Dashboard', 'Manage Lessons', 'Practice'] : ['Home', 'Dashboard', 'Lessons', 'Practice'];
-  const settings = ['Profile', 'Logout'];
+  const pages = (isTeacher || isAdmin) ? ['Home', 'Dashboard', 'Manage Lessons', 'Practice'] : ['Home', 'Dashboard', 'Lessons', 'Practice'];
+  
+  // Add "Manage Accounts" to settings only if the user is an Admin
+  const settings = isAdmin ? ['Profile', 'Manage Accounts', 'Logout'] : ['Profile', 'Logout'];
 
   const { logOut } = UserAuth();
 
   const navigateTo = useNavigate();
 
-  const handleUserLogOut = async () =>{
-    try{
+  const handleUserLogOut = async () => {
+    try {
       const userLogOut = await logOut();
       console.log(userLogOut);
-    }catch(e){
+    } catch (e) {
       console.log(e.message);
     }
   }
@@ -33,6 +35,7 @@ export default function ReusableAppBar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -77,6 +80,10 @@ export default function ReusableAppBar() {
         navigateTo('/profile');
         break;
 
+      case 'Manage Accounts':
+        navigateTo('/manage-accounts'); // Redirect to the user management page
+        break;
+
       case 'Logout':
         console.log('Logout');
         handleUserLogOut();
@@ -88,10 +95,9 @@ export default function ReusableAppBar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{backgroundColor: '#ffb100', zIndex: (theme) => theme.zIndex.drawer + 1 }}> {/*set position to fixed from static -densha */}
+    <AppBar position="fixed" sx={{ backgroundColor: '#ffb100', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          
           <Typography
             variant="h6"
             noWrap
@@ -141,7 +147,7 @@ export default function ReusableAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={()=>{handleCloseNavMenu(page)}} sx={{color: '#181A52', fontFamily: 'Poppins, sans-serif'}}>
+                <MenuItem key={page} onClick={() => { handleCloseNavMenu(page) }} sx={{ color: '#181A52', fontFamily: 'Poppins, sans-serif' }}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -164,13 +170,13 @@ export default function ReusableAppBar() {
               textDecoration: 'none',
             }}
           >
-            <img src={mathMindsLogo} alt='logo' height='50px'/> {/*changed txt logo to pic logo -densha*/}
+            <img src={mathMindsLogo} alt='logo' height='50px'/>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={()=>{handleCloseNavMenu(page)}}
+                onClick={() => { handleCloseNavMenu(page) }}
                 sx={{ my: 2, ml: 2, mr: 2, color: '#181A52', fontFamily: 'Poppins, sans-serif', display: 'block' }}
               >
                 {page}
@@ -202,7 +208,7 @@ export default function ReusableAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={()=>{handleCloseUserMenu(setting)}} sx={{color: '#181A52', fontFamily: 'Poppins, sans-serif'}}>
+                <MenuItem key={setting} onClick={() => { handleCloseUserMenu(setting) }} sx={{ color: '#181A52', fontFamily: 'Poppins, sans-serif' }}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

@@ -47,6 +47,18 @@ export const getAllUsersFromDb = async () => {
     }
 };
 
+//GET ALL USERS FOR ADMIN
+export const getAllUsersForAdmin = async () => {
+    try {
+        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS_FOR_ADMIN);
+        //console.log(response.data)
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error("Error fetching users: ", error);
+        return { success: false, message: "Failed to fetch users" };
+    }
+};
+
 //GET USER'S LESSON PROGRESS
 export const getProgressForAllLessonsFromDb = async (uid) => {
     try {
@@ -95,3 +107,13 @@ export const checkUserBadge = async (uid, lessonId) => {
       return { success: false, message: "Failed to award badge" };
     }
   };
+
+  export const changeUserRole = async (uid, newRole) => {
+    try {
+        const response = await axios.put(`http://localhost:8080/mathminds/user/changeRole/${uid}?newRole=${newRole}`);
+        return response;
+    } catch (error) {
+        console.error('Error changing user role:', error);
+        throw error;
+    }
+};
