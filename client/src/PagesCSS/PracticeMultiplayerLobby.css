@@ -1,0 +1,142 @@
+/* PML = PracticeMultiplayerLobby */
+.pml-body{
+    background-image: url('../Images/BG2.png');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+    height: calc(100vh - 80px); /* Subtract the margin-top */
+    overflow: hidden; /* Prevent scrolling on the body */
+
+}
+
+.pml-body h2,h3,p{
+    color: #181A52;
+}
+
+.pml-left-section, .pml-right-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2%;
+}
+
+.pml-left-section{
+    /* height: 100%; */
+    width: 70%;
+    /* border: solid blue 1px; */
+}
+
+.pml-left-section-details{
+    margin: 5% 5% 0 5%;
+    /* border: solid black 1px; */
+    border-radius: 20px;
+}
+
+.pml-left-section-title{
+    display: flex;
+    justify-content: center;
+    /* border: solid black 1px; */
+}
+
+.pml-left-section-title h2{
+    border: solid #181A52 2px;
+    border-radius: 20px;
+    padding: 12px;
+    background-color: #FFEC86;
+}
+
+.pml-left-section-rcs{ /* rcs = roomcode & start (button) */
+    display: flex;
+    align-items: center;
+    /* border: solid black 1px; */
+    border-radius: 20px;
+}
+
+.pml-left-section-chat{
+    margin: 0 5% 0 5%;
+    border: solid #AA75CB 4px;
+    border-radius: 20px;
+    height: 65%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: #ededed;
+}
+
+.pml-left-section-chat-container{
+    margin: 0 1.5% 1% 1.5%;
+    text-align: left;
+    /* border: solid black 1px; */
+    height: 75%;
+    overflow-y: auto;
+}
+.pml-left-section-chat-container p{
+    margin: 0 auto;
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+
+.pml-left-section-chat-input-container{
+    /* border: solid red 1px; */
+    display: flex;
+    align-items: center;
+    margin: 0 1.5% 1% 1.5%;
+    height: auto;
+}
+
+.pml-right-section{
+    /* height: 100%; */
+    width: 30%;
+    /* border: solid purple 1px; */
+}
+
+.pml-right-section-participants-container{
+    background-color: #b2abe0;
+    margin: 10% 5% 0 5%;
+    border: solid #AA75CB 3px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: center;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.pml-right-section-participants-name{
+    /* border: solid gray 1px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    /* margin: 2% 5% 2% 5%; */
+    margin-bottom: 2.5%;
+    width: 85%;
+    height: auto;
+}
+
+
+@media (max-width: 720px) {
+    .pml-body {
+        flex-direction: column;
+        height: auto;
+        margin-top: 60px;
+        overflow-y: auto;
+    }
+
+    .pml-left-section, .pml-right-section {
+        width: 100%;
+        height: auto;
+    }
+
+    .pml-left-section-chat {
+        height: 400px;
+    }
+
+    .pml-right-section-participants-container {
+        margin: 5% 5% 5% 5%;
+        height: 200px;
+        overflow-y: auto;
+    }
+}

@@ -4,6 +4,10 @@ import { firebaseRTDB } from '../Firebase/firebaseConfig'
 import { ref, onValue, off, update, serverTimestamp, push, set } from "firebase/database";
 import { getPracticeByTopicId } from "../API-Services/PracticeAPI"
 import { UserAuth } from '../Context-and-routes/AuthContext';
+import '../PagesCSS/PracticeMultiplayerLobby.css'
+import { Button, TextField } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SendIcon from '@mui/icons-material/Send';
 
 const PracticeTempLobby = () => {
     const { roomCode } = useParams();
@@ -12,9 +16,10 @@ const PracticeTempLobby = () => {
     const [roomData, setRoomData] = useState(null);
     const navigateTo = useNavigate();
     const { user } = UserAuth();
-
     const [messages, setMessages] = useState([]);
     const [chatInput, setChatInput] = useState("");
+
+    const playerColorList = ['#F94848', '#518BBC', '#4CAE4F', '#FFB100'];
 
     useEffect(() => {
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
@@ -98,34 +103,79 @@ const PracticeTempLobby = () => {
     };
 
     return (
-        <div>
-            <h1>Lobby</h1>
-            <h2>Room Code: {roomCode}</h2>
-            <h3>Topic: {roomData?.topicTitle}</h3>
-            <h3> Topic Id: {roomData?.topicId} </h3>
-            <h3>Players:</h3>
-            <ul>
-                {Object.entries(players).map(([id, player]) => (
-                    <li key={id}>{player.name}</li>
-                ))}
-            </ul>
-            {isHost && <button onClick={startGame}>Start Game</button>}
-    
-            {/* Chat Section */}
-            <div>
-                <h3>Chat</h3>
-                <div>
-                    {messages.map((msg, index) => (
-                        <p key={index}><strong>{msg.userName}:</strong> {msg.message}</p>
-                    ))}
+        <div className='pml-body'>
+            {/* ROOM DETAILS, CHAT */}
+            <div className='pml-left-section'>
+                {/* ROOM DETAILS */}
+                <div className='pml-left-section-details'>
+                    <div className='pml-left-section-title'>
+                        <h2>{roomData?.topicTitle}</h2>
+                    </div>
+                    <div className='pml-left-section-rcs'>
+                        
+                        <div style={{height: '100%'}}>
+                            <h3>Room Code: <span style={{color: '#ba8f22'}}>{roomCode}</span></h3>
+                        </div>
+
+                        <div style={{height: '100%', marginLeft: 'auto'}}>
+                            {isHost && 
+                            <Button
+                                size='large'
+                                variant='contained'
+                                onClick={startGame}
+                                endIcon={<PlayArrowIcon/>}
+                                style={{borderRadius: '20px'}}
+                            >
+                                    Start
+                            </Button>}
+                        </div>
+                    </div>
                 </div>
-                <input
-                    type="text"
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    placeholder="Type your message"
-                />
-                <button onClick={handleSendMessage}>Send</button>
+                
+                {/* CHAT */}
+                <div className='pml-left-section-chat'>
+                    <h3>Chat</h3>
+                    <div className='pml-left-section-chat-container'>
+                        {messages.map((msg, index) => (
+                            <p key={index}><strong style={{ color: msg.userId === user.uid ? '#dea635' : 'inherit' }}>{msg.userName}:</strong> {msg.message}</p>
+                        ))}
+                    </div>
+                    <div className='pml-left-section-chat-input-container'>
+                        <TextField
+                            sx={{width: '90%', height: '100%', backgroundColor:'white'}}
+                            type="text"
+                            value={chatInput}
+                            onChange={(e) => setChatInput(e.target.value)}
+                            placeholder="Type your message"
+                            autoComplete="off"
+                        />
+                        <Button
+                            variant='text'
+                            sx={{width: '10%', height: '100%'}} 
+                            onClick={handleSendMessage}
+                        >
+                                <SendIcon sx={{fontSize: '40px'}}/>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+            <div className='pml-right-section'>
+                {/* PARTICIPANT LIST */}
+                <div className='pml-right-section-participants-container'>
+                    <div style={{width: '80%'}}>
+                        <h2>Players</h2>
+                    </div>
+                    {Object.entries(players).map(([id, player], index) => (
+                        <div 
+                            key={id} 
+                            className='pml-right-section-participants-name'
+                            style={{ backgroundColor: playerColorList[index % playerColorList.length]}}
+                        >
+                            <p style={{fontWeight:'600'}}>{player.name}</p>
+                        </div>
+                    ))}
+                </div> 
             </div>
         </div>
     );

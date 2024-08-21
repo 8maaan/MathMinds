@@ -74,7 +74,7 @@ function App() {
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
             <Route path="/lesson-progress" element={<ProtectedRoute> <LessonProgressPage/> </ProtectedRoute>}/>
 
-            <Route path="/lobby/:roomCode" element={<PracticeTempLobby/>}/>
+            <Route path="/lobby/:roomCode" element={<ProtectedRoute><PracticeTempLobby/></ProtectedRoute>}/>
             <Route path="/game/:roomCode" element={<PracticeQuestionFormMultiplayer/>} />
 
             <Route path="*" element={<PageNotFound/>} />
