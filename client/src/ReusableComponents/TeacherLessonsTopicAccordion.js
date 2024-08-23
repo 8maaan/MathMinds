@@ -5,7 +5,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
+import Tune from '@mui/icons-material/Tune';
 import { deleteTopicFromDb } from '../API-Services/TopicAPI';
+import { getAllPractices } from '../API-Services/PracticeAPI';
 import ReusableDialog from "./ReusableDialog";
 import ReusableSnackbar from './ReusableSnackbar'
 
@@ -35,6 +37,23 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
 
     const handleEditTopic = (topicId) => {
         navigateTo(`/edit-topic/${topicId}`);
+    };
+
+    const handleEditPractice = async (topicId) => {
+        try {
+            const practices = await getAllPractices();
+            const practiceExists = practices.data.some(practice => practice.topic.topicId === Number(topicId));
+            if (practiceExists) {
+                navigateTo(`/edit-practice/${topicId}`);
+            } else {
+                handleSnackbarOpen('error', 'Topic ID is missing.');
+                console.error("Topic ID is missing.");
+                return;
+            }
+    
+        } catch (error) {
+            console.error("An error has occured:", error);
+        }
     };
 
     const handleOpenDialog = (topicId) => {
@@ -130,6 +149,19 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
                                 
                                 <AccordionActions>
+                                    <Tooltip title="Edit Practice">
+                                        <IconButton onClick={() => handleEditPractice(topic.topicId)}>
+                                            <Tune
+                                                    sx={{
+                                                    color: "#181A52",
+                                                    '&:hover': {
+                                                        color: colorPalette.hoverColor,
+                                                        cursor: 'pointer'
+                                                    }
+                                                }}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
                                     <Tooltip title="Edit Topic">
                                         <IconButton onClick={() => handleEditTopic(topic.topicId)}>
                                             <EditIcon
@@ -148,7 +180,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                             <CloseIcon
                                                     sx={{
                                                     color: "#181A52",
-                                                   // marginRight: "12px",
+                                                    marginRight: "12px",
                                                     '&:hover': {
                                                         color: "#FF0000",
                                                         cursor: 'pointer'
