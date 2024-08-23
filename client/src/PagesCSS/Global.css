@@ -7,3 +7,7 @@ body, *, .MuiTypography-root, .MuiButton-text, .MuiTextField-root {
 .MuiInputBase-input, .MuiOutlinedInput-input {
     font-family: 'Poppins', sans-serif;
 }
+
+.MuiTableCell-root {
+    font-family: 'Poppins', sans-serif;
+}
