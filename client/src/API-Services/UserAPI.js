@@ -47,6 +47,18 @@ export const getAllUsersFromDb = async () => {
     }
 };
 
+//GET ALL USERS FOR ADMIN
+export const getAllUsersForAdmin = async () => {
+    try {
+        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS_FOR_ADMIN);
+        //console.log(response.data)
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error("Error fetching users: ", error);
+        return { success: false, message: "Failed to fetch users" };
+    }
+};
+
 //GET USER'S LESSON PROGRESS
 export const getProgressForAllLessonsFromDb = async (uid) => {
     try {
@@ -57,5 +69,51 @@ export const getProgressForAllLessonsFromDb = async (uid) => {
         // Handle errors
         console.error("Error fetching lesson progress data for user: ", error);
         return { success: false, message: "Failed to fetch lesson progress data for user" };
+    }
+};
+
+
+//GET USER'S BADGES
+export const getBadgesForUser = async (uid) => {
+    try {
+        const response = await axios.get(
+            process.env.REACT_APP_SPRINGBOOT_GET_USER_BADGES.replace("{uid}", uid)
+        );
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error("Error fetching badges data for user: ", error);
+        return { success: false, message: "Failed to fetch badges data for user" };
+    }
+};
+
+// CHECK IF USER HAS EARNED A BADGE
+export const checkUserBadge = async (uid, lessonId) => {
+    try {
+      const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_CHECK_USER_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error("Error checking user badge:", error);
+      return { success: false, message: "Failed to check user badge" };
+    }
+  };
+  
+  // AWARD BADGE TO USER
+  export const awardBadge = async (uid, lessonId) => {
+    try {
+      const response = await axios.put(process.env.REACT_APP_SPRINGBOOT_AWARD_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error("Error awarding badge:", error);
+      return { success: false, message: "Failed to award badge" };
+    }
+  };
+
+  export const changeUserRole = async (uid, newRole) => {
+    try {
+        const response = await axios.put(`http://localhost:8080/mathminds/user/changeRole/${uid}?newRole=${newRole}`);
+        return response;
+    } catch (error) {
+        console.error('Error changing user role:', error);
+        throw error;
     }
 };

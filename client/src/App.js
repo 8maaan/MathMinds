@@ -31,6 +31,8 @@ import LessonProgressPage from './Pages/LessonProgressPage';
 import PracticeTempLobby from './Pages/PracticeTempLobby';
 import PracticeQuestionFormMultiplayer from './Pages/PracticeQuestionFormMultiplayer';
 
+import UserManagementPage from './Pages/UserManagementPage';
+
 function App() {
 
   return (
@@ -63,12 +65,12 @@ function App() {
             <Route path="/choice" element={<ProtectedRoute> <PracticeChoicePage/> </ProtectedRoute>}/>
             <Route path="/scoreTest" element={<ProtectedRoute> <ScoreTestPage/> </ProtectedRoute>}/>
 
-            {/* FOR TEACHERS */}
-            <Route path="/create-topic" element={<ProtectedRoute requireTeacher><CreateTopic/></ProtectedRoute>} />
-            <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
-            <Route path="/edit-topic/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher><EditTopicPage /></ProtectedRoute>} />
-            <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuizPage /></ProtectedRoute>} />
-            <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuizPage /></ProtectedRoute>} />
+            {/* FOR TEACHERS & ADMIN*/}
+            <Route path="/create-topic" element={<ProtectedRoute requireTeacher ><CreateTopic/></ProtectedRoute>} />
+            <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher ><TeacherLessonsPage/></ProtectedRoute> }/>
+            <Route path="/edit-topic/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher ><EditTopicPage /></ProtectedRoute>} />
+            <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher ><CreateLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher ><EditLessonQuizPage /></ProtectedRoute>} />
             <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
@@ -78,6 +80,9 @@ function App() {
             <Route path="/game/:roomCode" element={<PracticeQuestionFormMultiplayer/>} />
 
             <Route path="*" element={<PageNotFound/>} />
+
+            {/*FOR ADMIN*/}
+            <Route path="/manage-accounts" element={<ProtectedRoute requireAdmin><UserManagementPage/></ProtectedRoute>} />
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>

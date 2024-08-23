@@ -38,3 +38,13 @@ export const getLessonQuizById = async (lessonQuizId) => {
         return { success: false, message: "Failed to fetch lesson quiz. Try again later." };
     }
 };
+
+export const isQuizAdministered = async (lessonQuizId) => {
+    try{
+        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_CHECK_QUIZ_ADMINISTERED.replace("{lessonQuizId}", lessonQuizId));
+        return { success: true, data: response.data };
+    }catch (error) {
+        console.error("Error checking quiz:", error);
+        return { success: false, message: "Failed to check quiz" };
+    }
+}

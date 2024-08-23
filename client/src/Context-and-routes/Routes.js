@@ -23,23 +23,32 @@ import ReusableAppBar from '../ReusableComponents/ReusableAppBar';
 // }
 
 
-export const ProtectedRoute = ({ children, requireTeacher = false }) => {
+export const ProtectedRoute = ({ children, requireTeacher = false, requireAdmin = false }) => {
   const { user, loading } = UserAuth();
-  const { isTeacher } = useUserRoles(user ? user.uid : null);
+  const { isTeacher, isAdmin } = useUserRoles(user ? user.uid : null);
 
   if (loading) {
     return <LoadingAnimations />;
   }
 
   if (!user) {
-    return <Navigate to='/login' />;  }
-
-  if (requireTeacher && isTeacher === null) {
-    return <LoadingAnimations />;
+    return <Navigate to="/login" />;
   }
 
-  if (requireTeacher && !isTeacher) {
-    return <div>Error 403 Forbidden</div>;
+  if (requireAdmin) {
+    if (isAdmin === null) {
+      return <LoadingAnimations />;
+    }
+    if (!isAdmin) {
+      return <div>Error 403 Forbidden</div>;
+    }
+  } else if (requireTeacher) {
+    if (isTeacher === null && isAdmin === null) {
+      return <LoadingAnimations />;
+    }
+    if (!isTeacher && !isAdmin) {
+      return <div>Error 403 Forbidden</div>;
+    }
   }
 
   return <AppBarWrapper>{children}</AppBarWrapper>;
