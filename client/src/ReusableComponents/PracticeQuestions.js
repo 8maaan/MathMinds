@@ -15,7 +15,8 @@ const PracticeQuestion = ({ id, question, correctAnswer, incorrectAnswers, updat
     };
 
     return (
-        <div className="practice-question">
+        <>
+        <div className="practiceQuestionContainer">
             <TextField
                 variant='filled'
                 label="Question"
@@ -48,10 +49,12 @@ const PracticeQuestion = ({ id, question, correctAnswer, incorrectAnswers, updat
                     required={index===0}
                 />
             ))}
-            <IconButton onClick={handleDelete} color="error">
-                <DeleteIcon />
-            </IconButton>
+            
         </div>
+        <div className='practice-content-actions'>
+        <IconButton onClick={handleDelete} color="error"><DeleteIcon /></IconButton>
+        </div>
+        </>
     );
 };
 

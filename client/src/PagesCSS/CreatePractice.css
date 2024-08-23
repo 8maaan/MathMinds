@@ -36,6 +36,40 @@
     border-radius: 15px;
     overflow-y: auto;
 }
+.practice-scrollable{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 99%;
+    width: 99%;
+    overflow-y: auto;
+
+}
+
+.practice-scrollable::-webkit-scrollbar {
+    width: 6.5px; /* Width of the scrollbar */
+    border-radius: 10px;
+    
+}
+
+.practice-scrollable::-webkit-scrollbar-track {
+    background: none; /* Background of the scrollbar track */
+    border-radius: 5px; /* Rounded corners for the track */
+    
+}
+
+.practice-scrollable::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+
+}
+
+.practice-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+
+
 
 .practiceQuestionContainer,
 .topicContentContainer {
@@ -65,7 +99,7 @@
     color: gray;
 }
 
-.topic-content-actions {
+.practice-content-actions {
     width: 75%;
     text-align: left;
 }

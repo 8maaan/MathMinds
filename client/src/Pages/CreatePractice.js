@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select,Typography} from '@mui/material';
 import'../PagesCSS/CreatePractice.css';
 import PracticeQuestion from '../ReusableComponents/PracticeQuestions';
 import { getAllTopicsFromDb } from '../API-Services/TopicAPI';
@@ -90,6 +90,7 @@ const CreatePractice = () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
+            <Typography class='createTopic-title'>Add a quiz for Practice</Typography>
                 <div className='createPractice-body'>
                     <div className='practice-config-container'>
                         {/* Practice Topic */}
@@ -108,6 +109,7 @@ const CreatePractice = () => {
                     {/* For practice questions */}
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                         <div className='practice-form-container'>
+                        <div className='practice-scrollable'>
                             <SortableContext items={practiceQuestions.map(item => item.id)} strategy={verticalListSortingStrategy}>
                                 {practiceQuestions.map(item => (
                                     <PracticeQuestion
@@ -122,6 +124,7 @@ const CreatePractice = () => {
                                 ))}
                             </SortableContext>
                             {practiceQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No questions currently 📝</p> : null}
+                        </div>
                         </div>
                     </DndContext>
                     <Button type="submit" variant='contained' sx={{ mt: 2 }}>Submit</Button>
