@@ -3,14 +3,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ref, onValue, off, update, serverTimestamp, get } from "firebase/database";
 import { firebaseRTDB } from '../Firebase/firebaseConfig';
 import { UserAuth } from '../Context-and-routes/AuthContext';
-import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
+import MultiplayerLeaderboardModal from '../ReusableComponents/MultiplayerLeaderboardModal';
+import ReusableCountdownTimer from '../ReusableComponents/ReusableCountdownTimer';
+import { Box, Slide } from '@mui/material';
+import "../PagesCSS/PracticeQuestionFormMultiplayer.css"
 
 //  W/ comments para way libog
 const PracticeQuestionFormMultiplayer = () => {
     const { roomCode } = useParams();
     const [gameData, setGameData] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState(null);
-    const [timer, setTimer] = useState(5); // Initial timer (countdown) b4 start
+    const [timer, setTimer] = useState(null); // Initial timer (countdown) b4 start
     const [isHost, setIsHost] = useState(false);
     const [hasAnswered, setHasAnswered] = useState(false); // New state to track if the user has answered
     const [selectedAnswer, setSelectedAnswer] = useState(null); // Store the selected answer
@@ -18,6 +21,7 @@ const PracticeQuestionFormMultiplayer = () => {
     const [totalScore, setTotalScore] = useState(0); // Current user's total score
     const [isFinished, setIsFinished] = useState(false); // Indicator if game is finished or nawt
     const [playerScores, setPlayerScores] = useState({}); // Overall total scores from players
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const { user } = UserAuth();
     const navigateTo = useNavigate();
@@ -35,7 +39,8 @@ const PracticeQuestionFormMultiplayer = () => {
                     const currentTime = Date.now();
                     const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
                     const remainingTime = Math.max(0, 9 - elapsedTime);
-                    setTimer(Math.round(remainingTime));
+                    console.log("Remaining time: ",remainingTime);
+                    setTimer(Math.floor(remainingTime));
                 }
     
                 // Only update the current question and reset the timer if the question changes
@@ -77,8 +82,12 @@ const PracticeQuestionFormMultiplayer = () => {
         }else if(timer === 0 && !currentQuestion) {
             moveToNextQuestion();
         } else if (timer === 0) {
-            calculateScore()
-            setTimeout(moveToNextQuestion, 5000); // Automatically move to the next question after a delay
+            calculateScore();
+            setTimeout(() => setShowLeaderboard(true), 2000);
+            setTimeout(()=>{
+                moveToNextQuestion(); 
+                handleShowLeaderboard();
+            }, 7000); // Automatically move to the next question after a delay
         }
         return () => clearTimeout(timerId);
     }, [timer, gameData]);
@@ -154,49 +163,71 @@ const PracticeQuestionFormMultiplayer = () => {
     const handleNavigateBacktoLobby = () => {
         navigateTo(`/lobby/${roomCode}`)
     }
+    
+    const handleShowLeaderboard = () =>{
+        setShowLeaderboard(false);
+    }
 
     // console.log("Total Score:", totalScore);
     // console.log("Answer Time:", answerTime);
+    console.log(timer);
 
     if (!currentQuestion) {
         return (     
-            <div>
-                Get ready in... {timer}
-            </div>
+            <ReusableCountdownTimer initialTimer={timer}/>
         )
     }
 
     return (
         <div>
-            <h2>Question: {currentQuestion.question}</h2>
-            <p>Time left: {timer} seconds</p>
-            <p>Total score {"(Individual)"}: {totalScore} </p>
-            <h3>Player Scores:</h3>
-            <ul>
-                {Object.entries(playerScores).map(([playerId, scores]) => (
-                    <li key={playerId}>
-                        {gameData.players[playerId]?.name}: {calculateTotalScore(scores)}
-                    </li>
-                ))}
-            </ul>
-            <div>
-                {[currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers].map((answer, index) => (
-                    <button 
-                        key={index} 
-                        onClick={() => submitAnswer(answer)} 
-                        disabled={hasAnswered} // Disable buttons after an answer is selected
-                    >
-                    {answer}
-                </button>
-                ))}
+            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                {/* Added box to enable slide transition */}
+                <Box className='pqfm-body'> 
+                    <Box className='pqfm-first-section-container'>
+                        <h2>Question: {currentQuestion.question}</h2>
+                        <p>Time left: {timer} seconds</p>
+                        {/* <p>Total score {"(Individual)"}: {totalScore} </p>
+                        <h3>Player Scores:</h3>
+                        <ul>
+                            {Object.entries(playerScores).map(([playerId, scores]) => (
+                                <li key={playerId}>
+                                    {gameData.players[playerId]?.name}: {calculateTotalScore(scores)}
+                                </li>
+                            ))}
+                        </ul> */}
+                    </Box>
+                    {/* Answer Choices */}
+                    <Box className='pqfm-second-section-container'>
+                        {[currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers].map((answer, index) => (
+                            <button 
+                                key={index} 
+                                onClick={() => submitAnswer(answer)} 
+                                disabled={hasAnswered || timer === 0} // Disable buttons after an answer is selected or if timer is 0
+                            >
+                            {answer}
+                        </button>
+                        ))}
 
-                {isFinished && 
-                    <>
-                        <p>The quiz has finished</p>
-                        <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
-                    </>
-                }
-            </div>
+                        {isFinished && 
+                            <>
+                                <p>The quiz has finished</p>
+                                <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
+                            </>
+                        }
+
+                        <MultiplayerLeaderboardModal 
+                            open={showLeaderboard} 
+                            onClose={handleShowLeaderboard} 
+                            scores={Object.fromEntries(
+                                Object.entries(playerScores).map(([playerId, scores]) => [
+                                    gameData.players[playerId]?.name,
+                                    calculateTotalScore(scores),
+                                ])
+                            )}
+                        />
+                    </Box>
+                </Box>
+            </Slide>
         </div>
     );
 }

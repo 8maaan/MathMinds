@@ -1,0 +1,23 @@
+/* pqfm == practice question form multiplayer */
+.pqfm-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: solid black 2px;
+    height: 100vh;
+}
+
+/* Question */
+.pqfm-first-section-container{
+    border: solid black 1px;
+    height: 40%;
+    width: 70%;
+}
+
+/* Choices */
+.pqfm-second-section-container{
+    border: solid black 1px;
+    height: 40%;
+    width: 70%;
+}

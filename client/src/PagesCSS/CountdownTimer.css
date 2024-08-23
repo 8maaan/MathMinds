@@ -1,0 +1,42 @@
+.countdown-wrapper {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-size: 30em;
+    position: relative;
+  }
+  
+  .countdown-wrapper::after {
+    content: counter(my-count);
+    position: absolute;
+  }
+  
+  .countdown-text {
+    font-size: 0.05em;
+    position: absolute;
+    top: 20px;
+  }
+  
+  @keyframes countdown {
+    0% {
+      background: hsl(0,100%,20%);
+    }
+    20% {
+      background: hsl(90,100%,20%);
+    }
+    40% {
+      background: hsl(180,100%,20%);
+    }
+    60% {
+      background: hsl(270,100%,20%);
+    }
+    80% {
+      background: hsl(360,100%,20%);
+    }
+    100% {
+      background: hsl(90,100%,20%);
+    }
+    
+  }
