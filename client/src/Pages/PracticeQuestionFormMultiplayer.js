@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { ref, onValue, off, update, serverTimestamp, get } from "firebase/database";
+import { ref, onValue, off, update, serverTimestamp, get, runTransaction } from "firebase/database";
 import { firebaseRTDB } from '../Firebase/firebaseConfig';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import MultiplayerLeaderboardModal from '../ReusableComponents/MultiplayerLeaderboardModal';
@@ -30,44 +30,48 @@ const PracticeQuestionFormMultiplayer = () => {
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
         
         const unsubscribe = onValue(roomRef, (snapshot) => {
-            const data = snapshot.val();
-    
-            if (data && data.state === "playing") {
-                setGameData(data);
+            try{
+                const data = snapshot.val();
+        
+                if (data && data.state === "playing") {
+                    setGameData(data);
 
-                if (data.currentQuestionStartTime) {
-                    const currentTime = Date.now();
-                    const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
-                    const remainingTime = Math.max(0, 9 - elapsedTime);
-                    console.log("Remaining time: ",remainingTime);
-                    setTimer(Math.floor(remainingTime));
-                }
-    
-                // Only update the current question and reset the timer if the question changes
-                if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
-                    setCurrentQuestion(data.questions[data.currentQuestionIndex]);
-                    // setTimer(10); // Reset timer for all players when question changes
-                    setHasAnswered(false); // Reset answer state for the new question
-                    setSelectedAnswer(null); // Reset selected answer for the new question
-                    setAnswerTime(null);
+                    if (data.currentQuestionStartTime) {
+                        const currentTime = Date.now();
+                        const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
+                        const remainingTime = Math.max(0, 9 - elapsedTime);
+                        console.log("Remaining time: ",remainingTime);
+                        setTimer(Math.floor(remainingTime));
+                    }
+        
+                    // Only update the current question and reset the timer if the question changes
+                    if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
+                        setCurrentQuestion(data.questions[data.currentQuestionIndex]);
+                        // setTimer(10); // Reset timer for all players when question changes
+                        setHasAnswered(false); // Reset answer state for the new question
+                        setSelectedAnswer(null); // Reset selected answer for the new question
+                        setAnswerTime(null);
+                    }
+
+                    // Update all player scores
+                    if (data.playerScores) {
+                        setPlayerScores(data.playerScores);
+                    }
+                    
+                    // Update current user's total score
+                    if (data.playerScores && data.playerScores[user.uid]) {
+                        const playerScores = data.playerScores[user.uid];
+                        const currentScore = Object.values(playerScores).reduce((sum, score) => sum + score, 0);
+                        setTotalScore(currentScore);
+                    }
+                    setIsHost(data.host === user.uid);
                 }
 
-                // Update all player scores
-                if (data.playerScores) {
-                    setPlayerScores(data.playerScores);
+                if (data && data.state === "finished"){
+                    setIsFinished(true);
                 }
-                
-                // Update current user's total score
-                if (data.playerScores && data.playerScores[user.uid]) {
-                    const playerScores = data.playerScores[user.uid];
-                    const currentScore = Object.values(playerScores).reduce((sum, score) => sum + score, 0);
-                    setTotalScore(currentScore);
-                }
-                setIsHost(data.host === user.uid);
-            }
-
-            if (data && data.state === "finished"){
-                setIsFinished(true);
+            }catch (error){
+                console.error("Error in room data listener:", error);
             }
         });
     
@@ -83,11 +87,7 @@ const PracticeQuestionFormMultiplayer = () => {
             moveToNextQuestion();
         } else if (timer === 0) {
             calculateScore();
-            setTimeout(() => setShowLeaderboard(true), 2000);
-            setTimeout(()=>{
-                moveToNextQuestion(); 
-                handleShowLeaderboard();
-            }, 7000); // Automatically move to the next question after a delay
+            showLeaderboardWithDelay();
         }
         return () => clearTimeout(timerId);
     }, [timer, gameData]);
@@ -139,19 +139,36 @@ const PracticeQuestionFormMultiplayer = () => {
 
     // Function for checking and calculating the score after answer submission
     const calculateScore = async () => {
-        if (hasAnswered && selectedAnswer) {
+        if (hasAnswered && selectedAnswer && gameData) {
             let score = 0;
     
             // Check if the selected answer is correct
             if (selectedAnswer === currentQuestion.correctAnswer) {
                 score = answerTime * 100;
             }
-
-            // Update the Firebase Realtime Database with the selected answer and score
-            await update(ref(firebaseRTDB, `rooms/${roomCode}/playerScores/${user.uid}`), {
-                [`question_${gameData.currentQuestionIndex}`]: score,
-            });
+    
+            // Use a transaction to ensure atomic updates
+            const scoreRef = ref(firebaseRTDB, `rooms/${roomCode}/playerScores/${user.uid}/question_${gameData.currentQuestionIndex}`);
+            
+            try {
+                await runTransaction(scoreRef, (currentScore) => {
+                    // Only update if the score hasn't been set yet
+                    return currentScore === null ? score : currentScore;
+                });
+            } catch (error) {
+                console.error("Error updating score:", error);
+            }
         }
+    };
+
+    const showLeaderboardWithDelay = () => {
+        setTimeout(() => {
+            setShowLeaderboard(true);
+            setTimeout(() => {
+                setShowLeaderboard(false);
+                moveToNextQuestion();
+            }, 5000); // Show leaderboard for 5 seconds
+        }, 2000);
     };
 
 
