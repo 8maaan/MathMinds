@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography, Container, Paper, Modal } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -40,6 +40,15 @@ const QuizQuestionForm = () => {
   const [open, setOpen] = useState(false);
   const [badgeNotification, setBadgeNotification] = useState(false); // State for badge notification
   const [badgeAwarded, setBadgeAwarded] = useState(false); // State to check if badge was awarded
+  const [questionFontSize, setQuestionFontSize] = useState('1.5rem');
+  const [optionFontSize, setOptionFontSize] = useState('1rem');
+
+  const questionRef = useRef(null);
+  const optionsRef = useRef([]);
+
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -52,6 +61,41 @@ const QuizQuestionForm = () => {
     fetchQuiz();
   }, [quizId]);
 
+  useEffect(() => {
+    adjustFontSizes();
+  }, [currentQuestionIndex]);
+
+  const adjustFontSizes = () => {
+    const maxFontSize = 2; // Maximum font size in rem
+    const minFontSize = 1; // Minimum font size in rem
+    const maxHeight = 100; // Max height for question text in pixels
+    const baseLength = 50; // Base length of the question text
+  
+    if (questionRef.current) {
+      let fontSize = maxFontSize;
+      const questionLength = currentQuestion.question.length;
+  
+      // Adjust font size based on text length
+      fontSize = Math.max(minFontSize, Math.min(maxFontSize, (baseLength / questionLength) * maxFontSize));
+  
+      questionRef.current.style.fontSize = `${fontSize}rem`;
+  
+      // Ensure the text fits within the container
+      while (fontSize > minFontSize && questionRef.current.scrollHeight > maxHeight) {
+        fontSize -= 0.1;
+        questionRef.current.style.fontSize = `${fontSize}rem`;
+      }
+    }
+  
+    if (optionsRef.current.length > 0) {
+      optionsRef.current.forEach((option) => {
+        if (option) {
+          option.style.fontSize = `${optionFontSize}rem`;
+        }
+      });
+    }
+  };
+
   if (!quiz) {
     return <div>Loading...</div>;
   }
@@ -63,7 +107,7 @@ const QuizQuestionForm = () => {
     return <div>Loading...</div>;
   }
 
-  const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
+  const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
   const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
 
   const handleOptionClick = (option) => {
@@ -116,7 +160,7 @@ const QuizQuestionForm = () => {
             {quiz.lessonTitle} - Final Assessment
           </Typography>
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
+            <Typography ref={questionRef} variant="h6" sx={{ textAlign: 'center', marginTop: '100px', fontSize: questionFontSize }}>
               {currentQuestion.question}
             </Typography>
             <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
@@ -126,8 +170,9 @@ const QuizQuestionForm = () => {
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
             {options.map((option, idx) => (
               <OptionButton
+                ref={(el) => optionsRef.current[idx] = el}
                 key={`${currentQuestionIndex}-${idx}`}
-                sx={{ bgcolor: optionColors[idx % optionColors.length], color: '#181a52', minWidth: '100px', marginBottom: '20px' }}
+                sx={{ bgcolor: optionColors[idx % optionColors.length], color: '#181a52', minWidth: '100px', marginBottom: '20px', fontSize: optionFontSize }}
                 onClick={() => handleOptionClick(option)}
                 disabled={selectedOption !== null}
               >
