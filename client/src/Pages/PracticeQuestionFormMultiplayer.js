@@ -24,6 +24,8 @@ const PracticeQuestionFormMultiplayer = () => {
     const [playerScores, setPlayerScores] = useState({}); // Overall total scores from players
     const [showLeaderboard, setShowLeaderboard] = useState(false);
 
+    const [shuffledChoices, setShuffledChoices] = useState([]);
+
     const optionColors = [
         { defaultColor: "#f94848", hoverColor: "#d13d3d", disabledColor: "#bf3737" },
         { defaultColor: "#4cae4f", hoverColor: "#429645", disabledColor: "#3a853d" },
@@ -51,9 +53,9 @@ const PracticeQuestionFormMultiplayer = () => {
                     if (data.currentQuestionStartTime) {
                         const serverTime = data.serverTime || Date.now();
                         const elapsedTime = (serverTime - data.currentQuestionStartTime) / 1000;
-                        const remainingTime = Math.max(0, 9 - elapsedTime);
-                        console.log("Remaining time: ",remainingTime);
-                        setTimer(Math.floor(remainingTime));
+                        const remainingTime = Math.max(0, 10 - elapsedTime);
+                        // console.log("Remaining time: ",remainingTime);
+                        setTimer(Math.round(remainingTime));
                     }
         
                     // Only update the current question and reset the timer if the question changes
@@ -104,6 +106,13 @@ const PracticeQuestionFormMultiplayer = () => {
         return () => clearTimeout(timerId);
     }, [timer, gameData]);
 
+    useEffect(() => {
+        if (currentQuestion) {
+            const choices = [currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers];
+            setShuffledChoices(shuffleChoicesArray(choices));
+        }
+    }, [currentQuestion]);
+
 
     const moveToNextQuestion = async () => {
         if (!gameData) return; // Ensure gameData is available
@@ -119,14 +128,13 @@ const PracticeQuestionFormMultiplayer = () => {
     
         // Check if the question has already been updated
         if (currentData.currentQuestionIndex > gameData.currentQuestionIndex) {
-            console.log("Yep");
             console.log("Question has already been updated by another client");
             return; // Exit the function if the question has already been updated
         }
     
         const nextIndex = currentData.currentQuestionIndex + 1;
     
-        if (nextIndex <= Object.keys(currentData.questions).length) {
+        if (nextIndex < Object.keys(currentData.questions).length) {
             // Update to next question
             await update(roomRef, {
                 currentQuestionIndex: nextIndex,
@@ -197,6 +205,10 @@ const PracticeQuestionFormMultiplayer = () => {
         setShowLeaderboard(false);
     }
 
+    const shuffleChoicesArray = (array) => {
+        return array.sort(() => Math.random() - 0.5);
+    };
+
     if (!currentQuestion) {
         return (     
             <ReusableCountdownTimer initialTimer={timer}/>
@@ -219,18 +231,24 @@ const PracticeQuestionFormMultiplayer = () => {
                     <Box className='pqfm-first-section-container'>
                         <Box className='pqfm-first-section-wrapper'>
                             <Box className='pqfm-currentQuestionIndex'>
-                                <h3 style={{marginLeft: '0.5rem'}}>Question #{gameData.currentQuestionIndex}</h3>
+                                <h3 style={{marginLeft: '0.5rem'}}>Question #{gameData.currentQuestionIndex + 1}</h3>
                             </Box>
                             <Box className='pqfm-question-container'>
                                 <p>{currentQuestion.question}</p>
                             </Box>
+                            {isFinished && 
+                                    <>
+                                        <p>The quiz has finished{"(Temp Only)"}</p>
+                                        <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
+                                    </>
+                                }
                             {/* <p>Time left: {timer} seconds</p> */}
                         </Box>
                         
                     </Box>
                     {/* Answer Choices */}
                     <Box className='pqfm-second-section-container'>
-                        {[currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers].map((answer, index) => (
+                        {shuffledChoices.map((answer, index) => (
                             <Box className='pqfm-choices-wrapper'>
                                 <Button
                                     variant="contained" 
@@ -252,13 +270,6 @@ const PracticeQuestionFormMultiplayer = () => {
                                 </Button>
                             </Box>
                         ))}
-
-                        {/* {isFinished && 
-                            <>
-                                <p>The quiz has finished</p>
-                                <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
-                            </>
-                        } */}
 
                         <MultiplayerLeaderboardModal 
                             open={showLeaderboard} 
