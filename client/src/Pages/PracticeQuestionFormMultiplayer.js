@@ -5,7 +5,8 @@ import { firebaseRTDB } from '../Firebase/firebaseConfig';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import MultiplayerLeaderboardModal from '../ReusableComponents/MultiplayerLeaderboardModal';
 import ReusableCountdownTimer from '../ReusableComponents/ReusableCountdownTimer';
-import { Box, Slide } from '@mui/material';
+import { Box, Button, IconButton, LinearProgress, Slide, Tooltip } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import "../PagesCSS/PracticeQuestionFormMultiplayer.css"
 
 //  W/ comments para way libog
@@ -23,8 +24,19 @@ const PracticeQuestionFormMultiplayer = () => {
     const [playerScores, setPlayerScores] = useState({}); // Overall total scores from players
     const [showLeaderboard, setShowLeaderboard] = useState(false);
 
+    const optionColors = [
+        { defaultColor: "#f94848", hoverColor: "#d13d3d", disabledColor: "#bf3737" },
+        { defaultColor: "#4cae4f", hoverColor: "#429645", disabledColor: "#3a853d" },
+        { defaultColor: "#2874ba", hoverColor: "#2265a3", disabledColor: "#1d5991" },
+        { defaultColor: "#f4cc3f", hoverColor: "#dbb739", disabledColor: "#c7a634" }
+    ];
+
+    const maxTime = 10; // Assuming the timer starts at 10 seconds
+    const progress = (timer / maxTime) * 100; // Progress in percentage
+
     const { user } = UserAuth();
     const navigateTo = useNavigate();
+    
 
     useEffect(() => {
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
@@ -37,8 +49,8 @@ const PracticeQuestionFormMultiplayer = () => {
                     setGameData(data);
 
                     if (data.currentQuestionStartTime) {
-                        const currentTime = Date.now();
-                        const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
+                        const serverTime = data.serverTime || Date.now();
+                        const elapsedTime = (serverTime - data.currentQuestionStartTime) / 1000;
                         const remainingTime = Math.max(0, 9 - elapsedTime);
                         console.log("Remaining time: ",remainingTime);
                         setTimer(Math.floor(remainingTime));
@@ -185,10 +197,6 @@ const PracticeQuestionFormMultiplayer = () => {
         setShowLeaderboard(false);
     }
 
-    // console.log("Total Score:", totalScore);
-    // console.log("Answer Time:", answerTime);
-    console.log(timer);
-
     if (!currentQuestion) {
         return (     
             <ReusableCountdownTimer initialTimer={timer}/>
@@ -199,38 +207,58 @@ const PracticeQuestionFormMultiplayer = () => {
         <div>
             <Slide direction="right" in={true} mountOnEnter unmountOnExit>
                 {/* Added box to enable slide transition */}
-                <Box className='pqfm-body'> 
+                <Box className='pqfm-body'>
+                    <LinearProgress variant='determinate' value={progress} sx={{ height: '25px',  width: '100%', marginBottom:'1.5%' }}/>
+                    <Box className='pqfm-exit-section-container'>
+                        <Tooltip title='Exit'>
+                            <IconButton>
+                                <ExitToAppIcon sx={{fontSize: '1.8rem'}}/>
+                            </IconButton>
+                        </Tooltip>
+                    </Box> 
                     <Box className='pqfm-first-section-container'>
-                        <h2>Question: {currentQuestion.question}</h2>
-                        <p>Time left: {timer} seconds</p>
-                        {/* <p>Total score {"(Individual)"}: {totalScore} </p>
-                        <h3>Player Scores:</h3>
-                        <ul>
-                            {Object.entries(playerScores).map(([playerId, scores]) => (
-                                <li key={playerId}>
-                                    {gameData.players[playerId]?.name}: {calculateTotalScore(scores)}
-                                </li>
-                            ))}
-                        </ul> */}
+                        <Box className='pqfm-first-section-wrapper'>
+                            <Box className='pqfm-currentQuestionIndex'>
+                                <h3 style={{marginLeft: '0.5rem'}}>Question #{gameData.currentQuestionIndex}</h3>
+                            </Box>
+                            <Box className='pqfm-question-container'>
+                                <p>{currentQuestion.question}</p>
+                            </Box>
+                            {/* <p>Time left: {timer} seconds</p> */}
+                        </Box>
+                        
                     </Box>
                     {/* Answer Choices */}
                     <Box className='pqfm-second-section-container'>
                         {[currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers].map((answer, index) => (
-                            <button 
-                                key={index} 
-                                onClick={() => submitAnswer(answer)} 
-                                disabled={hasAnswered || timer === 0} // Disable buttons after an answer is selected or if timer is 0
-                            >
-                            {answer}
-                        </button>
+                            <Box className='pqfm-choices-wrapper'>
+                                <Button
+                                    variant="contained" 
+                                    key={index} 
+                                    onClick={() => submitAnswer(answer)} 
+                                    disabled={hasAnswered || timer === 0} // Disable buttons after an answer is selected or if timer is 0
+                                    fullWidth
+                                    sx={{ 
+                                        bgcolor: optionColors[index % optionColors.length].defaultColor,
+                                        '&:hover': {
+                                            bgcolor: optionColors[index % optionColors.length].hoverColor,
+                                        },
+                                        '&.Mui-disabled': {
+                                            bgcolor: optionColors[index % optionColors.length].disabledColor,
+                                        },
+                                    }}
+                                >
+                                    {answer}
+                                </Button>
+                            </Box>
                         ))}
 
-                        {isFinished && 
+                        {/* {isFinished && 
                             <>
                                 <p>The quiz has finished</p>
                                 <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
                             </>
-                        }
+                        } */}
 
                         <MultiplayerLeaderboardModal 
                             open={showLeaderboard} 
