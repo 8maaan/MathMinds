@@ -9,6 +9,7 @@ import { UserAuth } from '../Context-and-routes/AuthContext'
 import { isPasswordValid, isEmailValid, isPasswordMatch} from '../ReusableComponents/txtFieldValidations';
 import ForwardIcon from '@mui/icons-material/Forward';
 import { createUserToDb } from '../API-Services/UserAPI';
+import BrainAnimate from '../ReusableComponents/BrainAnimation'
 
 const RegisterTxtField = ({name, label, type, value, onChange, error, helperText}) =>{
     return(
@@ -150,19 +151,19 @@ const RegisterPage = () => {
                 </div>
             </div>
             <div className='register-right-side'>
-                <div className='register-logo-container'>
-                    <img src={mathMindsLogo} alt='bg'/>
-                </div>
+                <BrainAnimate className='register-logo-container'/>
+                    
+                
                 <h3 style={{color: '#181A52'}}>Create an account</h3>
                 
                 <form onSubmit={handleSubmit} style={{marginBottom:'10px'}}>
-                    <RegisterTxtField name ='firstName' label='Enter first name' value={user.firstName} onChange={handleTxtFieldChange}/>
+                    <RegisterTxtField name ='firstName' label='First name' value={user.firstName} onChange={handleTxtFieldChange}/>
                     
-                    <RegisterTxtField name ='lastName' label='Enter last name' value={user.lastName} onChange={handleTxtFieldChange} />
+                    <RegisterTxtField name ='lastName' label='Last name' value={user.lastName} onChange={handleTxtFieldChange} />
 
                     <RegisterTxtField 
                         name ='email' 
-                        label='Enter email' 
+                        label='Email' 
                         value={user.email} 
                         onChange={handleTxtFieldChange} 
                         error={userError.email || emailAlreadyUsed} 
@@ -170,7 +171,7 @@ const RegisterPage = () => {
 
                     <RegisterTxtField 
                         name  ='password' 
-                        label='Enter password' 
+                        label='Password' 
                         value={user.password} 
                         type='password' 
                         onChange={handleTxtFieldChange}
@@ -179,7 +180,7 @@ const RegisterPage = () => {
 
                     <RegisterTxtField 
                         name ='retypePassword' 
-                        label='Re-enter password'
+                        label='Confirm password'
                         value={user.retypePassword} 
                         type='password'
                         onChange={handleTxtFieldChange}
