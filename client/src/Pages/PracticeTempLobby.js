@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { firebaseRTDB } from '../Firebase/firebaseConfig'
 import { ref, onValue, off, update, serverTimestamp, push, set } from "firebase/database";
-import { getPracticeByTopicId } from "../API-Services/PracticeAPI"
+import { getRandomizedPracticeByTopicId } from "../API-Services/PracticeAPI"
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/PracticeMultiplayerLobby.css'
 import { Button, TextField } from '@mui/material';
@@ -58,9 +58,11 @@ const PracticeTempLobby = () => {
         if (!isHost) return;
 
         try {
-            const { success, data } = await getPracticeByTopicId(roomData.topicId);
+            console.log("Fetching new questions...");
+            const { success, data } = await getRandomizedPracticeByTopicId(roomData.topicId);
+            console.log("Fetched questions:", data);
             if (success && data.length > 0) {
-                const questions = data[0].practice_qa;
+                const questions = data;
                 const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
 
                 // Initialize playerScores with all players and a score of 0
@@ -71,7 +73,7 @@ const PracticeTempLobby = () => {
 
                 await update(roomRef, {
                     state: "playing",
-                    currentQuestionIndex: 0,
+                    currentQuestionIndex: -1,
                     questions: questions,
                     playerAnswers: {},
                     playerScores: initialPlayerScores,

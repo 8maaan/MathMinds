@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { ref, onValue, off, update, serverTimestamp, get } from "firebase/database";
+import { ref, onValue, off, update, serverTimestamp, get, runTransaction } from "firebase/database";
 import { firebaseRTDB } from '../Firebase/firebaseConfig';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import MultiplayerLeaderboardModal from '../ReusableComponents/MultiplayerLeaderboardModal';
 import ReusableCountdownTimer from '../ReusableComponents/ReusableCountdownTimer';
-import { Box, Slide } from '@mui/material';
+import { Box, Button, IconButton, LinearProgress, Slide, Tooltip } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import "../PagesCSS/PracticeQuestionFormMultiplayer.css"
 
 //  W/ comments para way libog
@@ -23,51 +24,68 @@ const PracticeQuestionFormMultiplayer = () => {
     const [playerScores, setPlayerScores] = useState({}); // Overall total scores from players
     const [showLeaderboard, setShowLeaderboard] = useState(false);
 
+    const [shuffledChoices, setShuffledChoices] = useState([]);
+
+    const optionColors = [
+        { defaultColor: "#f94848", hoverColor: "#d13d3d", disabledColor: "#bf3737" },
+        { defaultColor: "#4cae4f", hoverColor: "#429645", disabledColor: "#3a853d" },
+        { defaultColor: "#2874ba", hoverColor: "#2265a3", disabledColor: "#1d5991" },
+        { defaultColor: "#f4cc3f", hoverColor: "#dbb739", disabledColor: "#c7a634" }
+    ];
+
+    const maxTime = 10; // Assuming the timer starts at 10 seconds
+    const progress = (timer / maxTime) * 100; // Progress in percentage
+
     const { user } = UserAuth();
     const navigateTo = useNavigate();
+    
 
     useEffect(() => {
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
         
         const unsubscribe = onValue(roomRef, (snapshot) => {
-            const data = snapshot.val();
-    
-            if (data && data.state === "playing") {
-                setGameData(data);
+            try{
+                const data = snapshot.val();
+        
+                if (data && data.state === "playing") {
+                    setGameData(data);
 
-                if (data.currentQuestionStartTime) {
-                    const currentTime = Date.now();
-                    const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
-                    const remainingTime = Math.max(0, 9 - elapsedTime);
-                    console.log("Remaining time: ",remainingTime);
-                    setTimer(Math.floor(remainingTime));
-                }
-    
-                // Only update the current question and reset the timer if the question changes
-                if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
-                    setCurrentQuestion(data.questions[data.currentQuestionIndex]);
-                    // setTimer(10); // Reset timer for all players when question changes
-                    setHasAnswered(false); // Reset answer state for the new question
-                    setSelectedAnswer(null); // Reset selected answer for the new question
-                    setAnswerTime(null);
+                    if (data.currentQuestionStartTime) {
+                        const serverTime = data.serverTime || Date.now();
+                        const elapsedTime = (serverTime - data.currentQuestionStartTime) / 1000;
+                        const remainingTime = Math.max(0, 10 - elapsedTime);
+                        // console.log("Remaining time: ",remainingTime);
+                        setTimer(Math.round(remainingTime));
+                    }
+        
+                    // Only update the current question and reset the timer if the question changes
+                    if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
+                        setCurrentQuestion(data.questions[data.currentQuestionIndex]);
+                        // setTimer(10); // Reset timer for all players when question changes
+                        setHasAnswered(false); // Reset answer state for the new question
+                        setSelectedAnswer(null); // Reset selected answer for the new question
+                        setAnswerTime(null);
+                    }
+
+                    // Update all player scores
+                    if (data.playerScores) {
+                        setPlayerScores(data.playerScores);
+                    }
+                    
+                    // Update current user's total score
+                    if (data.playerScores && data.playerScores[user.uid]) {
+                        const playerScores = data.playerScores[user.uid];
+                        const currentScore = Object.values(playerScores).reduce((sum, score) => sum + score, 0);
+                        setTotalScore(currentScore);
+                    }
+                    setIsHost(data.host === user.uid);
                 }
 
-                // Update all player scores
-                if (data.playerScores) {
-                    setPlayerScores(data.playerScores);
+                if (data && data.state === "finished"){
+                    setIsFinished(true);
                 }
-                
-                // Update current user's total score
-                if (data.playerScores && data.playerScores[user.uid]) {
-                    const playerScores = data.playerScores[user.uid];
-                    const currentScore = Object.values(playerScores).reduce((sum, score) => sum + score, 0);
-                    setTotalScore(currentScore);
-                }
-                setIsHost(data.host === user.uid);
-            }
-
-            if (data && data.state === "finished"){
-                setIsFinished(true);
+            }catch (error){
+                console.error("Error in room data listener:", error);
             }
         });
     
@@ -83,14 +101,17 @@ const PracticeQuestionFormMultiplayer = () => {
             moveToNextQuestion();
         } else if (timer === 0) {
             calculateScore();
-            setTimeout(() => setShowLeaderboard(true), 2000);
-            setTimeout(()=>{
-                moveToNextQuestion(); 
-                handleShowLeaderboard();
-            }, 7000); // Automatically move to the next question after a delay
+            showLeaderboardWithDelay();
         }
         return () => clearTimeout(timerId);
     }, [timer, gameData]);
+
+    useEffect(() => {
+        if (currentQuestion) {
+            const choices = [currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers];
+            setShuffledChoices(shuffleChoicesArray(choices));
+        }
+    }, [currentQuestion]);
 
 
     const moveToNextQuestion = async () => {
@@ -107,14 +128,13 @@ const PracticeQuestionFormMultiplayer = () => {
     
         // Check if the question has already been updated
         if (currentData.currentQuestionIndex > gameData.currentQuestionIndex) {
-            console.log("Yep");
             console.log("Question has already been updated by another client");
             return; // Exit the function if the question has already been updated
         }
     
         const nextIndex = currentData.currentQuestionIndex + 1;
     
-        if (nextIndex <= Object.keys(currentData.questions).length) {
+        if (nextIndex < Object.keys(currentData.questions).length) {
             // Update to next question
             await update(roomRef, {
                 currentQuestionIndex: nextIndex,
@@ -139,19 +159,36 @@ const PracticeQuestionFormMultiplayer = () => {
 
     // Function for checking and calculating the score after answer submission
     const calculateScore = async () => {
-        if (hasAnswered && selectedAnswer) {
+        if (hasAnswered && selectedAnswer && gameData) {
             let score = 0;
     
             // Check if the selected answer is correct
             if (selectedAnswer === currentQuestion.correctAnswer) {
                 score = answerTime * 100;
             }
-
-            // Update the Firebase Realtime Database with the selected answer and score
-            await update(ref(firebaseRTDB, `rooms/${roomCode}/playerScores/${user.uid}`), {
-                [`question_${gameData.currentQuestionIndex}`]: score,
-            });
+    
+            // Use a transaction to ensure atomic updates
+            const scoreRef = ref(firebaseRTDB, `rooms/${roomCode}/playerScores/${user.uid}/question_${gameData.currentQuestionIndex}`);
+            
+            try {
+                await runTransaction(scoreRef, (currentScore) => {
+                    // Only update if the score hasn't been set yet
+                    return currentScore === null ? score : currentScore;
+                });
+            } catch (error) {
+                console.error("Error updating score:", error);
+            }
         }
+    };
+
+    const showLeaderboardWithDelay = () => {
+        setTimeout(() => {
+            setShowLeaderboard(true);
+            setTimeout(() => {
+                setShowLeaderboard(false);
+                moveToNextQuestion();
+            }, 5000); // Show leaderboard for 5 seconds
+        }, 2000);
     };
 
 
@@ -168,9 +205,9 @@ const PracticeQuestionFormMultiplayer = () => {
         setShowLeaderboard(false);
     }
 
-    // console.log("Total Score:", totalScore);
-    // console.log("Answer Time:", answerTime);
-    console.log(timer);
+    const shuffleChoicesArray = (array) => {
+        return array.sort(() => Math.random() - 0.5);
+    };
 
     if (!currentQuestion) {
         return (     
@@ -182,38 +219,57 @@ const PracticeQuestionFormMultiplayer = () => {
         <div>
             <Slide direction="right" in={true} mountOnEnter unmountOnExit>
                 {/* Added box to enable slide transition */}
-                <Box className='pqfm-body'> 
+                <Box className='pqfm-body'>
+                    <LinearProgress variant='determinate' value={progress} sx={{ height: '25px',  width: '100%', marginBottom:'1.5%' }}/>
+                    <Box className='pqfm-exit-section-container'>
+                        <Tooltip title='Exit'>
+                            <IconButton>
+                                <ExitToAppIcon sx={{fontSize: '1.8rem'}}/>
+                            </IconButton>
+                        </Tooltip>
+                    </Box> 
                     <Box className='pqfm-first-section-container'>
-                        <h2>Question: {currentQuestion.question}</h2>
-                        <p>Time left: {timer} seconds</p>
-                        {/* <p>Total score {"(Individual)"}: {totalScore} </p>
-                        <h3>Player Scores:</h3>
-                        <ul>
-                            {Object.entries(playerScores).map(([playerId, scores]) => (
-                                <li key={playerId}>
-                                    {gameData.players[playerId]?.name}: {calculateTotalScore(scores)}
-                                </li>
-                            ))}
-                        </ul> */}
+                        <Box className='pqfm-first-section-wrapper'>
+                            <Box className='pqfm-currentQuestionIndex'>
+                                <h3 style={{marginLeft: '0.5rem'}}>Question #{gameData.currentQuestionIndex + 1}</h3>
+                            </Box>
+                            <Box className='pqfm-question-container'>
+                                <p>{currentQuestion.question}</p>
+                            </Box>
+                            {isFinished && 
+                                    <>
+                                        <p>The quiz has finished{"(Temp Only)"}</p>
+                                        <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
+                                    </>
+                                }
+                            {/* <p>Time left: {timer} seconds</p> */}
+                        </Box>
+                        
                     </Box>
                     {/* Answer Choices */}
                     <Box className='pqfm-second-section-container'>
-                        {[currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers].map((answer, index) => (
-                            <button 
-                                key={index} 
-                                onClick={() => submitAnswer(answer)} 
-                                disabled={hasAnswered || timer === 0} // Disable buttons after an answer is selected or if timer is 0
-                            >
-                            {answer}
-                        </button>
+                        {shuffledChoices.map((answer, index) => (
+                            <Box className='pqfm-choices-wrapper'>
+                                <Button
+                                    variant="contained" 
+                                    key={index} 
+                                    onClick={() => submitAnswer(answer)} 
+                                    disabled={hasAnswered || timer === 0} // Disable buttons after an answer is selected or if timer is 0
+                                    fullWidth
+                                    sx={{ 
+                                        bgcolor: optionColors[index % optionColors.length].defaultColor,
+                                        '&:hover': {
+                                            bgcolor: optionColors[index % optionColors.length].hoverColor,
+                                        },
+                                        '&.Mui-disabled': {
+                                            bgcolor: optionColors[index % optionColors.length].disabledColor,
+                                        },
+                                    }}
+                                >
+                                    {answer}
+                                </Button>
+                            </Box>
                         ))}
-
-                        {isFinished && 
-                            <>
-                                <p>The quiz has finished</p>
-                                <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
-                            </>
-                        }
 
                         <MultiplayerLeaderboardModal 
                             open={showLeaderboard} 
