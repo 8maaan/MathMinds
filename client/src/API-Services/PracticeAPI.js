@@ -10,9 +10,9 @@ export const getAllPractices = async () => {
   }
 };
 
-export const getPracticeById = async (practiceId) => {
+export const getPracticeByTopicId = async (topicId) => {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_PRACTICE_BY_ID}/${practiceId}`);
+    const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_PRACTICE_QA_BY_TOPICID}${topicId}`);
     return { success: true, data: response.data };
   } catch (error) {
     console.error("Error fetching practice by id: ", error);
@@ -30,9 +30,9 @@ export const insertPracticeToDb = async (newPracticeData) => {
   }
 };
 
-export const deletePracticeFromDb = async (practiceId) => {
+export const deletePracticeByTopicId = async (topicId) => {
   try {
-    const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_PRACTICE}/${practiceId}`);
+    const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_PRACTICE_BY_TOPICID}${topicId}`);
     return { success: true, data: response.data };
   } catch (error) {
     console.error("Error deleting practice: ", error.response ? error.response.data : error.message);
