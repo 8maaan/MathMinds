@@ -2,9 +2,9 @@ import React from 'react'
 import '../PagesCSS/HomePage.css'
 import {Box, Typography, Button} from '@mui/material'
 import { Link } from 'react-router-dom';
-import homepageDashboardBtn from '../Images/HomePage_DashboardBtn.png';
+import homepageDashboardBtn from '../Images/HomePage_DashboardBtn2.png';
 import homepageLessonBtn from '../Images/HomePage_LessonsBtn.png';
-import homepagePracticeBtn from '../Images/HomePage_PracticeBtn.png';
+import homepagePracticeBtn from '../Images/HomePage_PracticeBtn2.png';
 
 const HomePage = () => {
     return (
