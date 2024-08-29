@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography, Container, Paper, Modal } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { getAllLessonsQuiz } from '../API-Services/LessonQuizAPI';
+import { getAllLessonsQuiz, getRandomizedLessonQuizByLessonQuizId } from '../API-Services/LessonQuizAPI';
 import { checkUserBadge, awardBadge } from '../API-Services/UserAPI'; // Import the new functions
 import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 import { UserAuth } from '../Context-and-routes/AuthContext'; // Assuming you have access to user context here
@@ -52,14 +52,36 @@ const QuizQuestionForm = () => {
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      const response = await getAllLessonsQuiz();
-      if (response.success) {
-        const lessonQuiz = response.data.find(q => q.lessonQuizId === parseInt(quizId, 10));
-        setQuiz(lessonQuiz);
+      try {
+        // Fetch all quizzes related to the lesson
+        const allQuizzesResponse = await getAllLessonsQuiz(lessonId);
+        
+        if (allQuizzesResponse.success) {
+          // Find the quiz with the specific lessonQuizId
+          const lessonQuiz = allQuizzesResponse.data.find(quiz => quiz.lessonQuizId === parseInt(quizId, 10));
+          
+          if (lessonQuiz) {
+            // Fetch randomized quiz questions using the lessonQuizId
+            const randomizedQuizResponse = await getRandomizedLessonQuizByLessonQuizId(lessonQuiz.lessonQuizId);
+            
+            if (randomizedQuizResponse.success) {
+              setQuiz(randomizedQuizResponse.data);
+            } else {
+              console.error("Failed to fetch randomized quiz questions");
+            }
+          } else {
+            console.error("Quiz not found with the provided quizId");
+          }
+        } else {
+          console.error("Failed to fetch all lessons quiz");
+        }
+      } catch (error) {
+        console.error("Error fetching the quiz:", error);
       }
     };
+    
     fetchQuiz();
-  }, [quizId]);
+  }, [lessonId, quizId]);
 
   useEffect(() => {
     adjustFontSizes();
@@ -100,7 +122,7 @@ const QuizQuestionForm = () => {
     return <div>Loading...</div>;
   }
 
-  const questions = Object.values(quiz.lessonQuizQA);
+  const questions = quiz;
   const currentQuestion = questions[currentQuestionIndex];
 
   if (!currentQuestion) {

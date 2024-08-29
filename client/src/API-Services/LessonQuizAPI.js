@@ -48,3 +48,13 @@ export const isQuizAdministered = async (lessonQuizId) => {
         return { success: false, message: "Failed to check quiz" };
     }
 }
+
+export const getRandomizedLessonQuizByLessonQuizId = async (lessonQuizId) => {
+    try {
+      const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_RANDOMIZED_LESSONQUIZ_QA_BY_LESSONQUIZID.replace("{lessonQuizId}", lessonQuizId));
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error("Error fetching practice by topic id: ", error);
+      return { success: false, message: "Failed to fetch practice by topic id. Try again later." };
+    }
+  }
