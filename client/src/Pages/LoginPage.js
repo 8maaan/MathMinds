@@ -88,7 +88,7 @@ const LoginPage = () => {
                             required
                             error={!isValid}
                             variant='filled' 
-                            label={<span>Enter email<span style={{color: 'red'}}> *</span></span>} 
+                            label={<span>Email<span style={{color: 'red'}}> *</span></span>} 
                             fullWidth 
                             InputProps={txtFieldInputProps}
                             InputLabelProps={{ required: false }}
@@ -102,7 +102,7 @@ const LoginPage = () => {
                             helperText={!isValid? 'Incorrect email or password' : null}
                             type='password'
                             variant='filled' 
-                            label={<span>Enter password<span style={{color: 'red'}}> *</span></span>}   
+                            label={<span>Password<span style={{color: 'red'}}> *</span></span>}   
                             fullWidth
                             InputProps={{...txtFieldInputProps}}
                             InputLabelProps={{ required: false }}
