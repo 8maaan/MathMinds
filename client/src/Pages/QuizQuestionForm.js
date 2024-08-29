@@ -42,6 +42,7 @@ const QuizQuestionForm = () => {
   const [badgeAwarded, setBadgeAwarded] = useState(false); // State to check if badge was awarded
   const [questionFontSize, setQuestionFontSize] = useState('1.5rem');
   const [optionFontSize, setOptionFontSize] = useState('1rem');
+  const [lessonTitle, setLessonTitle] = useState('');
 
   const questionRef = useRef(null);
   const optionsRef = useRef([]);
@@ -61,6 +62,9 @@ const QuizQuestionForm = () => {
           const lessonQuiz = allQuizzesResponse.data.find(quiz => quiz.lessonQuizId === parseInt(quizId, 10));
           
           if (lessonQuiz) {
+            // Set the lesson title
+            setLessonTitle(lessonQuiz.lessonTitle); // Store the lesson title
+
             // Fetch randomized quiz questions using the lessonQuizId
             const randomizedQuizResponse = await getRandomizedLessonQuizByLessonQuizId(lessonQuiz.lessonQuizId);
             
@@ -179,7 +183,7 @@ const QuizQuestionForm = () => {
       <div className='container'>
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '120px', position: 'relative' }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
-            {quiz.lessonTitle} - Final Assessment
+            {lessonTitle} - Final Assessment
           </Typography>
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Typography ref={questionRef} variant="h6" sx={{ textAlign: 'center', marginTop: '100px', fontSize: questionFontSize }}>
