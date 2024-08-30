@@ -3,10 +3,11 @@ import '../PagesCSS/LoginPage.css'
 import {Button, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { UserAuth } from '../Context-and-routes/AuthContext';
-import loginBackground from '../Images/login-bg.png';
 import mathMindsLogo from '../Images/mathminds-logo.png';
 import ForgotPasswordModal from '../ReusableComponents/forgotPasswordModal';
 import ForwardIcon from '@mui/icons-material/Forward';
+import LoginPageBg from '../ReusableComponents/LoginPageBg';
+import LoginPageImage from '../Images/LoginPageImages/login-bg.png';
 
 export const txtFieldInputProps = {
     disableUnderline: true,
@@ -73,7 +74,7 @@ const LoginPage = () => {
                     <ForwardIcon className='login-back-icon' onClick={handleBackBtnClick}/>
                 </div>
                 <div className='login-bg-container'>
-                    <img src={loginBackground} alt='bg'/>
+                    <LoginPageBg />
                 </div>
             </div>
             <div className='login-right-side'>

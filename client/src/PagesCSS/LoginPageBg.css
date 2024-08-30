@@ -1,0 +1,107 @@
+
+.container-login-bg {
+    position: relative;
+}
+
+/* Bubble positions */
+.bubble1 {                 
+    position: absolute;
+    top: 45%;
+    left: 15%;
+    width: 30%;
+    animation: float 1.5s ease-in-out infinite;
+}  /* Red Bubble */
+
+.bubble2 {
+    position: absolute;
+    top: 15%;
+    left: 32%;
+    width: 25%;
+    animation: float 2.5s ease-in-out infinite;
+} /* Pie Graph Bubble */
+
+.bubble3 {
+    position: absolute;
+    top: 35%;
+    right: 6%;
+    width: 30%;
+    animation: float 3.5s ease-in-out infinite;
+} /* Percentage Bubble */
+
+/* Star positions */
+.star-left {
+    position: absolute;
+    top: 5%;
+    left: 0.5%;
+    width: 20%;
+    animation: breathing 2.5s ease-in-out infinite;
+} 
+
+.star-right {
+    position: absolute;
+    top: 35%;
+    right: 0.2%;
+    width: 8%;
+    animation: breathing 2.5s ease-in-out infinite;
+}
+
+/* Math sign positions */
+.minus {
+    position: absolute;
+    top: 38%;
+    left: 3%;
+    width: 10%;
+    animation: float 3s ease-in-out infinite;
+}
+
+.multiply {
+    position: absolute;
+    top: 20%;
+    left: 18%;
+    width: 10%;
+    animation: float 3s ease-in-out infinite;
+}
+
+.plus {
+    position: absolute;
+    top: 0.5%;
+    left: 37%;
+    width: 10%;
+    animation: float 3s ease-in-out infinite;
+}
+
+.equal {
+    position: absolute;
+    top: 18%;
+    right: 5%;
+    width: 10%;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0); 
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes breathing {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
