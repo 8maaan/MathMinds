@@ -179,7 +179,7 @@ const RegisterPage = () => {
 
                     <RegisterTxtField 
                         name ='retypePassword' 
-                        label='Re-enter password'
+                        label='Confirm password'
                         value={user.retypePassword} 
                         type='password'
                         onChange={handleTxtFieldChange}
