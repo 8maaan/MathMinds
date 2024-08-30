@@ -150,6 +150,11 @@ const PracticeTempLobby = () => {
                             onChange={(e) => setChatInput(e.target.value)}
                             placeholder="Type your message"
                             autoComplete="off"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  handleSendMessage();
+                                }
+                            }}
                         />
                         <Button
                             variant='text'

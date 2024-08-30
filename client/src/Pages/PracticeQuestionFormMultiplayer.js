@@ -53,7 +53,7 @@ const PracticeQuestionFormMultiplayer = () => {
                     if (data.currentQuestionStartTime) {
                         const serverTime = data.serverTime || Date.now();
                         const elapsedTime = (serverTime - data.currentQuestionStartTime) / 1000;
-                        const remainingTime = Math.max(0, 10 - elapsedTime);
+                        const remainingTime = Math.max(0, 9 - elapsedTime);
                         // console.log("Remaining time: ",remainingTime);
                         setTimer(Math.round(remainingTime));
                     }
@@ -83,6 +83,7 @@ const PracticeQuestionFormMultiplayer = () => {
 
                 if (data && data.state === "finished"){
                     setIsFinished(true);
+                    setShowLeaderboard(true);
                 }
             }catch (error){
                 console.error("Error in room data listener:", error);
@@ -236,12 +237,12 @@ const PracticeQuestionFormMultiplayer = () => {
                             <Box className='pqfm-question-container'>
                                 <p>{currentQuestion.question}</p>
                             </Box>
-                            {isFinished && 
+                            {/* {isFinished && 
                                     <>
                                         <p>The quiz has finished{"(Temp Only)"}</p>
                                         <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
                                     </>
-                                }
+                                } */}
                             {/* <p>Time left: {timer} seconds</p> */}
                         </Box>
                         
@@ -280,6 +281,8 @@ const PracticeQuestionFormMultiplayer = () => {
                                     calculateTotalScore(scores),
                                 ])
                             )}
+                            isFinished={isFinished}
+                            roomCode={roomCode}
                         />
                     </Box>
                 </Box>
