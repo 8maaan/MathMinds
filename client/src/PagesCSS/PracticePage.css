@@ -18,6 +18,7 @@
     text-align: left;
     margin-left: 11.5%;  /* CHANGED FROM 10% TO 11.5% -RIBO*/
     z-index: 4;
+    animation: pull-up 1.2s ease-out; /* Apply the pull-up animation-Bacalso */
 }
 
 .practice-paragraph {
@@ -29,6 +30,7 @@
     margin-right: 5%;
     margin-top: 3%;
     z-index: 4;
+    animation: fadeinup 1.2s ease-out;
 }
 
 @media (max-width: 1024px){
@@ -92,5 +94,29 @@
         text-align: left;
         margin-left: 8%;
         margin-right: 5%;
+    }
+}
+
+
+@keyframes pull-up {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+@keyframes fadeinup {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }

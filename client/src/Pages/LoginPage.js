@@ -3,11 +3,12 @@ import '../PagesCSS/LoginPage.css'
 import {Button, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { UserAuth } from '../Context-and-routes/AuthContext';
-import mathMindsLogo from '../Images/mathminds-logo.png';
+import LoginPageImage from '../Images/LoginPageImages/login-bg.png';
 import ForgotPasswordModal from '../ReusableComponents/forgotPasswordModal';
 import ForwardIcon from '@mui/icons-material/Forward';
 import LoginPageBg from '../ReusableComponents/LoginPageBg';
-import LoginPageImage from '../Images/LoginPageImages/login-bg.png';
+import BrainAnimate from '../ReusableComponents/BrainAnimation';
+
 
 export const txtFieldInputProps = {
     disableUnderline: true,
@@ -78,9 +79,9 @@ const LoginPage = () => {
                 </div>
             </div>
             <div className='login-right-side'>
-                <div className='login-logo-container'>
-                    <img src={mathMindsLogo} alt='logo'/>
-                </div>
+
+                <BrainAnimate className='login-logo-container'/>
+                
                 <h3 style={{color: '#181A52'}}>Log in to your account</h3>
                 
                 <form onSubmit={handleSubmit} style={{marginBottom:'10px'}}>
