@@ -64,7 +64,7 @@ export default function ReusableAppBar() {
         break;
     }
   };
-
+/*fcdd96*/
   return (
     <AppBar position="fixed" sx={{backgroundColor: '#ffb100'}}>
       <Container maxWidth="xl">
