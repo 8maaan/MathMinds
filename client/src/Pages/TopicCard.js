@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/TopicCard.css';
 import PracticeChoice from './PracticeChoice';
 
-function TopicCard({ topic, onClose, onStart }) {
+function TopicCard({ topic,topicId, practiceId, onClose, onStart }) {
   const navigate = useNavigate();
 
   // const onNext = (topicId, topicTitle) => {
@@ -16,7 +16,9 @@ function TopicCard({ topic, onClose, onStart }) {
   // };
 
   const handleShowPracticeModeChoice = () => {
-    onStart();
+    console.log('topicId:', topicId);
+    console.log('practiceId:', practiceId);
+    onStart(practiceId, topicId);
   }
 
   if (!topic) {

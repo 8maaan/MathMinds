@@ -54,7 +54,7 @@ function App() {
             <Route path="/lesson/:lessonId/:topicId" element={<ProtectedRoute><TopicsPage/></ProtectedRoute>} />
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
           
-            <Route path="/questionForm/:topicId" element={<QuestionFormPage />} />
+            <Route path="/questionForm/:practiceId" element={<QuestionFormPage />} />
             <Route path="/profilelesson" element={<ProfileLessonPage />} />
             <Route path="/createPractice" element={<CreatePracticePage />} />
 

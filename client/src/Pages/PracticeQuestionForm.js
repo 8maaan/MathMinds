@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getTopicById } from '../API-Services/TopicAPI';
-import { getAllPractices } from '../API-Services/PracticeAPI';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { getPracticeQuestionsByPracticeId } from '../API-Services/PracticeAPI';
 import { Box, Button, Typography, Container, Paper, IconButton } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -39,10 +38,12 @@ const iconStyle = {
 };
 
 const PracticeQuestionForm = () => {
-  const { topicId } = useParams();
-  const [practices, setPractices] = useState([]);
+  const { practiceId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [topic, setTopic] = useState(null);
   const [isConfirming, setIsConfirming] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -51,38 +52,45 @@ const PracticeQuestionForm = () => {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [isEndOfPractice, setIsEndOfPractice] = useState(false);
-  
-  const navigate = useNavigate();
+
+  const fetchQuestions = async (id) => {
+    console.log("Fetching questions for Practice ID:", id);
+    const result = await getPracticeQuestionsByPracticeId(id);
+    if (result.success) {
+      setQuestions(result.data);
+      setTotalQuestions(result.data.length);
+      setAnsweredQuestions(new Array(result.data.length).fill(false));
+    } else {
+      console.error("Failed to fetch questions:", result.error);
+    }
+  };
 
   useEffect(() => {
-    const fetchTopic = async () => {
-      try {
-        const topicData = await getTopicById(topicId);
-        console.log('Topic Data:', topicData);
-        setTopic(topicData.data);
-      } catch (error) {
-        console.error('Error fetching topic:', error);
-      }
-    };
-    fetchTopic();
-  }, [topicId]);
+    const practiceIdFromState = location.state?.practiceId || practiceId;
+    console.log("Fetching questions for Practice ID:", practiceIdFromState);
+    
+    if (practiceIdFromState) {
+      fetchQuestions(practiceIdFromState);
+    } else {
+      console.error("Practice ID is undefined");
+    }
+  }, [practiceId, location.state]);
 
   useEffect(() => {
-    const fetchPractices = async () => {
-      try {
-        const fetchResult = await getAllPractices();
-        if (fetchResult.success) {
-          const filteredPractices = fetchResult.data.filter(practice => practice.topic.topicId === parseInt(topicId, 10));
-          setPractices(filteredPractices);
-          setTotalQuestions(filteredPractices.length);
-          setAnsweredQuestions(new Array(filteredPractices.length).fill(false));
-        }
-      } catch (e) {
-        console.log(e);
+    const fetchQuestions = async () => {
+      console.log("Fetching questions for Practice ID:", practiceId);
+      const result = await getPracticeQuestionsByPracticeId(practiceId);
+      if (result.success) {
+        setQuestions(result.data);
+        setTotalQuestions(result.data.length);
+        setAnsweredQuestions(new Array(result.data.length).fill(false));
+      } else {
+        console.error("Failed to fetch questions:", result.error);
       }
     };
-    fetchPractices();
-  }, [topicId]);
+
+    fetchQuestions();
+  }, [practiceId]);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -91,30 +99,21 @@ const PracticeQuestionForm = () => {
 
   const handleOptionConfirmation = () => {
     setIsConfirming(false);
-    const currentPractice = practices[currentQuestionIndex];
-    if (!currentPractice || !currentPractice.practice_qa) {
-      console.error("Practice data is missing or invalid");
-      return;
-    }
+    const currentQuestion = questions[currentQuestionIndex];
 
-    const currentQuestionData = currentPractice.practice_qa;
-    const questionKeys = Object.keys(currentQuestionData);
-    const currentQuestionKey = questionKeys[0]; // Assuming only one question per practice for now
-    const currentQuestion = currentQuestionData[currentQuestionKey];
-  
     if (!currentQuestion) {
       console.error("Current question is undefined");
       return;
     }
-  
+
     const isCorrect = selectedOption === currentQuestion.correctAnswer;
-  
+
     setAnsweredQuestions(prevAnswers => {
       const updatedAnswers = [...prevAnswers];
       updatedAnswers[currentQuestionIndex] = true;
       return updatedAnswers;
     });
-  
+
     if (isCorrect) {
       setIsCorrectAnswer(true);
       setCorrectAnswers(prevCorrectAnswers => {
@@ -159,11 +158,6 @@ const PracticeQuestionForm = () => {
     setSelectedOption(null);
   };
 
-  const handleCancelWrongAnswer = () => {
-    setIsAnswerWrong(false);
-    setIsEndOfPractice(true);
-  };
-
   const handleEndOfPractice = () => {
     setIsEndOfPractice(false);
     navigate('/scoreTest', { state: { correctAnswers, totalQuestions } });
@@ -174,23 +168,13 @@ const PracticeQuestionForm = () => {
     navigate('/practice');
   };
 
-  if (!topic || practices.length === 0) {
-    return <LoadingAnimations/>
+  if (questions.length === 0) {
+    return <LoadingAnimations />;
   }
 
-  const currentPractice = practices[currentQuestionIndex];
-  if (!currentPractice || !currentPractice.practice_qa) {
-
-    return null;
-  }
-
-  const currentQuestionData = currentPractice.practice_qa;
-  const questionKeys = Object.keys(currentQuestionData);
-  const currentQuestionKey = questionKeys[0]; 
-  const currentQuestion = currentQuestionData[currentQuestionKey];
+  const currentQuestion = questions[currentQuestionIndex];
 
   if (!currentQuestion) {
-   
     return null;
   }
 
@@ -199,6 +183,18 @@ const PracticeQuestionForm = () => {
   const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
 
   const isAnswered = answeredQuestions[currentQuestionIndex];
+
+  // font size
+  const maxTextLength = Math.max(
+    currentQuestion.question.length,
+    ...options.map(option => option.length)
+  );
+
+  const fontSize = maxTextLength > 100
+    ? '1rem' 
+    : maxTextLength > 50
+      ? '1.25rem'
+      : '1.5rem'; 
 
   return (
     <ThemeProvider theme={theme}>
@@ -215,10 +211,10 @@ const PracticeQuestionForm = () => {
         </Box>
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
-            {topic.topicTitle}
+            Practice Questions
           </Typography>
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
+            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px', fontSize: fontSize }}>
               {currentQuestion.question}
             </Typography>
             <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
@@ -238,6 +234,7 @@ const PracticeQuestionForm = () => {
                     marginBottom: '20px',
                     pointerEvents: isAnswered ? 'none' : 'auto',
                     opacity: isAnswered ? 0.5 : 1,
+                    fontSize: fontSize 
                   }}
                   disabled={isAnswered}
                 >
@@ -257,10 +254,10 @@ const PracticeQuestionForm = () => {
           />
           <PracticeAnswerModal
             open={isAnswerWrong}
-            handleClose={handleCancelWrongAnswer}
+            handleClose={handleEndOfPractice}
             message={{
               title: 'Wrong Answer',
-              content: 'lets get some payback with the next Question!',
+              content: 'Let\'s try the next question!',
             }}
             handleConfirm={handleContinueAfterWrongAnswer}
           />
@@ -269,7 +266,7 @@ const PracticeQuestionForm = () => {
             handleClose={() => setIsCorrectAnswer(false)}
             message={{
               title: 'Correct Answer',
-              content: 'Amazing, You got it right!',
+              content: 'Great job!',
             }}
             handleConfirm={handleContinueAfterCorrectAnswer}
           />
@@ -290,5 +287,3 @@ const PracticeQuestionForm = () => {
 };
 
 export default PracticeQuestionForm;
-
-

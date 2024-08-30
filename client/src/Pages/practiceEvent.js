@@ -14,6 +14,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import TopicCard from './TopicCard';
 import PracticeChoice from './PracticeChoice';
 import { getLessonById } from '../API-Services/LessonAPI';
+import { getPracticeByTopicId } from '../API-Services/PracticeAPI';
 import { firebaseRTDB } from '../Firebase/firebaseConfig'
 import { ref, set, get } from "firebase/database";
 import { UserAuth } from '../Context-and-routes/AuthContext';
@@ -53,6 +54,7 @@ function PracticeEvent() {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [showPracticeChoice, setShowPracticeChoice] = useState(false);
+  const [practiceId, setPracticeId] = useState(null);
 
   const navigateTo = useNavigate();
   const { user } = UserAuth();
@@ -132,10 +134,23 @@ function PracticeEvent() {
   };
   
 
-  const handleTopicClick = (topic) => {
+  const handleTopicClick = async (topic) => {
     if (!isDragging) {
+      console.log("Topic object:", topic);  // Log topic object to check what properties it has
       setSelectedTopic(topic);
       setShowCard(true);
+  
+      try {
+        const { success, data } = await getPracticeByTopicId(topic.topicId);  // Fetch the practice using the topic ID
+        if (success && data.length > 0) {
+          setPracticeId(data[0].practiceId);  // Assuming you get an array of practices and want the first one
+          console.log("Setting Practice ID:", data[0].practiceId);
+        } else {
+          console.error("No practice found for this topic");
+        }
+      } catch (error) {
+        console.error("Error fetching practice ID:", error);
+      }
     }
   };
 
@@ -155,6 +170,7 @@ function PracticeEvent() {
 
   const handleModeChoice = async (choice, roomCode = null) => {
     console.log("Mode choice:", choice);
+    console.log("Practice ID being passed:", practiceId);
   
     if (!user) {
       console.error("User not authenticated");
@@ -164,19 +180,18 @@ function PracticeEvent() {
     console.log("Authenticated user:", user.uid);
   
     if (choice === 'SOLO') {
-      console.log(selectedTopic.topicTitle, selectedTopic.topicId);
-      navigateTo(`/questionForm/${selectedTopic.topicId}`, { state: { topicTitle: selectedTopic.topicTitle } });
+      console.log('Practice ID:', practiceId);
+      navigateTo(`/questionForm/${practiceId}`, { state: { practiceId } }); // Passing only the practiceId
     } else if (choice === 'CREATE ROOM') {
       const generatedRoomCode = generateRoomCode();
       console.log("Generated room code:", generatedRoomCode);
       const roomRef = ref(firebaseRTDB, `rooms/${generatedRoomCode}`);
-      
+  
       try {
         console.log("Attempting to create room...");
         await set(roomRef, {
           host: user.uid,
-          topicId: selectedTopic.topicId,
-          topicTitle: selectedTopic.topicTitle,
+          practiceId,
           players: {
             [user.uid]: { name: userData.fname + " " + userData.lname || "Host" }
           },
@@ -189,7 +204,6 @@ function PracticeEvent() {
       } catch (error) {
         console.error("Error creating room:", error);
         console.error("Error details:", error.message);
-        // You might want to show an error message to the user here
       }
     } else if (choice === 'JOIN_ROOM') {
       if (!roomCode) {
@@ -201,23 +215,24 @@ function PracticeEvent() {
         const snapshot = await get(roomRef);
         if (snapshot.exists()) {
           const roomData = snapshot.val();
-          if (roomData.topicId === selectedTopic.topicId) {
+          if (roomData.practiceId === practiceId) {
             await set(ref(firebaseRTDB, `rooms/${roomCode}/players/${user.uid}`), {
               name: userData.fname + " " + userData.lname || "Player"
             });
             navigateTo(`/lobby/${roomCode}`, { state: { isHost: false } });
           } else {
-            throw new Error("Room topic does not match selected topic");
+            throw new Error("Room practice ID does not match selected practice");
           }
         } else {
           throw new Error("Room does not exist");
         }
       } catch (error) {
         console.error("Error joining room:", error);
-        throw error; // Rethrow the error so it can be caught in the PracticeChoice component
+        throw error;
       }
     }
   }
+  
 
   const generateBackgroundColor = (index) => {
     const colorVariations = [
@@ -261,7 +276,8 @@ function PracticeEvent() {
           </Typography>
           <div className="sliderContainer">
 
-            {showPracticeChoice && <PracticeChoice onClose={() => setShowPracticeChoice(false)} modeChoice={handleModeChoice} />} 
+            {showPracticeChoice && 
+               <PracticeChoice onClose={() => setShowPracticeChoice(false)} modeChoice={handleModeChoice} practiceId={practiceId} topicTitle={selectedTopic.topicTitle} topicId={selectedTopic.topicId}  />} 
             
             <Slider {...settings}>
               {topics.length <= 3 ? (
@@ -283,9 +299,11 @@ function PracticeEvent() {
             </Slider>
             {showCard && selectedTopic && (
               <TopicCard
-                topic={selectedTopic}
-                onClose={handleCloseCard}
-                onStart={handleStart}
+              topic={selectedTopic}
+              topicId={selectedTopic.topicId} // Passing topicId
+              practiceId={practiceId} // Passing practiceId
+              onClose={handleCloseCard}
+              onStart={handleStart}
               />
             )}
           </div>

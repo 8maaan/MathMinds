@@ -3,22 +3,22 @@ import { Box, Button, Card, CardContent, IconButton, TextField, Typography } fro
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';  // Import navigate
 import '../PagesCSS/PracticeChoice.css';
-{/*{ useState }*/}
-{/* import { useNavigate } from 'react-router-dom'; */}
-function PracticeChoice({onClose, modeChoice}) {
-   
-    const [showJoinRoom, setShowJoinRoom] = useState(false);
 
+function PracticeChoice({ onClose, modeChoice, practiceId, topicTitle, topicId }) {  // Accept necessary props
+    
+    const [showJoinRoom, setShowJoinRoom] = useState(false);
     const [firstChoice, setFirstChoice] = useState('SOLO');
     const [secondChoice, setSecondChoice] = useState('COLLAB');
-
     const [cardStyleHeight, setCardStyleHeight] = useState('80%');
-
     const [roomCode, setRoomCode] = useState('');
-
     const [errorMessage, setErrorMessage] = useState('');
     const [errorOccured, setErrorOccured] = useState(false);
+
+    const navigate = useNavigate();  // Initialize navigate
+
+    
 
     const cardStyles = {
         maxWidth: '50rem',
@@ -31,7 +31,7 @@ function PracticeChoice({onClose, modeChoice}) {
         transform: 'translate(-50%, -50%)',
         zIndex: 1300,
         backgroundColor: '#ffec86',
-        borderRadius: '15px'
+        borderRadius: '15px',
     };
 
     const backdropStyle = {
@@ -41,15 +41,12 @@ function PracticeChoice({onClose, modeChoice}) {
         width: '100%',
         height: '100%',
         backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        zIndex: 1200
+        zIndex: 1200,
     };
 
     const theme = createTheme({
         typography: {
-            fontFamily: [
-                'Poppins',
-                'sans-serif'
-            ].join(','),
+            fontFamily: ['Poppins', 'sans-serif'].join(','),
         },
     });
 
@@ -62,64 +59,62 @@ function PracticeChoice({onClose, modeChoice}) {
         backgroundColor: 'lightblue',
         '&:hover': {
             animation: 'bounce 1s infinite',
-            backgroundColor: 'blue'
+            backgroundColor: 'blue',
         },
         '@keyframes bounce': {
             '0%, 100%': {
                 transform: 'translateY(0)',
-                animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)'
+                animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)',
             },
             '50%': {
                 transform: 'translateY(-1.25rem)',
-                animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
-            }
-        }
+                animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+            },
+        },
     });
 
+    const handleModeSelection = (choice) => {
+        console.log("Practice Id in PracticeChoice:", practiceId); // Ensure practiceId is defined here
+        modeChoice(choice, practiceId);
+    };
+
     const handleButtonChoiceClick = (choice) => {
-        modeChoice(choice);
-        if(choice === 'COLLAB'){
-            setFirstChoice('CREATE ROOM');
-            setSecondChoice('JOIN ROOM');
-        }else if(choice ==='JOIN ROOM'){
-            setShowJoinRoom(true);
-            setCardStyleHeight('auto');
+        if (choice === 'SOLO') {
+            // Navigate to QuestionForm with practiceId and topicTitle
+            console.log('Practice Id:', practiceId);
+            navigate(`/questionForm/${practiceId}`, { state: { practiceId, topicId} });
+        } else {
+            modeChoice(choice);
+            if (choice === 'COLLAB') {
+                setFirstChoice('CREATE ROOM');
+                setSecondChoice('JOIN ROOM');
+            } else if (choice === 'JOIN ROOM') {
+                setShowJoinRoom(true);
+                setCardStyleHeight('auto');
+            }
         }
-        
     };
 
     const joinRoom = async () => {
         if (roomCode.trim() === '') {
-          // Show an error message that the room code can't be empty
-          setErrorMessage("Room code cannot be empty");
-          return;
+            setErrorMessage("Room code cannot be empty");
+            return;
         }
-        
+
         try {
-          await modeChoice('JOIN_ROOM', roomCode);
-          onClose();
+            await modeChoice('JOIN_ROOM', roomCode);
+            onClose();
         } catch (error) {
-          console.error("Error joining room:", error);
-          setErrorMessage("Unable to join: Please check the room code and ensure you've selected the correct topic.");
-          setErrorOccured(true);
-        //   if (error.message === "Room topic does not match selected topic") {
-        //     setErrorMessage("This room is for a different topic. Please select the correct topic or create a new room.");
-        //     setErrorOccured(true);
-        //   } else if (error.message === "Room does not exist") {
-        //     setErrorMessage("The room does not exist. Please check the room code and try again.");
-        //     setErrorOccured(true);
-        //   } else {
-        //     setErrorMessage("An error occurred while joining the room. Please try again.");
-        //     setErrorOccured(true);
-        //   }
+            console.error("Error joining room:", error);
+            setErrorMessage("Unable to join: Please check the room code and ensure you've selected the correct topic.");
+            setErrorOccured(true);
         }
     };
-    
 
-    const handleCloseIconClick =() =>{
+    const handleCloseIconClick = () => {
         onClose();
-        setShowJoinRoom(false); 
-    }
+        setShowJoinRoom(false);
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -128,9 +123,9 @@ function PracticeChoice({onClose, modeChoice}) {
                 <Card sx={cardStyles}>
                     <CardContent sx={{ background: '#ffec86', marginTop: '3.125rem' }}>
                         <IconButton aria-label="close" sx={{ position: 'absolute', right: '0.5rem', top: '0.5rem', zIndex: 2 }}>
-                            <CloseIcon  onClick={() => {handleCloseIconClick()}}/>
+                            <CloseIcon onClick={handleCloseIconClick} />
                         </IconButton>
-                        <Typography gutterBottom variant="h5" component="div" align="center" sx={{color: '#181a52', fontFamily: 'Poppins', fontSize:'35px'}}>
+                        <Typography gutterBottom variant="h5" component="div" align="center" sx={{ color: '#181a52', fontFamily: 'Poppins', fontSize: '35px' }}>
                             {showJoinRoom === false ? 'Choose a game mode' : 'Enter room code'}
                         </Typography>
                     </CardContent>
@@ -154,7 +149,7 @@ function PracticeChoice({onClose, modeChoice}) {
                                 </BouncingButton>
                             </>
                             :
-                            <div style={{width: '70%'}}>
+                            <div style={{ width: '70%' }}>
                                 <TextField 
                                     fullWidth 
                                     autoComplete='off' 
@@ -162,9 +157,8 @@ function PracticeChoice({onClose, modeChoice}) {
                                     onChange={(e) => setRoomCode(e.target.value)}
                                     error={errorOccured}
                                     helperText={errorOccured ? errorMessage : null}
-
                                 />
-                                <Button variant='contained' size='large' sx={{mt: 1.5}} onClick={joinRoom}>
+                                <Button variant='contained' size='large' sx={{ mt: 1.5 }} onClick={joinRoom}>
                                     Join Room
                                 </Button>
                             </div>
@@ -177,5 +171,6 @@ function PracticeChoice({onClose, modeChoice}) {
 }
 
 export default PracticeChoice;
+
 
 

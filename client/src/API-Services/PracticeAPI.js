@@ -70,3 +70,26 @@ export const getRandomizedPracticeByTopicId = async (topicId) => {
   }
 }
 
+export const getPracticeQuestionsByPracticeId = async (practiceId) => {
+  try {
+      const baseUrl = "http://localhost:8080/mathminds/practice/";
+      const response = await axios.get(`${baseUrl}${practiceId}/questions`);
+      return { success: true, data: response.data };
+  } catch (error) {
+      console.error("Error fetching practice questions:", error);
+      return { success: false, error: error.response };
+  }
+};
+
+
+
+export const getQuestionsByPracticeAndTopicId = async (topicId, practiceId) => {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/practice/${practiceId}/questions`);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error fetching questions by practice and topic id: ", error);
+    return { success: false, message: "Failed to fetch questions. Try again later." };
+  }
+};
+
