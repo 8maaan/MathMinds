@@ -6,7 +6,7 @@ import Brain4 from '../Images/BrainImages/brain4.png'
 import '../PagesCSS/BrainAnimation.css';
 const BrainAnimation = () => {
     return (
-        <div className="container">
+        <div className="container-brain">
   <div className="brain">
   <img src={Brain1} className='brain1'/>
           <img src={Brain2} className='brain2'/>
