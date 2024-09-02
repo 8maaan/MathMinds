@@ -50,18 +50,32 @@ const PracticeQuestionFormMultiplayer = () => {
                 if (data && data.state === "playing") {
                     setGameData(data);
 
-                    if (data.currentQuestionStartTime) {
-                        const serverTime = data.serverTime || Date.now();
-                        const elapsedTime = (serverTime - data.currentQuestionStartTime) / 1000;
-                        const remainingTime = Math.max(0, 9 - elapsedTime);
-                        // console.log("Remaining time: ",remainingTime);
-                        setTimer(Math.round(remainingTime));
-                    }
+                    // if (data.currentQuestionStartTime) {
+                    //     const currentTime = Date.now();
+                    //     console.log("Server Time:", currentTime);
+                    //     const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
+                    //     console.log("Elapsed Time", elapsedTime);
+                    //     const remainingTime = Math.max(0, 9 - elapsedTime);
+                    //     console.log("Remaining time: ",remainingTime);
+                    //     setTimer(Math.round(remainingTime > 9 ? 9 : remainingTime ));
+                    //     console.log("Timer:", timer);
+                    // }
         
-                    // Only update the current question and reset the timer if the question changes
+                    // Only updates the values below if the question changes
                     if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
+                        if (data.currentQuestionStartTime) {
+                            const currentTime = Date.now();
+                            console.log("Server Time:", currentTime);
+                            const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
+                            console.log("Elapsed Time", elapsedTime);
+                            const remainingTime = Math.max(0, 9 - elapsedTime);
+                            console.log("Remaining time: ",remainingTime);
+                            setTimer(Math.round(remainingTime > 9 ? 9 : remainingTime ));
+                            console.log("Timer:", timer);
+                        }
                         setCurrentQuestion(data.questions[data.currentQuestionIndex]);
                         // setTimer(10); // Reset timer for all players when question changes
+                        setShowLeaderboard(false); // Hides the leaderboard
                         setHasAnswered(false); // Reset answer state for the new question
                         setSelectedAnswer(null); // Reset selected answer for the new question
                         setAnswerTime(null);
@@ -102,11 +116,12 @@ const PracticeQuestionFormMultiplayer = () => {
             moveToNextQuestion();
         } else if (timer === 0) {
             calculateScore();
-            showLeaderboardWithDelay();
+            proceedToNextQuestionDelay();
         }
         return () => clearTimeout(timerId);
     }, [timer, gameData]);
 
+    // Checks if the question changed (Ako gibutang diri kay for some reason mu-cause og infinite loop sa first useEffect)
     useEffect(() => {
         if (currentQuestion) {
             const choices = [currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers];
@@ -120,31 +135,39 @@ const PracticeQuestionFormMultiplayer = () => {
         
         // Random delay between 0 and 300 milliseconds
         await new Promise(resolve => setTimeout(resolve, Math.random() * 300));
-
+    
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
         
-        // Get the current state from the database
-        const snapshot = await get(roomRef);
-        const currentData = snapshot.val();
+        try {
+            await runTransaction(roomRef, (currentData) => {
+                if (!currentData) return null; // If data doesn't exist, abort the transaction
     
-        // Check if the question has already been updated
-        if (currentData.currentQuestionIndex > gameData.currentQuestionIndex) {
-            console.log("Question has already been updated by another client");
-            return; // Exit the function if the question has already been updated
-        }
-    
-        const nextIndex = currentData.currentQuestionIndex + 1;
-    
-        if (nextIndex < Object.keys(currentData.questions).length) {
-            // Update to next question
-            await update(roomRef, {
-                currentQuestionIndex: nextIndex,
-                playerAnswers: {},
-                currentQuestionStartTime: serverTimestamp(),
+                // Check if the question has already been updated
+                if (currentData.currentQuestionIndex > gameData.currentQuestionIndex) {
+                    console.log("Question has already been updated by another client");
+                    return; // Abort the transaction if the question has already been updated
+                }
+        
+                const nextIndex = currentData.currentQuestionIndex + 1;
+        
+                if (nextIndex < Object.keys(currentData.questions).length) {
+                    // Update to next question
+                    return {
+                        ...currentData,
+                        currentQuestionIndex: nextIndex,
+                        playerAnswers: {},
+                        currentQuestionStartTime: serverTimestamp(),
+                    };
+                } else {
+                    // End the game
+                    return {
+                        ...currentData,
+                        state: "finished"
+                    };
+                }
             });
-        } else {
-            // End the game
-            await update(roomRef, { state: "finished" });
+        } catch (error) {
+            console.error("Error updating game state:", error);
         }
     };
 
@@ -168,13 +191,16 @@ const PracticeQuestionFormMultiplayer = () => {
                 score = answerTime * 100;
             }
     
-            // Use a transaction to ensure atomic updates
             const scoreRef = ref(firebaseRTDB, `rooms/${roomCode}/playerScores/${user.uid}/question_${gameData.currentQuestionIndex}`);
-            
+    
             try {
                 await runTransaction(scoreRef, (currentScore) => {
                     // Only update if the score hasn't been set yet
-                    return currentScore === null ? score : currentScore;
+                    if (currentScore === null) {
+                        return score;
+                    } else {
+                        return currentScore; // No change if score already exists
+                    }
                 });
             } catch (error) {
                 console.error("Error updating score:", error);
@@ -182,11 +208,10 @@ const PracticeQuestionFormMultiplayer = () => {
         }
     };
 
-    const showLeaderboardWithDelay = () => {
+    const proceedToNextQuestionDelay = () => {
         setTimeout(() => {
             setShowLeaderboard(true);
             setTimeout(() => {
-                setShowLeaderboard(false);
                 moveToNextQuestion();
             }, 5000); // Show leaderboard for 5 seconds
         }, 2000);
@@ -209,6 +234,8 @@ const PracticeQuestionFormMultiplayer = () => {
     const shuffleChoicesArray = (array) => {
         return array.sort(() => Math.random() - 0.5);
     };
+
+    console.log("Timer:", timer);
 
     if (!currentQuestion) {
         return (     
