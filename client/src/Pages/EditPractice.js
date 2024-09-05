@@ -6,7 +6,7 @@ import '../PagesCSS/CreateTopic.css';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar'
-import { updatePracticeInDb, getPracticeByTopicId, deletePracticeByTopicId } from '../API-Services/PracticeAPI';
+import { updatePracticeInDb, getPracticeByTopicId, deletePracticeInDb } from '../API-Services/PracticeAPI';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const EditPractice = () => {
@@ -16,6 +16,7 @@ const EditPractice = () => {
     const [error, setError] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
+    const [practiceId, setPracticeId] = useState(null);
 
     const navigate = useNavigate();
 
@@ -23,6 +24,8 @@ const EditPractice = () => {
         const fetchPractice = async () => {
             try {
                 const practiceData = await getPracticeByTopicId(topicId);
+                console.log("PracticeId:",practiceData.data[0].practiceId);
+                setPracticeId(practiceData.data[0].practiceId);
                 if (practiceData.success) {
                     const practiceQA = practiceData.data[0].practice_qa;
                     const formattedQuestions = Object.entries(practiceQA).map(([key, value], index) => ({
@@ -93,7 +96,11 @@ const EditPractice = () => {
             practice_qa: practiceQA
         };
 
-        const response = await updatePracticeInDb(topicId, requestBody);
+        console.log("RB:", requestBody);
+        console.log("practiceId:",practiceId);
+        console.log(process.env.REACT_APP_SPRINGBOOT_EDIT_PRACTICE)
+
+        const response = await updatePracticeInDb(practiceId, requestBody);
         if (response.success) {
             navigate('/lessons-teacher');
             console.log(response.message);
@@ -104,7 +111,7 @@ const EditPractice = () => {
 
     const handleDelete = async () => {
             try {
-                const { success, message } = await deletePracticeByTopicId(topicId);
+                const { success, message } = await deletePracticeInDb(topicId);
                 if (success) {
                     console.log("Practice deleted successfully:", topicId);
                     navigate('/lessons-teacher');
