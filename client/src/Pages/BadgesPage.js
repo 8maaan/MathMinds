@@ -1,54 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import { UserAuth } from '../Context-and-routes/AuthContext';
-import { getUserProfileInfoFromDb } from '../API-Services/UserAPI';
 import '../PagesCSS/BadgesPage.css';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
-
-
-
+import { getBadgesForUser } from '../API-Services/UserAPI'; // Adjust the path as needed
+import { UserAuth } from '../Context-and-routes/AuthContext';
 
 const BadgesPage = () => {
     const { user } = UserAuth();
-    const [userProfileInfo, setUserProfileInfo] = useState({ fname: ''});
+    const [badges, setBadges] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchUserProfileInfo = async () => {
+        const fetchBadges = async () => {
             if (user) {
-                const result = await getUserProfileInfoFromDb(user.uid);
+                const result = await getBadgesForUser(user.uid);
                 if (result.success) {
-                    setUserProfileInfo(result.data);
+                    setBadges(Object.entries(result.data)); // Convert object to array of entries
+                    console.log("User Badges Data:", result.data);
                 } else {
-                    console.error("Failed to fetch user profile info");
+                    console.error("Failed to fetch badges:", result.message);
                 }
+                setLoading(false);
             }
         };
-        fetchUserProfileInfo();
+        fetchBadges();
     }, [user]);
-
-    const getBadgesHeader = () => {
-        if (!userProfileInfo.fname) return '';
-        return userProfileInfo.fname.endsWith('s') 
-            ? `${userProfileInfo.fname}' Badges` 
-            : `${userProfileInfo.fname}'s Badges`;
-    };
 
     return (
         <div className="Profilepage">
             <div className='badges-wrapper'>
                 <div className='badges-content-container'>
                     <div className='badgesinfo-left-side'>
-                    <ReusableChoices/>
+                        <ReusableChoices />
                     </div>
                     <div className='badgesinfo-right-side'>
                         <div className='badges-container'>
-                            <div className='badges-title'>{getBadgesHeader()}</div>
-                            <div className='userbadges-container'>
-                                <div className='userinfo-badges-container'>
-                                  
-                                          
-                                  
+                            <div className='badges-title'>Badges</div>
+                            {loading ? (
+                                <div className="loading">Loading...</div>
+                            ) : (
+                                <div className='userbadges-container'>
+                                    <div className='userinfo-badges-container'>
+                                        {badges.length === 0 ? (
+                                            <p>No badges earned yet.</p>
+                                        ) : (
+                                            badges.map(([title, imageUrl]) => (
+                                                <div key={title} className="badge">
+                                                    <img src={imageUrl} alt={title} className="badge-image" />
+                                                    <div className="badge-title">{title}</div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>

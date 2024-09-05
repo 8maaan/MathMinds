@@ -157,7 +157,7 @@ export default function ReusableAppBar() {
                     fontFamily: 'Poppins, sans-serif', display: 'block', 
                     backgroundColor: page === 'Sign Up' ? 'white' : (page === 'Log In' ? '#fcdd96' : ''),
                     '&:hover': {
-                    backgroundColor: page === 'Sign Up' ? '#f0efed' : (page === 'Log In' ? '#d69500' : '')
+                    backgroundColor: page === 'Sign Up' ? '#f0efed' : (page === 'Log In' ? '#cbb279' : '')
                     },
                     borderRadius: '10px'
                 }}

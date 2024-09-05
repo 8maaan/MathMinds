@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import '../PagesCSS/CreateTopic.css';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
@@ -15,6 +15,8 @@ const EditLessonQuiz = () => {
     const [lessons, setLessons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isAdministered, setIsAdministered] = useState(false);
+
 
     const navigate = useNavigate();
 
@@ -32,8 +34,9 @@ const EditLessonQuiz = () => {
             try {
                 const quizData = await getLessonQuizById(lessonQuizId);
                 if (quizData.success) {
-                    const { lessonTitle, lessonQuizQA } = quizData.data;
+                    const { lessonTitle, lessonQuizQA, isAdministered } = quizData.data; // Fetch isAdministered
                     setQuizLesson(lessonTitle);
+                    setIsAdministered(isAdministered); // Set isAdministered status
                     const formattedQuestions = Object.entries(lessonQuizQA).map(([key, value], index) => ({
                         id: index.toString(),
                         question: value.question,
@@ -101,7 +104,8 @@ const EditLessonQuiz = () => {
 
         const requestBody = {
             lessonTitle: quizLesson,
-            lessonQuizQA: lessonQuizQA
+            lessonQuizQA: lessonQuizQA,
+            isAdministered: isAdministered
         };
 
         const response = await updateLessonQuiz(lessonQuizId, requestBody);
@@ -159,6 +163,20 @@ const EditLessonQuiz = () => {
                             </div>
                         </div>
                     </DndContext>
+
+                    <FormControl sx={{ mt: 3 }}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isAdministered}
+                                    onChange={(e) => setIsAdministered(e.target.checked)}
+                                    color="primary"
+                                />
+                            }
+                            label="Administer Quiz"
+                        />
+                    </FormControl>
+
                     <Button type="submit" variant='contained' sx={{ mt: 2, fontFamily:'Poppins' }}>Submit</Button>
                 </div>
             </form>
