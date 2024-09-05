@@ -3,6 +3,16 @@
     src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
 }
 
+.Profilepage {
+    background-image: url('../Images/BG2.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat; /* Ensure no repeat */
+    min-height: 100vh; /* Ensure it covers the full viewport height */
+    background-color: #f0f0f0; /* Fallback color */
+    position: relative;
+}
+
 .body {
     
     background-attachment: fixed;
@@ -15,7 +25,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    width: 100%;
+    margin-top: 5%;
 }
 
 .badges-content-container{
@@ -86,10 +97,9 @@
     }
 
 }
-@media (max-width: 900px) {
+@media (max-width: 768px) {
 
     .badges-content-container{
-        margin-top: 700px;
         display: flex;
         flex-direction: column;
         height: 150vh;
@@ -100,38 +110,20 @@
         width: 100%;
         justify-content: center;
     }
-
     .badgesinfo-right-side{
         margin-top: 50px;
         width: 100%;
     }
-    
-
-}
-@media (max-width: 700px) {
-
-    .badges-content-container{
-        width: 60%;
+    .badges-title{ 
+        font-size: 25px;   
     }
 
 }
+
 @media (max-width: 600px) {
 
     .badges-content-container{
-        width: 70%;
-    }
-
-}
-@media (max-width: 500px) {
-
-    .badges-content-container{
-        width: 90%;
-    }
-
-}
-@media (max-width: 400px) {
-
-    .badges-content-container{
+        margin-top: 15%;
         width: 100%;
     }
 

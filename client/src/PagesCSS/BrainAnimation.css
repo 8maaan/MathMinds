@@ -1,0 +1,68 @@
+.container-brain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+
+.brain {
+    position: relative;
+    width: 180px;
+    height: 20vh;
+    border-radius: 50%;
+}
+
+/* Individual brain styles */
+.brain1, .brain2, .brain3, .brain4 {
+    
+    transition: transform 0.5s ease-in-out;
+}
+
+.brain1 {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 90px;
+    height: 10vh;
+}
+
+.brain2 {
+    top: 0;
+    right: 0;
+    position: absolute;
+    width: 90px;
+    height: 10vh;
+}
+
+.brain3 {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 91px;
+    height: 10vh;
+}
+
+.brain4 {
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    width: 89px;
+    height: 10vh;
+}
+
+/* Hover effect on the entire brain container */
+.brain:hover .brain1 {
+    transform: translate(-30px, -30px);
+}
+
+.brain:hover .brain2 {
+    transform: translate(30px, -30px);
+}
+
+.brain:hover .brain3 {
+    transform: translate(-30px, 30px);
+}
+
+.brain:hover .brain4 {
+    transform: translate(30px, 30px);
+}

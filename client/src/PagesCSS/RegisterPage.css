@@ -60,6 +60,7 @@
     width: 80%;
     /* background-image: url("../Images/register-bg.png");
     background-size: cover; */
+    animation: float 1.5s ease-in-out infinite;
 }
 
 .register-bg-container img{
@@ -125,3 +126,14 @@
 
 }
 
+@keyframes float {
+    0% {
+        transform: translateY(0); 
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

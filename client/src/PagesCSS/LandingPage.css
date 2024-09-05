@@ -6,7 +6,7 @@
 
 .body {
     color: #181A52;
-    background-image: url('../Images/landing-body-background.png');
+    background-image: url('../Images/BG2.png');
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh; 
@@ -62,8 +62,8 @@
     font-weight: 700;
     width: max-content;
     background-color: rgba(255, 177, 0, 0.4);
+    animation: boxReveal 1s ease-in-out forwards;
 }
-
 .right-side-desc{
     font-family: 'Poppins';
     font-size: clamp(0.9rem, 1.25vw, 1.25rem);
@@ -71,6 +71,7 @@
     margin-top: 1.5%;
     word-break: break-word; 
     overflow-wrap: break-word; 
+    animation: fadeinup 1.2s ease-out;
 }
 
 .content-left-side{
@@ -138,4 +139,31 @@
       width: 100%;
       text-align: center;
     }
+
+    .body {
+      background-image: url('../Images/BG2.png');
+      background-size: cover;
+      background-attachment: fixed;
+      
+  }
+}
+
+@keyframes boxReveal {
+  0% {
+      transform: translateX(-100%);
+  }
+  100% {
+      transform: translateX(0);
+  }
+}
+
+@keyframes fadeinup {
+  from {
+      opacity: 0;
+      transform: translateY(100%);
+  }
+  to {
+      opacity: 1;
+      transform: translateX(0);
+  }
 }

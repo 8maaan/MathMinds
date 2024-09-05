@@ -18,7 +18,8 @@ import EditTopicPage from './Pages/EditTopic';
 import CreateLessonQuizPage from './Pages/CreateLessonQuiz';
 import EditLessonQuizPage from './Pages/EditLessonQuiz'; 
 import QuizQuestionForm from './Pages/QuizQuestionForm';
-
+import EditPracticePage from './Pages/EditPractice';
+import CreateQuizPracticePage from './Pages/CreatePractice';
 import ProfileLessonPage from './Pages/ProfileLesson';
 import CreatePracticePage from './Pages/CreatePractice';
 import TopicCardPage from './Pages/TopicCard';
@@ -53,7 +54,6 @@ function App() {
             <Route path="/lessons" element={<ProtectedRoute> <LessonsPage/> </ProtectedRoute>}/>
             <Route path="/lesson/:lessonId/:topicId" element={<ProtectedRoute><TopicsPage/></ProtectedRoute>} />
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
-          
             <Route path="/questionForm/:topicId" element={<QuestionFormPage />} />
             <Route path="/profilelesson" element={<ProfileLessonPage />} />
             <Route path="/createPractice" element={<CreatePracticePage />} />
@@ -68,7 +68,9 @@ function App() {
             <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher><TeacherLessonsPage/></ProtectedRoute> }/>
             <Route path="/edit-topic/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher><EditTopicPage /></ProtectedRoute>} />
             <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher><CreateLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/create-practice-quiz" element={<ProtectedRoute requireTeacher><CreateQuizPracticePage /></ProtectedRoute>} />
             <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher><EditLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/edit-practice/:topicId" element={<ProtectedRoute> <EditPracticePage/> </ProtectedRoute>} />
             <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>

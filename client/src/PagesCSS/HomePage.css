@@ -1,35 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+.App-home-body {
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* Ensure pseudo-element does not overflow */
+}
 
-.App-home-body{
+.App-home-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-image: url('../Images/BG2.png');
     background-size: cover;
     background-attachment: fixed;
-    background-repeat: repeat-y;  
-    position: relative;
-    z-index: 1;
+    background-repeat: repeat-y;
+    opacity: 0.85; /* Adjust the opacity of the background image */
+    z-index: -1; /* Place it behind the content */
 }
 
-.Homepage{
+.Homepage {
     justify-content: center;
     min-height: 100vh;
     z-index: 2;
     position: relative;
 }
 
-.image-buttons{
-    align-items: 'center';
-    justify-content: 'center';
+.image-buttons {
+    align-items: center;
+    justify-content: center;
     margin-top: 4%;
     padding-bottom: 2%;
 }
 
-
-.image-buttons-margin{
+.image-buttons-margin {
     margin-left: 2%;
     margin-right: 2%;
 }
 
-.img-button-size{
+.img-button-size {
     height: 450px; 
 }
 
@@ -38,58 +48,57 @@
     font-family: 'Poppins', sans-serif;
     font-weight: 900;
     font-size: 50px;
-    text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-    padding-top: 5%; /* CHANGED TO padding then 5% -densha*/
+    text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5);  /* horizontal offset, vertical offset, blur radius, color */
+    padding-top: 5%;
     text-align: left;
-    margin-left: 11.5%;  /* CHANGED FROM 10% TO 11.5% -RIBO*/
-    z-index: 3;
+    margin-left: 11.5%;
+    z-index: 4;
+    animation: pull-up 1.2s ease-out; /* Apply the pull-up animation */
 }
 
-.home-paragraph {
-    color: #181a52;
-    font-family: 'Poppins', sans-serif;
-    font-size: 35px;
-    text-align: left;
-    margin-left: 11.5%; /* CHANGED FROM 10% TO 11.5% -RIBO*/
-    margin-right: 5%;
-    z-index: 3;
-}
+    .home-paragraph {
+        color: #181a52;
+        font-family: 'Poppins', sans-serif;
+        font-size: 35px;
+        text-align: left;
+        margin-left: 11.5%;
+        margin-right: 5%;
+        z-index: 3;
+        animation: fadeinup 1.2s ease-out;
+    }
 
 .image-bg-size {
     height: 300px;
 }
 
 .container {
-    position: relative; /* Establishes the positioning context for absolutely positioned children */
+    position: relative;
 }
 
 .box {
-    position: absolute; /* Positions the boxes relative to their containing element */
+    position: absolute;
     width: 100%;
     height: 200px;
     padding: 20px;
 }
 
-
-/* effects -densha */
-.image-buttons-margin:hover img{
-    transform: scale(1.05);
-    transition: transform; 
+/* Hover effects with tilted shake animation */
+.image-buttons-margin:hover img {
+    animation: tilt-shake 0.5s ease-in-out;
 }
 
 .button:hover img {
-    transform: scale(1.05); 
-    transition: transform; 
+    animation: tilt-shake 0.5s ease-in-out;
 }
 
-@media (max-width: 1024px){
-    .image-buttons{
-        align-items: 'center';
-        justify-content: 'center';
+@media (max-width: 1024px) {
+    .image-buttons {
+        align-items: center;
+        justify-content: center;
         margin-top: 4%;
     }
 
-    .img-button-size{
+    .img-button-size {
         height: 350px; 
     }
 
@@ -98,8 +107,8 @@
         font-family: 'Poppins', sans-serif;
         font-weight: 900;
         font-size: 40px;
-        text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        padding-top: 7%; /* changed to padding and 7%*/
+        text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5);
+        padding-top: 7%;
         text-align: left;
         margin-left: 8%;
     }
@@ -112,32 +121,29 @@
         margin-left: 8%;
     }
 
-    .image-buttons-margin{
+    .image-buttons-margin {
         margin-left: 2px;
         margin-right: 2px;
     }
 
-    /* effects -densha */
-    .image-buttons-margin:hover img{
-        transform: scale(1.05);
-        transition: transform; 
+    .image-buttons-margin:hover img {
+        animation: tilt-shake 0.5s ease-in-out;
     }
 
     .button:hover img {
-        transform: scale(1.05); 
-        transition: transform; 
+        animation: tilt-shake 0.5s ease-in-out;
     }
 }
 
-@media (max-width: 768px){
-    .nav-bar{
-        position: fixed; /* or sticky */
-        width: 100%; /* Ensure the navbar takes up the full width */
-        z-index: 1000; /* Ensure the navbar is above other content */
+@media (max-width: 768px) {
+    .nav-bar {
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
         background-color: #ffb100;
     }
 
-    .img-button-size{
+    .img-button-size {
         height: 300px; 
     }
 
@@ -146,8 +152,8 @@
         font-family: 'Poppins', sans-serif;
         font-weight: 900;
         font-size: 35px;
-        text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        padding-top: 9%; /* changed to padding */
+        text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5);
+        padding-top: 9%;
         text-align: left;
         margin-left: 8%;
     }
@@ -160,57 +166,51 @@
         margin-left: 8%;
     }
 
-    .image-buttons-margin{
+    .image-buttons-margin {
         margin-left: 2px;
         margin-right: 2px;
     }
 
-    /* effects -densha */
-    .image-buttons-margin:hover img{
-        transform: scale(1.05);
-        transition: transform; 
+    .image-buttons-margin:hover img {
+        animation: tilt-shake 0.5s ease-in-out;
     }
 
     .button:hover img {
-        transform: scale(1.05); 
-        transition: transform; 
+        animation: tilt-shake 0.5s ease-in-out;
     }
 }
 
 @media (max-width: 600px) {
-    /* Adjustments for smaller screens */
     .app-bar-logo {
-        height: 60px; /* Reduce the height of the logo */
+        height: 60px;
     }
     
     .nav-buttons {
-        flex-direction: column; /* Display navigation buttons vertically */
-        align-items: center; /* Center-align navigation buttons */
-        margin-top: 20px; /* Add some margin from the top */
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
         display: none;
     }
     
     .nav-buttons button {
-        margin: 1px 0; /* Add some vertical margin between navigation buttons */
+        margin: 1px 0;
         display: none;
     }
 
     .image-buttons {
-        flex-direction: column; /* Display image buttons vertically */
-        align-items: center; /* Center-align image buttons */
-        margin-top: 20px; /* Add some margin from the top */
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
     }
 
     .image-buttons button {
-        margin: 5px 0; /* Add some vertical margin between image buttons */
+        margin: 5px 0;
     }
 
-    /* CHANGED TO 350 FROM 250 -RIBO*/
-    .img-button-size{
+    .img-button-size {
         height: 350px; 
     }
 
-    /* CHANGED TO 200 FROM 100  -RIBO*/
     .image-bg-size {
         height: 200px;
     }
@@ -220,8 +220,8 @@
         font-family: 'Poppins', sans-serif;
         font-weight: 900;
         font-size: 30px;
-        text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5); /* horizontal offset, vertical offset, blur radius, color */
-        padding-top: 15%; /* changed to padding and to 15%*/
+        text-shadow: 2px 2px 5px rgba(24, 26, 82, 0.5);
+        padding-top: 15%;
         text-align: left;
         margin-left: 8%;
     }
@@ -235,17 +235,43 @@
         margin-right: 5%;
     }
 
-    /* effects -densha */
-    .image-buttons-margin:hover img{
-        transform: scale(1.05);
-        transition: transform; 
+    .image-buttons-margin:hover img {
+        animation: tilt-shake 0.5s ease-in-out;
     }
 
     .button:hover img {
-        transform: scale(1.05); 
-        transition: transform; 
+        animation: tilt-shake 0.5s ease-in-out;
     }
 }
 
 
+/* Keyframes for tilted shake animation */
+@keyframes tilt-shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
 
+@keyframes pull-up {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeinup {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
