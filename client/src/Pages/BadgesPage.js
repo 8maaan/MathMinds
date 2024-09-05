@@ -1,28 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import '../PagesCSS/BadgesPage.css';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
-import { getBadgesForUser } from '../API-Services/UserAPI'; // Adjust the path as needed
+import { getBadgesForUser, getUserProfileInfoFromDb } from '../API-Services/UserAPI'; // Adjust the path as needed
 import { UserAuth } from '../Context-and-routes/AuthContext';
 
 const BadgesPage = () => {
     const { user } = UserAuth();
     const [badges, setBadges] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [userName, setUserName] = useState(''); // State to hold user's full name
 
     useEffect(() => {
-        const fetchBadges = async () => {
+        const fetchUserData = async () => {
             if (user) {
-                const result = await getBadgesForUser(user.uid);
-                if (result.success) {
-                    setBadges(Object.entries(result.data)); // Convert object to array of entries
-                    console.log("User Badges Data:", result.data);
+                // Fetch user's profile info
+                const profileResult = await getUserProfileInfoFromDb(user.uid);
+                if (profileResult.success) {
+                    const { fname, lname } = profileResult.data;
+                    setUserName(`${fname} ${lname}`);
                 } else {
-                    console.error("Failed to fetch badges:", result.message);
+                    console.error("Failed to fetch user profile info:", profileResult.message);
                 }
+
+                // Fetch user's badges
+                const badgesResult = await getBadgesForUser(user.uid);
+                if (badgesResult.success) {
+                    setBadges(Object.entries(badgesResult.data)); // Convert object to array of entries
+                    console.log("User Badges Data:", badgesResult.data);
+                } else {
+                    console.error("Failed to fetch badges:", badgesResult.message);
+                }
+
                 setLoading(false);
             }
         };
-        fetchBadges();
+
+        fetchUserData();
     }, [user]);
 
     return (
@@ -34,7 +47,7 @@ const BadgesPage = () => {
                     </div>
                     <div className='badgesinfo-right-side'>
                         <div className='badges-container'>
-                            <div className='badges-title'>Badges</div>
+                            <div className='badges-title'>{userName ? `${userName}'s Badges` : 'Badges'}</div>
                             {loading ? (
                                 <div className="loading">Loading...</div>
                             ) : (

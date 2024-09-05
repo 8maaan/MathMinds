@@ -88,6 +88,9 @@ const TopicsPage = () => {
   }, [selectedTopic]);
 
   const handleOptionClick = (topicId, questionKey, option) => {
+    // Prevent option selection if options are disabled
+    if (topicsState[topicId]?.[questionKey]?.disableOptions) return;
+  
     setTopicsState((prevState) => ({
       ...prevState,
       [topicId]: {
@@ -95,14 +98,15 @@ const TopicsPage = () => {
         [questionKey]: {
           ...prevState[topicId]?.[questionKey],
           selectedOption: option,
-          // Preserve the existing checked and feedback state (remove if error)
           checked: prevState[topicId]?.[questionKey]?.checked || false,
           feedback: prevState[topicId]?.[questionKey]?.feedback || null,
+          buttonText: prevState[topicId]?.[questionKey]?.buttonText || 'Submit',
+          disableOptions: false, // Ensure options are enabled when an option is selected
         },
       },
     }));
   };
-
+  
   const handleCheckAnswer = (topicId, questionKey, correctAnswer) => {
     const isCorrect = topicsState[topicId][questionKey].selectedOption === correctAnswer;
     setTopicsState((prevState) => ({
@@ -113,15 +117,32 @@ const TopicsPage = () => {
           ...prevState[topicId][questionKey],
           feedback: isCorrect ? 'Correct!' : 'Wrong!',
           checked: true,
+          buttonText: isCorrect ? 'Submit' : 'Retry',
+          disableOptions: !isCorrect, // Disable options if the answer is incorrect
         },
       },
     }));
     setFeedBackColor(isCorrect ? 'green' : 'maroon');
-
+  
     if (!isCorrect) {
       setAnimateFeedback(true); // Trigger the shake animation
       setTimeout(() => setAnimateFeedback(false), 500); // Reset the animation state after 500ms
     }
+  };
+  
+  const handleRetry = (topicId, questionKey) => {
+    setTopicsState((prevState) => ({
+      ...prevState,
+      [topicId]: {
+        ...prevState[topicId],
+        [questionKey]: {
+          ...prevState[topicId][questionKey],
+          buttonText: 'Submit', // Reset button text to "Submit"
+          disableOptions: false, // Enable options for retry
+          checked: false, // Allow resubmission
+        },
+      },
+    }));
   };
 
   const getNextColor = () => {
@@ -257,6 +278,7 @@ const TopicsPage = () => {
                                   variant='contained'
                                   fullWidth
                                   size='large'
+                                  disabled={topicsState[selectedTopic.topicId]?.[key]?.disableOptions} // Disable options if needed
                                 >
                                   {option}
                                 </Button>
@@ -264,11 +286,15 @@ const TopicsPage = () => {
                             </div>
                             <div className="check-container">
                               <Button
-                                onClick={() => handleCheckAnswer(selectedTopic.topicId, key, value.correctAnswer)}
+                                onClick={() => 
+                                  topicsState[selectedTopic.topicId]?.[key]?.buttonText === 'Retry' 
+                                    ? handleRetry(selectedTopic.topicId, key) 
+                                    : handleCheckAnswer(selectedTopic.topicId, key, value.correctAnswer)
+                                }
                                 variant='contained'
                                 sx={{ color: '#101436', backgroundColor: '#FFB100', fontFamily: 'Poppins', '&:hover': { backgroundColor: '#e9a402' } }}
                               >
-                                Check
+                                {topicsState[selectedTopic.topicId]?.[key]?.buttonText || 'Submit'}
                               </Button>
                             </div>
                           </div>
