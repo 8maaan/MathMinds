@@ -1,19 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Button, FormControl, InputLabel, MenuItem, Select,Typography} from '@mui/material';
-import'../PagesCSS/CreatePractice.css';
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import '../PagesCSS/CreatePractice.css';
 import PracticeQuestion from '../ReusableComponents/PracticeQuestions';
+import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
 import { getAllTopicsFromDb } from '../API-Services/TopicAPI';
 import { insertPracticeToDb } from '../API-Services/PracticeAPI';
 import { useNavigate } from 'react-router-dom';
 
 const CreatePractice = () => {
+    const [selectedLesson, setSelectedLesson] = useState(''); 
     const [practiceTopic, setPracticeTopic] = useState('');
     const [practiceQuestions, setPracticeQuestions] = useState([]);
-    const [topics, setTopics] = useState(null);
+    const [lessons, setLessons] = useState([]);
+    const [topics, setTopics] = useState([]);
+    const [filteredTopics, setFilteredTopics] = useState([]); 
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchLessons = async () => {
+            const lessonList = await getAllLessonsFromDb();
+            if (lessonList.success) {
+                setLessons(lessonList.data);
+            } else {
+                console.error(lessonList.message);
+            }
+        };
+
+        fetchLessons();
+    }, []);
 
     useEffect(() => {
         const fetchTopics = async () => {
@@ -24,8 +41,22 @@ const CreatePractice = () => {
                 console.error(topicsList.message);
             }
         };
+
         fetchTopics();
     }, []);
+
+    useEffect(() => {
+        if (selectedLesson) {
+            const filtered = topics.filter(topic => topic.lessonId === selectedLesson);
+            setFilteredTopics(filtered); 
+        } else {
+            setFilteredTopics([]);
+        }
+    }, [selectedLesson, topics]);
+
+    const handleLessonChange = (event) => {
+        setSelectedLesson(event.target.value); 
+    };
 
     const handleAddQuestion = () => {
         setPracticeQuestions([
@@ -87,17 +118,28 @@ const CreatePractice = () => {
         }
     };
 
+
     return (
         <div>
+            <Typography class='createPractice-title'>Create a quiz for Practice</Typography>
             <form onSubmit={handleSubmit}>
-            <Typography class='createTopic-title'>Add a quiz for Practice</Typography>
                 <div className='createPractice-body'>
                     <div className='practice-config-container'>
-                        {/* Practice Topic */}
+                        <div className='practice-select-container'>
+                         {/* Select Lesson - Added */}
+                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
+                            <InputLabel>Select Lesson</InputLabel>
+                            <Select label='Select Lesson' value={selectedLesson} autoWidth onChange={handleLessonChange} required>
+                                {lessons.map(lesson => (
+                                    <MenuItem key={lesson.lessonId} value={lesson.lessonId}>{lesson.lessonTitle}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        {/* Practice Topic - Updated to use filteredTopics */}
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Topic</InputLabel>
-                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={(event) => { setPracticeTopic(event.target.value) }} required>
-                                {topics && topics.map(topic => (
+                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={(event) => setPracticeTopic(event.target.value)} required>
+                                {filteredTopics.map(topic => (
                                     <MenuItem key={topic.topicId} value={topic.topicId}>{topic.topicTitle}</MenuItem>
                                 ))}
                             </Select>
@@ -106,25 +148,28 @@ const CreatePractice = () => {
                             <Button onClick={handleAddQuestion} variant='contained'>Add Question</Button>
                         </div>
                     </div>
-                    {/* For practice questions */}
-                    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                    </div>
+                     {/* For practice questions */}
+                    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} >
                         <div className='practice-form-container'>
-                        <div className='practice-scrollable'>
+                            <div className='practice-scrollable'>
                             <SortableContext items={practiceQuestions.map(item => item.id)} strategy={verticalListSortingStrategy}>
-                                {practiceQuestions.map(item => (
-                                    <PracticeQuestion
-                                        key={item.id}
-                                        id={item.id}
-                                        question={item.question}
-                                        correctAnswer={item.correctAnswer}
-                                        incorrectAnswers={item.incorrectAnswers}
-                                        updateQuestion={updateQuestion}
-                                        deleteQuestion={deleteQuestion}
-                                    />
-                                ))}
-                            </SortableContext>
-                            {practiceQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No questions currently 📝</p> : null}
-                        </div>
+                                    {practiceQuestions.map(item => (
+                                        <PracticeQuestion
+                                            key={item.id}
+                                            id={item.id}
+                                            question={item.question}
+                                            correctAnswer={item.correctAnswer}
+                                            incorrectAnswers={item.incorrectAnswers}
+                                            updateQuestion={updateQuestion}
+                                            deleteQuestion={deleteQuestion}
+                                        />
+                                    ))}
+                                </SortableContext>
+                                {practiceQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No questions currently 📝</p> : null}
+
+                            </div>
+                            
                         </div>
                     </DndContext>
                     <Button type="submit" variant='contained' sx={{ mt: 2 }}>Submit</Button>
