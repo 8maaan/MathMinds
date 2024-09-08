@@ -36,29 +36,10 @@ const iconStyle = {
   color: '#ffb100'
 };
 
-// Mock data
-const mockQuestions = [
-  {
-    question: 'What is the capital of France?',
-    correctAnswer: 'Paris',
-    incorrectAnswers: ['Berlin', 'Madrid', 'Rome'],
-  },
-  {
-    question: 'What is 2 + 2?',
-    correctAnswer: '4',
-    incorrectAnswers: ['3', '5', '6'],
-  },
-  {
-    question: 'Which planet is known as the Red Planet?',
-    correctAnswer: 'Mars',
-    incorrectAnswers: ['Venus', 'Jupiter', 'Saturn'],
-  },
-];
-
 const PracticeQuestionForm = () => {
   const { topicId } = useParams();
   const { state } = useLocation();  
-
+  const { lessonId, topicTitle, questions } = state || {};  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isConfirming, setIsConfirming] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -67,26 +48,27 @@ const PracticeQuestionForm = () => {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
-
+  
   const navigate = useNavigate();
 
-  // If real data is provided, use it, otherwise use mock data
-  const { lessonId, topicTitle, questions } = state || { questions: mockQuestions, topicTitle: "Mock Topic" };
+  console.log('Received lessonId:', lessonId);
+  console.log('Received topicTitle:', topicTitle);
+  console.log('Received questions:', questions);
 
   useEffect(() => {
-    const fetchedQuestions = questions; // Either real data or mock data
+    if (questions) {
+      setAnsweredQuestions(new Array(questions.length).fill(false)); 
 
-    setAnsweredQuestions(new Array(fetchedQuestions.length).fill(false)); 
-
-    // Shuffle only once
-    const shuffled = fetchedQuestions.map(q => {
-      const options = [...q.incorrectAnswers, q.correctAnswer];
-      return {
-        ...q,
-        shuffledOptions: options.sort(() => Math.random() - 0.5)
-      };
-    });
-    setShuffledQuestions(shuffled);
+      // Shuffle only once
+      const shuffled = questions.map(q => {
+        const options = [...q.incorrectAnswers, q.correctAnswer];
+        return {
+          ...q,
+          shuffledOptions: options.sort(() => Math.random() - 0.5)
+        };
+      });
+      setShuffledQuestions(shuffled);
+    }
   }, [questions]);
 
   const handleOptionClick = (option) => {
