@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getTopicById } from '../API-Services/TopicAPI';
-import { getAllPractices } from '../API-Services/PracticeAPI';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Box, Button, Typography, Container, Paper, IconButton } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -38,51 +36,58 @@ const iconStyle = {
   color: '#ffb100'
 };
 
+// Mock data
+const mockQuestions = [
+  {
+    question: 'What is the capital of France?',
+    correctAnswer: 'Paris',
+    incorrectAnswers: ['Berlin', 'Madrid', 'Rome'],
+  },
+  {
+    question: 'What is 2 + 2?',
+    correctAnswer: '4',
+    incorrectAnswers: ['3', '5', '6'],
+  },
+  {
+    question: 'Which planet is known as the Red Planet?',
+    correctAnswer: 'Mars',
+    incorrectAnswers: ['Venus', 'Jupiter', 'Saturn'],
+  },
+];
+
 const PracticeQuestionForm = () => {
   const { topicId } = useParams();
-  const [practices, setPractices] = useState([]);
+  const { state } = useLocation();  
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [topic, setTopic] = useState(null);
   const [isConfirming, setIsConfirming] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [totalQuestions, setTotalQuestions] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [isAnswerWrong, setIsAnswerWrong] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
-  const [isEndOfPractice, setIsEndOfPractice] = useState(false);
-  
+  const [shuffledQuestions, setShuffledQuestions] = useState([]);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchTopic = async () => {
-      try {
-        const topicData = await getTopicById(topicId);
-        console.log('Topic Data:', topicData);
-        setTopic(topicData.data);
-      } catch (error) {
-        console.error('Error fetching topic:', error);
-      }
-    };
-    fetchTopic();
-  }, [topicId]);
+  // If real data is provided, use it, otherwise use mock data
+  const { lessonId, topicTitle, questions } = state || { questions: mockQuestions, topicTitle: "Mock Topic" };
 
   useEffect(() => {
-    const fetchPractices = async () => {
-      try {
-        const fetchResult = await getAllPractices();
-        if (fetchResult.success) {
-          const filteredPractices = fetchResult.data.filter(practice => practice.topic.topicId === parseInt(topicId, 10));
-          setPractices(filteredPractices);
-          setTotalQuestions(filteredPractices.length);
-          setAnsweredQuestions(new Array(filteredPractices.length).fill(false));
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchPractices();
-  }, [topicId]);
+    const fetchedQuestions = questions; // Either real data or mock data
+
+    setAnsweredQuestions(new Array(fetchedQuestions.length).fill(false)); 
+
+    // Shuffle only once
+    const shuffled = fetchedQuestions.map(q => {
+      const options = [...q.incorrectAnswers, q.correctAnswer];
+      return {
+        ...q,
+        shuffledOptions: options.sort(() => Math.random() - 0.5)
+      };
+    });
+    setShuffledQuestions(shuffled);
+  }, [questions]);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -91,17 +96,8 @@ const PracticeQuestionForm = () => {
 
   const handleOptionConfirmation = () => {
     setIsConfirming(false);
-    const currentPractice = practices[currentQuestionIndex];
-    if (!currentPractice || !currentPractice.practice_qa) {
-      console.error("Practice data is missing or invalid");
-      return;
-    }
 
-    const currentQuestionData = currentPractice.practice_qa;
-    const questionKeys = Object.keys(currentQuestionData);
-    const currentQuestionKey = questionKeys[0]; // Assuming only one question per practice for now
-    const currentQuestion = currentQuestionData[currentQuestionKey];
-  
+    const currentQuestion = shuffledQuestions[currentQuestionIndex];
     if (!currentQuestion) {
       console.error("Current question is undefined");
       return;
@@ -119,8 +115,9 @@ const PracticeQuestionForm = () => {
       setIsCorrectAnswer(true);
       setCorrectAnswers(prevCorrectAnswers => {
         const updatedCorrectAnswers = prevCorrectAnswers + 1;
-        if (currentQuestionIndex === totalQuestions - 1) {
-          setIsEndOfPractice(true);
+        if (currentQuestionIndex === shuffledQuestions.length - 1) {
+          // Automatically redirect to the score page after answering all questions
+          handleEndOfPractice();
         }
         return updatedCorrectAnswers;
       });
@@ -132,10 +129,10 @@ const PracticeQuestionForm = () => {
   const handleContinueAfterWrongAnswer = () => {
     setIsAnswerWrong(false);
     setIsConfirming(false);
-    if (currentQuestionIndex < totalQuestions - 1) {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      setIsEndOfPractice(true);
+      handleEndOfPractice();
     }
   };
 
@@ -151,54 +148,33 @@ const PracticeQuestionForm = () => {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      setIsEndOfPractice(true);
+      handleEndOfPractice();
     }
     setSelectedOption(null);
   };
 
-  const handleCancelWrongAnswer = () => {
-    setIsAnswerWrong(false);
-    setIsEndOfPractice(true);
-  };
-
   const handleEndOfPractice = () => {
-    setIsEndOfPractice(false);
-    navigate('/scoreTest', { state: { correctAnswers, totalQuestions } });
+    navigate('/scoreTest', {
+      state: { 
+        correctAnswers, 
+        totalQuestions: shuffledQuestions.length,
+        lessonId,  
+        topicId    
+      }
+    });
   };
 
-  const handleContinuePractice = () => {
-    setIsEndOfPractice(false);
-    navigate('/practice');
-  };
-
-  if (!topic || practices.length === 0) {
-    return <LoadingAnimations/>
+  // Show a loading animation if there are no questions
+  if (!shuffledQuestions || shuffledQuestions.length === 0) {
+    return <LoadingAnimations />;
   }
 
-  const currentPractice = practices[currentQuestionIndex];
-  if (!currentPractice || !currentPractice.practice_qa) {
-
-    return null;
-  }
-
-  const currentQuestionData = currentPractice.practice_qa;
-  const questionKeys = Object.keys(currentQuestionData);
-  const currentQuestionKey = questionKeys[0]; 
-  const currentQuestion = currentQuestionData[currentQuestionKey];
-
-  if (!currentQuestion) {
-   
-    return null;
-  }
-
-  const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
-  const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
-  const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
-
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
   const isAnswered = answeredQuestions[currentQuestionIndex];
+  const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
 
   return (
     <ThemeProvider theme={theme}>
@@ -215,7 +191,7 @@ const PracticeQuestionForm = () => {
         </Box>
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
-            {topic.topicTitle}
+            {topicTitle}
           </Typography>
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
@@ -227,7 +203,7 @@ const PracticeQuestionForm = () => {
           </Paper>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '115%', marginTop: '20px' }}>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-              {shuffledOptions.map((option, idx) => (
+              {currentQuestion.shuffledOptions.map((option, idx) => (
                 <OptionButton
                   key={option}
                   onClick={() => handleOptionClick(option)}
@@ -257,10 +233,10 @@ const PracticeQuestionForm = () => {
           />
           <PracticeAnswerModal
             open={isAnswerWrong}
-            handleClose={handleCancelWrongAnswer}
+            handleClose={() => setIsAnswerWrong(false)}
             message={{
               title: 'Wrong Answer',
-              content: 'lets get some payback with the next Question!',
+              content: 'Let’s get some payback with the next question!',
             }}
             handleConfirm={handleContinueAfterWrongAnswer}
           />
@@ -273,16 +249,6 @@ const PracticeQuestionForm = () => {
             }}
             handleConfirm={handleContinueAfterCorrectAnswer}
           />
-          <PracticeAnswerModal
-            open={isEndOfPractice}
-            handleEndOfPractice={handleEndOfPractice}
-            message={{
-              title: 'End of Practice',
-              content: 'Would you like to continue practicing?',
-            }}
-            handleContinuePractice={handleContinuePractice}
-            isEndOfPractice
-          />
         </Container>
       </div>
     </ThemeProvider>
@@ -290,5 +256,3 @@ const PracticeQuestionForm = () => {
 };
 
 export default PracticeQuestionForm;
-
-
