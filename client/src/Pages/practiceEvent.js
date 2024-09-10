@@ -172,7 +172,7 @@ function PracticeEvent() {
       console.log(selectedTopic.topicTitle, selectedTopic.topicId);
       try {
         // Fetch randomized practice questions by topicId
-        const { success, data } = await getRandomizedPracticeByTopicId(selectedTopic.topicId);
+        const { success, data } = await getRandomizedPracticeByTopicId(selectedTopic.topicId, 10);
         console.log("Raw API response for questions:", data);
         console.log("Fetched Question:", data);
         if (success) {

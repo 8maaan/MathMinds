@@ -50,14 +50,14 @@ export const updatePracticeInDb = async (practiceId, updatedPracticeData) => {
   }
 };
 
-export const getRandomizedPracticeByTopicId = async (topicId) => {
+export const getRandomizedPracticeByTopicId = async (topicId, questionAmount) => {
+  const maxQuestions = questionAmount === null ? 10 : questionAmount;
   try {
-    // Pass topicId as part of the URL path
-    const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_RANDOMIZED_PRACTICE_QA_BY_TOPICID}/${topicId}`);
+    const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_RANDOMIZED_PRACTICE_QA_BY_TOPICID}${topicId}&maxQuestions=${questionAmount}`);
     return { success: true, data: response.data };
   } catch (error) {
     console.error("Error fetching practice by topic id: ", error);
     return { success: false, message: "Failed to fetch practice by topic id. Try again later." };
   }
-};
+}
 
