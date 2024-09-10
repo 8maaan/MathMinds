@@ -8,6 +8,7 @@ import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
 import { getAllTopicsFromDb } from '../API-Services/TopicAPI';
 import { insertPracticeToDb } from '../API-Services/PracticeAPI';
 import { useNavigate } from 'react-router-dom';
+import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 
 const CreatePractice = () => {
     const [selectedLesson, setSelectedLesson] = useState(''); 
@@ -16,6 +17,7 @@ const CreatePractice = () => {
     const [lessons, setLessons] = useState([]);
     const [topics, setTopics] = useState([]);
     const [filteredTopics, setFilteredTopics] = useState([]); 
+    const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
 
     const navigate = useNavigate();
 
@@ -79,8 +81,23 @@ const CreatePractice = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
+        const incompleteQuestions = practiceQuestions.some(q => 
+            !q.question || 
+            !q.correctAnswer || 
+            q.incorrectAnswers.some(a => a === '')
+        );
+        
+        if (incompleteQuestions) {
+            handleSnackbarOpen('error', 'Please complete all fields for each question.');
+            return;
+        }
+    
         const practiceQAObject = practiceQuestions.reduce((acc, item, index) => {
             const filteredIncorrectAnswers = item.incorrectAnswers.filter(answer => answer !== '');
+            if (!item.question || !item.correctAnswer || filteredIncorrectAnswers.length < 3) {
+                return acc; 
+            }
             acc[index + 1] = {
                 question: item.question,
                 correctAnswer: item.correctAnswer,
@@ -88,24 +105,27 @@ const CreatePractice = () => {
             };
             return acc;
         }, {});
-    
+        
         const requestBody = {
             topic: { topicId: practiceTopic },
             practice_qa: practiceQAObject
         };
-    
+        
         console.log('Request Body:', requestBody);
-    
+        
         const response = await insertPracticeToDb(requestBody);
         console.log('Response:', response);
-    
+        
         if (response.success) {
-            navigate('/lessons-teacher');
-            console.log(response.message); 
+            handleSnackbarOpen('success', 'Practice has been created successfully.');
+            setTimeout(() => {
+                navigate('/lessons-teacher');
+            }, 1250);
         } else {
-            console.error(response.message); 
+            handleSnackbarOpen('error', 'Could not create practice, try again later.');
         }
     };
+    
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -116,6 +136,20 @@ const CreatePractice = () => {
                 return arrayMove(items, oldIndex, newIndex);
             });
         }
+    };
+
+    const handleSnackbarOpen = (severity, message) => {
+        setSnackbar({ status: true, severity, message });
+    };
+
+    const handleSnackbarClose = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar((prevSnackbar) => ({
+            ...prevSnackbar,
+            status: false
+        }));
     };
 
 
@@ -175,6 +209,7 @@ const CreatePractice = () => {
                     <Button type="submit" variant='contained' sx={{ mt: 2 }}>Submit</Button>
                 </div>
             </form>
+            <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
     );
 };
