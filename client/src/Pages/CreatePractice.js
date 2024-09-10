@@ -155,13 +155,13 @@ const CreatePractice = () => {
 
     return (
         <div>
-            <Typography class='createPractice-title'>Create a quiz for Practice</Typography>
             <form onSubmit={handleSubmit}>
                 <div className='createPractice-body'>
+                    <Typography class='createPractice-title'>Create a quiz for Practice</Typography>
                     <div className='practice-config-container'>
                         <div className='practice-select-container'>
                          {/* Select Lesson - Added */}
-                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
+                         <FormControl variant="filled" sx={{ minWidth: 180, mb: 1 }}>
                             <InputLabel>Select Lesson</InputLabel>
                             <Select label='Select Lesson' value={selectedLesson} autoWidth onChange={handleLessonChange} required>
                                 {lessons.map(lesson => (
@@ -170,7 +170,7 @@ const CreatePractice = () => {
                             </Select>
                         </FormControl>
                         {/* Practice Topic - Updated to use filteredTopics */}
-                        <FormControl sx={{ minWidth: 180, mt: 3 }}>
+                        <FormControl variant="filled" sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Topic</InputLabel>
                             <Select label='Select Topic' value={practiceTopic} autoWidth onChange={(event) => setPracticeTopic(event.target.value)} required>
                                 {filteredTopics.map(topic => (

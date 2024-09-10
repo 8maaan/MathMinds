@@ -3,15 +3,16 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 5px;
-    margin-bottom: 2%; 
-    height: calc(100vh - 64px); 
+    margin-top: 80px;
+    height: calc(100vh - 80px); /* Subtract the margin-top */
+    overflow: hidden; /* Prevent scrolling on the body */
 }
 .createPractice-title {
-    margin-top: 85px;
+    /* margin-top: 85px; */
     font-size: 30px;
     color: #181A52;
     font-family: 'Poppins';
+    
 }
 
 
@@ -25,7 +26,9 @@
 .practice-select-container{
     display: flex;
     flex-direction: column;
-    width: 15%;
+    width: 30%;
+    min-width: 180px;
+    
     
     
 
@@ -36,7 +39,7 @@
 }
 
 .practice-config-container .MuiInputLabel-root {
-    background-color: white; /* Match the background color */
+    /* background-color: white; Match the background color */
     padding: 0 5px; /* Add some padding */
 }
 
@@ -53,7 +56,7 @@
     border: solid gray 2px;
     border-radius: 15px;
     overflow-y: auto;
-    margin-bottom: 110px;
+    /* margin-bottom: 110px; */
 }
 .practice-scrollable{
     display: flex;
@@ -92,13 +95,14 @@
 
 .practiceQuestionContainer,
 .topicContentContainer {
-    border: solid black 1px;
+    
     border-radius: 1rem;
     width: 75%;
     min-height: 20vh;
     text-align: justify;
     padding: 1rem;
     margin-top: 1.5%;
+    border: solid gray 1px;
 }
 
 .topicContentContainer {
@@ -121,4 +125,13 @@
 .practice-content-actions {
     width: 75%;
     text-align: left;
+}
+
+@media (max-width: 720px) {
+    .practice-select-container{
+        width: 100%;
+    }
+    .createPractice-body .MuiButton-root{
+        margin-bottom: 2.5%;
+    }
 }
