@@ -47,7 +47,7 @@
 .pqfm-currentQuestionIndex{
     /* border: solid black 1px; */
     width: 100%;
-    text-align: left;
+    text-align: center;
 }
 
 .pqfm-question-container{

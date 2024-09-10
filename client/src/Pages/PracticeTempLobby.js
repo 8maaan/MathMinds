@@ -5,9 +5,11 @@ import { ref, onValue, off, update, serverTimestamp, push, set } from "firebase/
 import { getRandomizedPracticeByTopicId } from "../API-Services/PracticeAPI"
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/PracticeMultiplayerLobby.css'
-import { Button, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SendIcon from '@mui/icons-material/Send';
+import SettingsIcon from '@mui/icons-material/Settings';
+import GameSettingsModal from '../ReusableComponents/GameSettingsModal';
 
 const PracticeTempLobby = () => {
     const { roomCode } = useParams();
@@ -18,7 +20,10 @@ const PracticeTempLobby = () => {
     const { user } = UserAuth();
     const [messages, setMessages] = useState([]);
     const [chatInput, setChatInput] = useState("");
-
+    const [openGameSettingsModal, setOpenGameSettingsModal] = useState(false);
+    const [questionAmount, setQuestionAmount] = useState(10);
+    const [questionTimer, setQuestionTimer] = useState(10);
+    
     const playerColorList = ['#F94848', '#518BBC', '#4CAE4F', '#FFB100'];
 
     useEffect(() => {
@@ -34,7 +39,7 @@ const PracticeTempLobby = () => {
                 console.log(isHost);
             }
 
-            if (data && data.state === "playing") {
+            if (data && (data.state === "playing" || data.state === "starting")) {
                 navigateTo(`/game/${roomCode}`);
             }
         });
@@ -59,7 +64,7 @@ const PracticeTempLobby = () => {
 
         try {
             console.log("Fetching new questions...");
-            const { success, data } = await getRandomizedPracticeByTopicId(roomData.topicId);
+            const { success, data } = await getRandomizedPracticeByTopicId(roomData.topicId, questionAmount);
             console.log("Fetched questions:", data);
             if (success && data.length > 0) {
                 const questions = data;
@@ -77,7 +82,9 @@ const PracticeTempLobby = () => {
                     questions: questions,
                     playerAnswers: {},
                     playerScores: initialPlayerScores,
-                    currentQuestionStartTime: serverTimestamp()
+                    currentQuestionStartTime: serverTimestamp(),
+                    questionTimer: questionTimer,
+                    startCountdownIsFinished: false
                 });
             } else {
                 console.error("Failed to fetch questions");
@@ -104,6 +111,20 @@ const PracticeTempLobby = () => {
         setChatInput(""); // Clear input after sending
     };
 
+    const handleShowGameSettingsModal = () => {
+        setOpenGameSettingsModal(!openGameSettingsModal);
+    }
+
+    const handleGameSettingsChange = (settings) => {
+        setQuestionAmount(settings.questionAmount);
+        setQuestionTimer(settings.questionTimer);
+    };
+
+    const gameSettings = {
+        questionAmount: questionAmount,
+        questionTimer: questionTimer,
+    };
+
     return (
         <div className='pml-body'>
             {/* ROOM DETAILS, CHAT */}
@@ -118,8 +139,12 @@ const PracticeTempLobby = () => {
                         <div style={{height: '100%'}}>
                             <h3>Room Code: <span style={{color: '#ba8f22'}}>{roomCode}</span></h3>
                         </div>
-
                         <div style={{height: '100%', marginLeft: 'auto'}}>
+                            <IconButton aria-label="delete" onClick={handleShowGameSettingsModal}>
+                                <SettingsIcon sx={{fontSize: '30px'}}/>
+                            </IconButton>
+                        </div>
+                        <div style={{height: '100%', marginLeft:'5px'}}>
                             {isHost && 
                             <Button
                                 size='large'
@@ -184,6 +209,14 @@ const PracticeTempLobby = () => {
                     ))}
                 </div> 
             </div>
+            {openGameSettingsModal && 
+                <GameSettingsModal 
+                    status={openGameSettingsModal} 
+                    handleStatus={handleShowGameSettingsModal}
+                    gameSettings={gameSettings} 
+                    onSettingsChange={handleGameSettingsChange}  
+                />
+            }
         </div>
     );
 }

@@ -80,7 +80,7 @@ const MultiplayerLeaderboardModal = ({open, onClose, scores, isFinished, roomCod
                                     <StyledTableRow key={playerId}>
                                         <StyledTableCell>{index + 1}</StyledTableCell> {/* Rank column */}
                                         <StyledTableCell component="th" scope="row">
-                                            {playerId} {isFinished && (index + 1 === 1 ? '🥇' : index + 1 === 2 ? '🥈' : index + 1 === 3 ? '🥉' : '')}
+                                            {playerId}{isFinished && (index + 1 === 1 ? ' 🥇' : index + 1 === 2 ? ' 🥈' : index + 1 === 3 ? ' 🥉' : null)}
                                         </StyledTableCell>
                                         <StyledTableCell align="left">{totalScore}</StyledTableCell>
                                     </StyledTableRow>
