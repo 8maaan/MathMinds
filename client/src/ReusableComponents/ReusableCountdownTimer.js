@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../PagesCSS/CountdownTimer.css';
 
-const ReusableCountdownTimer = ({ initialTimer }) => {
+const ReusableCountdownTimer = ({ initialTimer, onTimerFinish }) => {
   const [timer, setTimer] = useState(initialTimer);
 
   useEffect(() => {
@@ -9,17 +9,20 @@ const ReusableCountdownTimer = ({ initialTimer }) => {
   }, [initialTimer]);
   
   useEffect(() => {
+    let timerId;
     if (timer > 0) {
-      const timerId = setTimeout(() => setTimer(timer - 1), 1000);
-      return () => clearTimeout(timerId);
+      timerId = setTimeout(() => setTimer(timer - 1), 1000);
+    } else {
+      onTimerFinish();
     }
-  }, [timer]);
+    return () => clearTimeout(timerId);
+  }, [timer, onTimerFinish]);
 
   return (
     <div 
       className="countdown-wrapper" 
       style={{
-        animation: `countdown ${11}s linear`,
+        animation: `countdown ${12}s linear`,
         counterReset: `my-count ${timer}`
       }}
     >

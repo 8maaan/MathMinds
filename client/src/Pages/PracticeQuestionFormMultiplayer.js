@@ -15,14 +15,14 @@ const PracticeQuestionFormMultiplayer = () => {
     const [gameData, setGameData] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const [timer, setTimer] = useState(null); // Initial timer (countdown) b4 start
-    const [isHost, setIsHost] = useState(false);
     const [hasAnswered, setHasAnswered] = useState(false); // New state to track if the user has answered
     const [selectedAnswer, setSelectedAnswer] = useState(null); // Store the selected answer
     const [answerTime, setAnswerTime] = useState(null); 
-    const [totalScore, setTotalScore] = useState(0); // Current user's total score
     const [isFinished, setIsFinished] = useState(false); // Indicator if game is finished or nawt
     const [playerScores, setPlayerScores] = useState({}); // Overall total scores from players
     const [showLeaderboard, setShowLeaderboard] = useState(false);
+    const [questionTimer, setQuestionTimer] = useState(null);
+    const [startCountdownIsFinished, setStartCountdownIsFinished] = useState(false);
 
     const [shuffledChoices, setShuffledChoices] = useState([]);
 
@@ -33,8 +33,7 @@ const PracticeQuestionFormMultiplayer = () => {
         { defaultColor: "#f4cc3f", hoverColor: "#dbb739", disabledColor: "#c7a634" }
     ];
 
-    const maxTime = 10; // Assuming the timer starts at 10 seconds
-    const progress = (timer / maxTime) * 100; // Progress in percentage
+    const progress = (timer / questionTimer) * 100; // Progress in percentage
 
     const { user } = UserAuth();
     const navigateTo = useNavigate();
@@ -49,17 +48,7 @@ const PracticeQuestionFormMultiplayer = () => {
         
                 if (data && data.state === "playing") {
                     setGameData(data);
-
-                    // if (data.currentQuestionStartTime) {
-                    //     const currentTime = Date.now();
-                    //     console.log("Server Time:", currentTime);
-                    //     const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
-                    //     console.log("Elapsed Time", elapsedTime);
-                    //     const remainingTime = Math.max(0, 9 - elapsedTime);
-                    //     console.log("Remaining time: ",remainingTime);
-                    //     setTimer(Math.round(remainingTime > 9 ? 9 : remainingTime ));
-                    //     console.log("Timer:", timer);
-                    // }
+                    setStartCountdownIsFinished(data.startCountdownIsFinished);
         
                     // Only updates the values below if the question changes
                     if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
@@ -68,13 +57,13 @@ const PracticeQuestionFormMultiplayer = () => {
                             console.log("Server Time:", currentTime);
                             const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
                             console.log("Elapsed Time", elapsedTime);
-                            const remainingTime = Math.max(0, 9 - elapsedTime);
+                            const remainingTime = Math.max(0, data.questionTimer - elapsedTime);
                             console.log("Remaining time: ",remainingTime);
-                            setTimer(Math.round(remainingTime > 9 ? 9 : remainingTime ));
+                            setTimer(Math.round(remainingTime > data.questionTimer ? data.questionTimer : remainingTime ));
                             console.log("Timer:", timer);
                         }
                         setCurrentQuestion(data.questions[data.currentQuestionIndex]);
-                        // setTimer(10); // Reset timer for all players when question changes
+                        setQuestionTimer(data.questionTimer);
                         setShowLeaderboard(false); // Hides the leaderboard
                         setHasAnswered(false); // Reset answer state for the new question
                         setSelectedAnswer(null); // Reset selected answer for the new question
@@ -87,12 +76,12 @@ const PracticeQuestionFormMultiplayer = () => {
                     }
                     
                     // Update current user's total score
-                    if (data.playerScores && data.playerScores[user.uid]) {
-                        const playerScores = data.playerScores[user.uid];
-                        const currentScore = Object.values(playerScores).reduce((sum, score) => sum + score, 0);
-                        setTotalScore(currentScore);
-                    }
-                    setIsHost(data.host === user.uid);
+                    // if (data.playerScores && data.playerScores[user.uid]) {
+                    //     const playerScores = data.playerScores[user.uid];
+                    //     const currentScore = Object.values(playerScores).reduce((sum, score) => sum + score, 0);
+                    //     setTotalScore(currentScore);
+                    // }
+                    // setIsHost(data.host === user.uid);
                 }
 
                 if (data && data.state === "finished"){
@@ -110,16 +99,16 @@ const PracticeQuestionFormMultiplayer = () => {
 
     useEffect(() => {
         let timerId;
-        if (timer > 0 && gameData?.state === "playing") {
-            timerId = setTimeout(() => setTimer(timer - 1), 1000);
-        }else if(timer === 0 && !currentQuestion) {
+        if(startCountdownIsFinished && !currentQuestion) {
             moveToNextQuestion();
+        }else if (timer > 0 && gameData?.state === "playing" && startCountdownIsFinished) {
+            timerId = setTimeout(() => setTimer(timer - 1), 1000);
         } else if (timer === 0) {
             calculateScore();
             proceedToNextQuestionDelay();
         }
         return () => clearTimeout(timerId);
-    }, [timer, gameData]);
+    }, [timer, gameData, startCountdownIsFinished]);
 
     // Checks if the question changed (Ako gibutang diri kay for some reason mu-cause og infinite loop sa first useEffect)
     useEffect(() => {
@@ -157,6 +146,7 @@ const PracticeQuestionFormMultiplayer = () => {
                         currentQuestionIndex: nextIndex,
                         playerAnswers: {},
                         currentQuestionStartTime: serverTimestamp(),
+                        startCountdownIsFinished: true
                     };
                 } else {
                     // End the game
@@ -231,15 +221,20 @@ const PracticeQuestionFormMultiplayer = () => {
         setShowLeaderboard(false);
     }
 
+    const handleStartCountdownIsFinished = () => {
+        setStartCountdownIsFinished(true);
+    };
+
     const shuffleChoicesArray = (array) => {
         return array.sort(() => Math.random() - 0.5);
     };
 
     console.log("Timer:", timer);
+    console.log("startCountdownIsFinished:",startCountdownIsFinished);
 
     if (!currentQuestion) {
         return (     
-            <ReusableCountdownTimer initialTimer={timer}/>
+            <ReusableCountdownTimer initialTimer={10} onTimerFinish={handleStartCountdownIsFinished}/>
         )
     }
 
@@ -259,7 +254,7 @@ const PracticeQuestionFormMultiplayer = () => {
                     <Box className='pqfm-first-section-container'>
                         <Box className='pqfm-first-section-wrapper'>
                             <Box className='pqfm-currentQuestionIndex'>
-                                <h3 style={{marginLeft: '0.5rem'}}>Question #{gameData.currentQuestionIndex + 1}</h3>
+                                <h3>Question #{gameData.currentQuestionIndex + 1}</h3>
                             </Box>
                             <Box className='pqfm-question-container'>
                                 <p>{currentQuestion.question}</p>
