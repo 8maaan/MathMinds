@@ -49,7 +49,7 @@ export const updatePracticeInDb = async (practiceId, updatedPracticeData) => {
     return { success: false, message: "Failed to update practice", error: error.response ? error.response.data : error.message };
   }
 };
-// localhost:8080/mathminds/practice/getRandomizedPracticeByTopicId/?topicId=1&maxQuestions=10
+
 export const getRandomizedPracticeByTopicId = async (topicId, questionAmount) => {
   const maxQuestions = questionAmount === null ? 10 : questionAmount;
   try {
