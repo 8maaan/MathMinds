@@ -43,25 +43,14 @@
   color: #181a52;
 }
 
-.doneButton {
-  width: 100%;
-  height: 70px;
+.buttonsContainer {
   display: flex;
   justify-content: center;
+  gap: 20px;
   margin-top: 5rem;
   margin-bottom: 1.875rem;
 }
 
-.doneButton .MuiButton-root {
-  width: 150px;
-  background-color: #ffb100;
-  color: black;
-  padding: 10px 30px;
-  border-radius: 10px;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  font-weight: bold;
-}
 
 @media (max-width: 768px) {
   .scoresContainer {
@@ -86,6 +75,15 @@
   }
 
   .doneButton .MuiButton-root {
+    padding: 10px 20px;
+  }
+
+  .homeButton {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .homeButton .MuiButton-root {
     padding: 10px 20px;
   }
 }

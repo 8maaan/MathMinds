@@ -18,6 +18,7 @@ import { firebaseRTDB } from '../Firebase/firebaseConfig'
 import { ref, set, get } from "firebase/database";
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { useUserInfo } from '../ReusableComponents/useUserInfo';
+import { getRandomizedPracticeByTopicId } from '../API-Services/PracticeAPI';
 
 function NextArrow(props) {
   const { onClick } = props;
@@ -57,6 +58,8 @@ function PracticeEvent() {
   const navigateTo = useNavigate();
   const { user } = UserAuth();
   const { userData } = useUserInfo(user ? user.uid : null);
+
+
 
   const theme = createTheme({
     typography: {
@@ -153,6 +156,8 @@ function PracticeEvent() {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
   };
 
+  
+
   const handleModeChoice = async (choice, roomCode = null) => {
     console.log("Mode choice:", choice);
   
@@ -165,7 +170,26 @@ function PracticeEvent() {
   
     if (choice === 'SOLO') {
       console.log(selectedTopic.topicTitle, selectedTopic.topicId);
-      navigateTo(`/questionForm/${selectedTopic.topicId}`, { state: { topicTitle: selectedTopic.topicTitle } });
+      try {
+        // Fetch randomized practice questions by topicId
+        const { success, data } = await getRandomizedPracticeByTopicId(selectedTopic.topicId, 10);
+        console.log("Raw API response for questions:", data);
+        console.log("Fetched Question:", data);
+        if (success) {
+          // Pass the questions to questionForm through the state
+          navigateTo(`/questionForm/${selectedTopic.topicId}`, { state: 
+            { 
+              topicTitle: selectedTopic.topicTitle, 
+              questions: data, 
+              lessonId,
+              topicId: selectedTopic.topicId
+            } });
+        } else {
+          console.error("Failed to fetch questions");
+        }
+      } catch (error) {
+        console.error("Error fetching randomized practice questions:", error);
+      }
     } else if (choice === 'CREATE ROOM') {
       const generatedRoomCode = generateRoomCode();
       console.log("Generated room code:", generatedRoomCode);
