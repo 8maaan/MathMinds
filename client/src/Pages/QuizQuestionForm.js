@@ -186,24 +186,26 @@ const QuizQuestionForm = () => {
             {lessonTitle} - Final Assessment
           </Typography>
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <Typography ref={questionRef} variant="h6" sx={{ textAlign: 'center', marginTop: '100px', fontSize: questionFontSize }}>
+            <Typography ref={questionRef} variant="h6" sx={{ textAlign: 'center', marginTop: '120px', fontSize: questionFontSize }}>
               {currentQuestion.question}
             </Typography>
-            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
+            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px' }}>
               Question {currentQuestionIndex + 1}
             </Typography>
           </Paper>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
             {options.map((option, idx) => (
-              <OptionButton
-                ref={(el) => optionsRef.current[idx] = el}
-                key={`${currentQuestionIndex}-${idx}`}
-                sx={{ bgcolor: optionColors[idx % optionColors.length], color: '#181a52', minWidth: '100px', marginBottom: '20px', fontSize: optionFontSize }}
-                onClick={() => handleOptionClick(option)}
-                disabled={selectedOption !== null}
-              >
-                {option}
-              </OptionButton>
+              option && ( // This checks if the option is not falsy (null, undefined, empty string)
+                <OptionButton
+                  ref={(el) => optionsRef.current[idx] = el}
+                  key={`${currentQuestionIndex}-${idx}`}
+                  sx={{ bgcolor: optionColors[idx % optionColors.length], color: '#181a52', minWidth: '100px', marginBottom: '20px', fontSize: optionFontSize }}
+                  onClick={() => handleOptionClick(option)}
+                  disabled={selectedOption !== null}
+                >
+                  {option}
+                </OptionButton>
+              )
             ))}
           </Box>
         </Container>
