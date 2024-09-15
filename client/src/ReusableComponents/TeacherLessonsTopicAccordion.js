@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button, IconButton, Tooltip } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -21,14 +21,23 @@ const colorPalettes = [
 
 const TeacherLessonsTopicAccordion = ({ lesson }) => {
     const navigateTo = useNavigate();
-    const [expanded, setExpanded] = useState(null);
+    const [expanded, setExpanded] = useState([]);
     const [selectedTopicId, setSelectedTopicId] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [lessonTopics, setLessonTopics] = useState(lesson.lessonTopics || []);
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
 
+    // Automatically expand all panels on first render
+    useEffect(() => {
+        if (lessonTopics.length > 0) {
+            setExpanded(lessonTopics.map((_, index) => `panel${lesson.lessonId}-${index + 1}`));
+        }
+    }, [lessonTopics, lesson.lessonId]);
+
     const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : null);
+        setExpanded((prevExpanded) =>
+            isExpanded ? [...prevExpanded, panel] : prevExpanded.filter(p => p !== panel)
+        );
     };
 
     const handleStartTopic = (lessonId, topicId) => {
@@ -89,7 +98,6 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
         }
     };
 
-    // For snackbar
     const handleSnackbarOpen = (severity, message) => {
         setSnackbar({ status: true, severity, message });
     };
@@ -101,7 +109,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
         setSnackbar((prevSnackbar) => ({
             ...prevSnackbar,
             status: false
-        }))
+        }));
     };
 
     return (
@@ -110,7 +118,8 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                 lessonTopics.map((topic, topicIndex) => {
                     const colorPaletteIndex = topicIndex % colorPalettes.length;
                     const colorPalette = colorPalettes[colorPaletteIndex];
-                    const isExpanded = expanded === `panel${lesson.lessonId}-${topicIndex + 1}`;
+                    const panelId = `panel${lesson.lessonId}-${topicIndex + 1}`;
+                    const isExpanded = expanded.includes(panelId);
 
                     return (
                         <Accordion
@@ -118,9 +127,9 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 marginTop: '1.5%',
                                 borderRadius: "10px"
                             }}
-                            key={`${lesson.lessonId}-${topicIndex}`}
+                            key={panelId}
                             expanded={isExpanded}
-                            onChange={handleChange(`panel${lesson.lessonId}-${topicIndex + 1}`)}
+                            onChange={handleChange(panelId)}
                         >
                             <AccordionSummary
                                 sx={{
@@ -152,7 +161,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                     <Tooltip title="Edit Practice">
                                         <IconButton onClick={() => handleEditPractice(topic.topicId)}>
                                             <Tune
-                                                    sx={{
+                                                sx={{
                                                     color: "#181A52",
                                                     '&:hover': {
                                                         color: colorPalette.hoverColor,
@@ -165,7 +174,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                     <Tooltip title="Edit Topic">
                                         <IconButton onClick={() => handleEditTopic(topic.topicId, topic.topicTitle)}>
                                             <EditIcon
-                                                    sx={{
+                                                sx={{
                                                     color: "#181A52",
                                                     '&:hover': {
                                                         color: colorPalette.hoverColor,
@@ -178,7 +187,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                     <Tooltip title="Delete Topic">
                                         <IconButton onClick={() => handleOpenDialog(topic.topicId)}>
                                             <CloseIcon
-                                                    sx={{
+                                                sx={{
                                                     color: "#181A52",
                                                     marginRight: "12px",
                                                     '&:hover': {
@@ -219,7 +228,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                 title="Confirm Delete" 
                 context="Are you sure you want to delete this topic?"
             />
-            <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
+            <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message} />
         </div>
     );
 };

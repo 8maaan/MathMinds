@@ -278,7 +278,7 @@ const TeacherLessonsBox = () => {
                         </div>
                         <div>
                             <p className="lesson-number">Lesson {index + 1}</p>
-                            <Typography sx={{fontSize:"30px", fontWeight:"bold", fontFamily:"Poppins"}}>{lesson.lessonTitle}</Typography>
+                            <Typography sx={{fontSize:"30px", fontWeight:"bold", fontFamily:"Poppins", marginBottom:"15px"}}>{lesson.lessonTitle}</Typography>
                             {lesson.score !== undefined && (
                                 <Typography variant="body1" sx={{ mt: 1, color: '#181A52' }}>
                                     Quiz Score: {lesson.score}

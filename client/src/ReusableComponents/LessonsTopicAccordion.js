@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
@@ -14,11 +14,21 @@ const colorPalettes = [
 
 const LessonsTopicAccordion = ({ lesson }) => {
     const navigateTo = useNavigate();
-    const [expanded, setExpanded] = useState(null);
+    const [expandedPanels, setExpandedPanels] = useState([]);  // Array to track expanded panels
     const [lessonTopics, setLessonTopics] = useState(lesson.lessonTopics || []);
 
+    // Set all panels to expanded when component mounts
+    useEffect(() => {
+        const initialExpandedPanels = lessonTopics.map((_, index) => `panel${lesson.lessonId}-${index + 1}`);
+        setExpandedPanels(initialExpandedPanels);  // Expand all panels initially
+    }, [lessonTopics, lesson.lessonId]);
+
     const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : null);
+        if (isExpanded) {
+            setExpandedPanels(prev => [...prev, panel]);  // Add panel to expandedPanels array
+        } else {
+            setExpandedPanels(prev => prev.filter(p => p !== panel));  // Remove panel from array
+        }
     };
 
     const handleStartTopic = (lessonId, topicId) => {
@@ -31,7 +41,8 @@ const LessonsTopicAccordion = ({ lesson }) => {
                 lessonTopics.map((topic, topicIndex) => {
                     const colorPaletteIndex = topicIndex % colorPalettes.length;
                     const colorPalette = colorPalettes[colorPaletteIndex];
-                    const isExpanded = expanded === `panel${lesson.lessonId}-${topicIndex + 1}`;
+                    const panelId = `panel${lesson.lessonId}-${topicIndex + 1}`;
+                    const isExpanded = expandedPanels.includes(panelId);  // Check if panel is expanded
 
                     return (
                         <Accordion
@@ -39,9 +50,9 @@ const LessonsTopicAccordion = ({ lesson }) => {
                                 marginTop: '1.5%',
                                 borderRadius: "10px"
                             }}
-                            key={`${lesson.lessonId}-${topicIndex}`}
+                            key={panelId}
                             expanded={isExpanded}
-                            onChange={handleChange(`panel${lesson.lessonId}-${topicIndex + 1}`)}
+                            onChange={handleChange(panelId)}
                         >
                             <AccordionSummary
                                 sx={{
