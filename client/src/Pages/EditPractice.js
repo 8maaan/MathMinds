@@ -7,16 +7,18 @@ import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar'
 import { updatePracticeInDb, getPracticeByTopicId, deletePracticeInDb } from '../API-Services/PracticeAPI';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditPractice = () => {
     const { topicId } = useParams();    
     const [practiceQuestions, setPracticeQuestions] = useState([]);
+    const [practiceId, setPracticeId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
-    const [practiceId, setPracticeId] = useState(null);
+
 
     const navigate = useNavigate();
 
@@ -80,8 +82,7 @@ const EditPractice = () => {
         }
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async () => {
 
         const practiceQA = practiceQuestions.reduce((acc, item, index) => {
             acc[index + 1] = {
@@ -102,8 +103,11 @@ const EditPractice = () => {
 
         const response = await updatePracticeInDb(practiceId, requestBody);
         if (response.success) {
-            navigate('/lessons-teacher');
-            console.log(response.message);
+            navigate('/lessons-teacher', {
+                state: {
+                    snackbar: { status: true, severity: 'success', message: response.message }
+                }
+            });
         } else {
             console.log(response.message);
         }
@@ -114,11 +118,13 @@ const EditPractice = () => {
                 const { success, message } = await deletePracticeInDb(topicId);
                 if (success) {
                     console.log("Practice deleted successfully:", topicId);
-                    navigate('/lessons-teacher');
-                    handleSnackbarOpen('success', 'The practice has been deleted successfully.');
+                    navigate('/lessons-teacher', {
+                        state: {
+                            snackbar: { status: success, severity: 'success', message: 'Practice deleted successfully.' }
+                        }
+                    });
                 } else {
-                    console.error("Failed to delete practice:", message);
-                    handleSnackbarOpen('error', 'Error deleting the practice, try again later.');
+                    handleSnackbarOpen('error', message);
                 }
             } catch (error) {
                 console.error("An error occurred while deleting the practice:", error);
@@ -139,12 +145,23 @@ const EditPractice = () => {
         }))
     };
 
-    const handleOpenDialog = () => {
-        setOpenDialog(true);
+    const handleOpenUpdateDialog = (event) => {
+        setOpenUpdateDialog(true);
     };
 
-    const handleCloseDialog = (confirmed) => {
-        setOpenDialog(false);
+    const handleOpenDeleteDialog = () => {
+        setOpenDeleteDialog(true);
+    };
+
+    const handleCloseUpdateDialog = (confirmed) => {
+        setOpenUpdateDialog(false);
+        if (confirmed) {
+            handleSubmit(); 
+        }
+    };
+
+    const handleCloseDeleteDialog = (confirmed) => {
+        setOpenDeleteDialog(false);
         if (confirmed) {
             handleDelete();
         }
@@ -166,7 +183,7 @@ const EditPractice = () => {
                     <div className='topic-config-container'>
                         <div style={{ marginTop: '1.5%'}}>
                             <Button onClick={handleAddQuestion} variant='contained' style={{ fontFamily: 'Poppins', marginRight: '0.5%'}}>Add Question</Button>
-                            <Button onClick={handleOpenDialog} variant='contained' color='error' style={{ fontFamily: 'Poppins' }}>Delete Practice</Button>
+                            <Button onClick={handleOpenDeleteDialog} variant='contained' color='error' style={{ fontFamily: 'Poppins' }}>Delete Practice</Button>
                         </div>
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -187,13 +204,18 @@ const EditPractice = () => {
                             {practiceQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No questions currently 📝</p> : null}
                         </div>
                     </DndContext>
-                    <Button type="submit" variant='contained' style={{ marginTop: '2%', fontFamily: 'Poppins' }}>Submit</Button>
+                    <Button onClick={handleOpenUpdateDialog} variant='contained' style={{ marginTop: '2%', fontFamily: 'Poppins' }}>Submit</Button>
                 </div>
             </form>
-
             <ReusableDialog
-                status={openDialog} 
-                onClose={handleCloseDialog} 
+                status={openUpdateDialog} 
+                onClose={handleCloseUpdateDialog} 
+                title="Confirm Update" 
+                context="Are you sure you want to update this Practice?"
+            />
+            <ReusableDialog
+                status={openDeleteDialog} 
+                onClose={handleCloseDeleteDialog} 
                 title="Confirm Delete" 
                 context="Are you sure you want to delete this practice?"
             />
