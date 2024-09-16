@@ -27,14 +27,6 @@
     margin-top: 1.5%;
 }
 
-/* .topic-config-container > *:not(:last-child) {
-    margin-bottom: 1%;
-} */
-
-/* .topic-config-container > *:not(:last-child) {
-    margin-bottom: 1%;
-} */
-
 .topic-form-container{
     display: flex;
     align-items: center;
@@ -80,16 +72,18 @@
 
 .topicQuestionContainer,
 .topicContentContainer, 
-.topicImageContainer {
+.topicImageContainer,
+.topicStoryBoardContainer {
     border: solid black 1px;
     border-radius: 1rem;
     width: 75%;
-    min-height: 20vh;
+    min-height: 25vh;
     text-align: justify;
     padding: 1rem;
     margin-top: 1.5%;
 }
 
+/* FOR THE CONTENT/PARAGRAPH CONTAINER */
 .topicContentContainer:focus{
     border: solid #ffb100;
 }
@@ -98,6 +92,7 @@
     overflow-y: auto;
 }
 
+/* FOR THE MINI ASSESSMENT CONTAINER */
 .topicQuestionContainer{
     min-height: auto;
 
@@ -120,6 +115,7 @@
     align-items: center;
 }
 
+/* FOR THE IMAGE CONTAINER */
 .topicImageWrapper{
     min-width: 70%;
     min-height:70%;
@@ -138,6 +134,35 @@
     padding: 0;
 }
 
+/* FOR THE STORYBOARD CONTAINER */
+.topicStoryBoardContainer {
+    margin-top: 0;
+    min-height: 40vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Ensures equal spacing */
+    overflow-y: auto;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.topicStoryBoardContainer > div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%; /* 50% for a 2x2 layout */
+    box-sizing: border-box; /* Ensures the borders don't affect the width */
+}
+
+.box1, .box2, .box3, .box4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    border: solid black 1px;
+}
+
+/* WRAPPER FOR THE ASSESSMENT CHOICES */
 .topic-content-actions{
     /* border: solid black 1px; */
     width: 75%;
@@ -148,4 +173,10 @@
     margin-top: 1.5%;
     display: flex;
 }
-  
+
+@media screen and (max-width: 600px){
+    .animation-container{
+        background-size: cover;
+    }
+
+}

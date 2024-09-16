@@ -203,6 +203,34 @@
 .feedback-shake {
   animation: shake 0.5s;
 }
+
+/* FOR THE STORYBOARD */
+.topic-storyboard-container{
+  width: 65%;
+  height: 40vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Ensures equal spacing */
+  overflow-y: auto;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.topic-storyboard-container > div {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%; /* 50% for a 2x2 layout */
+  box-sizing: border-box; /* Ensures the borders don't affect the width */
+}
+
+.sb-box1, .sb-box2, .sb-box3, .sb-box4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  /* border: solid black 1px; */
+}
   
   @keyframes shake {
     0% { transform: translateX(0); }
@@ -244,6 +272,11 @@
 
   .topic-image-container{
     padding-top: 52.5%;
+  }
+  
+  .topic-storyboard-container{
+    width: 100%;
+    background-size: cover;
   }
 }
 

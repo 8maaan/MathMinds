@@ -13,6 +13,7 @@ import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 import TopicContentImage from '../ReusableComponents/TopicContentImage';
 import ImageUploader from '../ReusableComponents/ImageUploader';
+import TopicContentStoryboard from '../ReusableComponents/TopicContentStoryboard';
 
 const EditTopic = () => {
     const { topicId, currentTopicTitle } = useParams();
@@ -79,6 +80,13 @@ const EditTopic = () => {
                                 imageUrl: value.imageUrl || '',
                                 imageDescription: value.imageDescription || '',
                             };
+                        } else if (value.type === 'storyboard') {
+                            return {
+                                id: index.toString(),
+                                type: 'storyboard',
+                                storyboardBgImage: value.storyboardBgImage,
+                                storyboardAnimations: value.storyboardAnimations
+                            }
                         }
                         return null;
                     });
@@ -119,6 +127,13 @@ const EditTopic = () => {
         ]);
     };
 
+    const handleAddStoryboard = () => {
+        setTopicContents([
+            ...topicContents,
+            { id: topicContents.length.toString(), type: 'storyboard', storyboardBgImage:'', storyboardAnimations:['','','','']}
+        ]);
+    }
+
     const updateContent = (id, newContent) => {
         setTopicContents(
             topicContents.map(item =>
@@ -139,6 +154,16 @@ const EditTopic = () => {
         setTopicContents(
             topicContents.map(item =>
                 item.id === id && item.type === 'image' ? { ...item, imageDescription: description } : item
+            )
+        );
+    };
+
+    const updateStoryboardContent = (id, updatedContent) => {
+        setTopicContents(prevContents => 
+            prevContents.map(item => 
+                item.id === id 
+                    ? { ...item, ...updatedContent } 
+                    : item
             )
         );
     };
@@ -166,6 +191,8 @@ const EditTopic = () => {
                 };
             } else if (item.type === 'image') {
                 acc[index + 1] = { type: 'image', imageUrl: item.imageUrl, imageDescription: item.imageDescription };
+            } else if (item.type === 'storyboard') {
+                acc[index + 1] = { type: 'storyboard', storyboardBgImage: item.storyboardBgImage, storyboardAnimations: item.storyboardAnimations};
             }
             
             return acc;
@@ -259,6 +286,7 @@ const EditTopic = () => {
                             <Button onClick={handleAddContent} variant='contained' sx={{backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={{ ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Question</Button>
                             <ImageUploader onImageUpload={handleAddImage} />
+                            <Button onClick={handleAddStoryboard} variant='contained' sx={{ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Storyboard</Button>
                         </div>
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -299,7 +327,18 @@ const EditTopic = () => {
                                                 deleteContent={deleteContent}
                                             />
                                         );
-                                        }
+                                    } else if(item.type === 'storyboard'){
+                                        return (
+                                            <TopicContentStoryboard
+                                                key={item.id}
+                                                id={item.id}
+                                                storyboardBgImage={item.storyboardBgImage}
+                                                storyboardAnimations={item.storyboardAnimations}
+                                                deleteContent={deleteContent}
+                                                updateStoryboardContent={updateStoryboardContent}
+                                            />
+                                        );
+                                    }
                                         return null;
                                     })}
                                 </SortableContext>
