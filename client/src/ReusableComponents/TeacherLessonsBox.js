@@ -45,7 +45,19 @@ const TeacherLessonsBox = () => {
                 )
             );
         }
+
     }, [location.state]);
+
+    useEffect(() => {
+        if (location.state?.snackbar) {
+            const { status, severity, message } = location.state.snackbar;
+            if (status) {
+                handleSnackbarOpen(severity, message);
+                navigate(location.pathname, { replace: true });
+            }
+        }
+    }, [location, navigate]);
+    
 
     const handleSaveLesson = async () => {
         try {

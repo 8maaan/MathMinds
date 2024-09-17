@@ -32,8 +32,8 @@ export const insertPracticeToDb = async (newPracticeData) => {
 
 export const deletePracticeInDb = async (topicId) => {
   try {
-    const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_PRACTICE}${topicId}`);
-    return { success: true, data: response.data };
+    const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_PRACTICE_BY_TOPICID}${topicId}`);
+    return { success: true, message: 'Practice deleted successfully!', data: response.data };
   } catch (error) {
     console.error("Error deleting practice: ", error.response ? error.response.data : error.message);
     return { success: false, message: "Failed to delete practice", error: error.response ? error.response.data : error.message };
@@ -43,7 +43,7 @@ export const deletePracticeInDb = async (topicId) => {
 export const updatePracticeInDb = async (practiceId, updatedPracticeData) => {
   try {
     const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_PRACTICE}${practiceId}`, updatedPracticeData);
-    return { success: true, data: response.data };
+    return { success: true, message: 'Practice updated successfully!', data: response.data };
   } catch (error) {
     console.error("Error updating practice: ", error.response ? error.response.data : error.message);
     return { success: false, message: "Failed to update practice", error: error.response ? error.response.data : error.message };
