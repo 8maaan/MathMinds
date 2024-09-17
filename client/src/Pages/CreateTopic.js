@@ -12,6 +12,7 @@ import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 import ImageUploader from '../ReusableComponents/ImageUploader';
 import TopicContentImage from '../ReusableComponents/TopicContentImage';
+import TopicContentStoryboard from '../ReusableComponents/TopicContentStoryboard';
 
 const CreateTopic = () => {
     // Separated for simplicity 
@@ -62,6 +63,13 @@ const CreateTopic = () => {
         ]);
     }
 
+    const handleAddStoryboard = () => {
+        setTopicContents([
+            ...topicContents,
+            { id: topicContents.length.toString(), type: 'storyboard', storyboardBgImage:'', storyboardAnimations:['','','','']}
+        ]);
+    }
+
     const updateContent = (id, newContent) => {
         setTopicContents(
             topicContents.map(item =>
@@ -83,6 +91,16 @@ const CreateTopic = () => {
           topicContents.map(item =>
             item.id === id && item.type === 'image' ? { ...item, imageDescription: imageDescription } : item
           )
+        );
+    };
+
+    const updateStoryboardContent = (id, updatedContent) => {
+        setTopicContents(prevContents => 
+            prevContents.map(item => 
+                item.id === id 
+                    ? { ...item, ...updatedContent } 
+                    : item
+            )
         );
     };
 
@@ -112,7 +130,10 @@ const CreateTopic = () => {
                 };
             } else if (item.type === 'image') {
                 acc[index + 1] = { type: 'image', imageUrl: item.imageUrl, imageDescription: item.imageDescription };
+            } else if (item.type === 'storyboard') {
+                acc[index + 1] = { type: 'storyboard', storyboardBgImage: item.storyboardBgImage, storyboardAnimations: item.storyboardAnimations};
             }
+            
             return acc;
         }, {});
       
@@ -175,6 +196,8 @@ const CreateTopic = () => {
         }
     };
 
+    // console.log(topicContents);
+
     return (
         <div>
             <Typography class='createTopic-title'>Create a Topic</Typography>
@@ -198,6 +221,8 @@ const CreateTopic = () => {
                             <Button onClick={handleAddContent} variant='contained' sx={{backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={{ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Question</Button>
                             <ImageUploader onImageUpload={handleAddImage} />
+                            {/* TODO: Make the Add StoryBoard work */}
+                            <Button onClick={handleAddStoryboard} variant='contained' sx={{ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Storyboard</Button>
                         </div>
                     </div>
                     {/* For topic contents */}
@@ -225,23 +250,36 @@ const CreateTopic = () => {
                                                     correctAnswer={item.correctAnswer}
                                                     incorrectAnswers={item.incorrectAnswers}
                                                     updateQuestion={updateQuestion}
-                                                deleteContent={deleteContent}
-                                            />
-                                        );
-                                    } else if (item.type === 'image') {
-                                        return (
-                                          <TopicContentImage
-                                            key={item.id}
-                                            id={item.id}
-                                            imageUrl={item.imageUrl}
-                                            imageDescription={item.imageDescription}
-                                            updateImageDescription={updateImageDescription}
-                                                deleteContent={deleteContent}
-                                              />
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
+                                        } else if (item.type === 'image') {
+                                            return (
+                                                <TopicContentImage
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    imageUrl={item.imageUrl}
+                                                    imageDescription={item.imageDescription}
+                                                    updateImageDescription={updateImageDescription}
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
+                                        }else if(item.type === 'storyboard'){
+                                            // TODO: NEED TO PASS/GET SOME PARAMETERS/DATA FROM THE TopicContentStoryboard
+                                            return (
+                                                <TopicContentStoryboard
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    storyboardBgImage={item.storyboardBgImage}
+                                                    storyboardAnimations={item.storyboardAnimations}
+                                                    deleteContent={deleteContent}
+                                                    updateStoryboardContent={updateStoryboardContent}
+                                                />
                                             );
                                         }
-                                        return null;
-                                    })}
+                                            return null;
+                                        }
+                                    )}
                                 </SortableContext>
                                 {topicContents.length === 0 ? <p style={{color: 'gray', margin:'10%', fontFamily:'Poppins'}}>No contents currently 📝</p> : null}
                             </div>

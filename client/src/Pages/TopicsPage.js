@@ -7,6 +7,7 @@ import { UserAuth } from '../Context-and-routes/AuthContext';
 import { updateProgress } from '../API-Services/UserProgressAPI';
 import ResponsiveDrawer from '../ReusableComponents/ResponsiveDrawer';
 import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
+import DynamicLottie from '../ReusableComponents/DynamicLottie';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -239,7 +240,10 @@ const TopicsPage = () => {
   if (!lessonData || !getUid()) {
     return <div>Loading...</div>;
   }
-  console.log(userTopicProgress);
+  // console.log(userTopicProgress);
+  const showTopicData = (data) => {
+    console.log(data);
+  }
   return (
     <div className='root'>
       <div className="container">
@@ -310,6 +314,21 @@ const TopicsPage = () => {
                             <img src={value.imageUrl} alt="Topic Content"/>
                           </div>
                           <p>{value.imageDescription}</p>
+                        </div>
+                      )}
+
+                      {value.type ==="storyboard" && (
+                        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                          <div className='topic-storyboard-container' style={{backgroundImage:`url(${value.storyboardBgImage})`}}>
+                            {[0, 1, 2, 3].map(boxId => (
+                                <div
+                                    key={boxId}
+                                    className={`sb-box${boxId}`}
+                                >
+                                    <DynamicLottie animationPath={value.storyboardAnimations[boxId]} />
+                                </div>
+                            ))}           
+                          </div>
                         </div>
                       )}
 
