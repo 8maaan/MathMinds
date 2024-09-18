@@ -45,7 +45,6 @@
     height: 99%;
     width: 99%;
     overflow-y: auto;
-
 }
 
 .topic-scrollable::-webkit-scrollbar {
@@ -73,14 +72,16 @@
 .topicQuestionContainer,
 .topicContentContainer, 
 .topicImageContainer,
-.topicStoryBoardContainer {
+.topicStoryBoardContainer,
+.topicYoutubeVidContainer {
     border: solid black 1px;
     border-radius: 1rem;
     width: 75%;
-    min-height: 25vh;
+    /* min-height: 25vh; */
     text-align: justify;
     padding: 1rem;
     margin-top: 1.5%;
+    height: auto;
 }
 
 /* FOR THE CONTENT/PARAGRAPH CONTAINER */
@@ -154,6 +155,7 @@
     box-sizing: border-box; /* Ensures the borders don't affect the width */
 }
 
+/* For storyboard animation containers */
 .box1, .box2, .box3, .box4 {
     display: flex;
     justify-content: center;
@@ -162,6 +164,18 @@
     border: solid black 1px;
 }
 
+/* For Youtube Vid Container */
+.topicYoutubeVidContainer{
+    height: auto;
+}
+
+.yt-embeddedVideo-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid black 1px;
+    background-color: #d95775 ;
+}
 /* WRAPPER FOR THE ASSESSMENT CHOICES */
 .topic-content-actions{
     /* border: solid black 1px; */
@@ -175,8 +189,23 @@
 }
 
 @media screen and (max-width: 600px){
+    .topic-form-container,
+    .topic-config-container{
+        width: 95%
+    }
     .animation-container{
         background-size: cover;
+    }
+
+    .topic-content-choices{
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .topic-content-choices .MuiButton-root{
+        margin: 0;
+        margin-bottom: 5px;
+        width: 50%;
     }
 
 }
