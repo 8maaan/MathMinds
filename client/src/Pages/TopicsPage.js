@@ -8,6 +8,7 @@ import { updateProgress } from '../API-Services/UserProgressAPI';
 import ResponsiveDrawer from '../ReusableComponents/ResponsiveDrawer';
 import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
 import DynamicLottie from '../ReusableComponents/DynamicLottie';
+import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -32,6 +33,7 @@ const TopicsPage = () => {
   const [topicsState, setTopicsState] = useState({});
   const colors = ['color-1', 'color-2', 'color-3'];
   let colorIndex = 0; /*from above sa handleOptionClick, ako lang gi move dri -den*/
+  const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
 
   const [userTopicProgress, setUserTopicProgress] = useState({});
 
@@ -190,14 +192,14 @@ const TopicsPage = () => {
             if (result.success && result.data === 1) { // Assuming 1 means administered
                 navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`);
             } else {
-                alert('The quiz is not yet open or available.');
+                handleSnackbarOpen('info', 'The quiz is not yet open or available.');
             }
         } catch (error) {
             console.error("Error checking quiz:", error);
-            alert('An error occurred while checking quiz availability.');
+            handleSnackbarOpen('error', 'An error occurred while checking quiz availability.');
         }
     } else {
-        alert('No quiz available for this lesson.');
+        handleSnackbarOpen('error', 'No quiz available for this lesson.');
     }
   };
 
@@ -237,6 +239,20 @@ const TopicsPage = () => {
     return newArray;
   };
 
+  const handleSnackbarOpen = (severity, message) => {
+    setSnackbar({ status: true, severity, message });
+  };
+
+  const handleSnackbarClose = (reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setSnackbar((prevSnackbar) => ({
+        ...prevSnackbar,
+        status: false
+    }))
+  };
+
   if (!lessonData || !getUid()) {
     return <div>Loading...</div>;
   }
@@ -267,7 +283,7 @@ const TopicsPage = () => {
                     <div key={key} className={`lesson-item ${getNextColor()}`}>
                       {/* FOR TEXTS/PARAGRAPH */}
 
-                      {value.type === "text" && <div style={{ textAlign: 'left', marginLeft: '30px' }} dangerouslySetInnerHTML={{ __html: value.content }} />}
+                      {value.type === "text" && <div style={{ textAlign: 'center', margin: '15px'}} dangerouslySetInnerHTML={{ __html: value.content }} />}
 
                       {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
@@ -332,6 +348,24 @@ const TopicsPage = () => {
                         </div>
                       )}
 
+                      {value.type ==="youtubeVid" && (
+                        <div>
+                          <div>
+                            <iframe
+                              height="450"
+                              width="70%"
+                              src={value.youtubeLink}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              title="YouTube Video"
+                          />
+                          </div>
+                          <div>
+                            <i>{value.youtubeVidDescription}</i>
+                          </div>
+                        </div>
+                      )}
+
                       {index === array.length - 1 && isLastTopic() ? (
                         <p style={{ fontWeight: 'bold', textAlign: 'center', color:'#2f3163'}} >END OF LESSON</p>
                       ) : null}
@@ -364,6 +398,7 @@ const TopicsPage = () => {
             )}
           </div>
         </div>
+        <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
       </div>
     </div>
   );

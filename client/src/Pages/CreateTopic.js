@@ -13,6 +13,7 @@ import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 import ImageUploader from '../ReusableComponents/ImageUploader';
 import TopicContentImage from '../ReusableComponents/TopicContentImage';
 import TopicContentStoryboard from '../ReusableComponents/TopicContentStoryboard';
+import TopicContentYoutubeVid from '../ReusableComponents/TopicContentYoutubeVid';
 
 const CreateTopic = () => {
     // Separated for simplicity 
@@ -70,6 +71,13 @@ const CreateTopic = () => {
         ]);
     }
 
+    const handleAddYoutubeVid = () => {
+        setTopicContents([
+            ...topicContents,
+            { id: topicContents.length.toString(), type: 'youtubeVid', youtubeLink:'', youtubeVidDescription:''}
+        ]);
+    }
+
     const updateContent = (id, newContent) => {
         setTopicContents(
             topicContents.map(item =>
@@ -104,6 +112,14 @@ const CreateTopic = () => {
         );
     };
 
+    const updateYoutubeVidContent = (id, updatedContent) => {
+        setTopicContents(prevContents =>
+            prevContents.map(item =>
+                item.id === id ? { ...item, ...updatedContent } : item
+            )
+        );
+    };
+
     const deleteContent = (id) => {
         setTopicContents(topicContents.filter(item => item.id !== id));
     };
@@ -130,8 +146,12 @@ const CreateTopic = () => {
                 };
             } else if (item.type === 'image') {
                 acc[index + 1] = { type: 'image', imageUrl: item.imageUrl, imageDescription: item.imageDescription };
+
             } else if (item.type === 'storyboard') {
                 acc[index + 1] = { type: 'storyboard', storyboardBgImage: item.storyboardBgImage, storyboardAnimations: item.storyboardAnimations};
+
+            } else if (item.type === 'youtubeVid') { 
+                acc[index + 1] = { type: 'youtubeVid',  youtubeLink: item.youtubeLink, youtubeVidDescription: item.youtubeVidDescription };
             }
             
             return acc;
@@ -196,7 +216,13 @@ const CreateTopic = () => {
         }
     };
 
-    // console.log(topicContents);
+    const buttonStyle = {
+        bgcolor: '#AA75CB',
+        '&:hover': {
+            bgcolor: '#9163ad'
+        },
+        ml: 1,
+    };
 
     return (
         <div>
@@ -218,11 +244,11 @@ const CreateTopic = () => {
                         {/* Topic Description */}
                         <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} onChange={(event) => {setTopicDescription(event.target.value)}} autoComplete='off'/>
                         <div className='topic-content-choices'>
-                            <Button onClick={handleAddContent} variant='contained' sx={{backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Text</Button>
-                            <Button onClick={handleAddQuestion} variant='contained' sx={{ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Question</Button>
+                            <Button onClick={handleAddContent} variant='contained' sx={{...buttonStyle, ml: 0}}>Add Text</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
+                            <Button onClick={handleAddStoryboard} variant='contained' sx={buttonStyle}>Add Storyboard</Button>
+                            <Button onClick ={handleAddYoutubeVid} variant='contained' sx={buttonStyle}>Add Youtube Video</Button>
                             <ImageUploader onImageUpload={handleAddImage} />
-                            {/* TODO: Make the Add StoryBoard work */}
-                            <Button onClick={handleAddStoryboard} variant='contained' sx={{ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}}>Add Storyboard</Button>
                         </div>
                     </div>
                     {/* For topic contents */}
@@ -265,7 +291,6 @@ const CreateTopic = () => {
                                                 />
                                             );
                                         }else if(item.type === 'storyboard'){
-                                            // TODO: NEED TO PASS/GET SOME PARAMETERS/DATA FROM THE TopicContentStoryboard
                                             return (
                                                 <TopicContentStoryboard
                                                     key={item.id}
@@ -274,6 +299,17 @@ const CreateTopic = () => {
                                                     storyboardAnimations={item.storyboardAnimations}
                                                     deleteContent={deleteContent}
                                                     updateStoryboardContent={updateStoryboardContent}
+                                                />
+                                            );
+                                        } else if(item.type === 'youtubeVid'){
+                                            return (
+                                                <TopicContentYoutubeVid
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    youtubeLink={item.youtubeLink}
+                                                    youtubeVidDescription={item.youtubeVidDescription}
+                                                    updateYoutubeVidContent={updateYoutubeVidContent}
+                                                    deleteContent={deleteContent}
                                                 />
                                             );
                                         }
