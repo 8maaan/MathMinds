@@ -32,7 +32,7 @@ export const insertPracticeToDb = async (newPracticeData) => {
 
 export const deletePracticeInDb = async (topicId) => {
   try {
-    const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_PRACTICE_BY_TOPICID}${topicId}`);
+    const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_PRACTICE}${topicId}`);
     return { success: true, message: 'Practice deleted successfully!', data: response.data };
   } catch (error) {
     console.error("Error deleting practice: ", error.response ? error.response.data : error.message);

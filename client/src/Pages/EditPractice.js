@@ -115,9 +115,9 @@ const EditPractice = () => {
 
     const handleDelete = async () => {
             try {
-                const { success, message } = await deletePracticeInDb(topicId);
+                const { success, message } = await deletePracticeInDb(practiceId);
                 if (success) {
-                    console.log("Practice deleted successfully:", topicId);
+                    console.log("Practice deleted successfully:", practiceId);
                     navigate('/lessons-teacher', {
                         state: {
                             snackbar: { status: success, severity: 'success', message: 'Practice deleted successfully.' }
