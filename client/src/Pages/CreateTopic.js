@@ -14,6 +14,7 @@ import ImageUploader from '../ReusableComponents/ImageUploader';
 import TopicContentImage from '../ReusableComponents/TopicContentImage';
 import TopicContentStoryboard from '../ReusableComponents/TopicContentStoryboard';
 import TopicContentYoutubeVid from '../ReusableComponents/TopicContentYoutubeVid';
+import TopicContentEmbeddedGame from '../ReusableComponents/TopicContentEmbeddedGame';
 
 const CreateTopic = () => {
     // Separated for simplicity 
@@ -78,6 +79,13 @@ const CreateTopic = () => {
         ]);
     }
 
+    const handleAddEmbeddedGame = () => {
+        setTopicContents([
+            ...topicContents,
+            { id: topicContents.length.toString(), type: 'embeddedGame', embeddedGameLink:'', embeddedGameName:'', embeddedGameTags:''}
+        ]);
+    }
+
     const updateContent = (id, newContent) => {
         setTopicContents(
             topicContents.map(item =>
@@ -120,6 +128,14 @@ const CreateTopic = () => {
         );
     };
 
+    const updateEmbeddedGameContent = (id, updatedContent) => {
+        setTopicContents(prevContents =>
+            prevContents.map(item =>
+                item.id === id ? { ...item, ...updatedContent } : item
+            )
+        );
+    };
+
     const deleteContent = (id) => {
         setTopicContents(topicContents.filter(item => item.id !== id));
     };
@@ -152,6 +168,9 @@ const CreateTopic = () => {
 
             } else if (item.type === 'youtubeVid') { 
                 acc[index + 1] = { type: 'youtubeVid',  youtubeLink: item.youtubeLink, youtubeVidDescription: item.youtubeVidDescription };
+
+            } else if (item.type === 'embeddedGame') { 
+                acc[index + 1] = { type: 'embeddedGame',  embeddedGameLink: item.embeddedGameLink, embeddedGameName: item.embeddedGameName, embeddedGameTags: item.embeddedGameTags };
             }
             
             return acc;
@@ -217,6 +236,7 @@ const CreateTopic = () => {
     };
 
     const buttonStyle = {
+        variant: 'contained',
         bgcolor: '#AA75CB',
         '&:hover': {
             bgcolor: '#9163ad'
@@ -247,7 +267,8 @@ const CreateTopic = () => {
                             <Button onClick={handleAddContent} variant='contained' sx={{...buttonStyle, ml: 0}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
                             <Button onClick={handleAddStoryboard} variant='contained' sx={buttonStyle}>Add Storyboard</Button>
-                            <Button onClick ={handleAddYoutubeVid} variant='contained' sx={buttonStyle}>Add Youtube Video</Button>
+                            <Button onClick={handleAddYoutubeVid} variant='contained' sx={buttonStyle}>Add Youtube Video</Button>
+                            <Button onClick={handleAddEmbeddedGame} variant='contained' sx={buttonStyle}>Add Embedded Game</Button>
                             <ImageUploader onImageUpload={handleAddImage} />
                         </div>
                     </div>
@@ -309,6 +330,18 @@ const CreateTopic = () => {
                                                     youtubeLink={item.youtubeLink}
                                                     youtubeVidDescription={item.youtubeVidDescription}
                                                     updateYoutubeVidContent={updateYoutubeVidContent}
+                                                    deleteContent={deleteContent}
+                                                />
+                                            );
+                                        } else if(item.type === 'embeddedGame'){
+                                            return (
+                                                <TopicContentEmbeddedGame
+                                                    key={item.id}
+                                                    id={item.id}
+                                                    embeddedGameLink={item.embeddedGameLink}
+                                                    embeddedGameName={item.embeddedGameName}
+                                                    embeddedGameTags={item.embeddedGameTags}
+                                                    updateEmbeddedGameContent={updateEmbeddedGameContent}
                                                     deleteContent={deleteContent}
                                                 />
                                             );

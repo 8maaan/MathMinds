@@ -31,9 +31,6 @@ const animations = animationContext.keys().map((fileName, index) => ({
 
 export default function AnimationChoicesModal({ openModal, handleModalClose, onAnimationSelect }) {
   const [open, setOpen] = useState(openModal);
-  const handleSelectedAnimation = (selectedAnimation) => {
-    console.log(selectedAnimation.replace(".",""));
-  }
 
   return (
     <div>
@@ -64,7 +61,6 @@ export default function AnimationChoicesModal({ openModal, handleModalClose, onA
                   key={animation.id}
                   style={{ width: '25%', height: '25%', border: 'solid black 1px', borderRadius: '5px', marginBottom: '10px', cursor: 'pointer' }}
                   onClick={() => { 
-                    handleSelectedAnimation(animation.path);
                     onAnimationSelect(animation.path.replace(".",""));  // Pass the selected animation data
                     handleModalClose();  // Close the modal after selection
                   }} 

@@ -73,7 +73,8 @@
 .topicContentContainer, 
 .topicImageContainer,
 .topicStoryBoardContainer,
-.topicYoutubeVidContainer {
+.topicYoutubeVidContainer,
+.topicEmbeddedGameContainer {
     border: solid black 1px;
     border-radius: 1rem;
     width: 75%;
@@ -175,6 +176,11 @@
     align-items: center;
     border: solid black 1px;
     background-color: #d95775 ;
+}
+
+.topicEmbeddedGameContainer{
+    margin-top: 0;
+    height: auto;
 }
 /* WRAPPER FOR THE ASSESSMENT CHOICES */
 .topic-content-actions{
