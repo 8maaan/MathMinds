@@ -256,10 +256,7 @@ const TopicsPage = () => {
   if (!lessonData || !getUid()) {
     return <div>Loading...</div>;
   }
-  // console.log(userTopicProgress);
-  const showTopicData = (data) => {
-    console.log(data);
-  }
+  
   return (
     <div className='root'>
       <div className="container">
@@ -362,6 +359,23 @@ const TopicsPage = () => {
                           </div>
                           <div>
                             <i>{value.youtubeVidDescription}</i>
+                          </div>
+                        </div>
+                      )}
+
+                      {value.type ==="embeddedGame" && (
+                        <div>
+                          <div>
+                            <iframe
+                              height="550"
+                              width="70%"
+                              src={value.embeddedGameLink}
+                              allowFullScreen
+                              title="Embedded Game"
+                          />
+                          </div>
+                          <div>
+                            <i style={{fontSize:'0.8rem'}}>PhET Interactive Simulations, University of Colorado Boulder, https://phet.colorado.edu</i>
                           </div>
                         </div>
                       )}

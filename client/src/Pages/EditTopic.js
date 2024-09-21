@@ -15,6 +15,7 @@ import TopicContentImage from '../ReusableComponents/TopicContentImage';
 import ImageUploader from '../ReusableComponents/ImageUploader';
 import TopicContentStoryboard from '../ReusableComponents/TopicContentStoryboard';
 import TopicContentYoutubeVid from '../ReusableComponents/TopicContentYoutubeVid';
+import TopicContentEmbeddedGame from '../ReusableComponents/TopicContentEmbeddedGame';
 
 const EditTopic = () => {
     const { topicId, currentTopicTitle } = useParams();
@@ -39,7 +40,7 @@ const EditTopic = () => {
                 }
 
                 const topicData = await getTopicById(topicId);
-                console.log('Fetched topic data:', topicData); // Log the topicData to check its structure
+                // console.log('Fetched topic data:', topicData); // Log the topicData to check its structure
 
                 if (topicData.success) {
                     const { lessonId, topicTitle, topicDescription, topicContent } = topicData.data;
@@ -95,12 +96,20 @@ const EditTopic = () => {
                                 youtubeLink: value.youtubeLink,
                                 youtubeVidDescription: value.youtubeVidDescription
                             }
+                        } else if (value.type === 'embeddedGame') {
+                            return {
+                                id: index.toString(),
+                                type: 'embeddedGame',
+                                embeddedGameLink: value.embeddedGameLink,
+                                embeddedGameName: value.embeddedGameName,
+                                embeddedGameTags: value.embeddedGameTags
+                            }
                         }
                         return null;
                     });
 
                     setTopicContents(formattedContent);
-                    console.log('Formatted topic contents:', formattedContent); // Log the formatted content
+                    // console.log('Formatted topic contents:', formattedContent); // Log the formatted content
                 } else {
                     throw new Error(topicData.message);
                 }
@@ -149,6 +158,13 @@ const EditTopic = () => {
         ]);
     }
 
+    const handleAddEmbeddedGame = () => {
+        setTopicContents([
+            ...topicContents,
+            { id: topicContents.length.toString(), type: 'embeddedGame', embeddedGameLink:'', embeddedGameName:'', embeddedGameTags:''}
+        ]);
+    }
+
     const updateContent = (id, newContent) => {
         setTopicContents(
             topicContents.map(item =>
@@ -191,6 +207,14 @@ const EditTopic = () => {
         );
     };
 
+    const updateEmbeddedGameContent = (id, updatedContent) => {
+        setTopicContents(prevContents =>
+            prevContents.map(item =>
+                item.id === id ? { ...item, ...updatedContent } : item
+            )
+        );
+    };
+
     const deleteContent = (id) => {
         setTopicContents(topicContents.filter(item => item.id !== id));
     };
@@ -218,6 +242,8 @@ const EditTopic = () => {
                 acc[index + 1] = { type: 'storyboard', storyboardBgImage: item.storyboardBgImage, storyboardAnimations: item.storyboardAnimations};
             } else if (item.type === 'youtubeVid') { 
                 acc[index + 1] = { type: 'youtubeVid',  youtubeLink: item.youtubeLink, youtubeVidDescription: item.youtubeVidDescription };
+            } else if (item.type === 'embeddedGame') { 
+                acc[index + 1] = { type: 'embeddedGame',  embeddedGameLink: item.embeddedGameLink, embeddedGameName: item.embeddedGameName, embeddedGameTags: item.embeddedGameTags };
             }
             
             return acc;
@@ -290,7 +316,6 @@ const EditTopic = () => {
         return <div>Error: {error}</div>;
     }
 
-    console.log(currentTopicTitle);
     const buttonStyle = {
         bgcolor: '#AA75CB',
         '&:hover': {
@@ -320,6 +345,7 @@ const EditTopic = () => {
                             <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
                             <Button onClick={handleAddStoryboard} variant='contained' sx={buttonStyle}>Add Storyboard</Button>
                             <Button onClick ={handleAddYoutubeVid} variant='contained' sx={buttonStyle}>Add Youtube Video</Button>
+                            <Button onClick={handleAddEmbeddedGame} variant='contained' sx={buttonStyle}>Add Embedded Game</Button>
                             <ImageUploader onImageUpload={handleAddImage} />
                         </div>
                     </div>
@@ -380,6 +406,18 @@ const EditTopic = () => {
                                                 youtubeLink={item.youtubeLink}
                                                 youtubeVidDescription={item.youtubeVidDescription}
                                                 updateYoutubeVidContent={updateYoutubeVidContent}
+                                                deleteContent={deleteContent}
+                                            />
+                                        );
+                                    } else if(item.type === 'embeddedGame'){
+                                        return (
+                                            <TopicContentEmbeddedGame
+                                                key={item.id}
+                                                id={item.id}
+                                                embeddedGameLink={item.embeddedGameLink}
+                                                embeddedGameName={item.embeddedGameName}
+                                                embeddedGameTags={item.embeddedGameTags}
+                                                updateEmbeddedGameContent={updateEmbeddedGameContent}
                                                 deleteContent={deleteContent}
                                             />
                                         );

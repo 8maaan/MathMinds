@@ -1,57 +1,63 @@
-import { Button, InputAdornment, TextField } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { Button } from '@mui/material';
 
 const ImageUploader = ({ onImageUpload, reset }) => {
-  const cloudinaryRef = useRef();
-  const widgetRef = useRef();
+  const widgetRef = useRef(null);
   const [uploadedImgName, setUploadedImgName] = useState('');
 
   useEffect(() => {
     if (reset) {
-        setUploadedImgName('');
+      setUploadedImgName('');
     }
-}, [reset]);
+  }, [reset]);
 
   useEffect(() => {
-    cloudinaryRef.current = window.cloudinary;
-    widgetRef.current = cloudinaryRef.current.createUploadWidget({
-        cloudName: process.env.REACT_APP_IMAGE_UPLOADER_CLOUDNAME,
-        uploadPreset: process.env.REACT_APP_IMAGE_UPLOADER_UPLOADPRESET
-      },
-      function (error, result) {
-        if (!error && result && result.event === 'success') {
-          onImageUpload(result.info.secure_url);
-        }
-        if (!error && result && result.event === 'queues-end') {
-          const fileName = result.info.files[0].name;
-          // console.log('Uploaded File Name:', fileName);
-          setUploadedImgName(fileName);
-        }
-      }
-    );
+    // Dynamically load the Cloudinary script
+    const loadCloudinaryWidget = () => {
+      const script = document.createElement('script');
+      script.src = 'https://upload-widget.cloudinary.com/global/all.js';
+      script.onload = () => {
+        const cloudinary = window.cloudinary;
+        widgetRef.current = cloudinary.createUploadWidget(
+          {
+            cloudName: process.env.REACT_APP_IMAGE_UPLOADER_CLOUDNAME,
+            uploadPreset: process.env.REACT_APP_IMAGE_UPLOADER_UPLOADPRESET,
+          },
+          (error, result) => {
+            if (!error && result && result.event === 'success') {
+              onImageUpload(result.info.secure_url);
+            }
+            if (!error && result && result.event === 'queues-end') {
+              const fileName = result.info.files[0].name;
+              setUploadedImgName(fileName);
+            }
+          }
+        );
+      };
+      document.body.appendChild(script);
+
+      // Cleanup to prevent memory leaks
+      return () => {
+        document.body.removeChild(script);
+      };
+    };
+
+    loadCloudinaryWidget();
   }, [onImageUpload]);
 
   return (
     <div>
-      {/* <TextField
-        value={isEdit ? eventImage : uploadedImgName}
-        fullWidth
-        required 
-        disabled
-        label={"Upload Image"}
-        error={errorTxt}
-        helperText={errorTxt ? 'Please upload image for event cover' : ''}
-        InputLabelProps={{ shrink: eventImage ? true : false }}
-        InputProps={{ endAdornment: ( 
-        <InputAdornment 
-          position="end" 
-          onClick={() => widgetRef.current.open()} 
-          style={{ cursor: 'pointer' }}> 
-            <FileUploadOutlinedIcon/>
-        </InputAdornment>),}}
-      /> */}
-      <Button variant='contained' sx={{ml: 1, backgroundColor: '#AA75CB', '&:hover': {backgroundColor: '#9163ad'}}} onClick={() => widgetRef.current.open()}> Add Image </Button>
+      <Button
+        variant="contained"
+        sx={{
+          ml: 1,
+          backgroundColor: '#AA75CB',
+          '&:hover': { backgroundColor: '#9163ad' },
+        }}
+        onClick={() => widgetRef.current.open()}
+      >
+        Add Image
+      </Button>
     </div>
   );
 };
