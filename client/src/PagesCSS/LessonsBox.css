@@ -93,6 +93,19 @@
     gap: 10px;
 }
 
+.badge-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 16px; /* Using standard CSS syntax for spacing */
+    width: 100%;
+    background-color: #f5f5f5; /* Light background for badge container */
+    padding: 16px; /* Padding */
+    border-radius: 10px;
+}
+
 @media (max-width: 1024px) {
     .lessons-container {
         padding-top: 15%;
