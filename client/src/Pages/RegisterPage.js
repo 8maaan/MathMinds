@@ -10,7 +10,7 @@ import { isPasswordValid, isEmailValid, isPasswordMatch} from '../ReusableCompon
 import ForwardIcon from '@mui/icons-material/Forward';
 import { createUserToDb } from '../API-Services/UserAPI';
 import BrainAnimate from '../ReusableComponents/BrainAnimation'
-
+import Landinganima1 from '../ReusableComponents/LandingPageanima1';
 const RegisterTxtField = ({name, label, type, value, onChange, error, helperText}) =>{
     return(
         <div className='register-txtField'>
@@ -147,12 +147,12 @@ const RegisterPage = () => {
                     <ForwardIcon className='register-back-icon' onClick={handleBackBtnClick}/>
                 </div>
                 <div className='register-bg-container'>
-                    <img src={registerBackground} alt='bg'/>
+                <Landinganima1/>
                 </div>
             </div>
             <div className='register-right-side'>
                 <BrainAnimate className='register-logo-container'/>
-                    
+                
                 
                 <h3 style={{color: '#181A52'}}>Create an account</h3>
                 
