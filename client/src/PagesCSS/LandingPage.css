@@ -111,7 +111,7 @@
   width: 80%;
   height: 60vh;
   border-radius: 45px;
-  background: linear-gradient(to right, #FFE259, #FFA751);
+  background: linear-gradient(to right,#93F9B9 , #1D976C 75% );
   padding: 20px;
   margin-top: 120px; 
   opacity: 70%;
@@ -153,11 +153,13 @@
   border: solid black 1px; 
   height: 40%;
   font-size:60px;
+  
 }
 .landing-one-right-side-text p{
   font-family: 'Poppins';
   font-weight: 550;
   color: #ffffff;
+ 
 }
 .landing-one-right-side-desc{
   font-family: 'Poppins';
@@ -174,6 +176,7 @@
 }
 .landing-one-right-side-desc p{
   color: #ffffff;
+  font-size:25px;
 }
 /* ends here sa color yellow nga container*/
 
@@ -251,6 +254,7 @@
 }
 .landing-two-left-side-desc p{
   color: #ffffff;
+  font-size:25px;
 }
 /* starting here sulod nga other container sa color brown nga container*/
 
@@ -323,6 +327,7 @@
 }
 .landing-three-right-side-desc p{
   color: #ffffff;
+  font-size:25px;
 }
 /* starting here sulod nga other container sa color green nga container*/
 
