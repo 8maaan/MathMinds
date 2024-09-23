@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Button, Typography, Container, Paper, Modal } from '@mui/material';
+import { Box, Button, Typography, Container, Paper, Modal, IconButton, Tooltip } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { getAllLessonsQuiz, getRandomizedLessonQuizByLessonQuizId } from '../API-Services/LessonQuizAPI';
@@ -23,7 +24,7 @@ const theme = createTheme({
 const OptionButton = styled(Button)({
   height: 80,
   width: '45%',
-  fontSize: '1rem',
+  fontSize: '50px',
   margin: '5px',
   color: 'white',
   borderRadius: '10px'
@@ -182,9 +183,20 @@ const QuizQuestionForm = () => {
     <ThemeProvider theme={theme}>
       <div className='container'>
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '120px', position: 'relative' }}>
+        
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
             {lessonTitle} - Final Assessment
           </Typography>
+
+          <Tooltip title='Exit'>
+            <IconButton 
+              onClick={() => navigate('/lessons')} // Add a function to navigate back when clicked
+              sx={{ position: 'absolute', top: '115px', left: '1px' }} // Styling for absolute positioning outside Paper
+            >
+              <ExitToAppIcon sx={{ fontSize: '1.8rem' }} />
+            </IconButton>
+          </Tooltip>
+
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Typography ref={questionRef} variant="h6" sx={{ textAlign: 'center', marginTop: '120px', fontSize: questionFontSize }}>
               {currentQuestion.question}
@@ -271,8 +283,7 @@ const QuizQuestionForm = () => {
                 <Typography id="badge-modal-description" sx={{ mt: 2, color: '#181a52' }}>
                   You've passed the quiz and earned a badge!
                 </Typography>
-                {/* Replace with actual badge image */}
-                <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-badge-png-image_996483.jpg" alt="Badge" style={{ width: '100px', margin: '20px 0' }} />
+                <img src="https://i.pinimg.com/originals/e9/93/d1/e993d191d03335fd09a1987db3f8d39a.gif" alt="Badge" style={{ width: '350px', margin: '20px 0' }} />
               </>
             ) : (
               <>

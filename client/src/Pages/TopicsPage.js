@@ -285,7 +285,7 @@ const TopicsPage = () => {
                       {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
                         <div>
-                          <p>{value.question}</p>
+                          <p style={{textAlign:"center"}}>{value.question}</p>
                           <div className="question-container">
                             <div className="option-container">
                               {shuffledOptionsState[key]?.map((option, idx) => (
