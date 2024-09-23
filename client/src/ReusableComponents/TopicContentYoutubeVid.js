@@ -70,6 +70,7 @@ const TopicContentYoutubeVid = ({ id, youtubeLink, youtubeVidDescription, update
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             title="YouTube Video"
+                            loading="lazy"
                         />
                     ) : (
                         <p style={{color:'white', padding: '25px'}}>Video from YouTube will be shown here</p>

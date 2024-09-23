@@ -12,8 +12,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 470,
-  height: 600,
+  width: { xs: '75%', sm: '80%', md: 500 }, 
+  height: { xs: '80%', sm: '70%', md: 600 }, 
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
@@ -57,7 +57,9 @@ export default function GameChoicesModal({ openModal, handleModalClose, onManipu
                     border: 'solid #6acef5 1rem', borderRadius: '5px', padding: '10px', marginBottom: '10px', display:'flex', flexDirection:'column', alignItems:'center',
                   }}
                 >
-                  <img src={manipulative.thumbnail} height="300px" width="350px" alt="thumbnail" style={{border:'solid #ffbf00 5px'}}/>
+                  <Box sx={{ height: { xs: '75%', sm: '75%', md: '55%' }, border: 'solid #ffbf00 5px' }}>
+                    <img src={manipulative.thumbnail} alt="thumbnail" style={{ width: '100%', height: '100%', display: 'block' }} loading="lazy"/>
+                  </Box>
                   <Typography sx={{fontWeight:'600', fontSize:'1.15rem'}}>{manipulative.name}</Typography>
                   <Typography sx={{fontSize:'0.8rem'}}>{manipulative.tags}</Typography>
                   <Button 

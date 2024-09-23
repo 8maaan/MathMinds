@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { IconButton, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import "../PagesCSS/CreateTopic.css";
@@ -33,7 +33,7 @@ const TopicContentImage = ({ id, imageUrl, imageDescription, updateImageDescript
             >
                 
                 <div className='topicImageWrapper'>
-                    <img src={imageUrl} alt="Topic Content"/>
+                    {imageUrl !== '' ? <img src={imageUrl} alt="Topic Content" loading="lazy"/> : <Button>Upload Image Here</Button>}
                 </div>
                 
                 <TextField 

@@ -298,7 +298,7 @@ const TopicsPage = () => {
                       {value.type ==="image" && (
                         <div>
                           <div className='topic-image-container'>
-                            <img src={value.imageUrl} alt="Topic Content"/>
+                            <img src={value.imageUrl} alt="Topic Content" loading="lazy"/>
                           </div>
                           <p>{value.imageDescription}</p>
                         </div>
@@ -329,6 +329,7 @@ const TopicsPage = () => {
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
                               title="YouTube Video"
+                              loading="lazy"
                           />
                           </div>
                           <div>
@@ -346,6 +347,7 @@ const TopicsPage = () => {
                               src={value.embeddedGameLink}
                               allowFullScreen
                               title="Embedded Game"
+                              loading="lazy"
                           />
                           </div>
                           <div>

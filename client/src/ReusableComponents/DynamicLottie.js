@@ -30,8 +30,6 @@ const DynamicLottie = ({ animationPath }) => {
     loadAnimation();
   }, [animationPath]);
 
-  console.log(animationData);
-
   if (error) {
     return <div>Error: {error}</div>;
   }
