@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
+import Lottie from 'lottie-react';
+import Birdy from '../JSON/BirdyLanding.json';
+import Journey from '../JSON/JourneyLanding.json';
+import Collab from '../JSON/CollabLanding.json';
+import LandingPageSection3 from '../ReusableComponents/LandingPageSection';
 import '../PagesCSS/LandingPage.css';
-import LandingAppBar from '../ReusableComponents/LandingAppBar'
-import { Button } from '@mui/material';
-import teacherImg from '../Images/landing-body-image2.png';
+import RevampedLAppBar from '../ReusableComponents/RevampedLAppBar';
+import { Button, AppBar, Typography} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
 
     const navigateTo = useNavigate();
+
+    useEffect(() => {
+        AOS.init({
+            duration: 1000, 
+            easing: 'ease-in-out', 
+        });
+    }, []);  
+
+    console.log(window.outerWidth);
+
+
     return (
         <div>
             <div className='body'>
-                <LandingAppBar/>
-                <div className='landing-wrapper'>
+                <RevampedLAppBar />
+                <div data-aos="fade-down" className='landing-wrapper'>
                     <div className='content-container'>
                         <div className='content-right-side'>
                             <div className='right-side-text'>
@@ -27,34 +44,106 @@ const LandingPage = () => {
                             </div>
                         </div>
                         <div className='content-left-side'>
-                            <div className='content-left-img'>
-                                <img src={teacherImg} alt='teacher-img'/>
-                            </div>
-                            <div className='content-left-btn'>
-                            <Button 
-                                variant='contained' 
-                                size='large'
-                                onClick={()=>{navigateTo('/register')}} 
-                                sx={{
-                                    fontFamily:'Poppins',
-                                    backgroundColor: '#FFB100', 
-                                    color: '#181A52', 
-                                    fontWeight: '600', 
-                                    borderRadius: '10px',
-                                    '&:hover': {
-                                        backgroundColor: '#d69500'
-                                    }
-                                }}
-                            >
-                                Get Started
-                            </Button>
-                            </div>
+                            <Lottie animationData={Birdy} loop={true} alt='Duolingo'/>
                         </div>
                     </div>
                 </div>
+                <h1 data-aos="fade-up" style={{fontSize: 'clamp(2rem, 4.5vw, 5rem)'}}> Why MathMinds?</h1>
+                
+
+                <div data-aos="fade-up-left" className='section-wrapper'>
+                    <div style={{backgroundColor: 'rgba(255, 167, 38, 0.5)'}} className='section-content-container'>
+                        <div className='section-content-left-side'>
+                           <div className='section-content-image'>
+                                <Lottie animationData={Journey} loop={true} alt='Journey' style={{ width: window.innerWidth <= 768 ? '40%' : '100%' }} />
+                           </div>
+                        </div>
+                        <div className='section-content-right-side'>
+                           <div className='section-header-container'>
+                                <p>Personalized</p>
+                                <p>Math Journey</p>
+                           </div>
+                           <div className='section-content-desc'>
+                                <p>Dive into a range of mathematical lessons and topics tailored to your 
+                                    learning and track your progress as you master new concepts!
+                                </p>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-aos="fade-up-right" className='section-wrapper'> 
+                    <div style={{backgroundColor: 'rgba(179, 157, 219, 0.5)'}} className='section-content-container'>
+                        <div className='section-content-left-side'>
+                            <div className='section-header-container'>
+                                <p>Collaborative/</p>
+                                <p>Solo Learning</p>
+                            </div>
+                            <div className='section-content-desc'>
+                                    <p>Challenge yourself with topic quizzes and engaging practices,
+                                        Whether you prefer tackling practices on your own or competing with others.
+                                    </p>
+                            </div>
+                        </div>
+                        <div className='section-content-right-side'>
+                           <div className='section-content-image'>
+                                <Lottie animationData={Collab} loop={true} alt='Collaboration'  style={{ width: window.innerWidth <= 768 ? '40%' : '100%'}} />
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-aos="fade-up-left"className='section-wrapper'>
+                    <div style={{backgroundColor: 'rgba(240, 222, 56, 0.5)'}} className='section-content-container'>
+                        <div style={{marginBottom: '20px'}}className='section-content-left-side'>
+                           <div className='section-content-image'>
+                                <LandingPageSection3/>     
+                           </div>
+                        </div>
+                        <div className='section-content-right-side'>
+                           <div className='section-header-container'>
+                                <p>Achieve and</p>
+                                <p>Earn Rewards</p>
+                           </div>
+                           <div className='section-content-desc'>
+                                <p>Celebrate your learning milestones! Earn badges for completing lessons,  
+                                    quizzes, and practices.
+                                </p>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-aos="fade-in">
+                    <h1 style={{fontSize: '1.5rem'}}>Start Your Mathematical Journey.</h1>
+                    <Button 
+                        variant='contained' 
+                        size='large'
+                        onClick={()=>{navigateTo('/register')}} 
+                        sx={{
+                            my: 2, ml: 2, mr: 2, color: '#181A52', 
+                            fontFamily: 'Poppins, sans-serif', 
+                            backgroundColor: '#FFB100', 
+                            color: '#181A52', 
+                            fontWeight: '600', 
+                            marginBottom: '2.5%',
+                            borderRadius: '10px',
+                            '&:hover': {
+                                backgroundColor: '#d69500'
+                            }
+                        }}
+                    >
+                        Get Started
+                    </Button>
+                </div>
+                <AppBar position="static" sx={{ height: '50px', justifyContent: 'center', top: 'auto', bottom: 0, backgroundColor: '#FFB100'}}>
+                    <Typography color="black" sx={{fontFamily: 'Poppins, sans-serif', fontWeight: '300'}}>
+                        All Rights Reserved.
+                    </Typography>
+                </AppBar>
             </div>
         </div>
-    )
+    );
 }
 
-export default LandingPage
+export default LandingPage;
