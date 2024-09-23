@@ -55,7 +55,7 @@ const TopicContentEmbeddedGame = ({ id, embeddedGameLink, embeddedGameName, embe
                         Click the "Select Game" button to choose a game
                     </div> :
                     <div>
-                        <iframe src={embeddedGameLink} width="100%" height="350" title="Embedded Game" allowFullScreen/>
+                        <iframe src={embeddedGameLink} width="100%" height="350" title="Embedded Game" allowFullScreen loading="lazy"/>
                         <p><span style={{fontWeight:'600'}}>Selected Game:</span> {embeddedGameName}</p>
                         <p><span style={{fontWeight:'600'}}>Tags:</span> {embeddedGameTags}</p>
                     </div>                  

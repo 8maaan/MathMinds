@@ -11,12 +11,13 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 500,
-  height: 600,
+  width: { xs: '75%', sm: '80%', md: 500 }, 
+  height: { xs: '80%', sm: '70%', md: 600 }, 
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
   p: 4,
+  overflowY: 'auto'
 };
 
 // Automatically import all Lottie files in the LottieFiles folder
@@ -65,7 +66,9 @@ export default function AnimationChoicesModal({ openModal, handleModalClose, onA
                     handleModalClose();  // Close the modal after selection
                   }} 
                 >
-                  <Lottie animationData={animation.data} />
+                  <Box >
+                    <Lottie animationData={animation.data} />
+                  </Box>
                   <Typography style={{textAlign:'center'}}>{animation.name}</Typography>
                 </Box>
               ))}

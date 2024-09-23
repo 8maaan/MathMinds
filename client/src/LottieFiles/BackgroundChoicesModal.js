@@ -10,12 +10,13 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 500,
-  height: 600,
+  width: { xs: '75%', sm: '80%', md: 500 }, 
+  height: { xs: '80%', sm: '70%', md: 600 }, 
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
   p: 4,
+  overflowY: 'auto'
 };
 
 // Automatically import all image files in the Background folder
@@ -69,6 +70,7 @@ export default function BackgroundChoicesModal({ openModal, handleModalClose, on
                     src={background.src}
                     alt={background.name}
                     style={{ width: '100%', height: 'auto', borderRadius: '5px' }}
+                    loading="lazy"
                   />
                   <Typography style={{ textAlign: 'center' }}>{background.name}</Typography>
                 </Box>
