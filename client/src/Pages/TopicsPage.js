@@ -9,6 +9,7 @@ import ResponsiveDrawer from '../ReusableComponents/ResponsiveDrawer';
 import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
 import DynamicLottie from '../ReusableComponents/DynamicLottie';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
+import TextToSpeech from '../ReusableComponents/TextToSpeech';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -259,7 +260,13 @@ const TopicsPage = () => {
                     <div key={key} className={`lesson-item ${getNextColor()}`}>
                       {/* FOR TEXTS/PARAGRAPH */}
 
-                      {value.type === "text" && <div style={{ textAlign: 'center', margin: '15px'}} dangerouslySetInnerHTML={{ __html: value.content }} />}
+                      {value.type === "text" && (
+                        <>
+                        <div style={{ textAlign: 'center', margin: '15px'}} dangerouslySetInnerHTML={{ __html: value.content }}/>
+                          <div style={{textAlign:'right'}}>
+                            <TextToSpeech text={value.content} rate={1} pitch={1} lang={"en-GB"} />
+                          </div>
+                        </>)}
 
                       {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
