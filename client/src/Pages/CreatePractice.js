@@ -83,11 +83,11 @@ const CreatePractice = () => {
         event.preventDefault();
         
         const practiceQAObject = practiceQuestions.reduce((acc, item, index) => {
-            const filteredIncorrectAnswers = item.incorrectAnswers.filter(answer => answer !== '');
+            
             acc[index + 1] = {
                 question: item.question,
                 correctAnswer: item.correctAnswer,
-                incorrectAnswers: filteredIncorrectAnswers
+                incorrectAnswers: item.incorrectAnswers
             };
             return acc;
         }, {});
