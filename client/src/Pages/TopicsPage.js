@@ -21,6 +21,7 @@ const TopicsPage = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [feedBackColor, setFeedBackColor] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isQuizAvailable, setIsQuizAvailable] = useState(false);
 
   const [shuffledOptionsState, setShuffledOptionsState] = useState({});
   const [animateFeedback, setAnimateFeedback] = useState(false);
@@ -54,21 +55,28 @@ const TopicsPage = () => {
         const fetchResult = await getLessonWithProgress(lessonId, getUid());
         setLessonData(fetchResult.data.lesson);
         setUserTopicProgress(fetchResult.data.progress);
-
+  
         if (fetchResult.data.lesson && fetchResult.data.lesson.lessonTopics) {
-          const initialTopic = fetchResult.data.lesson.lessonTopics.find(topic => topic.topicId === parseInt(topicId));
+          const initialTopic = fetchResult.data.lesson.lessonTopics.find(
+            (topic) => topic.topicId === parseInt(topicId)
+          );
           setSelectedTopic(initialTopic);
         }
+        
         if (fetchResult.data.lesson && fetchResult.data.lesson.lessonQuiz) {
           setLessonQuizzes(fetchResult.data.lesson.lessonQuiz);
+          // Check if the first quiz is administered
+          const quiz = fetchResult.data.lesson.lessonQuiz[0];
+          const quizResult = await isQuizAdministered(quiz.lessonQuizId);
+          setIsQuizAvailable(quizResult.success && quizResult.data === 1); // Assuming 1 means administered
         }
       } catch (e) {
         console.log(e);
       }
     };
-
+  
     fetchLessonTopics();
-  }, [lessonId, topicId, getUid]);
+  }, [lessonId, topicId, getUid]);  
 
   // console.log(lessonQuizzes);
   // console.log(lessonData);
@@ -166,6 +174,11 @@ const TopicsPage = () => {
   const handleTopicClick = (topic, index) => {
     setSelectedTopic(topic);
     navigateTo(`/lesson/${lessonId}/${topic.topicId}`); /* */
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Smooth scrolling effect
+    });
   };
 
   const handleNextClick = async () => {
@@ -276,11 +289,16 @@ const TopicsPage = () => {
               <div>
                 <h4 style={{ color: '#404040' }}>Lesson {selectedTopic.lessonId}.{lessonData.lessonTopics.indexOf(selectedTopic) + 1} - {selectedTopic.topicTitle}</h4>
                 <div className="lesson-content">
+                  {/* bgcolor to f4f4f4 if dili question ang value.type */}
                   {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
-                    <div key={key} className={`lesson-item ${getNextColor()}`}>
+                    <div key={key} className={`lesson-item ${getNextColor()}`} style={{
+                      backgroundColor: ['text', 'storyboard', 'image', 'youtubeVid', 'embeddedGame'].includes(value.type)
+                        ? '#ffffff'
+                        : '#F6E6C3',
+                    }}>
                       {/* FOR TEXTS/PARAGRAPH */}
 
-                      {value.type === "text" && <div style={{ textAlign: 'center', margin: '15px'}} dangerouslySetInnerHTML={{ __html: value.content }} />}
+                      {value.type === "text" && <div style={{ textAlign: 'center', margin: '15px', fontFamily:"Bubblegum Sans" }} dangerouslySetInnerHTML={{ __html: value.content }} />}
 
                       {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
@@ -326,7 +344,7 @@ const TopicsPage = () => {
                           <div className='topic-image-container'>
                             <img src={value.imageUrl} alt="Topic Content" loading="lazy"/>
                           </div>
-                          <p>{value.imageDescription}</p>
+                          <p style={{textAlign:"center", fontFamily:"Flavors"}}>{value.imageDescription}</p>
                         </div>
                       )}
 
@@ -392,9 +410,9 @@ const TopicsPage = () => {
                   <div className="proceed-to-quiz">
                     <Button
                       variant='contained'
-                      sx={{color:'#101436', backgroundColor:'#FFB100', fontFamily:'Poppins', '&:hover': { backgroundColor: '#e9a402'}}}
+                      sx={{ color: '#101436', backgroundColor: '#FFB100', fontFamily: 'Poppins', '&:hover': { backgroundColor: '#e9a402' } }}
                       onClick={handleProceedToQuiz}
-                      disabled={hasQuestions(selectedTopic) && !allQuestionsAnswered(selectedTopic)}
+                      disabled={!isQuizAvailable || (hasQuestions(selectedTopic) && !allQuestionsAnswered(selectedTopic))}
                     >
                       Proceed to Quiz
                     </Button>
