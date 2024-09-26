@@ -291,7 +291,7 @@ const QuizQuestionForm = () => {
                   Quiz Result
                 </Typography>
                 <Typography id="badge-modal-description" sx={{ mt: 2, color: '#181a52' }}>
-                  {score >= questions.length * 0.6 ? "You've passed the quiz!" : "You've failed the quiz."}
+                  {score >= questions.length * 0.6 ? "You've passed the quiz!" : "Don't worry, you can always try again! Review the material and come back stronger!"}
                 </Typography>
               </>
             )}
