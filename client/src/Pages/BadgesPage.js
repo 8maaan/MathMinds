@@ -39,15 +39,15 @@ const BadgesPage = () => {
     }, [user]);
 
     return (
-        <div className="Profilepage">
-            <div className='badges-wrapper'>
-                <div className='badges-content-container'>
-                    <div className='badgesinfo-left-side'>
-                        <ReusableChoices />
+        <div className="badgesPage">
+            <div className='badgesPage-badges-wrapper'>
+                <div className='badgesPage-badges-content-container'>
+                    <div className='badgesPage-badgesinfo-left-side'>
+                        <ReusableChoices/>
                     </div>
-                    <div className='badgesinfo-right-side'>
-                        <div className='badges-container'>
-                            <div className='badges-title'>{userName ? `${userName}'s Badges` : 'Badges'}</div>
+                    <div className='badgesPage-badgesinfo-right-side'>
+                        <div className='badgesPage-PI-container'>
+                        <div className='badges-title'>{userName ? `${userName}'s Badges` : 'Badges'}</div>
                             {loading ? (
                                 <div className="loading">Loading...</div>
                             ) : (
@@ -70,6 +70,7 @@ const BadgesPage = () => {
                     </div>
                 </div>
             </div>
+          
         </div>
     );
 };
