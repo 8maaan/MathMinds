@@ -41,8 +41,6 @@ const TopicContentYoutubeVid = ({ id, youtubeLink, youtubeVidDescription, update
         setIsEditing(true);
     };
 
-
-    console.log("TopicContentYoutubeVid:", youtubeLink);
     return (
         <>
             <div

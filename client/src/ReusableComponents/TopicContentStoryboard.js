@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Lottie from 'lottie-react';
 import BackgroundChoicesModal from '../LottieFiles/BackgroundChoicesModal';
@@ -9,7 +9,7 @@ import AnimationChoicesModal from '../LottieFiles/AnimationChoicesModal';
 
 import "../PagesCSS/CreateTopic.css";
 
-const TopicContentStoryboard = ({ id, storyboardBgImage, storyboardAnimations, deleteContent, updateStoryboardContent }) => {
+const TopicContentStoryboard = ({ id, storyboardBgImage, storyboardAnimations, storyboardContext, deleteContent, updateStoryboardContent }) => {
     const [isEditing, setIsEditing] = useState(false);
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id, disabled: isEditing });
     const style = { transform: CSS.Transform.toString(transform), transition };
@@ -40,6 +40,11 @@ const TopicContentStoryboard = ({ id, storyboardBgImage, storyboardAnimations, d
 
     // console.log("Loaded Animations:",loadedAnimations);
     // console.log("Storyboard Animations:",storyboardAnimations)
+
+    const handleStoryboardContext = (e) =>{
+        const value = e.target.value;
+        updateStoryboardContent(id, { storyboardContext: value });
+    }
 
     const handleAnimationChoicesModal = (boxId) => {
         setClickedBox(boxId);
@@ -83,32 +88,50 @@ const TopicContentStoryboard = ({ id, storyboardBgImage, storyboardAnimations, d
             <div
                 className='topicStoryBoardContainer'
                 ref={setNodeRef}
-                style={{ ...style, backgroundImage: `url(${storyboardBgImage})` }}
+                style={{ ...style,}}
                 {...attributes}
                 {...listeners}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
             >   
-                {[1, 2, 3, 4].map(boxId => (
-                    <div
-                        key={boxId}
-                        className={`box${boxId}`}
-                    >
-                        {loadedAnimations[boxId - 1] && (
-                            <Lottie
-                                animationData={loadedAnimations[boxId - 1]}
-                                style={{ height: '150px', width: 'inherit'}}
-                            />
-                        )}
-                        <Button 
-                            variant='contained' 
-                            style={{backgroundColor:'#c25b89'}}
-                            onClick={() => handleAnimationChoicesModal(boxId)}
+                <div style={{width: '100%', marginBottom: '1.5%'}}>
+                    <TextField
+                        sx={{backgroundColor:'white'}}
+                        label='Storyboard context' 
+                        placeholder='E.g: One day, a dog was walking through a forest'
+                        variant='filled' 
+                        fullWidth 
+                        required 
+                        multiline 
+                        rows={3} 
+                        autoComplete='off'
+                        value={storyboardContext} 
+                        onChange={handleStoryboardContext} 
+                    />
+                </div>
+                <div className='topicLottieAnimationContainer' style={{backgroundImage: `url(${storyboardBgImage})`}}>       
+                    {[1, 2, 3, 4].map(boxId => (
+                        <div
+                            key={boxId}
+                            className={`box${boxId}`}
                         >
-                            Choose Animation {boxId}
-                        </Button>
-                    </div>
-                ))}           
+                            {loadedAnimations[boxId - 1] && (
+                                <Lottie
+                                    animationData={loadedAnimations[boxId - 1]}
+                                    style={{ height: '150px', width: 'inherit'}}
+                                />
+                            )}
+                            <Button 
+                                variant='contained' 
+                                style={{backgroundColor:'#c25b89'}}
+                                onClick={() => handleAnimationChoicesModal(boxId)}
+                            >
+                                Choose Animation {boxId}
+                            </Button>
+                        </div>
+                    ))}
+                </div>
+
             </div>
             <div className='topic-content-actions' style={style}>
                 <IconButton onClick={() => deleteContent(id)} size="large">

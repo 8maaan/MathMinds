@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import { IconButton } from '@mui/material';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 const TextToSpeech = ({ text, rate = 1, pitch = 1, lang = 'en-US' }) => {
-    const [isSpeaking, setIsSpeaking] = useState(false);  // To track if it's speaking
-    const [isPaused, setIsPaused] = useState(false);      // To track if it's paused
-    const [currentUtterance, setCurrentUtterance] = useState(null);  // To track the current utterance
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
+
+    const cleanText = (text) => {
+        // Remove HTML tags
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = text; // Set the innerHTML
+        return tempDiv.innerText; // Get the plain text without HTML tags
+    };
 
     const speak = () => {
         if ('speechSynthesis' in window) {
             if (!isSpeaking) {
-                // Start speech
-                window.speechSynthesis.cancel(); // Clear any previous speech
-                const sentences = text.split(/(?<=[.!?])\s+/);
+                // Stop any ongoing speech and clear the queue
+                window.speechSynthesis.cancel();
+
+                const plainText = cleanText(text); // Clean the incoming text
+                const sentences = plainText.split(/(?<=[.!?])\s+/);
                 let utteranceIndex = 0;
 
                 const speakSentence = () => {
@@ -27,13 +35,11 @@ const TextToSpeech = ({ text, rate = 1, pitch = 1, lang = 'en-US' }) => {
 
                         utterance.onend = () => {
                             utteranceIndex += 1;
-                            speakSentence(); // Proceed to next sentence
+                            speakSentence(); // Proceed to the next sentence
                         };
 
                         window.speechSynthesis.speak(utterance);
-                        setCurrentUtterance(utterance); // Store the current utterance
                     } else {
-                        // Finished speaking all sentences
                         setIsSpeaking(false); // Reset state when all sentences are finished
                     }
                 };
@@ -70,7 +76,7 @@ const TextToSpeech = ({ text, rate = 1, pitch = 1, lang = 'en-US' }) => {
             </IconButton>
             {isSpeaking && 
                 <IconButton onClick={stopSpeech}>
-                    <StopCircleIcon/>
+                    <VolumeOffIcon/>
                 </IconButton>
             }
         </div>

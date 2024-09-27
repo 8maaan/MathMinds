@@ -312,7 +312,8 @@ const TopicsPage = () => {
                       )}
 
                       {value.type ==="storyboard" && (
-                        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                        <div style={{display:'flex', justifyContent:'center', flexDirection:'column', alignItems:'center'}}>
+                          <p style={{textAlign:'center'}}>{value.storyboardContext}</p>
                           <div className='topic-storyboard-container' style={{backgroundImage:`url(${value.storyboardBgImage})`}}>
                             {[0, 1, 2, 3].map(boxId => (
                                 <div

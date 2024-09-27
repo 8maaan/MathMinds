@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { firebaseRTDB } from '../Firebase/firebaseConfig'
 import { ref, onValue, off, update, serverTimestamp, push, set } from "firebase/database";
@@ -25,7 +25,16 @@ const PracticeTempLobby = () => {
     const [questionTimer, setQuestionTimer] = useState(10);
     
     const playerColorList = ['#F94848', '#518BBC', '#4CAE4F', '#FFB100'];
+    const chatContainerRef = useRef(null);
 
+    // Scroll to the bottom of the chat whenever messages change because using only CSS doesn't work idk why
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
+
+    // FirebaseRTDB listener for host, players and chat
     useEffect(() => {
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
         const messagesRef = ref(firebaseRTDB, `rooms/${roomCode}/messages`);
@@ -162,7 +171,7 @@ const PracticeTempLobby = () => {
                 {/* CHAT */}
                 <div className='pml-left-section-chat'>
                     <h3>Chat</h3>
-                    <div className='pml-left-section-chat-container'>
+                    <div className='pml-left-section-chat-container' ref={chatContainerRef}>
                         {messages.map((msg, index) => (
                             <p key={index}><strong style={{ color: msg.userId === user.uid ? '#dea635' : 'inherit' }}>{msg.userName}:</strong> {msg.message}</p>
                         ))}

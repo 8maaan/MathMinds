@@ -85,9 +85,14 @@
     height: auto;
 }
 
-/* FOR THE CONTENT/PARAGRAPH CONTAINER */
-.topicContentContainer:focus{
-    border: solid #ffb100;
+/* For when the containers for each media type are focused */
+.topicQuestionContainer:focus,
+.topicContentContainer:focus, 
+.topicImageContainer:focus,
+.topicStoryBoardContainer:focus,
+.topicYoutubeVidContainer:focus,
+.topicEmbeddedGameContainer:focus {
+    border: solid #ffb100; /* Change to your desired thickness if needed */
 }
 
 .topicContentContainer{
@@ -139,20 +144,26 @@
 /* FOR THE STORYBOARD CONTAINER */
 .topicStoryBoardContainer {
     margin-top: 0;
-    min-height: 40vh;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; /* Ensures equal spacing */
-    overflow-y: auto;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    flex-direction: column;
 }
 
-.topicStoryBoardContainer > div {
+
+.topicLottieAnimationContainer{
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping for a 2x2 layout */
+    justify-content: space-between;
+    min-height: 40vh;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    /* border: solid red 2px; Optional - if you still want the border */
+}
+.topicLottieAnimationContainer > div {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: 50%; /* 50% for a 2x2 layout */
+    height: 50%;
     box-sizing: border-box; /* Ensures the borders don't affect the width */
 }
 
@@ -162,7 +173,7 @@
     justify-content: center;
     align-items: center;
     height: 50%;
-    border: solid black 1px;
+    border: solid gray 1px;
 }
 
 /* For Youtube Vid Container */

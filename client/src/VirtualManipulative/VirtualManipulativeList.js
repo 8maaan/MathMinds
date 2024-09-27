@@ -45,13 +45,6 @@ const virtualManipulatives = [
     },
     { 
         id: 7, 
-        name: 'Build a Fraction', 
-        embedLink:'https://phet.colorado.edu/sims/html/build-a-fraction/latest/build-a-fraction_en.html',
-        thumbnail: 'https://phet.colorado.edu/sims/html/build-a-fraction/latest/build-a-fraction-420.png',
-        tags: "Fractions, Numerator, Denominator, Parts of a Whole"
-    },
-    { 
-        id: 8, 
         name: 'Fractions: Mixed Numbers', 
         embedLink:'https://phet.colorado.edu/sims/html/fractions-mixed-numbers/latest/fractions-mixed-numbers_en.html',
         thumbnail: 'https://phet.colorado.edu/sims/html/fractions-mixed-numbers/latest/fractions-mixed-numbers-420.png',
