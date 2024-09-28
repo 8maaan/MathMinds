@@ -298,7 +298,7 @@ const TopicsPage = () => {
                     }}>
                       {/* FOR TEXTS/PARAGRAPH */}
 
-                      {value.type === "text" && <div style={{ textAlign: 'center', margin: '15px', fontFamily:"Bubblegum Sans" }} dangerouslySetInnerHTML={{ __html: value.content }} />}
+                      {value.type === "text" && <div style={{ textAlign: 'center', margin: '15px', /*fontFamily:"Bubblegum Sans"*/ }} dangerouslySetInnerHTML={{ __html: value.content }} />}
 
                       {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
@@ -344,7 +344,7 @@ const TopicsPage = () => {
                           <div className='topic-image-container'>
                             <img src={value.imageUrl} alt="Topic Content" loading="lazy"/>
                           </div>
-                          <p style={{textAlign:"center", fontFamily:"Flavors"}}>{value.imageDescription}</p>
+                          <p style={{textAlign:"center"/*, fontFamily:"Flavors"*/}}>{value.imageDescription}</p>
                         </div>
                       )}
 
