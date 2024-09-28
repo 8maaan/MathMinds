@@ -87,7 +87,8 @@ const EditTopic = () => {
                                 id: index.toString(),
                                 type: 'storyboard',
                                 storyboardBgImage: value.storyboardBgImage,
-                                storyboardAnimations: value.storyboardAnimations
+                                storyboardAnimations: value.storyboardAnimations,
+                                storyboardContext: value.storyboardContext
                             }
                         } else if (value.type === 'youtubeVid') {
                             return {
@@ -147,7 +148,7 @@ const EditTopic = () => {
     const handleAddStoryboard = () => {
         setTopicContents([
             ...topicContents,
-            { id: topicContents.length.toString(), type: 'storyboard', storyboardBgImage:'', storyboardAnimations:['','','','']}
+            { id: topicContents.length.toString(), type: 'storyboard', storyboardBgImage:'', storyboardAnimations:['','','',''], storyboardContext:''},
         ]);
     }
 
@@ -239,7 +240,7 @@ const EditTopic = () => {
             } else if (item.type === 'image') {
                 acc[index + 1] = { type: 'image', imageUrl: item.imageUrl, imageDescription: item.imageDescription };
             } else if (item.type === 'storyboard') {
-                acc[index + 1] = { type: 'storyboard', storyboardBgImage: item.storyboardBgImage, storyboardAnimations: item.storyboardAnimations};
+                acc[index + 1] = { type: 'storyboard', storyboardBgImage: item.storyboardBgImage, storyboardAnimations: item.storyboardAnimations, storyboardContext: item.storyboardContext};
             } else if (item.type === 'youtubeVid') { 
                 acc[index + 1] = { type: 'youtubeVid',  youtubeLink: item.youtubeLink, youtubeVidDescription: item.youtubeVidDescription };
             } else if (item.type === 'embeddedGame') { 
@@ -394,6 +395,7 @@ const EditTopic = () => {
                                                 id={item.id}
                                                 storyboardBgImage={item.storyboardBgImage}
                                                 storyboardAnimations={item.storyboardAnimations}
+                                                storyboardContext={item.storyboardContext}
                                                 deleteContent={deleteContent}
                                                 updateStoryboardContent={updateStoryboardContent}
                                             />

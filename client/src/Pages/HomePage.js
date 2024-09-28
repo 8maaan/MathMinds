@@ -20,7 +20,7 @@ const HomePage = () => {
                 </Box>
 
                 <Box className="image-buttons">
-                    <Link to="/profile" className="image-buttons-margin">
+                    <Link to="/lesson-progress" className="image-buttons-margin">
                         <Button className="img-button-size">
                             <img src={homepageDashboardBtn} alt="Dashboard" className="img-button-size" />
                         </Button>

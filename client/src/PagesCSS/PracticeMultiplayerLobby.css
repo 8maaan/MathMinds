@@ -67,14 +67,20 @@
 .pml-left-section-chat-container{
     margin: 0 1.5% 1% 1.5%;
     text-align: left;
-    /* border: solid black 1px; */
     height: 75%;
     overflow-y: auto;
+    word-wrap:break-word;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: #AA75CB transparent;
+
 }
 .pml-left-section-chat-container p{
     margin: 0 auto;
     margin-bottom: 5px;
     font-size: 17px;
+    width: 100%;
 }
 
 .pml-left-section-chat-input-container{

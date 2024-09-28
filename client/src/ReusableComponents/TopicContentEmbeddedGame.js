@@ -58,6 +58,17 @@ const TopicContentEmbeddedGame = ({ id, embeddedGameLink, embeddedGameName, embe
                         <iframe src={embeddedGameLink} width="100%" height="350" title="Embedded Game" allowFullScreen loading="lazy"/>
                         <p><span style={{fontWeight:'600'}}>Selected Game:</span> {embeddedGameName}</p>
                         <p><span style={{fontWeight:'600'}}>Tags:</span> {embeddedGameTags}</p>
+                        <p>
+                            <span style={{ fontWeight: '600' }}>Link: </span> 
+                            {embeddedGameName ? 
+                                `https://phet.colorado.edu/en/simulations/${embeddedGameName
+                                .replace(/\s*\(.*?\)\s*/, '')                // Remove text in parentheses
+                                .replace(/\s*:\s*/, ' ')                     // Replace " : " with a space
+                                .replace(/\s+/g, '-')                         // Replace all spaces with '-'
+                                .trim()
+                                .toLowerCase()}` 
+                                : 'Link not available'}
+                        </p>
                     </div>                  
                 }
                 {openGameChoiceModal && <GameChoicesModal openModal={openGameChoiceModal} handleModalClose={() => setOpenGameChoiceModal(false)} onManipulativeSelect={handleSelectedGame}/>}

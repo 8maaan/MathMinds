@@ -50,7 +50,7 @@ export default function ReusableAppBar() {
 
       case 'Dashboard':
         console.log('Dashboard');
-        navigateTo('/profile');
+        navigateTo('/lesson-progress');
         break;
 
       case 'Lessons':

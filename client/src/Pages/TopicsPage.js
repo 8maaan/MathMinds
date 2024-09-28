@@ -9,6 +9,7 @@ import ResponsiveDrawer from '../ReusableComponents/ResponsiveDrawer';
 import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
 import DynamicLottie from '../ReusableComponents/DynamicLottie';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
+import TextToSpeech from '../ReusableComponents/TextToSpeech';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -298,7 +299,13 @@ const TopicsPage = () => {
                     }}>
                       {/* FOR TEXTS/PARAGRAPH */}
 
-                      {value.type === "text" && <div style={{ textAlign: 'center', margin: '15px', /*fontFamily:"Bubblegum Sans"*/ }} dangerouslySetInnerHTML={{ __html: value.content }} />}
+                      {value.type === "text" && (
+                        <>
+                        <div style={{ textAlign: 'center', margin: '15px'}} dangerouslySetInnerHTML={{ __html: value.content }}/>
+                          <div style={{textAlign:'right'}}>
+                            <TextToSpeech text={value.content} rate={1} pitch={1} lang={"en-GB"} />
+                          </div>
+                        </>)}
 
                       {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
@@ -349,7 +356,8 @@ const TopicsPage = () => {
                       )}
 
                       {value.type ==="storyboard" && (
-                        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                        <div style={{display:'flex', justifyContent:'center', flexDirection:'column', alignItems:'center'}}>
+                          <p style={{textAlign:'center'}}>{value.storyboardContext}</p>
                           <div className='topic-storyboard-container' style={{backgroundImage:`url(${value.storyboardBgImage})`}}>
                             {[0, 1, 2, 3].map(boxId => (
                                 <div
