@@ -3,7 +3,7 @@
     src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
 }
 
-.Profilepage {
+.badgesPage{ 
     background-image: url('../Images/BG3.png');
     background-size: cover;
     background-attachment: fixed;
@@ -11,45 +11,49 @@
     min-height: 100vh; /* Ensure it covers the full viewport height */
     background-color: #f0f0f0; /* Fallback color */
     position: relative;
+
 }
 
 .body {
     background-attachment: fixed;
-    min-height: 100vh; 
+    min-height: 100vh;
+   
 }
 
-.badges-wrapper,
-.badges-content-container {
+.badgesPage-badges-wrapper,
+.badgesPage-badges-content-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     margin-top: 5%;
+   
 }
 
-.badges-content-container {
+.badgesPage-badges-content-container{
     width: 70%;
     height: 60vh;
     padding: 2.5%;
 }
 
-.badgesinfo-right-side,
-.badgesinfo-left-side {
+.badgesPage-badgesinfo-right-side,
+.badgesPage-badgesinfo-left-side{
     display: flex;
     height: 100%;
+   
 }
-
-.badgesinfo-right-side {
+.badgesPage-badgesinfo-right-side{
     flex-direction: column;
     width: 65%;
+    
 }
-
-.badgesinfo-left-side {
+.badgesPage-badgesinfo-left-side{
     display: flex;
     width: 35%;
-}
+ 
 
-.badges-container {
+}
+.badgesPage-PI-container{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -57,8 +61,8 @@
     background-color: #F6E6C3;  
     box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
     border-radius: 25px;  
+    
 }
-
 .badges-title {
     display: flex;
     justify-content: center;
@@ -70,18 +74,15 @@
     width: 100%;
     height: 20%;
 }
-
 .userbadges-container {
     display: flex;
     flex-direction: row;
     width: 80%;
     height: 100%;
+    overflow-y: auto;
     padding-right: 10%;
     padding-left: 10%;
-    overflow-y: auto;
-    
 }
-
 .userinfo-badges-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -144,7 +145,6 @@
     border-radius: 10px; /* Round corners of the scrollbar */
     border: 2px solid #F6E6C3; /* Padding around the scrollbar thumb */
 }
-
 .badge {
     display: flex;
     flex-direction: column;
@@ -159,75 +159,53 @@
     box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
     height: 90%;
 }
-
 .badge-image {
     width: 100px;
     height: 100px;
     object-fit: cover;
     margin-bottom: 5px;
 }
-
 .badge-title {
     font-family: 'Poppins';
     font-size: 13px;
     text-align: center;
     color: #333;
 }
-
 .loading {
     font-family: 'Poppins';
     font-size: 18px;
     color: #555;
     text-align: center;
 }
-
 @media (max-width: 1024px) {
-    .badges-content-container {   
+    .badgesPage-badges-content-container {
         width: 90%;
     }
+    
 }
 
-@media (max-width: 900px) {
-    .badges-content-container {
-        margin-top: 700px;
-        display: flex;
+@media (max-width: 768px) {/* KARI */
+    .badgesPage-badges-content-container {
         flex-direction: column;
         height: 150vh;
-        width: 50%;
-    }
-    .badgesinfo-left-side {
-        height: 50vh;
         width: 100%;
-        justify-content: center;
     }
-    .badgesinfo-right-side {
+    .badgesPage-badgesinfo-left-side {
+        height: 100%;
+        width: 100%;
+        align-items: end;
+    }
+    .badgesPage-badgesinfo-right-side {
         margin-top: 50px;
         width: 100%;
     }
+
+   
 }
-
-@media (max-width: 700px) {
-    .badges-content-container {
-        width: 60%;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .badges-content-container{
-        margin-top: 15%;
-        width: 70%;
-    }
-}
-
-@media (max-width: 500px) {
-    .badges-content-container {
-        width: 90%;
-    }
-}
-
-@media (max-width: 400px) {
-    .badges-content-container {
+@media (max-width: 768px) {
+    .badgesPage-badgesinfo-left-side {
+        height: 10%;
         width: 100%;
+        align-items: end;
     }
 }

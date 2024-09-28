@@ -10,11 +10,12 @@
     border-radius: 25px;
     background-color: #F6E6C3;    
 }
-.PI-button{
+.Persona-button{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 70%;
+    border-radius: 25px 25px 0px 0px;
+    width: 90%;
     height: 25%;
     font-family: 'Poppins';
     font-size: 24px;
@@ -22,14 +23,15 @@
     color: #181A52;
     transition: transform 0.3s ease;
     cursor: pointer;
+    background-color: #F94848;
 }
-.PI-button:hover {
+.Persona-button:hover {
     transform: scale(1.08); 
 }
-.PI-button:active {
+.Persona-button:active {
     transform: scale(0.9); 
 }
-.LessonProg-button{
+.LessonProgress-button{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,13 +45,13 @@
     transition: transform 0.3s ease;
     cursor: pointer;
 }
-.LessonProg-button:hover {
+.LessonProgress-button:hover {
     transform: scale(1.08); 
 }
-.LessonProg-button:active {
+.LessonProgress-button:active {
     transform: scale(0.9); 
 }
-.Badges-button{
+.Badgess-button{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,11 +64,12 @@
     color: #181A52;
     transition: transform 0.3s ease;
     cursor: pointer;
+    background-color: #4CAE4F;
 }
-.Badges-button:hover {
+.Badgess-button:hover {
     transform: scale(1.08); 
 }
-.Badges-button:active {
+.Badgess-button:active {
     transform: scale(0.9); 
 }
 @media (max-width: 1024px) {
@@ -79,9 +82,31 @@
 @media (max-width: 768px) {
 
     .choicess-container{
-        height: 100%;
-        width: 70%; 
+        flex-direction: row;
+        width: 100%; 
+        border-radius:13px;
     }
-
-
+    .Persona-button{
+        width: 90%;
+        height: 65%;
+        font-size: 18px;
+        border-radius:8px;
+        margin-left: 10px;
+        padding: 5px;
+    }
+    .LessonProgress-button{
+        width: 90%;
+        height: 65%;
+        font-size: 18px;
+        border-radius:8px;
+        padding: 5px;
+    }
+    .Badgess-button{
+        width: 90%;
+        height: 65%;
+        font-size: 18px;
+        border-radius:8px;
+        margin-right: 10px;
+        padding: 5px;
+    }
 }
