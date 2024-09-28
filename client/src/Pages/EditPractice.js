@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Button, Typography } from '@mui/material';
-import '../PagesCSS/CreateTopic.css';
-import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
+import '../PagesCSS/CreatePractice.css';
+import PracticeQuestion from '../ReusableComponents/PracticeQuestions';
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar'
 import { updatePracticeInDb, getPracticeByTopicId, deletePracticeInDb } from '../API-Services/PracticeAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const EditPractice = () => {
-    const { topicId } = useParams();    
+    const { topicId, currentTopicTitle } = useParams();    
     const [practiceQuestions, setPracticeQuestions] = useState([]);
     const [practiceId, setPracticeId] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -175,33 +175,39 @@ const EditPractice = () => {
         return <div>Error: {error.message}</div>;
     }
 
+    console.log(currentTopicTitle);
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <Typography class='createTopic-title'>Edit a practice</Typography>
-                <div className='createTopic-body' style={{ marginTop: '2%' }}>
-                    <div className='topic-config-container'>
+                <div className='createPractice-body'>
+                    <Typography class='createPractice-title'>Edit "{currentTopicTitle}" practice</Typography>
+                    <div className='practice-config-container'>
                         <div style={{ marginTop: '1.5%'}}>
                             <Button onClick={handleAddQuestion} variant='contained' style={{ fontFamily: 'Poppins', marginRight: '0.5%'}}>Add Question</Button>
                             <Button onClick={handleOpenDeleteDialog} variant='contained' color='error' style={{ fontFamily: 'Poppins' }}>Delete Practice</Button>
                         </div>
                     </div>
-                    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                        <div className='topic-form-container'>
+                    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} >
+                        <div className='practice-form-container'>
+                            <div className='practice-scrollable'>
                             <SortableContext items={practiceQuestions.map(item => item.id)} strategy={verticalListSortingStrategy}>
-                                {practiceQuestions.map(item => (
-                                    <TopicContentQuestion
-                                        key={item.id}
-                                        id={item.id}
-                                        question={item.question}
-                                        correctAnswer={item.correctAnswer}
-                                        incorrectAnswers={item.incorrectAnswers}
-                                        updateQuestion={updateQuestion}
-                                        deleteContent={deleteQuestion}
-                                    />
-                                ))}
-                            </SortableContext>
-                            {practiceQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No questions currently 📝</p> : null}
+                                    {practiceQuestions.map(item => (
+                                        <PracticeQuestion
+                                            key={item.id}
+                                            id={item.id}
+                                            question={item.question}
+                                            correctAnswer={item.correctAnswer}
+                                            incorrectAnswers={item.incorrectAnswers}
+                                            updateQuestion={updateQuestion}
+                                            deleteQuestion={deleteQuestion}
+                                        />
+                                    ))}
+                                </SortableContext>
+                                {practiceQuestions.length === 0 ? <p style={{ color: 'gray', margin: '10%' }}>No questions currently 📝</p> : null}
+
+                            </div>
+                            
                         </div>
                     </DndContext>
                     <Button onClick={handleOpenUpdateDialog} variant='contained' style={{ marginTop: '2%', fontFamily: 'Poppins' }}>Submit</Button>
@@ -210,14 +216,14 @@ const EditPractice = () => {
             <ReusableDialog
                 status={openUpdateDialog} 
                 onClose={handleCloseUpdateDialog} 
-                title="Confirm Update" 
-                context="Are you sure you want to update this Practice?"
+                title="Confirm Topic Practice Update" 
+                context="Are you sure you're done editing the quiz for"
             />
             <ReusableDialog
                 status={openDeleteDialog} 
                 onClose={handleCloseDeleteDialog} 
                 title="Confirm Delete" 
-                context="Are you sure you want to delete this practice?"
+                context={`Are you sure you want to delete "${currentTopicTitle}" practice? This will remove all associated questions and answers.`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

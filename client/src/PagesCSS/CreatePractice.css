@@ -6,9 +6,10 @@
     margin-top: 80px;
     height: calc(100vh - 80px); /* Subtract the margin-top */
     overflow: hidden; /* Prevent scrolling on the body */
+    /* border: solid black; */
 }
 .createPractice-title {
-    /* margin-top: 85px; */
+    /* margin-bottom: 85px; */
     font-size: 30px;
     color: #181A52;
     font-family: 'Poppins';

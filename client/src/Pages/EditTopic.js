@@ -328,12 +328,12 @@ const EditTopic = () => {
     return (
         <div>
             <form onSubmit={handleOpenDialog}>
-                <Typography class='createTopic-title'>Edit {currentTopicTitle}</Typography>
+                <Typography class='createTopic-title'>Edit "{currentTopicTitle}" topic</Typography>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Lesson</InputLabel>
-                            <Select label='Select Lesson' value={topicLesson} autoWidth onChange={(event) => { setTopicLesson(event.target.value) }} required>
+                            <Select label='Select Lesson' value={topicLesson} autoWidth onChange={(event) => { setTopicLesson(event.target.value) }} required disabled>
                                 {lessons && lessons.map(lesson => (
                                     <MenuItem key={lesson.lessonId} value={lesson.lessonId}>{lesson.lessonTitle}</MenuItem>
                                 ))}
@@ -446,7 +446,7 @@ const EditTopic = () => {
                 status={openDialog} 
                 onClose={handleCloseDialog} 
                 title="Confirm Topic Update" 
-                context={`Are you sure you want to update ${topicTitle}?`}
+                context={`Are you sure you're done editing the contents for "${topicTitle}" topic?`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

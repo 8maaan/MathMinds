@@ -7,15 +7,18 @@ import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
 import { getLessonQuizById, updateLessonQuiz } from '../API-Services/LessonQuizAPI';
 import { useNavigate, useParams } from 'react-router-dom';
+import ReusableDialog from '../ReusableComponents/ReusableDialog';
 
 const EditLessonQuiz = () => {
-    const { lessonQuizId } = useParams();
+    const { lessonQuizId, currentLessonTitle } = useParams();
     const [quizLesson, setQuizLesson] = useState('');
     const [quizQuestions, setQuizQuestions] = useState([]);
     const [lessons, setLessons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isAdministered, setIsAdministered] = useState(false);
+
+    const [openDialog, setOpenDialog] = useState(false);
 
 
     const navigate = useNavigate();
@@ -25,6 +28,7 @@ const EditLessonQuiz = () => {
             const lessonList = await getAllLessonsFromDb();
             if (lessonList.success) {
                 setLessons(lessonList.data);
+                console.log(lessonList.data);
             } else {
                 console.error(lessonList.message);
             }
@@ -91,7 +95,6 @@ const EditLessonQuiz = () => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
 
         const lessonQuizQA = quizQuestions.reduce((acc, item, index) => {
             acc[index + 1] = {
@@ -121,6 +124,18 @@ const EditLessonQuiz = () => {
         }
     };
 
+    const handleOpenDialog = (event) => {
+        event.preventDefault();
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = (confirmed) => {
+        setOpenDialog(false);
+        if (confirmed) {
+            handleSubmit();
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -131,13 +146,13 @@ const EditLessonQuiz = () => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <Typography class='createTopic-title'>Edit a quiz</Typography>
+            <form onSubmit={handleOpenDialog}>
+                <Typography class='createTopic-title'>Edit "{currentLessonTitle}" quiz</Typography>
                 <div className='createTopic-body' sx={{marginTop:'2%'}}>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Lesson</InputLabel>
-                            <Select label='Select Lesson' value={quizLesson} autoWidth onChange={(event) => { setQuizLesson(event.target.value) }} required>
+                            <Select label='Select Lesson' value={quizLesson} autoWidth onChange={(event) => { setQuizLesson(event.target.value) }} required disabled>
                                 {lessons && lessons.map(lesson => (
                                     <MenuItem key={lesson.lessonTitle} value={lesson.lessonTitle}>{lesson.lessonTitle}</MenuItem>
                                 ))}
@@ -184,6 +199,12 @@ const EditLessonQuiz = () => {
                     <Button type="submit" variant='contained' sx={{ mt: 2, fontFamily:'Poppins' }}>Submit</Button>
                 </div>
             </form>
+            <ReusableDialog
+                status={openDialog} 
+                onClose={handleCloseDialog} 
+                title="Confirm Lesson Quiz Update" 
+                context={`Are you sure you're done editing the quiz for "${currentLessonTitle}" lesson?`}
+            />
         </div>
     );
 };

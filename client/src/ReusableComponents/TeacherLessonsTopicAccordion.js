@@ -49,15 +49,15 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
         navigateTo(`/edit-topic/${topicId}/${currentTopicTitle}`);
     };
 
-    const handleEditPractice = async (topicId) => {
+    const handleEditPractice = async (topicId, currentTopicTitle) => {
         try {
             const practices = await getAllPractices();
             const practiceExists = practices.data.some(practice => practice.topic.topicId === Number(topicId));
             if (practiceExists) {
-                navigateTo(`/edit-practice/${topicId}`);
+                navigateTo(`/edit-practice/${topicId}/${currentTopicTitle}`);
             } else {
-                handleSnackbarOpen('error', 'Topic ID is missing.');
-                console.error("Topic ID is missing.");
+                handleSnackbarOpen('error', 'No practice exists for this topic yet.');
+                console.error("No practice exists for this topic yet or Topic ID is missing.");
                 return;
             }
     
@@ -159,7 +159,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 
                                 <AccordionActions>
                                     <Tooltip title="Edit Practice">
-                                        <IconButton onClick={() => handleEditPractice(topic.topicId)}>
+                                        <IconButton onClick={() => handleEditPractice(topic.topicId, topic.topicTitle)}>
                                             <Tune
                                                 sx={{
                                                     color: "#181A52",
