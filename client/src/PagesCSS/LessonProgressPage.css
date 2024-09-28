@@ -112,7 +112,7 @@
 
 /* Styling the scrollbar for Firefox */
 .lessons-scrollable-container {
-    scrollbar-width: thin; /* Thin scrollbar */
+    scrollbar-width: thick; /* Thin scrollbar */
     scrollbar-color: #888 #F6E6C3; /* Thumb and track colors */
     height: 45vh;
     margin-right: 2px;

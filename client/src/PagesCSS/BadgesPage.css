@@ -73,43 +73,103 @@
 
 .userbadges-container {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 80%;
+    flex-direction: row;
+    width: 80%;
+    height: 100%;
     padding-right: 10%;
     padding-left: 10%;
     overflow-y: auto;
+    
 }
 
 .userinfo-badges-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 25px;
+    gap: 33px;
     width: 100%;
+    height: 100%; /* Ensure it takes up full height */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: solid #F6E6C3;
+}
+
+/* When there are no badges, switch to flexbox to center the content */
+.userinfo-badges-container.no-badges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80%; /* Ensure it takes up the full height */
+}
+
+/* Center the 'No badges' text */
+.userinfo-badges-container.no-badges p {
+    font-size: 16px;
+    color: #333; /* Adjust as needed */
+    padding: 20px;
+    background-color: #F6E6C3; /* Optional styling */
+    border-radius: 10px;
+}
+
+.badges-scrollable-container {
+    overflow-y: auto;
+    max-height: 80vh; /* Adjust this value based on your layout */
+}
+
+/* Styling the scrollbar for Firefox */
+.badges-scrollable-container {
+    scrollbar-width: thin !important; /* Thin scrollbar */
+    scrollbar-color: #888 #F6E6C3; /* Thumb and track colors */
+    height: 45vh;
+    margin-right: 2px;
+}
+
+.badges-wrapper .badges-content-container .badges-scrollable-container {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #F6E6C3;
+}
+
+/* Styling the scrollbar for WebKit browsers (Chrome, Edge, Safari) */
+.badges-scrollable-container::-webkit-scrollbar {
+    width: 2px; /* Set the width of the scrollbar */
+}
+
+.badges-scrollable-container::-webkit-scrollbar-track {
+    background: #F6E6C3; /* Background color of the scrollbar track */
+}
+
+.badges-scrollable-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Round corners of the scrollbar */
+    border: 2px solid #F6E6C3; /* Padding around the scrollbar thumb */
 }
 
 .badge {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Align content to the top */
     border-radius: 10px;
-    padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 60px;
+    padding-right: 60px;
     background-color: #8FADBE;
     box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
+    height: 90%;
 }
 
 .badge-image {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
-    border-radius: 50%;
     margin-bottom: 5px;
 }
 
 .badge-title {
     font-family: 'Poppins';
-    font-size: 14px;
+    font-size: 13px;
     text-align: center;
     color: #333;
 }

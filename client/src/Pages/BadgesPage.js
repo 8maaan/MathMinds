@@ -40,36 +40,40 @@ const BadgesPage = () => {
 
     return (
         <div className="Profilepage">
-            <div className='badges-wrapper'>
-                <div className='badges-content-container'>
-                    <div className='badgesinfo-left-side'>
-                        <ReusableChoices />
-                    </div>
-                    <div className='badgesinfo-right-side'>
-                        <div className='badges-container'>
-                            <div className='badges-title'>{userName ? `${userName}'s Badges` : 'Badges'}</div>
-                            {loading ? (
-                                <div className="loading">Loading...</div>
-                            ) : (
-                                <div className='userbadges-container'>
-                                    <div className='userinfo-badges-container'>
-                                        {badges.length === 0 ? (
-                                            <p>No badges earned yet.</p>
-                                        ) : (
-                                            badges.map(([title, imageUrl]) => (
-                                                <div key={title} className="badge">
-                                                    <img src={imageUrl} alt={title} className="badge-image" />
-                                                    <div className="badge-title">{title}</div>
+                <div className='badges-wrapper'>
+                    <div className='badges-content-container'>
+                        <div className='badgesinfo-left-side'>
+                            <ReusableChoices />
+                        </div>
+                        <div className='badgesinfo-right-side'>
+                            <div className='badges-container'>
+                                <div className='badges-title'>{userName ? `${userName}'s Badges` : 'Badges'}</div>
+                                <div className='badges-scrollable-container'>
+                                {loading ? (
+                                    <div className="loading">Loading...</div>
+                                ) : (
+                                    <div className='userbadges-container'>
+                                        <div className={`userinfo-badges-container ${badges.length === 0 ? 'no-badges' : ''}`}>
+                                            {badges.length === 0 ? (
+                                                <div>
+                                                    <p>No badges earned yet. Let's collect some by completing quizzes!✊</p>
                                                 </div>
-                                            ))
-                                        )}
+                                            ) : (
+                                                badges.map(([title, imageUrl]) => (
+                                                    <div key={title} className="badge">
+                                                        <img src={imageUrl} alt={title} className="badge-image" />
+                                                        <div className="badge-title">{title}</div>
+                                                    </div>
+                                                ))
+                                            )}
+                                        </div>
                                     </div>
+                                )}
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     );
 };
