@@ -23,7 +23,9 @@ const TeacherLessonsBox = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [currentLesson, setCurrentLesson] = useState({ title: '', description: '', lessonId: null });
     const [anchorEl, setAnchorEl] = useState(null);
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false); //delete lesson dialog
+    const [openSaveDialog, setOpenSaveDialog] = useState(false); //create lesson dialog
+    const [openUpdateDialog, setOpenUpdateDialog] = useState(false); //edit lesson dialog
     const [selectedLessonId, setSelectedLessonId] = useState(null);
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
     const [badgeModalOpen, setBadgeModalOpen] = useState(false);
@@ -145,16 +147,38 @@ const TeacherLessonsBox = () => {
         navigate('/create-practice-quiz');
         handleMenuClose();
     };
-
+    
     const handleOpenDialog = (lessonId) => {
         setSelectedLessonId(lessonId);
-        setOpenDialog(true);
+        setOpenDeleteDialog(true);
     };
 
-    const handleCloseDialog = (confirmed) => {
-        setOpenDialog(false);
+    const handleCloseDialogDelete = (confirmed) => {
+        setOpenDeleteDialog(false);
         if (confirmed && selectedLessonId) {
             handleDeleteLesson(selectedLessonId);
+        }
+    };
+
+    const confirmSaveLesson = () => {
+        setOpenSaveDialog(true);
+    };
+    
+    const handleCloseSaveDialog = (confirmed) => {
+        setOpenSaveDialog(false);
+        if (confirmed) {
+            handleSaveLesson(); // Call the actual save logic if the user confirms
+        }
+    };
+
+    const confirmUpdateLesson = () => {
+        setOpenUpdateDialog(true);
+    };
+    
+    const handleCloseUpdateDialog = (confirmed) => {
+        setOpenUpdateDialog(false);
+        if (confirmed) {
+            handleSaveLesson(); // Call the actual save logic if the user confirms
         }
     };
 
@@ -253,7 +277,7 @@ const TeacherLessonsBox = () => {
                                 onClick={openBadgeModal}
                                 style={{ backgroundColor: '#ffb100', color: '#181A52', fontFamily: 'Poppins', fontWeight: 'bold' }}
                             >
-                                Add Badge
+                                {isEditing ? 'Change badge' : 'Add badge'}
                             </Button>
 
                             {/* Display selected badge below the button */}
@@ -269,10 +293,10 @@ const TeacherLessonsBox = () => {
                         <div className='nlf-button-group'>
                             <Button 
                                 variant="contained" 
-                                onClick={handleSaveLesson}
+                                onClick={isEditing ? confirmUpdateLesson : confirmSaveLesson}
                                 style={{ marginRight: '10px', backgroundColor:'#ffb100', color: '#181A52', fontFamily: 'Poppins', fontWeight:'bold' }}
                             >
-                                Save
+                                {isEditing ? 'Edit' : 'Create'}
                             </Button>
                             <Button 
                                 variant="contained"
@@ -416,8 +440,22 @@ const TeacherLessonsBox = () => {
             {/* REPLACED OLD DIALOG TO A REUSABLE DIALOG */}
 
             <ReusableDialog 
-                status={openDialog} 
-                onClose={handleCloseDialog} 
+                status={openSaveDialog} 
+                onClose={handleCloseSaveDialog} 
+                title="Confirm Lesson Creation" 
+                context="Are you sure you want to save this lesson?"
+            />
+
+            <ReusableDialog 
+                status={openUpdateDialog} 
+                onClose={handleCloseUpdateDialog} 
+                title="Confirm Lesson Update" 
+                context="Are you sure you want to edit this lesson?"
+            />
+            
+            <ReusableDialog 
+                status={openDeleteDialog} 
+                onClose={handleCloseDialogDelete} 
                 title="Confirm Delete" 
                 context="Are you sure you want to delete this lesson? All of its content including the topics, quizzes and progress will also be deleted."
             />

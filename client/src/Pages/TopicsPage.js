@@ -48,8 +48,6 @@ const TopicsPage = () => {
     }
   };
 
-
-
   useEffect(() => {
     const fetchLessonTopics = async () => {
       try {
@@ -181,6 +179,16 @@ const TopicsPage = () => {
       behavior: 'smooth', // Smooth scrolling effect
     });
   };
+
+  // useEffect to scroll to the top after selectedTopic is updated
+  useEffect(() => {
+    if (selectedTopic) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth', // Smooth scrolling effect
+      });
+    }
+  }, [selectedTopic]);
 
   const handleNextClick = async () => {
     setLoading(true);

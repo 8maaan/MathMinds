@@ -27,7 +27,21 @@ const OptionButton = styled(Button)({
   fontSize: '50px',
   margin: '5px',
   color: 'white',
-  borderRadius: '10px'
+  borderRadius: '10px',
+  '@keyframes bounce': {
+    '0%, 100%': {
+      transform: 'translateY(0)',
+      'animation-timing-function': 'cubic-bezier(0.8, 0, 1, 1)',
+    },
+    '50%': {
+      transform: 'translateY(-0.5rem)',
+      'animation-timing-function': 'cubic-bezier(0, 0, 0.2, 1)',
+    },
+  },
+  
+  '&:hover': {
+    animation: 'bounce 1s infinite', // apply the bounce animation on hover
+  },
 });
 
 const QuizQuestionForm = () => {
@@ -135,7 +149,12 @@ const QuizQuestionForm = () => {
   }
 
   const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
-  const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
+  const optionColors = [
+    { defaultColor: "#f94848", hoverColor: "#d13d3d"},
+    { defaultColor: "#4cae4f", hoverColor: "#429645"},
+    { defaultColor: "#2874ba", hoverColor: "#2265a3"},
+    { defaultColor: "#f4cc3f", hoverColor: "#dbb739"}
+];
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -211,7 +230,16 @@ const QuizQuestionForm = () => {
                 <OptionButton
                   ref={(el) => optionsRef.current[idx] = el}
                   key={`${currentQuestionIndex}-${idx}`}
-                  sx={{ bgcolor: optionColors[idx % optionColors.length], color: '#181a52', minWidth: '100px', marginBottom: '20px', fontSize: optionFontSize }}
+                  sx={{
+                    bgcolor: optionColors[idx % optionColors.length].defaultColor, // Apply the default color
+                    color: '#fff', // Keep text color white for better contrast
+                    minWidth: '100px',
+                    marginBottom: '20px',
+                    fontSize: optionFontSize,
+                    '&:hover': {
+                      bgcolor: optionColors[idx % optionColors.length].hoverColor // Apply the hover color
+                    }
+                  }}
                   onClick={() => handleOptionClick(option)}
                   disabled={selectedOption !== null}
                 >
