@@ -445,8 +445,8 @@ const EditTopic = () => {
             <ReusableDialog
                 status={openDialog} 
                 onClose={handleCloseDialog} 
-                title="Confirm Topic Creation" 
-                context={`Are you sure you want to create the topic titled "${topicTitle}"`}
+                title="Confirm Topic Update" 
+                context={`Are you sure you want to update ${topicTitle}?`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

@@ -45,7 +45,19 @@ const TeacherLessonsBox = () => {
                 )
             );
         }
+
     }, [location.state]);
+
+    useEffect(() => {
+        if (location.state?.snackbar) {
+            const { status, severity, message } = location.state.snackbar;
+            if (status) {
+                handleSnackbarOpen(severity, message);
+                navigate(location.pathname, { replace: true });
+            }
+        }
+    }, [location, navigate]);
+    
 
     const handleSaveLesson = async () => {
         try {
@@ -278,7 +290,7 @@ const TeacherLessonsBox = () => {
                         </div>
                         <div>
                             <p className="lesson-number">Lesson {index + 1}</p>
-                            <h2 className="lesson-title">{lesson.lessonTitle}</h2>
+                            <Typography sx={{fontSize:"30px", fontWeight:"bold", fontFamily:"Poppins", marginBottom:"15px"}}>{lesson.lessonTitle}</Typography>
                             {lesson.score !== undefined && (
                                 <Typography variant="body1" sx={{ mt: 1, color: '#181A52' }}>
                                     Quiz Score: {lesson.score}

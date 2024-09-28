@@ -110,7 +110,11 @@ const EditLessonQuiz = () => {
 
         const response = await updateLessonQuiz(lessonQuizId, requestBody);
         if (response.success) {
-            navigate('/lessons-teacher');
+            navigate('/lessons-teacher', {
+                state: {
+                    snackbar: { status: true, severity: 'success', message: response.message }
+                }
+            });
             console.log(response.message);
         } else {
             console.log(response.message);

@@ -56,7 +56,7 @@ const LessonProgressPage = () => {
                                                     }
                                                 }}
                                             />
-                                            <div className="progress-percentage">{progress}%</div>
+                                            <div className="progress-percentage">{progress.toFixed(0)}%</div>
                                         </div>
                                     ))}
                                 </div>

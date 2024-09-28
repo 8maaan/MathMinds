@@ -4,7 +4,7 @@
 }
 
 .Profilepage {
-    background-image: url('../Images/BG2.png');
+    background-image: url('../Images/BG3.png');
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat; /* Ensure no repeat */
@@ -153,7 +153,9 @@
 }
 
 @media (max-width: 600px) {
-    .badges-content-container {
+
+    .badges-content-container{
+        margin-top: 15%;
         width: 70%;
     }
 }

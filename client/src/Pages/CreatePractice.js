@@ -82,22 +82,8 @@ const CreatePractice = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         
-        const incompleteQuestions = practiceQuestions.some(q => 
-            !q.question || 
-            !q.correctAnswer || 
-            q.incorrectAnswers.some(a => a === '')
-        );
-        
-        if (incompleteQuestions) {
-            handleSnackbarOpen('error', 'Please complete all fields for each question.');
-            return;
-        }
-    
         const practiceQAObject = practiceQuestions.reduce((acc, item, index) => {
             const filteredIncorrectAnswers = item.incorrectAnswers.filter(answer => answer !== '');
-            if (!item.question || !item.correctAnswer || filteredIncorrectAnswers.length < 3) {
-                return acc; 
-            }
             acc[index + 1] = {
                 question: item.question,
                 correctAnswer: item.correctAnswer,
@@ -125,7 +111,6 @@ const CreatePractice = () => {
             handleSnackbarOpen('error', 'Could not create practice, try again later.');
         }
     };
-    
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
