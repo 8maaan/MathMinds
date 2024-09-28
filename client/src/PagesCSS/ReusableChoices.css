@@ -8,17 +8,17 @@
     height: 60%;
     box-shadow: 0px 3px rgba(184, 184, 184, 0.9);
     border-radius: 25px;
-    background-color: #F6E6C3;    
+    background-color: #F6E6C3;  
 }
 .Persona-button{
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 25px 25px 0px 0px;
-    width: 90%;
+    border-radius: 20px 20px 0px 0px;
+    width: 85%;
     height: 25%;
     font-family: 'Poppins';
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 500;   
     color: #181A52;
     transition: transform 0.3s ease;
@@ -35,11 +35,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 85%;
     height: 25%;
     background-color: #518BBC;
     font-family: 'Poppins';
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 500;   
     color: #181A52;
     transition: transform 0.3s ease;
@@ -55,11 +55,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 85%;
     height: 25%;
-    border-radius: 0px 0px 25px 25px;
+    border-radius: 0px 0px 20px 20px;
     font-family: 'Poppins';
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 500;   
     color: #181A52;
     transition: transform 0.3s ease;

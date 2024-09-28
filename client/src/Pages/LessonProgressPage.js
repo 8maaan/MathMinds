@@ -16,7 +16,6 @@ const LessonProgressPage = () => {
                 const result = await getProgressForAllLessonsFromDb(user.uid);
                 if (result.success) {
                     setLessonProgress(result.data);
-                    console.log("Lesson Progress Data:", result.data);
                 } else {
                     console.error("Failed to fetch lesson progress:", result.message);
                 }

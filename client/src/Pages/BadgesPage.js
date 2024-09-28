@@ -26,7 +26,6 @@ const BadgesPage = () => {
                 const badgesResult = await getBadgesForUser(user.uid);
                 if (badgesResult.success) {
                     setBadges(Object.entries(badgesResult.data)); // Convert object to array of entries
-                    console.log("User Badges Data:", badgesResult.data);
                 } else {
                     console.error("Failed to fetch badges:", badgesResult.message);
                 }

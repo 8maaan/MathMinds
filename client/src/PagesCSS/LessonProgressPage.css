@@ -191,6 +191,12 @@
         width: 100%;
         align-items: end;
     }
+
+    .lesprog-lessons-scrollable-container {
+        overflow-y: auto;
+        max-height: 100vh; /* Adjust this value based on your layout */
+     
+    }
 }
 
 /*i rename lang ni rad kay maguba tungod same same silag classname*/
