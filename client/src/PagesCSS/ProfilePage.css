@@ -3,13 +3,31 @@
     src: url('../Fonts/Poppins-Regular.ttf') format('truetype');
 }
 
+.Profilepage { 
+    background-image: url('../Images/BG3.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat; /* Ensure no repeat */
+    min-height: 100vh; /* Ensure it covers the full viewport height */
+    background-color: #f0f0f0; /* Fallback color */
+    position: relative;
+ 
+}
+
+.body {
+    background-attachment: fixed;
+    min-height: 100vh;
+  
+}
 
 .profile-wrapper,
-.profile-content-container{
+.profile-content-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    width: 100%;
+    margin-top: 5%;
+  
 }
 
 .profile-content-container{
@@ -17,7 +35,7 @@
     height: 60vh;
     /*background-color: #FAFAFA;*/
     padding: 2.5%;
-    /* border: solid black 1px;  */
+
     
 }
 
@@ -25,39 +43,40 @@
 .personalinfo-left-side{
     display: flex;
     height: 100%;
-    /* border: solid black 1px;  */
+
 }
 .personalinfo-right-side{
     flex-direction: column;
     width: 65%;
     /*overflow-y: auto;*/
+  
 }
 .personalinfo-left-side{
     display: flex;
     width: 35%;
-    /* border: solid rgb(54, 140, 253) 1px;    */
+
 }
 .PI-container{
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    /* border: 1px solid #0004fd; */
     background-color: #F6E6C3;  
     box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
     border-radius: 25px;  
+  
 }
 .PI-title{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid #00ff80; */
     font-family: 'Poppins';
     font-size: 30px;
     font-weight: 900;
     color: #181A52;
     width: 100%;
     height: 20%;
+    /* KARI */
 }
 
 .logo-and-userinfo-container{
@@ -65,14 +84,12 @@
     flex-direction: row;
     width: 100%;
     height: 80%;
-    /* border: 1px solid #000000; */
 }
 
 .profile-logo-container{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid #d80077; */
     width: 40%;
     height: 50%;
 }
@@ -87,7 +104,6 @@
 .userinfo-container{
     display: flex;
     flex-direction: column;
-    /* border: 1px solid #e00000; */
     width: 60%;
     height: 100%;
 }
@@ -95,7 +111,6 @@
 .infocontains{
     display: flex;
     flex-direction: column;
-    /* border: 1px solid #3000a0; */
     width: 88%;
 }
 
@@ -107,33 +122,74 @@
 } */
 
 @media (max-width: 1024px) {
-    .profile-content-container{   
-        width: 80%;
+    .profile-content-container {
+        width: 90%;
     }
-
-    .PI-title{ 
-        font-size: 30px;   
-    }
+    /* KARI */
 }
 
-@media (max-width: 768px) {
-    
-    .userinfo-container{
-        margin-top: 10%;
-        align-items: center;
+@media (max-width: 768px) {/* KARI */
+    .profile-content-container {
+        flex-direction: column;
+        height: 150vh;
+        width: 100%;
     }
-    .profile-logo-container img{
-        max-width: 100%;
-        max-height: 100%;
+    .personalinfo-left-side {
+        height: 100%;
+        width: 100%;
+        align-items: end;
+    }
+    .personalinfo-right-side {
+        margin-top: 50px;
+        width: 100%;
+    }
+    .profile-logo-container {
+        width: 100%;
+        height: 30%;
+        margin-bottom: 30px;
+    }
+    .userinfo-container {
+        width: 100%;
+        height: 70%;
+    }
+    .PI-title-lesson {
+        font-size: 25px;
+    }
+    .PI-container-lesson {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        background-color: #F6E6C3;
+        box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
         border-radius: 25px;
-        margin-left: 0px;
     }
-    .PI-title{ 
-        font-size: 25px;   
+    .personalinfo-right-side-lesson {
+        margin-top: 50px;
+        width: 100%;
     }
-    .logo-and-userinfo-container {
+    .lesson-container {
+        padding: 20px;
+        margin: 10px 0 0 0;
+        border-radius: 25px;
+        width: 85%;
+    }
+    .logo-and-userinfo-container{
         display: flex;
         flex-direction: column;
     }
+    .userinfo-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+@media (max-width: 768px) {
+    .personalinfo-left-side {
+        height: 10%;
+        width: 100%;
+        align-items: end;
+    }
 }
 
+/*i rename lang ni rad kay maguba tungod same same silag classname*/

@@ -16,13 +16,20 @@ const colorPalettes = [
 const PracticeLessonList = ({ onLessonStart }) => {
     const navigateTo = useNavigate();
     const [lessons, setLessons] = useState([]);
-    const [expanded, setExpanded] = useState(null);
+    const [expanded, setExpanded] = useState({}); // Store expanded state for all panels
 
     useEffect(() => {
         const fetchLessons = async () => {
             const { success, data } = await getAllLessonsFromDb();
             if (success) {
                 setLessons(data);
+
+                // Set all panels to be expanded initially
+                const initialExpandedState = {};
+                data.forEach((_, index) => {
+                    initialExpandedState[`panel${index + 1}`] = true;
+                });
+                setExpanded(initialExpandedState);
             } else {
                 console.error("Failed to fetch lessons");
             }
@@ -31,35 +38,38 @@ const PracticeLessonList = ({ onLessonStart }) => {
     }, []);
 
     const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : null);
+        setExpanded((prevState) => ({
+            ...prevState,
+            [panel]: isExpanded,
+        }));
     };
 
-    const handleStartClick = (lesson) =>{
+    const handleStartClick = (lesson) => {
         const { lessonId, lessonTopics } = lesson;
         console.log("Lesson ID:", lessonId);
         const topicId = lessonTopics.length > 0 ? lessonTopics[0].topicId : null; 
         console.log("Topic ID:", topicId);
         navigateTo(`/practice-event/${lessonId}/${topicId}`);
     }
-    
 
-    return(
+    return (
         <div className='lesson-list' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             {lessons.map((lesson, index) => {
                 const colorPaletteIndex = index % colorPalettes.length;
                 const colorPalette = colorPalettes[colorPaletteIndex];
-                const isExpanded = expanded === `panel${index + 1}`;
+                const panelId = `panel${index + 1}`;
+                const isExpanded = expanded[panelId];
 
                 return (
                     <Accordion
                         sx={{
-                            marginTop:'1.5%',
+                            marginTop: '1.5%',
                             borderRadius: "10px",
-                            width:'80%',
+                            width: '80%',
                         }}
                         key={index}
-                        expanded={isExpanded}
-                        onChange={handleChange(`panel${index + 1}`)}
+                        expanded={isExpanded}  // Set expanded based on state
+                        onChange={handleChange(panelId)}
                     >
                         <AccordionSummary
                             sx={{
@@ -71,12 +81,12 @@ const PracticeLessonList = ({ onLessonStart }) => {
                                 textAlign: 'left'
                             }}
                             expandIcon={<ArrowDropDownIcon />}
-                            aria-controls={`panel${index + 1}-content`}
-                            id={`panel${index + 1}-header`}
+                            aria-controls={`${panelId}-content`}
+                            id={`${panelId}-header`}
                         >
                             <div>
-                                <Typography className="lesson-number" style={{ fontSize: '18px'}}>Lesson {index + 1}</Typography> 
-                                <Typography className="lesson-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins'}}>{lesson.lessonTitle}</Typography>
+                                <Typography className="lesson-number" style={{ fontSize: '18px' }}>Lesson {index + 1}</Typography>
+                                <Typography className="lesson-title" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Poppins' }}>{lesson.lessonTitle}</Typography>
                             </div>
                         </AccordionSummary>
                         <AccordionDetails
@@ -88,12 +98,12 @@ const PracticeLessonList = ({ onLessonStart }) => {
                             }}
                         >
                             <Box>
-                                <Typography className="lesson-number" sx={{fontFamily:"Poppins", paddingTop:'1%', paddingLeft:'1%'}}>{lesson.lessonDescription}</Typography>
+                                <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{lesson.lessonDescription}</Typography>
                             </Box>
 
                             <AccordionActions>
                                 <Button
-                                    style={{ backgroundColor: colorPalette.accordionColor, fontFamily:'Poppins', color:'#181A52', fontWeight:'bold' }}
+                                    style={{ backgroundColor: colorPalette.accordionColor, fontFamily: 'Poppins', color: '#181A52', fontWeight: 'bold' }}
                                     onClick={() => handleStartClick(lesson)}
                                 >
                                     Start
@@ -108,4 +118,3 @@ const PracticeLessonList = ({ onLessonStart }) => {
 }
 
 export default PracticeLessonList;
-

@@ -11,11 +11,12 @@ export const getAllLessonsFromDb = async () => {
     }
 };
 
-export const insertLessonToDb = async (newLessonTitle, newLessonDescription) => {
+export const insertLessonToDb = async (newLessonTitle, newLessonDescription, newLessonBadgeImageUrl) => {
     try {
         const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_INSERT_LESSON, {
             lessonTitle: newLessonTitle,
-            lessonDescription: newLessonDescription
+            lessonDescription: newLessonDescription,
+            lessonBadgeImageUrl: newLessonBadgeImageUrl
         });
         return { success: true, data: response.data };
     } catch (error) {
@@ -44,7 +45,7 @@ export const getLessonById = async(lessonId) => {
     }
 }
 
-export const updateLessonInDb = async (lessonId, lessonTitle, lessonDescription) => {
+export const updateLessonInDb = async (lessonId, lessonTitle, lessonDescription, lessonBadgeImageUrl) => {
     try {
         const apiUrl = process.env.REACT_APP_SPRINGBOOT_EDIT_LESSON;
         const response = await fetch(`${apiUrl}${lessonId}`, {
@@ -55,6 +56,7 @@ export const updateLessonInDb = async (lessonId, lessonTitle, lessonDescription)
             body: JSON.stringify({
                 lessonTitle,
                 lessonDescription,
+                lessonBadgeImageUrl
             }),
         });
 

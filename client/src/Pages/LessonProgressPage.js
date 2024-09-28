@@ -25,24 +25,23 @@ const LessonProgressPage = () => {
         };
         fetchLessonProgress();
     }, [user]);
-
-    return (
-        <div className="Profilepage">
-            <div className='profile-wrapper'>
-                <div className='profile-content-container'>
-                    <div className='personalinfo-left-side'>
-                        <ReusableChoices />
-                    </div>
-                    <div className='personalinfo-right-side-lesson'>
-                        <div className="PI-container-lesson">
-                            <div className="PI-title-lesson">Lesson Progress</div>
-                            <div className="lessons-scrollable-container">
-                                <div className="lessons-wrapper">
+        return (
+            <div className="lessonProgressPage">
+                <div className='lessprog-profile-wrapper'>
+                    <div className='lessprog-profile-content-container'>
+                        <div className='lessprog-personalinfo-left-side'>
+                            <ReusableChoices/>
+                        </div>
+                        <div className='lessprog-personalinfo-right-side'>
+                            <div className='lessprog-PI-container'>
+                                <div className='lessprog-PI-title'>Lesson Progress</div>
+                                <div className="lesprog-lessons-scrollable-container">
+                                <div className="lesprog-lessons-wrapper">
                                     {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
-                                        <div className="lesson-container" key={lessonTitle}>
-                                            <div className="lesson-title">{lessonTitle}</div>
+                                        <div className="lesprog-lesson-container" key={lessonTitle}>
+                                            <div className="lesprog-lesson-title">{lessonTitle}</div>
                                             <LinearProgress 
-                                                className="progress-bar-wrapper"
+                                                className="lesprog-progress-bar-wrapper"
                                                 variant="determinate" 
                                                 value={progress} 
                                                 sx={{
@@ -56,17 +55,18 @@ const LessonProgressPage = () => {
                                                     }
                                                 }}
                                             />
-                                            <div className="progress-percentage">{progress.toFixed(0)}%</div>
+                                            <div className="lesprog-progress-percentage">{progress.toFixed(0)}%</div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+              
             </div>
-        </div>
-    );
+        );
 };
 
 export default LessonProgressPage;

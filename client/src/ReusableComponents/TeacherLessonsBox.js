@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../PagesCSS/LessonsBox.css';
 import TeacherLessonsTopicAccordion from './TeacherLessonsTopicAccordion';
-import { Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Tooltip } from '@mui/material';
+import { Modal, Box, Button, TextField, Typography, Menu, MenuItem, IconButton, Tooltip } from '@mui/material';
 import { getAllLessonsFromDb, insertLessonToDb, updateLessonInDb, deleteLessonFromDb } from '../API-Services/LessonAPI';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import ReusableDialog from './ReusableDialog';
 import ReusableSnackbar from './ReusableSnackbar';
 import QuizIcon from '@mui/icons-material/Quiz';
+
+const badgeOptions = [
+    'https://pxscdn.com/public/m/_v2/743523419010969714/586f75268-5004eb/OY9xcnAqtOEb/PfkyNDj2wMXkjzFGwq7MHot0ASA8LboZ6Knaf1SO.png',
+    'https://pxscdn.com/public/m/_v2/743523419010969714/586f75268-5004eb/fdf91heayl51/BeMK4jhP5iBImjvepphmSi431KBSe5G0TGiTKby1.png',
+    'https://pxscdn.com/public/m/_v2/743523419010969714/586f75268-5004eb/z5hjxWJ0HJgH/8JWBNCbHPOOGTfVBrcE8G9x9M0t2UwFkCZzGtpZ8.png',
+    'https://pxscdn.com/public/m/_v2/743523419010969714/586f75268-5004eb/WDWnPJHW8xDi/6I7KXsTtZOabxrzkSycpkcY4S2fWG6utXvY0I1A0.png'
+];
 
 const TeacherLessonsBox = () => {
     const [lessons, setLessons] = useState([]);
@@ -19,6 +26,7 @@ const TeacherLessonsBox = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedLessonId, setSelectedLessonId] = useState(null);
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
+    const [badgeModalOpen, setBadgeModalOpen] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -62,30 +70,50 @@ const TeacherLessonsBox = () => {
     const handleSaveLesson = async () => {
         try {
             if (isEditing && currentLesson.lessonId !== null) {
-                const { success, data, error } = await updateLessonInDb(currentLesson.lessonId, currentLesson.title, currentLesson.description);
+                const { success, data, error } = await updateLessonInDb(currentLesson.lessonId, currentLesson.title, currentLesson.description, currentLesson.badgeImageUrl);
                 if (success) {
                     setLessons(lessons.map(lesson => lesson.lessonId === currentLesson.lessonId ? data : lesson));
+                    handleSnackbarOpen('success', 'Lesson updated successfully'); // Show success snackbar
                     handleCancelLesson();
                 } else {
                     console.error("Failed to update lesson", error);
+                    handleSnackbarOpen('error', 'Failed to update lesson'); // Show error snackbar
                 }
             } else {
-                const { success, data, error } = await insertLessonToDb(currentLesson.title, currentLesson.description);
+                const { success, data, error } = await insertLessonToDb(currentLesson.title, currentLesson.description, currentLesson.badgeImageUrl);
                 if (success) {
                     setLessons([...lessons, data]);
+                    handleSnackbarOpen('success', 'Lesson added successfully'); // Show success snackbar
                     handleCancelLesson();
                 } else {
                     console.error("Failed to save lesson", error);
+                    handleSnackbarOpen('error', 'Failed to add lesson'); // Show error snackbar
                 }
             }
         } catch (error) {
             console.error("Error while saving lesson:", error);
+            handleSnackbarOpen('error', 'An error occurred while saving the lesson'); // Show error snackbar
         }
+    };
+    
+
+    // Badge Modal Handling
+    const openBadgeModal = () => {
+        setBadgeModalOpen(true);
+    };
+
+    const closeBadgeModal = () => {
+        setBadgeModalOpen(false);
+    };
+
+    const selectBadge = (url) => {
+        setCurrentLesson({ ...currentLesson, badgeImageUrl: url });
+        closeBadgeModal();
     };
 
     const handleCancelLesson = () => {
         setShowLessonForm(false);
-        setCurrentLesson({ title: '', description: '', lessonId: null });
+        setCurrentLesson({ title: '', description: '', lessonId: null, badgeImageUrl: ''  });
         setIsEditing(false);
     };
 
@@ -144,7 +172,7 @@ const TeacherLessonsBox = () => {
     };
 
     const handleEditLesson = (lesson) => {
-        setCurrentLesson({ title: lesson.lessonTitle, description: lesson.lessonDescription, lessonId: lesson.lessonId });
+        setCurrentLesson({ title: lesson.lessonTitle, description: lesson.lessonDescription, lessonId: lesson.lessonId, badgeImageUrl: lesson.lessonBadgeImageUrl });
         setIsEditing(true);
         setShowLessonForm(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -217,6 +245,27 @@ const TeacherLessonsBox = () => {
                             onChange={(e) => setCurrentLesson({ ...currentLesson, description: e.target.value })}
                             style={{ marginBottom: '20px' }}
                         />
+                        
+                        {/* Wrap the Add Badge Button and Badge display in a flex container */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '20px' }}>
+                            <Button
+                                variant="contained"
+                                onClick={openBadgeModal}
+                                style={{ backgroundColor: '#ffb100', color: '#181A52', fontFamily: 'Poppins', fontWeight: 'bold' }}
+                            >
+                                Add Badge
+                            </Button>
+
+                            {/* Display selected badge below the button */}
+                            {currentLesson.badgeImageUrl && (
+                                <img
+                                    src={currentLesson.badgeImageUrl}
+                                    alt="Selected Badge"
+                                    style={{ width: '100px', marginTop: '10px' }}
+                                />
+                            )}
+                        </div>
+                        
                         <div className='nlf-button-group'>
                             <Button 
                                 variant="contained" 
@@ -235,6 +284,68 @@ const TeacherLessonsBox = () => {
                         </div>
                     </Box>
                 )}
+                
+                {/* Badge Modal */}
+                <Modal open={badgeModalOpen} onClose={closeBadgeModal}>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: '400px',  // Adjust width as necessary
+                            bgcolor: 'background.paper',
+                            boxShadow: 24,
+                            p: 4,
+                            borderRadius: '10px', // Rounded corners for the modal
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',  // Center items inside the box
+                            textAlign: 'center'
+                        }}
+                    >
+                        {/* Title */}
+                        <Typography variant="h6" sx={{ mb: 2, color: '#181A52', fontFamily: 'Poppins' }}>
+                            Choose a badge for the lesson
+                        </Typography>
+
+                        {/* Container for Badge Options */}
+                        <Box className="badge-modal">
+                            {badgeOptions.map((url, index) => (
+                                <img
+                                    key={index}
+                                    src={url}
+                                    alt={`Badge ${index + 1}`}
+                                    style={{
+                                        width: '80px',
+                                        height: '80px',
+                                        cursor: 'pointer',
+                                        transition: 'transform 0.2s', // Smooth transition effect
+                                    }}
+                                    onClick={() => selectBadge(url)}
+                                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'} // Slight zoom on hover
+                                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'} // Reset zoom
+                                />
+                            ))}
+                        </Box>
+
+                        {/* Close Button */}
+                        <Button
+                            onClick={closeBadgeModal}
+                            sx={{
+                                mt: 3, backgroundColor: '#ffb100', color: '#181A52', fontFamily: 'Poppins',
+                                fontWeight: 'bold',
+                                ':hover': {
+                                    backgroundColor: '#e69900'
+                                }
+                            }}
+                        >
+                            Close
+                        </Button>
+                    </Box>
+                </Modal>
+
+
                 {lessons.map((lesson, index) => (
                     <Box key={index} className="lesson-box">
                         <div className="lesson-buttons">
