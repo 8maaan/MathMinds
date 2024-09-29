@@ -5,10 +5,12 @@ import Lottie from 'lottie-react';
 import Birdy from '../JSON/BirdyLanding.json';
 import Journey from '../JSON/JourneyLanding.json';
 import Collab from '../JSON/CollabLanding.json';
+import GitHubIcon from '../Images/LandingPageImages/github-mark/github-mark.png';
+import GitHubIconWhite from '../Images/LandingPageImages/GitHub-Logos/GitHub_Logo_White.png';
 import LandingPageSection3 from '../ReusableComponents/LandingPageSection';
 import '../PagesCSS/LandingPage.css';
 import RevampedLAppBar from '../ReusableComponents/RevampedLAppBar';
-import { Button, AppBar, Typography} from '@mui/material';
+import { Button, AppBar, Box, IconButton, Divider, Tooltip} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
@@ -22,15 +24,12 @@ const LandingPage = () => {
         });
     }, []);  
 
-    console.log(window.outerWidth);
-
-
     return (
         <div>
             <div className='body'>
                 <RevampedLAppBar />
                 <div data-aos="fade-down" className='landing-wrapper'>
-                    <div className='content-container'>
+                    <div style={{}} className='content-container'>
                         <div className='content-right-side'>
                             <div className='right-side-text'>
                                 <p>We Make</p>
@@ -121,7 +120,7 @@ const LandingPage = () => {
                         size='large'
                         onClick={()=>{navigateTo('/register')}} 
                         sx={{
-                            my: 2, ml: 2, mr: 2, color: '#181A52', 
+                            my: 2, ml: 2, mr: 2,
                             fontFamily: 'Poppins, sans-serif', 
                             backgroundColor: '#FFB100', 
                             color: '#181A52', 
@@ -136,10 +135,32 @@ const LandingPage = () => {
                         Get Started
                     </Button>
                 </div>
-                <AppBar position="static" sx={{ height: '50px', justifyContent: 'center', top: 'auto', bottom: 0, backgroundColor: '#FFB100'}}>
-                    <Typography color="black" sx={{fontFamily: 'Poppins, sans-serif', fontWeight: '300'}}>
-                        All Rights Reserved.
-                    </Typography>
+
+                <AppBar position="static" sx={{ height: '50px', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFB100'}}>
+                    <Box sx={{display: 'inline-flex'}}>
+                        <Tooltip title="Link to the GitHub Front-End Repository">
+                            <IconButton 
+                                size="small" 
+                                href="https://github.com/8maaan/MathMinds"
+                                target="__blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img src={GitHubIcon} alt='GitHub Icon' height='30px'/>
+                            </IconButton>
+                        </Tooltip>
+                         <Divider orientation="vertical" variant="middle" flexItem />
+                        <Tooltip title="Link to the GitHub Back-End Repository">
+                            <IconButton 
+                                size="small" 
+                                aria-label="redirect to backend repo" 
+                                href="https://github.com/johnrodolph/Mathminds-API"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img src={GitHubIconWhite} alt='GitHub Icon' height='30px'/>
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 </AppBar>
             </div>
         </div>

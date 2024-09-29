@@ -30,8 +30,10 @@
   width: 70%;
   height: 60vh;
   border: none;
-  border-radius: 55px;
+  border-radius: 120px;
   padding: 3%;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 12px solid #181A52;
 }
 
 .content-left-side, .content-right-side{
@@ -104,6 +106,7 @@
   border-radius: 55px;
   backdrop-filter: blur(4px);
   padding: 3%;
+  border-radius: 120px;
 }
 
 .section-content-left-side, .section-content-right-side {
@@ -161,6 +164,9 @@
     .section-wrapper, 
     .section-content-container {
         flex-direction: column;
+        border: none;
+        background-color: rgba(255, 255, 255, 0);
+        border-radius: none;
     }
 
     .section-content-container {
