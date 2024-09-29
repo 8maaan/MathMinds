@@ -157,17 +157,52 @@
     height: 180px; /* Set a fixed height for badges */
     width: 105px; /* Set a fixed width for badges */
 }
+
 .badge-image {
+    position: relative; /* Important for pseudo-element positioning */
     width: 100px;
     height: 100px;
     object-fit: cover;
     margin-bottom: 5px;
+    border-radius: 1px;
+    overflow: hidden; /* Ensures shine stays within the image bounds */
 }
+
+.badge-image::before {
+    content: ''; 
+    position: absolute;
+    top: 0;
+    left: -150px; /* Start outside the image */
+    width: 150px; /* Width of the shine effect */
+    height: 100%; 
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 30%, /* Transparent at the start */
+        rgba(255, 255, 255, 0.8),   /* Bright white in the center */
+        rgba(255, 255, 255, 0) 70%  /* Transparent towards the end */
+    );
+    transform: skewX(-20deg); /* Adds a skew effect to the shine */
+    animation: shine 2s infinite linear; /* Adjust the duration as needed */
+}
+
+@keyframes shine {
+    0% {
+        left: -150px; /* Start from the left */
+    }
+    50% {
+        left: 100px; /* Pass through the center */
+    }
+    100% {
+        left: 250px; /* End off to the right */
+    }
+}
+
 .badge-title {
     font-family: 'Poppins';
     font-size: 13px;
     text-align: center;
     color: #333;
+    margin-top: 2px;
 }
 .loading {
     font-family: 'Poppins';
