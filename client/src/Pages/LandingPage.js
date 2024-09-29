@@ -51,7 +51,7 @@ const LandingPage = () => {
                 
 
                 <div data-aos="fade-up-left" className='section-wrapper'>
-                    <div style={{backgroundColor: 'rgba(255, 167, 38, 0.5)'}} className='section-content-container'>
+                    <div style={{background: 'linear-gradient(to right, #ffa726, #ffa72680 75%)', border: '12px solid #ffa726'}} className='section-content-container'> 
                         <div className='section-content-left-side'>
                            <div className='section-content-image'>
                                 <Lottie animationData={Journey} loop={true} alt='Journey' style={{ width: window.innerWidth <= 768 ? '40%' : '100%' }} />
@@ -72,7 +72,7 @@ const LandingPage = () => {
                 </div>
 
                 <div data-aos="fade-up-right" className='section-wrapper'> 
-                    <div style={{backgroundColor: 'rgba(179, 157, 219, 0.5)'}} className='section-content-container'>
+                    <div style={{background: 'linear-gradient(to right, #b39ddb80, #b39ddb 75%)', border: '12px solid #b39ddb'}} className='section-content-container'>
                         <div className='section-content-left-side'>
                             <div className='section-header-container'>
                                 <p>Collaborative/</p>
@@ -93,7 +93,7 @@ const LandingPage = () => {
                 </div>
 
                 <div data-aos="fade-up-left"className='section-wrapper'>
-                    <div style={{backgroundColor: 'rgba(240, 222, 56, 0.5)'}} className='section-content-container'>
+                    <div style={{background: 'linear-gradient(to right, #f0de38, #f0de3880 85%)', border: '12px solid #f0de38'}} className='section-content-container'>
                         <div style={{marginBottom: '20px'}}className='section-content-left-side'>
                            <div className='section-content-image'>
                                 <LandingPageSection3/>     
