@@ -370,7 +370,7 @@ const CreateTopic = () => {
                 status={openDialog} 
                 onClose={handleCloseDialog} 
                 title="Confirm Topic Creation" 
-                context={`Are you sure you want to create the topic titled "${topicTitle}"`}
+                context={`Are you sure you want to create a new topic titled "${topicTitle}"?`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

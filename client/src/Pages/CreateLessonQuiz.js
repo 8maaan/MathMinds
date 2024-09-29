@@ -7,12 +7,18 @@ import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
 import { insertLessonQuiz } from '../API-Services/LessonQuizAPI';
 import { useNavigate } from 'react-router-dom';
+import ReusableDialog from '../ReusableComponents/ReusableDialog';
+import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 
 const CreateLessonQuiz = () => {
     const [quizLesson, setQuizLesson] = useState('');
     const [quizQuestions, setQuizQuestions] = useState([]);
     const [lessons, setLessons] = useState([]);
     const [isAdministered, setIsAdministered] = useState(false);
+    const [selectedLesson, setSelectedLesson] = useState(null);
+
+    const [openDialog, setOpenDialog] = useState(false);
+    const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
 
     const navigate = useNavigate();
 
@@ -27,6 +33,17 @@ const CreateLessonQuiz = () => {
         };
         fetchLessons();
     }, []);
+
+    const handleLessonChange = (event) => {
+        const selectedLessonId = event.target.value;
+        setQuizLesson(selectedLessonId);
+      
+        // Find the selected lesson from the lessons array
+        const selectedLesson = lessons.find(lesson => lesson.lessonId === selectedLessonId);
+        if (selectedLesson) {
+          setSelectedLesson(selectedLesson.lessonTitle);
+        }
+    };
 
     const handleAddQuestion = () => {
         setQuizQuestions([
@@ -58,10 +75,9 @@ const CreateLessonQuiz = () => {
             });
         }
     };
+    console.log(quizLesson);
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
-
         const lessonQuizQA = quizQuestions.reduce((acc, item, index) => {
             acc[index + 1] = {
                 question: item.question,
@@ -79,25 +95,61 @@ const CreateLessonQuiz = () => {
 
         const response = await insertLessonQuiz(requestBody);
         if (response.success) {
-            navigate('/lessons-teacher');
-            console.log(response.message);
+            handleSnackbarOpen('success', 'Topic has been created successfully.');
+            setTimeout(() => {
+                navigate('/lessons-teacher');
+            }, 1250)
         } else {
-            console.log(response.message);
+            handleSnackbarOpen('error', 'Could not create a topic, try again later.');
         }
+    };
+
+    const handleOpenDialog = (event) => {
+        event.preventDefault();
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = (confirmed) => {
+        setOpenDialog(false);
+        if (confirmed) {
+            handleSubmit();
+        }
+    };
+
+    const handleSnackbarOpen = (severity, message) => {
+        setSnackbar({ status: true, severity, message });
+    };
+
+    const handleSnackbarClose = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar((prevSnackbar) => ({
+            ...prevSnackbar,
+            status: false
+        }))
     };
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <Typography class='createTopic-title'>Add a quiz</Typography>
+            <form onSubmit={handleOpenDialog}>
+                <Typography class='createTopic-title'>Add Lesson Quiz</Typography>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
                         {/* Quiz Lesson */}
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Lesson</InputLabel>
-                            <Select label='Select Lesson' value={quizLesson} autoWidth onChange={(event) => { setQuizLesson(event.target.value) }} required>
+                            <Select
+                                label="Select Lesson"
+                                value={quizLesson}
+                                autoWidth
+                                onChange={handleLessonChange}
+                                required
+                                >
                                 {lessons && lessons.map(lesson => (
-                                    <MenuItem key={lesson.lessonId} value={lesson.lessonId}>{lesson.lessonTitle}</MenuItem>
+                                    <MenuItem key={lesson.lessonId} value={lesson.lessonId}>
+                                    {lesson.lessonTitle}
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -144,6 +196,13 @@ const CreateLessonQuiz = () => {
                     <Button type="submit" variant='contained' sx={{ mt: 2, fontFamily:'Poppins' }}>Submit</Button>
                 </div>
             </form>
+            <ReusableDialog
+                status={openDialog} 
+                onClose={handleCloseDialog} 
+                title="Confirm Lesson Quiz Creation" 
+                context={`Are you sure you're done creating the quiz for "${selectedLesson}" lesson?`}
+            />
+            <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
     );
 };

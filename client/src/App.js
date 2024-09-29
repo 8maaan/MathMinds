@@ -21,7 +21,7 @@ import QuizQuestionForm from './Pages/QuizQuestionForm';
 import EditPracticePage from './Pages/EditPractice';
 import CreateQuizPracticePage from './Pages/CreatePractice';
 import ProfileLessonPage from './Pages/ProfileLesson';
-import CreatePracticePage from './Pages/CreatePractice';
+// import CreatePracticePage from './Pages/CreatePractice';
 import TopicCardPage from './Pages/TopicCard';
 import PracticeChoicePage from './Pages/PracticeChoice';
 import QuestionFormPage from './Pages/PracticeQuestionForm';
@@ -58,7 +58,7 @@ function App() {
             <Route path="/practice" element={<ProtectedRoute> <PracticePage/> </ProtectedRoute>}/>
             <Route path="/questionForm/:topicId" element={<QuestionFormPage />} />
             <Route path="/profilelesson" element={<ProfileLessonPage />} />
-            <Route path="/createPractice" element={<CreatePracticePage />} />
+            {/* <Route path="/createPractice" element={<CreatePracticePage />} /> */}
 
             <Route path="/practice-event/:lessonId/:topicId" element={<ProtectedRoute><PracticeEventPage /></ProtectedRoute>} />
             <Route path="/topiccard" element={<ProtectedRoute> <TopicCardPage/> </ProtectedRoute>}/>
@@ -71,8 +71,8 @@ function App() {
             <Route path="/edit-topic/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher ><EditTopicPage /></ProtectedRoute>} />
             <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher ><CreateLessonQuizPage /></ProtectedRoute>} />
             <Route path="/create-practice-quiz" element={<ProtectedRoute requireTeacher><CreateQuizPracticePage /></ProtectedRoute>} />
-            <Route path="/edit-lesson-quiz/:lessonQuizId" element={<ProtectedRoute requireTeacher ><EditLessonQuizPage /></ProtectedRoute>} />
-            <Route path="/edit-practice/:topicId" element={<ProtectedRoute> <EditPracticePage/> </ProtectedRoute>} />
+            <Route path="/edit-lesson-quiz/:lessonQuizId/:currentLessonTitle" element={<ProtectedRoute requireTeacher ><EditLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/edit-practice/:topicId/:currentTopicTitle" element={<ProtectedRoute> <EditPracticePage/> </ProtectedRoute>} />
             <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
