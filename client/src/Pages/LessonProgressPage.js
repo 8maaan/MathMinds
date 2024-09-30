@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LinearProgress } from '@mui/material';
+import { Alert, Button, LinearProgress } from '@mui/material';
 import '../PagesCSS/LessonProgressPage.css';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import { getProgressForAllLessonsFromDb } from '../API-Services/UserAPI';
@@ -27,6 +27,15 @@ const LessonProgressPage = () => {
     }, [user]);
         return (
             <div className="lessonProgressPage">
+                {!user.emailVerified && (
+                    <Alert
+                        variant="filled"
+                        severity="warning"
+                        sx={{ display: 'flex', justifyContent: 'center' }}
+                    >
+                        Please verify your email address to update your account information. An email has been sent to your inbox with verification instructions
+                    </Alert>
+                )}
                 <div className='lessprog-profile-wrapper'>
                     <div className='lessprog-profile-content-container'>
                         <div className='lessprog-personalinfo-left-side'>

@@ -8,9 +8,9 @@
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat; /* Ensure no repeat */
-    min-height: 100vh; /* Ensure it covers the full viewport height */
     background-color: #f0f0f0; /* Fallback color */
-    position: relative;
+    margin-top: 80px;
+    height: calc(100vh - 80px); /* Subtract the margin-top */
 
 }
 
@@ -26,7 +26,6 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 5%;
    
 }
 

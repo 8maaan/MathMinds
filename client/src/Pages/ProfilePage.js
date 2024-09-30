@@ -3,7 +3,7 @@ import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/ProfilePage.css';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import userprofilepic from '../Images/UserDP.png';
-import { Button, TextField, Snackbar } from '@mui/material';
+import { Button, TextField, Snackbar, Alert } from '@mui/material';
 import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Services/UserAPI';
 import { isEmailValid } from '../ReusableComponents/txtFieldValidations';
 import MuiAlert from '@mui/material/Alert';
@@ -45,7 +45,6 @@ const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText
 );
 
 const ProfilePage = () => {
-    const { user } = UserAuth();
     const [userProfileInfo, setUserProfileInfo] = useState({ fname: '', lname: '', email: '', password: '***********' });
     const [newPassword, setNewPassword] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
@@ -54,6 +53,8 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+    const { user } = UserAuth();
 
     useEffect(() => {
         const fetchUserProfileInfo = async () => {
@@ -87,7 +88,7 @@ const ProfilePage = () => {
         setUserError(errors);
         return !Object.values(errors).some(error => error);
     };
-    
+    const { updateUserEmail } = UserAuth();
 
     const handleUpdate = async () => {
         if (!validateInputs()) return;
@@ -98,17 +99,19 @@ const ProfilePage = () => {
         };
 
         try {
+            await updateUserEmail(userProfileInfo.email);
             await updateUserProfileInfoToDb(user.uid, updatedProfileInfo);
             setIsEditing(false);
-            handleSnackbarOpen('Your Profile Information is updated');
+            handleSnackbarOpen('Your Profile Information is updated', "success");
         } catch (error) {
             console.error("Error updating user profile info: ", error);
-            handleSnackbarOpen("Failed to update profile. Please try again.");
+            handleSnackbarOpen("Failed to update profile. Please try again later.",  "error");
         }
     };
 
-    const handleSnackbarOpen = (message) => {
+    const handleSnackbarOpen = (message, severity) => {
         setSnackbarMessage(message);
+        setSnackbarSeverity(severity);
         setSnackbarOpen(true);
     };
 
@@ -122,6 +125,15 @@ const ProfilePage = () => {
 
     return (
         <div className="Profilepage">
+            {!user.emailVerified && (
+                <Alert
+                    variant="filled"
+                    severity="warning"
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                >
+                    Please verify your email address to update your account information. An email has been sent to your inbox with verification instructions
+                </Alert>
+            )}
             <div className='profile-wrapper'>
                 <div className='profile-content-container'>
                     <div className='personalinfo-left-side'>
@@ -234,6 +246,7 @@ const ProfilePage = () => {
                                                                 backgroundColor: '#d69500'
                                                             }
                                                         }}
+                                                        disabled={!user.emailVerified}
                                                     >
                                                         Edit
                                                     </Button>
@@ -256,7 +269,7 @@ const ProfilePage = () => {
                     elevation={6}
                     variant="filled"
                     onClose={() => setSnackbarOpen(false)}
-                    severity="success"
+                    severity={snackbarSeverity}
                 >
                     {snackbarMessage}
                 </MuiAlert>

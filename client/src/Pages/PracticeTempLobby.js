@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { firebaseRTDB } from '../Firebase/firebaseConfig'
-import { ref, onValue, off, update, serverTimestamp, push, set } from "firebase/database";
+import { ref, onValue, off, update, serverTimestamp, push, set, onDisconnect } from "firebase/database";
 import { getRandomizedPracticeByTopicId } from "../API-Services/PracticeAPI"
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import '../PagesCSS/PracticeMultiplayerLobby.css'
@@ -10,6 +10,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SendIcon from '@mui/icons-material/Send';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GameSettingsModal from '../ReusableComponents/GameSettingsModal';
+import { useUserInfo } from '../ReusableComponents/useUserInfo';
 
 const PracticeTempLobby = () => {
     const { roomCode } = useParams();
@@ -34,10 +35,14 @@ const PracticeTempLobby = () => {
         }
     }, [messages]);
 
-    // FirebaseRTDB listener for host, players and chat
+    // FirebaseRTDB listener for host, players, chat and disconnection
     useEffect(() => {
         const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
         const messagesRef = ref(firebaseRTDB, `rooms/${roomCode}/messages`);
+        const playerRef = ref(firebaseRTDB, `rooms/${roomCode}/players/${user.uid}`);
+
+        // Attach onDisconnect to remove the player from the room when they leave or disconnect
+        onDisconnect(playerRef).remove();
         
         const unsubscribe = onValue(roomRef, (snapshot) => {
             const data = snapshot.val();
@@ -46,6 +51,16 @@ const PracticeTempLobby = () => {
                 setPlayers(data.players || {});
                 setIsHost(data.host === user.uid);
                 console.log(isHost);
+
+                // Check if the host has disconnected
+                if (data.host && !data.players[data.host]) {
+                    // Select a new host
+                    const playerIds = Object.keys(data.players);
+                    if (playerIds.length > 0) {
+                        const newHostId = playerIds[0]; // Choose first player as new host
+                        update(roomRef, { host: newHostId }); // Update host in Firebase
+                    }
+                }
             }
 
             if (data && (data.state === "playing" || data.state === "starting")) {
@@ -63,8 +78,33 @@ const PracticeTempLobby = () => {
         return () => {
             off(roomRef);
             off(messagesRef);
+            off(playerRef);
         };
     }, [roomCode, navigateTo]);
+
+    useEffect(() => {
+        const playerRef = ref(firebaseRTDB, `rooms/${roomCode}/players/${user.uid}`);
+    
+        // Check if the player is already in the room
+        onValue(playerRef, (snapshot) => {
+            if (!snapshot.exists()) {
+                // Player not in the room, add them back
+                try{
+                    set(playerRef, {
+                        name: user.displayName,
+                        uid: user.uid,
+                    });
+                }catch(e){
+                    console.log(e)
+                }
+            }
+        });
+    
+        // Clean up on unmount
+        return () => {
+            off(playerRef);
+        };
+    }, [roomCode, user.uid, players]);
 
     const startGame = async() => {
         // Implement game start logic here
@@ -74,9 +114,12 @@ const PracticeTempLobby = () => {
         try {
             console.log("Fetching new questions...");
             const { success, data } = await getRandomizedPracticeByTopicId(roomData.topicId, questionAmount);
-            console.log("Fetched questions:", data);
             if (success && data.length > 0) {
-                const questions = data;
+                const questions = data.map(question => ({
+                    ...question,
+                    incorrectAnswers: question.incorrectAnswers.filter(answer => answer.trim() !== "")
+                }));
+                
                 const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
 
                 // Initialize playerScores with all players and a score of 0
@@ -112,7 +155,7 @@ const PracticeTempLobby = () => {
     
         await set(newMessageRef, {
             userId: user.uid,
-            userName: players[user.uid]?.name || "Anonymous",
+            userName: user.displayName || "Anon",
             message: chatInput,
             timestamp: serverTimestamp()
         });

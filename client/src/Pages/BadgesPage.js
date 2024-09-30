@@ -3,6 +3,7 @@ import '../PagesCSS/BadgesPage.css';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import { getBadgesForUser, getUserProfileInfoFromDb } from '../API-Services/UserAPI'; // Adjust the path as needed
 import { UserAuth } from '../Context-and-routes/AuthContext';
+import { Alert } from '@mui/material';
 
 const BadgesPage = () => {
     const { user } = UserAuth();
@@ -40,6 +41,15 @@ const BadgesPage = () => {
 
     return (
         <div className="badgesPage">
+                {!user.emailVerified && (
+                    <Alert
+                        variant="filled"
+                        severity="warning"
+                        sx={{ display: 'flex', justifyContent: 'center' }}
+                    >
+                        Please verify your email address to update your account information. An email has been sent to your inbox with verification instructions
+                    </Alert>
+                )}
                 <div className='badgesPage-badges-wrapper'>
                     <div className='badgesPage-badges-content-container'>
                         <div className='badgesPage-badgesinfo-left-side'>
