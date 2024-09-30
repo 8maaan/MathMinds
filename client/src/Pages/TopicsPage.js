@@ -302,9 +302,11 @@ const TopicsPage = () => {
                   {/* bgcolor to f4f4f4 if dili question ang value.type */}
                   {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`} style={{
-                      backgroundColor: ['text', 'storyboard', 'image', 'youtubeVid', 'embeddedGame'].includes(value.type)
-                        ? '#D2E6D3'
-                        : '#F6E6C3',
+                      backgroundColor: value.type === 'embeddedGame'
+                        ? '#F5D1D1'
+                        : ['text', 'storyboard', 'image', 'youtubeVid'].includes(value.type)
+                          ? '#D2E6D3'
+                          : '#F6E6C3',
                     }}>
                       {/* FOR TEXTS/PARAGRAPH */}
 
@@ -381,7 +383,7 @@ const TopicsPage = () => {
                       )}
 
                       {value.type ==="youtubeVid" && (
-                        <div>
+                        <div style={{paddingTop: '30px', paddingBottom:'15px'}}>
                           <div>
                             <iframe
                               height="450"
