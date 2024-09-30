@@ -61,11 +61,11 @@ const LandingPage = () => {
                                 </div>
                             <div className='landing-one-right-side'>
                                     <div className='landing-one-right-side-text'>
-                                            <p>Learn at Your Own Pace</p>
+                                            <p>Welcome to Math Adventure!</p>
                                         </div>
                                     <div className='landing-one-right-side-desc'>
-                                            <p>Dive into lessons made just for you! Each lesson is designed to teach math concepts at your grade level.
-                                                 As you complete lessons, you'll unlock awesome badges to show off your progress!
+                                            <p>Learning math has never been this fun! Explore exciting lessons, earn cool badges, 
+                                                and become a math master—one step at a time.
                                             </p>
                                         </div>
 
