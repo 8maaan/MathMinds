@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Box, Button, Typography, Container, Paper, IconButton } from '@mui/material';
+import { Box, Button, Typography, Container, Paper, IconButton, Tooltip } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -8,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import PracticeAnswerModal from '../ReusableComponents/PracticeAnswerModal';
 import CongratulatoryModal from '../ReusableComponents/CongratulatoryModal';
 import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
+import { getRandomizedPracticeByTopicId } from '../API-Services/PracticeAPI';
 
 const theme = createTheme({
   typography: {
@@ -21,14 +23,22 @@ const theme = createTheme({
   }
 });
 
-const OptionButton = styled(Button)({
+const OptionButton = styled(Button)(({ colorScheme }) => ({
   height: 80,
   width: '45%',
   fontSize: '1rem',
   margin: '5px',
   color: 'white',
-  borderRadius: '10px'
-});
+  borderRadius: '10px',
+  backgroundColor: colorScheme.defaultColor,
+  transition: 'background-color 0.3s ease',
+  '&:hover': {
+    backgroundColor: colorScheme.hoverColor
+  },
+  '&:disabled': {
+    backgroundColor: colorScheme.disabledColor
+  }
+}));
 
 const iconStyle = {
   fontSize: '60px',
@@ -38,8 +48,9 @@ const iconStyle = {
 
 const PracticeQuestionForm = () => {
   const { topicId } = useParams();
-  const { state } = useLocation();  
-  const { lessonId, topicTitle, questions } = state || {};  
+  const { state } = useLocation();
+  const { lessonId, topicTitle } = state || {};
+  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isConfirming, setIsConfirming] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -51,25 +62,23 @@ const PracticeQuestionForm = () => {
   
   const navigate = useNavigate();
 
-  console.log('Received lessonId:', lessonId);
-  console.log('Received topicTitle:', topicTitle);
-  console.log('Received questions:', questions);
-
   useEffect(() => {
-    if (questions) {
-      setAnsweredQuestions(new Array(questions.length).fill(false)); 
-
-      // Shuffle only once
-      const shuffled = questions.map(q => {
-        const options = [...q.incorrectAnswers, q.correctAnswer];
-        return {
+    const fetchQuestions = async () => {
+      const result = await getRandomizedPracticeByTopicId(topicId, 10); // Fetching max 5 questions
+      if (result.success) {
+        const fetchedQuestions = result.data.map(q => ({
           ...q,
-          shuffledOptions: options.sort(() => Math.random() - 0.5)
-        };
-      });
-      setShuffledQuestions(shuffled);
-    }
-  }, [questions]);
+          shuffledOptions: [...q.incorrectAnswers.filter(ans => ans), q.correctAnswer].sort(() => Math.random() - 0.5) // Filter null/empty and shuffle options
+        }));
+        setShuffledQuestions(fetchedQuestions);
+        setAnsweredQuestions(new Array(fetchedQuestions.length).fill(false));
+      } else {
+        console.error(result.message);
+      }
+    };
+
+    fetchQuestions();
+  }, [topicId]);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -80,25 +89,19 @@ const PracticeQuestionForm = () => {
     setIsConfirming(false);
 
     const currentQuestion = shuffledQuestions[currentQuestionIndex];
-    if (!currentQuestion) {
-      console.error("Current question is undefined");
-      return;
-    }
-  
     const isCorrect = selectedOption === currentQuestion.correctAnswer;
-  
+
     setAnsweredQuestions(prevAnswers => {
       const updatedAnswers = [...prevAnswers];
       updatedAnswers[currentQuestionIndex] = true;
       return updatedAnswers;
     });
-  
+
     if (isCorrect) {
       setIsCorrectAnswer(true);
       setCorrectAnswers(prevCorrectAnswers => {
         const updatedCorrectAnswers = prevCorrectAnswers + 1;
         if (currentQuestionIndex === shuffledQuestions.length - 1) {
-          // Automatically redirect to the score page after answering all questions
           handleEndOfPractice();
         }
         return updatedCorrectAnswers;
@@ -143,7 +146,7 @@ const PracticeQuestionForm = () => {
       state: { 
         correctAnswers, 
         totalQuestions: shuffledQuestions.length,
-        lessonId,  
+        lessonId,
         topicId    
       }
     });
@@ -156,7 +159,13 @@ const PracticeQuestionForm = () => {
 
   const currentQuestion = shuffledQuestions[currentQuestionIndex];
   const isAnswered = answeredQuestions[currentQuestionIndex];
-  const optionColors = ['#f94848', '#4cae4f', '#2874ba', '#f4cc3f'];
+
+  const optionColors = [
+    { defaultColor: "#f94848", hoverColor: "#d13d3d", disabledColor: "#bf3737" },
+    { defaultColor: "#4cae4f", hoverColor: "#429645", disabledColor: "#3a853d" },
+    { defaultColor: "#2874ba", hoverColor: "#2265a3", disabledColor: "#1d5991" },
+    { defaultColor: "#f4cc3f", hoverColor: "#dbb739", disabledColor: "#c7a634" }
+  ];
 
   return (
     <ThemeProvider theme={theme}>
@@ -172,14 +181,25 @@ const PracticeQuestionForm = () => {
           </IconButton>
         </Box>
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
+    
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
-            {topicTitle}
+            {topicTitle} - Practice
           </Typography>
+          
+          <Tooltip title='Exit'>
+            <IconButton 
+              onClick={() => navigate(`/practice-event/${lessonId}/${topicId}`)} // Navigate using lessonId and topicId from the state
+              sx={{ position: 'absolute', top: '75px', left: '1px', zIndex: 10 }}
+            >
+              <ExitToAppIcon sx={{ fontSize: '1.8rem' }} />
+            </IconButton>
+          </Tooltip>
+
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
               {currentQuestion.question}
             </Typography>
-            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
+            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px' }}>
               Question {currentQuestionIndex + 1}
             </Typography>
           </Paper>
@@ -187,17 +207,14 @@ const PracticeQuestionForm = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
               {currentQuestion.shuffledOptions.map((option, idx) => (
                 <OptionButton
-                  key={option}
+                  key={idx}
+                  colorScheme={optionColors[idx % optionColors.length]}
                   onClick={() => handleOptionClick(option)}
+                  disabled={isAnswered}
                   sx={{
-                    bgcolor: optionColors[idx % optionColors.length],
-                    color: '#181a52',
-                    minWidth: '100px',
-                    marginBottom: '20px',
                     pointerEvents: isAnswered ? 'none' : 'auto',
                     opacity: isAnswered ? 0.5 : 1,
                   }}
-                  disabled={isAnswered}
                 >
                   {option}
                 </OptionButton>
@@ -238,3 +255,5 @@ const PracticeQuestionForm = () => {
 };
 
 export default PracticeQuestionForm;
+
+
