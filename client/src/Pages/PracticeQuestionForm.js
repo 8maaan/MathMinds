@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Box, Button, Typography, Container, Paper, IconButton } from '@mui/material';
+import { Box, Button, Typography, Container, Paper, IconButton, Tooltip } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -180,14 +181,25 @@ const PracticeQuestionForm = () => {
           </IconButton>
         </Box>
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
+    
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
-            {topicTitle}
+            {topicTitle} - Practice
           </Typography>
+          
+          <Tooltip title='Exit'>
+            <IconButton 
+              onClick={() => navigate(`/practice-event/${lessonId}/${topicId}`)} // Navigate using lessonId and topicId from the state
+              sx={{ position: 'absolute', top: '75px', left: '1px', zIndex: 10 }}
+            >
+              <ExitToAppIcon sx={{ fontSize: '1.8rem' }} />
+            </IconButton>
+          </Tooltip>
+
           <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
               {currentQuestion.question}
             </Typography>
-            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px' }}>
+            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px' }}>
               Question {currentQuestionIndex + 1}
             </Typography>
           </Paper>
