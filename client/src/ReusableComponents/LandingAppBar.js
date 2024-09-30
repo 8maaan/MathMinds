@@ -66,7 +66,7 @@ export default function ReusableAppBar() {
   };
 /*fcdd96*/
   return (
-    <AppBar position="fixed" sx={{backgroundColor: '#ffb100'}}>
+    <AppBar position="sticky" sx={{backgroundColor: '#ffb100'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
@@ -74,7 +74,6 @@ export default function ReusableAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
