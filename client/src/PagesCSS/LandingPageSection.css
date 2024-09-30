@@ -1,0 +1,64 @@
+.container-landing-bg {
+    position: relative;
+    display: flex;
+}
+
+.badge1 {                 
+    position: relative;
+    width: 30%;
+    height: 40%;
+    animation: float 1.2s ease-in-out infinite;
+    transition: transform 0.3s ease-out;
+}
+
+.badge2 {                 
+    position: relative;
+    width: 25%;
+    height: 40%;
+    animation: float 1.3s ease-in-out infinite;
+    transition: transform 0.3s ease-out;
+}
+
+.badge3 {                 
+    position: relative;
+    width: 35%;
+    height: 40%;
+    animation: float 1.4s ease-in-out infinite;
+    transition: transform 0.3s ease-out;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0); 
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes breathing {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes hover-away {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(calc(var(--move-x) * 1px), calc(var(--move-y) * 1px));
+    }
+}
