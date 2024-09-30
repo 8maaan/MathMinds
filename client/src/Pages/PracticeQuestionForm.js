@@ -10,6 +10,8 @@ import PracticeAnswerModal from '../ReusableComponents/PracticeAnswerModal';
 import CongratulatoryModal from '../ReusableComponents/CongratulatoryModal';
 import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 import { getRandomizedPracticeByTopicId } from '../API-Services/PracticeAPI';
+import { keyframes } from '@mui/system';
+
 
 const theme = createTheme({
   typography: {
@@ -23,6 +25,19 @@ const theme = createTheme({
   }
 });
 
+// Bounce animation keyframes
+const bounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+`;
+
+// Styled OptionButton with bounce animation
 const OptionButton = styled(Button)(({ colorScheme }) => ({
   height: 80,
   width: '45%',
@@ -33,7 +48,8 @@ const OptionButton = styled(Button)(({ colorScheme }) => ({
   backgroundColor: colorScheme.defaultColor,
   transition: 'background-color 0.3s ease',
   '&:hover': {
-    backgroundColor: colorScheme.hoverColor
+    backgroundColor: colorScheme.hoverColor,
+    animation: `${bounce} 1s infinite`, // Apply bounce animation
   },
   '&:disabled': {
     backgroundColor: colorScheme.disabledColor
@@ -199,8 +215,8 @@ const PracticeQuestionForm = () => {
             <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
               {currentQuestion.question}
             </Typography>
-            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px' }}>
-              Question {currentQuestionIndex + 1}
+            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px', fontWeight:'bold' }}>
+              Question #{currentQuestionIndex + 1}
             </Typography>
           </Paper>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '115%', marginTop: '20px' }}>

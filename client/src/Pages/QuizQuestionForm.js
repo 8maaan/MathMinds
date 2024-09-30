@@ -220,8 +220,8 @@ const QuizQuestionForm = () => {
             <Typography ref={questionRef} variant="h6" sx={{ textAlign: 'center', marginTop: '120px', fontSize: questionFontSize }}>
               {currentQuestion.question}
             </Typography>
-            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px' }}>
-              Question {currentQuestionIndex + 1}
+            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px', fontWeight:'bold' }}>
+              Question #{currentQuestionIndex + 1}
             </Typography>
           </Paper>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
