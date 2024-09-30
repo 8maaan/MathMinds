@@ -9,7 +9,7 @@ import GifContent2 from '../Images/LandingPageImages/GifContent2.gif';
 import Collab from '../JSON/CollabLanding.json';
 import GitHubIcon from '../Images/LandingPageImages/github-mark/github-mark.png';
 import GitHubIconWhite from '../Images/LandingPageImages/GitHub-Logos/GitHub_Logo_White.png';
-import LandingPageSection3 from '../ReusableComponents/LandingPageSection';
+import LandingPageSection from '../ReusableComponents/LandingPageSection';
 import '../PagesCSS/LandingPage.css';
 import RevampedLAppBar from '../ReusableComponents/RevampedLAppBar';
 import { Button, AppBar, Box, IconButton, Divider, Tooltip} from '@mui/material';
@@ -49,18 +49,18 @@ const LandingPage = () => {
                         </div>
                     </div>
                 </div>
+                
                 <h1 data-aos="fade-up" style={{fontSize: 'clamp(2rem, 4.5vw, 5rem)'}}> Why MathMinds?</h1>
                 
-
                 <div data-aos="fade-up-left" className='section-wrapper'>
-                    <div style={{background: 'linear-gradient(to right, #ffa726, #ffa72680 75%)', border: '12px solid #ffa726'}} className='section-content-container'> 
-                        <div className='section-content-left-side'>
+                    <div style={{background: 'linear-gradient(to right, #ffa726, #ffa72680 75%)', /*border: '12px solid #ffa726'*/ }} className='section-content-container'> 
+                        <div className='section-content-left-side'  style={{width:'115%'}}>
                            <div className='section-content-image'>
                                 {/* <Lottie animationData={Journey} loop={true} alt='Journey' style={{ width: window.innerWidth <= 768 ? '40%' : '100%' }} /> */}
                                 <img src={GifContent1} className='gif-class' style={{borderColor: '#ffa726'}} alt="Gif Content 1"/>
                            </div>
                         </div>
-                        <div className='section-content-right-side'>
+                        <div className='section-content-right-side'  style={{ paddingLeft:'30px'}}>
                            <div className='section-header-container'>
                                 <p>Personalized</p>
                                 <p>Math Journey</p>
@@ -75,11 +75,11 @@ const LandingPage = () => {
                 </div>
 
                 <div data-aos="fade-up-right" className='section-wrapper'> 
-                    <div style={{background: 'linear-gradient(to right, #b39ddb80, #b39ddb 75%)', border: '12px solid #b39ddb'}} className='section-content-container'>
+                    <div style={{background: 'linear-gradient(to right, #b39ddb80, #b39ddb 75%)', /*border: '12px solid #b39ddb'*/}} className='section-content-container'>
                         <div className='section-content-left-side' style={{marginRight: '40px'}}>
                             <div className='section-header-container'>
-                                <p>Collaborative/</p>
-                                <p>Solo Learning</p>
+                                <p>Collaborative</p>
+                                <p>& Solo Learning</p>
                             </div>
                             <div className='section-content-desc'>
                                     <p>Challenge yourself with topic quizzes and engaging practices,
@@ -87,7 +87,7 @@ const LandingPage = () => {
                                     </p>
                             </div>
                         </div>
-                        <div className='section-content-right-side'>
+                        <div className='section-content-right-side'style={{marginLeft: '10px'}}>
                            <div className='section-content-image'>
                                 {/* <Lottie animationData={Collab} loop={true} alt='Collaboration'  style={{ width: window.innerWidth <= 768 ? '40%' : '100%'}} /> */}
                                 <img src={GifContent2} className='gif-class' style={{borderColor: '#b39ddb'}} alt="Gif Content 2"/>
@@ -97,10 +97,10 @@ const LandingPage = () => {
                 </div>
 
                 <div data-aos="fade-up-left"className='section-wrapper'>
-                    <div style={{background: 'linear-gradient(to right, #f0de38, #f0de3880 85%)', border: '12px solid #f0de38'}} className='section-content-container'>
-                        <div style={{marginBottom: '20px'}}className='section-content-left-side'>
+                    <div style={{background: 'linear-gradient(to right, #f0de38, #f0de3880 85%)', /*border: '12px solid #f0de38'*/}} className='section-content-container'>
+                        <div style={{width:'89%'}}className='section-content-left-side'>
                            <div className='section-content-image'>
-                                <LandingPageSection3/>     
+                                <LandingPageSection/>     
                            </div>
                         </div>
                         <div className='section-content-right-side'>
