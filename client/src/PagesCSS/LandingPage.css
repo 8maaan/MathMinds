@@ -30,7 +30,7 @@
   width: 70%;
   height: 60vh;
   border: none;
-  border-radius: 120px;
+  border-radius: 90px;
   padding: 3%;
   background-color: rgba(255, 255, 255, 0.6);
 }
@@ -104,7 +104,7 @@
   border: none;
   backdrop-filter: blur(4px);
   padding: 3%;
-  border-radius: 120px;
+  border-radius: 90px;
 }
 
 .section-content-left-side, .section-content-right-side {
@@ -156,6 +156,13 @@
   padding: 0;
 }
 
+.gif-class {
+  width: 100%;
+  height: 100%;
+  border: 12px solid #b39ddb;
+  border-radius: 30px;
+}
+
 @media (max-width: 768px) {
     .landing-wrapper, 
     .content-container, 
@@ -183,6 +190,13 @@
       justify-content: center;
       max-width: 100%;
       height: auto;
+    }
+
+    .gif-class {
+      width: 95%;
+      height: 80%;
+      border-radius: 0%;
+      border: none;
     }
 
     div:has(.section-content-image) {

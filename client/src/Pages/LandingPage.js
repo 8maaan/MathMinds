@@ -4,6 +4,8 @@ import 'aos/dist/aos.css';
 import Lottie from 'lottie-react';
 import Birdy from '../JSON/BirdyLanding.json';
 import Journey from '../JSON/JourneyLanding.json';
+import GifContent1 from '../Images/LandingPageImages/GifContent1.gif';
+import GifContent2 from '../Images/LandingPageImages/GifContent2.gif';
 import Collab from '../JSON/CollabLanding.json';
 import GitHubIcon from '../Images/LandingPageImages/github-mark/github-mark.png';
 import GitHubIconWhite from '../Images/LandingPageImages/GitHub-Logos/GitHub_Logo_White.png';
@@ -29,7 +31,7 @@ const LandingPage = () => {
             <div className='body'>
                 <RevampedLAppBar />
                 <div data-aos="fade-down" className='landing-wrapper'>
-                    <div style={{}} className='content-container'>
+                    <div className='content-container'>
                         <div className='content-right-side'>
                             <div className='right-side-text'>
                                 <p>We Make</p>
@@ -54,7 +56,8 @@ const LandingPage = () => {
                     <div style={{background: 'linear-gradient(to right, #ffa726, #ffa72680 75%)', border: '12px solid #ffa726'}} className='section-content-container'> 
                         <div className='section-content-left-side'>
                            <div className='section-content-image'>
-                                <Lottie animationData={Journey} loop={true} alt='Journey' style={{ width: window.innerWidth <= 768 ? '40%' : '100%' }} />
+                                {/* <Lottie animationData={Journey} loop={true} alt='Journey' style={{ width: window.innerWidth <= 768 ? '40%' : '100%' }} /> */}
+                                <img src={GifContent1} className='gif-class' style={{borderColor: '#ffa726'}} alt="Gif Content 1"/>
                            </div>
                         </div>
                         <div className='section-content-right-side'>
@@ -73,7 +76,7 @@ const LandingPage = () => {
 
                 <div data-aos="fade-up-right" className='section-wrapper'> 
                     <div style={{background: 'linear-gradient(to right, #b39ddb80, #b39ddb 75%)', border: '12px solid #b39ddb'}} className='section-content-container'>
-                        <div className='section-content-left-side'>
+                        <div className='section-content-left-side' style={{marginRight: '40px'}}>
                             <div className='section-header-container'>
                                 <p>Collaborative/</p>
                                 <p>Solo Learning</p>
@@ -86,7 +89,8 @@ const LandingPage = () => {
                         </div>
                         <div className='section-content-right-side'>
                            <div className='section-content-image'>
-                                <Lottie animationData={Collab} loop={true} alt='Collaboration'  style={{ width: window.innerWidth <= 768 ? '40%' : '100%'}} />
+                                {/* <Lottie animationData={Collab} loop={true} alt='Collaboration'  style={{ width: window.innerWidth <= 768 ? '40%' : '100%'}} /> */}
+                                <img src={GifContent2} className='gif-class' style={{borderColor: '#b39ddb'}} alt="Gif Content 2"/>
                            </div>
                         </div>
                     </div>
