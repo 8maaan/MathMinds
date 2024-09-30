@@ -1,0 +1,57 @@
+.attribution-body{
+    background-image: url('../Images/BG2.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    min-height: calc(100vh - 64px);
+}
+
+.attribution-content-wrapper{
+    margin-top: 5%;
+    width: 80%;
+    height: auto;
+    text-align: justify;
+    /* border: solid black 1px; */
+}
+
+.attribution-content-wrapper .MuiTypography-root{
+    padding-left: 25px;
+    /* padding-right: 25px; */
+    /* border: solid black 1px; */
+}
+
+.attribution-content-wrapper .MuiTypography-h5{
+    font-weight: 600;
+    color: #ba8f22;
+}
+
+.attribution-content-wrapper .MuiTypography-body2{
+    margin-bottom: 10px;
+}
+
+.attribution-content-wrapper .MuiLink-root{
+    color:'primary';
+    font-weight: bold;
+    padding-left: 5px;
+    
+}
+
+@media (max-width: 768px) {
+    .attribution-content-wrapper .MuiTypography-h5{
+        text-align: center;
+    }
+
+    .attribution-content-wrapper .MuiTypography-root{
+        padding: 0 15px 0 15px;
+    }
+    
+    .attribution-content-wrapper{
+        width: 90%;
+        word-spacing: -2px;
+    }
+}
+

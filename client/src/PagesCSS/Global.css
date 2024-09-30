@@ -11,3 +11,13 @@ body, *, .MuiTypography-root, .MuiButton-text, .MuiTextField-root {
 .MuiTableCell-root {
     font-family: 'Poppins', sans-serif;
 }
+
+.MuiTypography-h1, 
+.MuiTypography-h2, 
+.MuiTypography-h3, 
+.MuiTypography-h4, 
+.MuiTypography-h5, 
+.MuiTypography-h6 {
+    font-family: 'Poppins', sans-serif;
+    color: #181A52;
+}

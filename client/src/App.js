@@ -33,6 +33,7 @@ import PracticeTempLobby from './Pages/PracticeTempLobby';
 import PracticeQuestionFormMultiplayer from './Pages/PracticeQuestionFormMultiplayer';
 
 import UserManagementPage from './Pages/UserManagementPage';
+import AttributionPage from './Pages/AttributionPage';
 
 function App() {
 
@@ -43,7 +44,8 @@ function App() {
           <Routes>
 
             {/* COMMON ROUTES */}
-
+            <Route path="*" element={<PageNotFound/>} />
+            <Route path="attributions" element={<AttributionPage/>} />
             {/* GUEST ROUTES */}
             <Route path="/" element={<GuestRoute> <LandingPage/> </GuestRoute>} />
             <Route path="/login" element={<GuestRoute> <LoginPage/> </GuestRoute>} />
@@ -80,8 +82,6 @@ function App() {
 
             <Route path="/lobby/:roomCode" element={<ProtectedRoute><PracticeTempLobby/></ProtectedRoute>}/>
             <Route path="/game/:roomCode" element={<PracticeQuestionFormMultiplayer/>} />
-
-            <Route path="*" element={<PageNotFound/>} />
 
             {/*FOR ADMIN*/}
             <Route path="/manage-accounts" element={<ProtectedRoute requireAdmin><UserManagementPage/></ProtectedRoute>} />
