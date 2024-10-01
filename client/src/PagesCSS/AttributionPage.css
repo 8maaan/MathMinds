@@ -11,7 +11,7 @@
 }
 
 .attribution-content-wrapper{
-    margin-top: 5%;
+    margin-top: 2.5%;
     width: 80%;
     height: auto;
     text-align: justify;
@@ -20,7 +20,7 @@
 
 .attribution-content-wrapper .MuiTypography-root{
     padding-left: 25px;
-    /* padding-right: 25px; */
+    padding-right: 25px;
     /* border: solid black 1px; */
 }
 

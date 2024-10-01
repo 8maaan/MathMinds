@@ -5,7 +5,7 @@ import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import userprofilepic from '../Images/UserDP.png';
 import { Button, TextField, Snackbar, Alert } from '@mui/material';
 import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Services/UserAPI';
-import { isEmailValid } from '../ReusableComponents/txtFieldValidations';
+import { isPasswordValid, isEmailValid, isPasswordMatch} from '../ReusableComponents/txtFieldValidations';
 import MuiAlert from '@mui/material/Alert';
 
 const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText, disabled }) => (
@@ -61,7 +61,10 @@ const ProfilePage = () => {
             if (user) {
                 const result = await getUserProfileInfoFromDb(user.uid);
                 if (result.success) {
-                    setUserProfileInfo(result.data);
+                    setUserProfileInfo({
+                        ...result.data,
+                        email: user.email
+                    });
                 } else {
                     console.error("Failed to fetch user profile info");
                 }
@@ -81,14 +84,14 @@ const ProfilePage = () => {
             fname: userProfileInfo.fname.trim() === '',
             lname: userProfileInfo.lname.trim() === '',
             email: !isEmailValid(userProfileInfo.email),
-            newPassword: isEditing && newPassword.trim() !== '' && newPassword.trim().length < 6, // Only validate if not empty and less than 6 characters
-            retypePassword: isEditing && (retypePassword.trim() !== '' || newPassword.trim() !== ''), // Validate if either field is not empty
-            passwordsMatch: isEditing && newPassword !== retypePassword
+            newPassword: isEditing && newPassword.trim() !== '' && !isPasswordValid(newPassword), // Validate only if not empty
+            retypePassword: isEditing && retypePassword.trim() !== '' && !isPasswordMatch(newPassword, retypePassword) // Validate only if not empty
         };
         setUserError(errors);
         return !Object.values(errors).some(error => error);
     };
-    const { updateUserEmail } = UserAuth();
+
+    const { updateUserEmail, updateUserPassword } = UserAuth();
 
     const handleUpdate = async () => {
         if (!validateInputs()) return;
@@ -100,6 +103,7 @@ const ProfilePage = () => {
 
         try {
             await updateUserEmail(userProfileInfo.email);
+            await updateUserPassword(newPassword);
             await updateUserProfileInfoToDb(user.uid, updatedProfileInfo);
             setIsEditing(false);
             handleSnackbarOpen('Your Profile Information is updated', "success");
@@ -186,8 +190,8 @@ const ProfilePage = () => {
                                                         type="password"
                                                         value={newPassword}
                                                         onChange={(e) => setNewPassword(e.target.value)}
-                                                        error={userError.newPassword}
-                                                        helperText={userError.newPassword ? 'New password is required' : ''}
+                                                        error={userError.newPassword} // Set error based on validation
+                                                        helperText={userError.newPassword ? 'Invalid password. Must be at least 6 characters.' : ''} // Update message
                                                         disabled={!isEditing}
                                                     />
                                                     <ProfileTxtField
@@ -196,8 +200,8 @@ const ProfilePage = () => {
                                                         type="password"
                                                         value={retypePassword}
                                                         onChange={(e) => setRetypePassword(e.target.value)}
-                                                        error={userError.retypePassword || userError.passwordsMatch}
-                                                        helperText={userError.retypePassword ? 'Retype password is required' : userError.passwordsMatch ? 'Passwords do not match' : ''}
+                                                        error={userError.retypePassword} // Set error based on validation
+                                                        helperText={userError.retypePassword ? 'Passwords do not match.' : ''} // Update message
                                                         disabled={!isEditing}
                                                     />
                                                     <Button
