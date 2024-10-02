@@ -210,7 +210,7 @@ const ProfilePage = () => {
                                                     />
                                                     <ProfileTxtField
                                                         name="retypePassword"
-                                                        label="Retype Password"
+                                                        label="Confirm Password"
                                                         type="password"
                                                         value={retypePassword}
                                                         onChange={(e) => setRetypePassword(e.target.value)}
@@ -295,7 +295,7 @@ const ProfilePage = () => {
             <ReusableDialog
                 status={openDialog} 
                 onClose={handleCloseDialog} 
-                title="Confirm Topic Creation" 
+                title="Confirm Profile Update" 
                 context={`Are you sure you want to update your profile information?`}
             />
         </div>
