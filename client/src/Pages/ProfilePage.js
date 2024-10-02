@@ -7,6 +7,7 @@ import { Button, TextField, Snackbar, Alert } from '@mui/material';
 import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Services/UserAPI';
 import { isPasswordValid, isEmailValid, isPasswordMatch} from '../ReusableComponents/txtFieldValidations';
 import MuiAlert from '@mui/material/Alert';
+import ReusableDialog from '../ReusableComponents/ReusableDialog';
 
 const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText, disabled }) => (
     <div className='profile-txtField'>
@@ -54,6 +55,7 @@ const ProfilePage = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+    const [openDialog, setOpenDialog] = useState(false);
     const { user } = UserAuth();
 
     useEffect(() => {
@@ -119,6 +121,18 @@ const ProfilePage = () => {
         setSnackbarOpen(true);
     };
 
+    const handleOpenDialog = (event) => {
+        event.preventDefault();
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = (confirmed) => {
+        setOpenDialog(false);
+        if (confirmed) {
+            handleUpdate();
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserProfileInfo((prevInfo) => ({
@@ -148,7 +162,7 @@ const ProfilePage = () => {
                             <div className='PI-title'>Personal Information</div>
                             <div className='logo-and-userinfo-container'>
                                 <div className='profile-logo-container'>
-                                    <img src={userprofilepic} alt='display picture' />
+                                    <img src={userprofilepic} alt='pfp' />
                                 </div>
                                 <div className='userinfo-container'>
                                     {loading ? (
@@ -205,7 +219,7 @@ const ProfilePage = () => {
                                                         disabled={!isEditing}
                                                     />
                                                     <Button
-                                                        onClick={handleUpdate}
+                                                        onClick={handleOpenDialog}
                                                         variant='contained'
                                                         size='medium'
                                                         sx={{
@@ -278,6 +292,12 @@ const ProfilePage = () => {
                     {snackbarMessage}
                 </MuiAlert>
             </Snackbar>
+            <ReusableDialog
+                status={openDialog} 
+                onClose={handleCloseDialog} 
+                title="Confirm Topic Creation" 
+                context={`Are you sure you want to update your profile information?`}
+            />
         </div>
     );
 };

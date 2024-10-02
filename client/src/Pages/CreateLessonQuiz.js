@@ -95,7 +95,7 @@ const CreateLessonQuiz = () => {
 
         const response = await insertLessonQuiz(requestBody);
         if (response.success) {
-            handleSnackbarOpen('success', `Quiz for lesson has ${selectedLesson} been created successfully.`);
+            handleSnackbarOpen('success', `Quiz for lesson ${selectedLesson} has been created successfully.`);
             setTimeout(() => {
                 navigate('/lessons-teacher');
             }, 1250)

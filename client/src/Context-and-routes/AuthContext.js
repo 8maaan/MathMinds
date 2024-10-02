@@ -65,9 +65,15 @@ export const AuthContextProvider = ({children}) => {
     }
 
     //UPDATE USER'S AUTH EMAIL
-    const updateUserEmail = (email) =>{
-        return updateEmail(user, email);
-    }
+    const updateUserEmail = async (email) => {
+        try {
+            await updateEmail(user, email);
+            return await sendEmailVerification(user);
+        } catch (error) {
+            console.error("Error updating email:", error);
+            throw error; 
+        }
+    };
 
     //UPDATE USER'S AUTH PASSWORD
     const updateUserPassword = (password) =>{
