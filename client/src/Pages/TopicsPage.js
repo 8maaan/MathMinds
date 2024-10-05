@@ -10,6 +10,7 @@ import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
 import DynamicLottie from '../ReusableComponents/DynamicLottie';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 import TextToSpeech from '../ReusableComponents/TextToSpeech';
+import { browserPopupRedirectResolver } from 'firebase/auth';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -301,9 +302,11 @@ const TopicsPage = () => {
                   {/* bgcolor to f4f4f4 if dili question ang value.type */}
                   {Object.entries(selectedTopic.topicContent).map(([key, value], index, array) => (
                     <div key={key} className={`lesson-item ${getNextColor()}`} style={{
-                      backgroundColor: ['text', 'storyboard', 'image', 'youtubeVid', 'embeddedGame'].includes(value.type)
-                        ? '#ffffff'
-                        : '#F6E6C3',
+                      backgroundColor: value.type === 'embeddedGame'
+                        ? '#F5D1D1'
+                        : ['text', 'storyboard', 'image', 'youtubeVid'].includes(value.type)
+                          ? '#D2E6D3'
+                          : '#F6E6C3',
                     }}>
                       {/* FOR TEXTS/PARAGRAPH */}
 
@@ -317,7 +320,7 @@ const TopicsPage = () => {
 
                       {/* FOR SIMPLE ASSESSMENT */}
                       {value.type === "question" && (
-                        <div>
+                        <div style={{ paddingBottom:'15px'}}>
                           <p style={{textAlign:"center"}}>{value.question}</p>
                           <div className="question-container">
                             <div className="option-container">
@@ -355,7 +358,7 @@ const TopicsPage = () => {
                       )}
                       
                       {value.type ==="image" && (
-                        <div>
+                        <div style={{paddingTop: '30px'}}>
                           <div className='topic-image-container'>
                             <img src={value.imageUrl} alt="Topic Content" loading="lazy"/>
                           </div>
@@ -366,7 +369,7 @@ const TopicsPage = () => {
                       {value.type ==="storyboard" && (
                         <div style={{display:'flex', justifyContent:'center', flexDirection:'column', alignItems:'center'}}>
                           <p style={{textAlign:'center'}}>{value.storyboardContext}</p>
-                          <div className='topic-storyboard-container' style={{backgroundImage:`url(${value.storyboardBgImage})`}}>
+                          <div className='topic-storyboard-container' style={{backgroundImage:`url(${value.storyboardBgImage})`, marginBottom:'30px'}}>
                             {[0, 1, 2, 3].map(boxId => (
                                 <div
                                     key={boxId}
@@ -380,7 +383,7 @@ const TopicsPage = () => {
                       )}
 
                       {value.type ==="youtubeVid" && (
-                        <div>
+                        <div style={{paddingTop: '30px', paddingBottom:'15px'}}>
                           <div>
                             <iframe
                               height="450"
@@ -399,7 +402,7 @@ const TopicsPage = () => {
                       )}
 
                       {value.type ==="embeddedGame" && (
-                        <div>
+                        <div style={{paddingTop: '30px'}}>
                           <div>
                             <iframe
                               height="550"
