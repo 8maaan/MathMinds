@@ -7,7 +7,9 @@ import {
     validatePassword,
     sendPasswordResetEmail,
     updateEmail,
-    updatePassword
+    updatePassword,
+    updateProfile,
+    sendEmailVerification
 } from "firebase/auth";
 
 import { auth } from "../Firebase/firebaseConfig";
@@ -47,18 +49,35 @@ export const AuthContextProvider = ({children}) => {
         return sendPasswordResetEmail(auth, email);
     }
 
+    // SEND EMAIL 
+    const sendUserEmailVerification = () => {
+        return sendEmailVerification(auth.currentUser);
+    }
+
+    // GET USER'S UID
     const getUid = () =>{
         return user.uid;
     }
 
-    //UPDATE USER'S AUTH EMAIL
-    const updateUserEmail = (email) =>{
-        return updateEmail(auth,email);
+    const updateUserDisplayName = (firstName, lastName) =>{
+        const name = `${firstName} ${lastName}`; // Combine first and last name
+        return updateProfile(auth.currentUser, { displayName: name});
     }
+
+    //UPDATE USER'S AUTH EMAIL
+    const updateUserEmail = async (email) => {
+        try {
+            await updateEmail(user, email);
+            return await sendEmailVerification(user);
+        } catch (error) {
+            console.error("Error updating email:", error);
+            throw error; 
+        }
+    };
 
     //UPDATE USER'S AUTH PASSWORD
     const updateUserPassword = (password) =>{
-        return updatePassword(auth,password);
+        return updatePassword(user, password);
     }
 
     useEffect(() => {
@@ -72,7 +91,7 @@ export const AuthContextProvider = ({children}) => {
     },[]);
 
     return (
-        <UserContext.Provider value={{ createUser, user, logOut, signIn, loading, validateUserPassword, sendPasswordReset, getUid,updateUserEmail,updateUserPassword }}>
+        <UserContext.Provider value={{ createUser, user, logOut, signIn, loading, validateUserPassword, sendPasswordReset, getUid,updateUserEmail,updateUserPassword, updateUserDisplayName, sendUserEmailVerification }}>
             {children}
         </UserContext.Provider>
     )

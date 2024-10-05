@@ -229,8 +229,8 @@ const PracticeQuestionFormMultiplayer = () => {
         return array.sort(() => Math.random() - 0.5);
     };
 
-    console.log("Timer:", timer);
-    console.log("startCountdownIsFinished:",startCountdownIsFinished);
+    // console.log("Timer:", timer);
+    // console.log("startCountdownIsFinished:",startCountdownIsFinished);
 
     if (!currentQuestion) {
         return (     

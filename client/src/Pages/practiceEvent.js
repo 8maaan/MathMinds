@@ -245,22 +245,18 @@ function PracticeEvent() {
 
   const generateBackgroundColor = (index) => {
     const colorVariations = [
-      { hue: 0, saturationRange: [70, 90], lightnessRange: [50, 70] },
-      { hue: 210, saturationRange: [40, 60], lightnessRange: [50, 70] },
-      { hue: 120, saturationRange: [40, 60], lightnessRange: [40, 60] },
-      { hue: 270, saturationRange: [40, 60], lightnessRange: [40, 60] },
-      { hue: 30, saturationRange: [70, 90], lightnessRange: [50, 70] },
-      { hue: 60, saturationRange: [60, 80], lightnessRange: [50, 70] }
+      "#F94848", // red
+      "#FFB100", // orange
+      "#FFEC86", // yellow
+      "#4CAE4F", // green
+      "#2874BA", // blue
+      "#AA75CB"  // purple
     ];
+  
     const variationCount = colorVariations.length;
-    const hueIndex = index % variationCount;
-    const hueVariation = colorVariations[hueIndex];
-    const saturationStep = (hueVariation.saturationRange[1] - hueVariation.saturationRange[0]) / variationCount;
-    const lightnessStep = (hueVariation.lightnessRange[1] - hueVariation.lightnessRange[0]) / variationCount;
-    const saturation = hueVariation.saturationRange[0] + saturationStep * (index % variationCount);
-    const lightness = hueVariation.lightnessRange[0] + lightnessStep * (index % variationCount);
-    return `hsl(${hueVariation.hue}, ${saturation.toFixed(0)}%, ${lightness.toFixed(0)}%)`;
+    return colorVariations[index % variationCount];
   };
+  
 
   const backdropStyle = {
     position: 'fixed',
@@ -292,7 +288,7 @@ function PracticeEvent() {
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
                   <Box key={`default-${index}`} className="slideItem">
                     <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
-                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>TBA</Typography>
+                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold'}}>TBA</Typography>
                     </Paper>
                   </Box>
                 ))
@@ -300,7 +296,7 @@ function PracticeEvent() {
               {topics.map((topic, index) => (
                 <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
                   <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{'&hover':{cursor:'pointer'}}}>
-                    <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
+                    <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold'}}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>
               ))}

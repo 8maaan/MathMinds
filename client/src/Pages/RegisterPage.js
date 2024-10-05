@@ -94,11 +94,14 @@ const RegisterPage = () => {
 
     };
 
-    const { createUser } = UserAuth();
+    const { createUser, sendUserEmailVerification, updateUserDisplayName} = UserAuth();
     const navigateTo = useNavigate();
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
+
+        const capitalizedFirstName = user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase();
+        const capitalizedLastName = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1).toLowerCase();
 
         if(userError.email || userError.password || userError.retypePassword){
             return;
@@ -106,6 +109,8 @@ const RegisterPage = () => {
         try{
             setEmailAlreadyUsed(false)
             const authUser = await createUser(user.email, user.password)
+            await sendUserEmailVerification();
+            await updateUserDisplayName(capitalizedFirstName , capitalizedLastName);
             await handleRegisterToDb(authUser.user.uid);
             navigateTo('/home', {replace : true});    
         }catch(error){

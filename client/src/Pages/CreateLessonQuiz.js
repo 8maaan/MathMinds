@@ -95,12 +95,12 @@ const CreateLessonQuiz = () => {
 
         const response = await insertLessonQuiz(requestBody);
         if (response.success) {
-            handleSnackbarOpen('success', 'Topic has been created successfully.');
+            handleSnackbarOpen('success', `Quiz for lesson ${selectedLesson} has been created successfully.`);
             setTimeout(() => {
                 navigate('/lessons-teacher');
             }, 1250)
         } else {
-            handleSnackbarOpen('error', 'Could not create a topic, try again later.');
+            handleSnackbarOpen('error', `Could not create a quiz for lesson ${selectedLesson} try again later.`);
         }
     };
 
