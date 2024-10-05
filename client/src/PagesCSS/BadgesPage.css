@@ -196,12 +196,37 @@
     }
 }
 
+.badge-image-wrapper {
+    position: relative; /* This allows the shine to be positioned correctly */
+    width: 100px;
+    height: 100px;
+    overflow: hidden; /* Prevents shine from overflowing the badge */
+    border-radius: 10px;
+}
+
+.shine {
+    content: ''; 
+    position: absolute;
+    top: 0;
+    left: -150px; /* Start outside the image */
+    width: 150px; /* Width of the shine effect */
+    height: 100%; 
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 30%, /* Transparent at the start */
+        rgba(255, 255, 255, 0.8),   /* Bright white in the center */
+        rgba(255, 255, 255, 0) 70%  /* Transparent towards the end */
+    );
+    transform: skewX(-20deg); /* Adds a skew effect to the shine */
+    animation: shine 2s infinite linear; /* Adjust the duration as needed */
+}
+
 .badge-title {
     font-family: 'Poppins';
     font-size: 13px;
     text-align: center;
     color: #333;
-    margin-top: 2px;
+    margin-top: 8px;
 }
 .loading {
     font-family: 'Poppins';

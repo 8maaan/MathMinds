@@ -91,10 +91,18 @@ const BadgesPage = () => {
                                                 </div>
                                             ) : (
                                                 badges.map(([title, imageUrl]) => (
-                                                    <div key={title} className="badge">
-                                                        <img src={imageUrl} alt={title} className="badge-image" />
-                                                        <div className="badge-title">{title}</div>
+                                                  <div key={title} className="badge">
+                                                    <div className="badge-image-wrapper" style={badgeContainerStyle}>
+                                                      <img
+                                                        src={imageUrl}
+                                                        alt={title}
+                                                        className="badge-image"
+                                                        style={{ width: '100%', height: '100%' }}
+                                                      />
+                                                      <div className="shine"></div> {/* Shine effect here */}
                                                     </div>
+                                                    <div className="badge-title">{title}</div>
+                                                  </div>
                                                 ))
                                             )}
                                         </div>
