@@ -296,22 +296,25 @@ function PracticeEvent() {
             {showPracticeChoice && <PracticeChoice onClose={() => setShowPracticeChoice(false)} modeChoice={handleModeChoice} />} 
             
             <Slider {...settings}>
-              {topics.length <= 3 ? (
-                Array.from({ length: 4 - topics.length }).map((_, index) => (
-                  <Box key={`default-${index}`} className="slideItem">
-                    <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
-                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold'}}>TBA</Typography>
-                    </Paper>
-                  </Box>
-                ))
-              ) : null}
+              {/* Render available topics first */}
               {topics.map((topic, index) => (
                 <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
-                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{'&hover':{cursor:'pointer'}}}>
-                    <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold'}}>{topic.topicTitle}</Typography>
+                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{ '&hover': { cursor: 'pointer' } }}>
+                    <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>
               ))}
+
+              {/* Only render TBA placeholders if less than 4 topics are available */}
+              {topics.length < 4 &&
+                Array.from({ length: 4 - topics.length }).map((_, index) => (
+                  <Box key={`default-${index}`} className="slideItem">
+                    <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
+                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>TBA</Typography>
+                    </Paper>
+                  </Box>
+                ))
+              }
             </Slider>
             {showCard && selectedTopic && (
               <TopicCard
