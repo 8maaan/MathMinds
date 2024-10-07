@@ -78,17 +78,29 @@ function PracticeEvent() {
       try {
         const { success, data } = await getLessonById(lessonId);
         if (success) {
-          setLesson(data);
-          setTopics(data.lessonTopics || []);
+          const lessonTopics = data.lessonTopics || [];
+  
+          // Filter topics that have associated practices
+          const topicsWithPractices = await Promise.all(
+            lessonTopics.map(async (topic) => {
+              const practiceData = await getRandomizedPracticeByTopicId(topic.topicId, 1); // Check for at least 1 practice
+              return practiceData.success && practiceData.data.length > 0 ? topic : null;
+            })
+          );
+  
+          // Remove null values (topics without practices)
+          setTopics(topicsWithPractices.filter((topic) => topic !== null));
         } else {
           throw new Error("Failed to fetch lesson");
         }
       } catch (error) {
-        console.error("Error fetching lesson:", error);
+        console.error("Error fetching lesson or practices:", error);
       }
     };
+    
     fetchLesson();
   }, [lessonId]);
+  
 
   const settings = {
     dots: true,
