@@ -110,7 +110,7 @@ export const checkUserBadge = async (uid, lessonId) => {
 
   export const changeUserRole = async (uid, newRole) => {
     try {
-        const response = await axios.put(`http://localhost:8080/mathminds/user/changeRole/${uid}?newRole=${newRole}`);
+        const response = await axios.put(process.env.REACT_APP_SPRINGBOOT_CHANGE_USER_ROLE.replace("{uid}", uid).replace("{newRole}", newRole));
         return response;
     } catch (error) {
         console.error('Error changing user role:', error);
