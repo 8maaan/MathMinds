@@ -20,7 +20,8 @@ const CreatePractice = () => {
     const [filteredTopics, setFilteredTopics] = useState([]);
     const [openDialog, setOpenDialog] = useState(false); 
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
-
+    const [topicName, setTopicName]= useState('');
+ 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -62,6 +63,14 @@ const CreatePractice = () => {
         setSelectedLesson(event.target.value); 
     };
 
+    const handleTopicChange = (event) => {
+        const selectedTopicId = event.target.value;
+        const selectedTopic = filteredTopics.find(topic => topic.topicId === selectedTopicId);
+        
+        setPracticeTopic(selectedTopicId);
+        setTopicName(selectedTopic?.topicTitle || '');
+    };
+
     const handleAddQuestion = () => {
         setPracticeQuestions([
             ...practiceQuestions,
@@ -82,7 +91,6 @@ const CreatePractice = () => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
         
         const practiceQAObject = practiceQuestions.reduce((acc, item, index) => {
             
@@ -156,7 +164,7 @@ const CreatePractice = () => {
         <div>
             <form onSubmit={handleOpenDialog}>
                 <div className='createPractice-body'>
-                    <Typography class='createPractice-title'>Create a quiz for Practice</Typography>
+                    <Typography class='createPractice-title'>Create a Practice for a Topic</Typography>
                     <div className='practice-config-container'>
                         <div className='practice-select-container'>
                          {/* Select Lesson - Added */}
@@ -171,7 +179,7 @@ const CreatePractice = () => {
                         {/* Practice Topic - Updated to use filteredTopics */}
                         <FormControl variant="filled" sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Topic</InputLabel>
-                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={(event) => setPracticeTopic(event.target.value)} required>
+                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={handleTopicChange} required>
                                 {filteredTopics.map(topic => (
                                     <MenuItem key={topic.topicId} value={topic.topicId}>{topic.topicTitle}</MenuItem>
                                 ))}
@@ -212,7 +220,7 @@ const CreatePractice = () => {
                 status={openDialog} 
                 onClose={handleCloseDialog} 
                 title="Confirm Practice Topic Creation" 
-                context={`Are you sure you want to create a practice for topic "${practiceTopic}"?`}
+                context={`Are you sure you want to create a practice for topic ${topicName}?`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
