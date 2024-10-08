@@ -48,7 +48,6 @@ function PrevArrow(props) {
 
 function PracticeEvent() {
   const { lessonId } = useParams();
-  const [lesson, setLesson] = useState(null);
   const [topics, setTopics] = useState([]);
   const [showCard, setShowCard] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -171,22 +170,18 @@ function PracticeEvent() {
   
 
   const handleModeChoice = async (choice, roomCode = null) => {
-    console.log("Mode choice:", choice);
+    // console.log("Mode choice:", choice);
   
     if (!user) {
       console.error("User not authenticated");
       return;
     }
   
-    console.log("Authenticated user:", user.uid);
-  
     if (choice === 'SOLO') {
       console.log(selectedTopic.topicTitle, selectedTopic.topicId);
       try {
         // Fetch randomized practice questions by topicId
         const { success, data } = await getRandomizedPracticeByTopicId(selectedTopic.topicId, 10);
-        console.log("Raw API response for questions:", data);
-        console.log("Fetched Question:", data);
         if (success) {
           // Pass the questions to questionForm through the state
           navigateTo(`/questionForm/${selectedTopic.topicId}`, { state: 

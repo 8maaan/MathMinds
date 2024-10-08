@@ -6,7 +6,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { getAllLessonsQuiz, getRandomizedLessonQuizByLessonQuizId } from '../API-Services/LessonQuizAPI';
 import { checkUserBadge, awardBadge } from '../API-Services/UserAPI'; // Import the new functions
-import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 import { UserAuth } from '../Context-and-routes/AuthContext'; // Assuming you have access to user context here
 
 const theme = createTheme({
@@ -55,8 +54,8 @@ const QuizQuestionForm = () => {
   const [open, setOpen] = useState(false);
   const [badgeNotification, setBadgeNotification] = useState(false); // State for badge notification
   const [badgeAwarded, setBadgeAwarded] = useState(false); // State to check if badge was awarded
-  const [questionFontSize, setQuestionFontSize] = useState('1.5rem');
-  const [optionFontSize, setOptionFontSize] = useState('1rem');
+  const questionFontSize = '1.5rem';
+  const optionFontSize= '1rem';
   const [lessonTitle, setLessonTitle] = useState('');
 
   const questionRef = useRef(null);

@@ -51,12 +51,12 @@ export default function ReusableAppBar() {
     setAnchorElUser(null);
     switch(setting){
       case 'Profile':
-        console.log('Profile');
+        // console.log('Profile');
         navigateTo('/profile');
         break;
 
       case 'Logout':
-        console.log('Logout');
+        // console.log('Logout');
         handleUserLogOut();
         break;
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, LinearProgress } from '@mui/material';
+import { Alert, LinearProgress } from '@mui/material';
 import '../PagesCSS/LessonProgressPage.css';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import { getProgressForAllLessonsFromDb } from '../API-Services/UserAPI';

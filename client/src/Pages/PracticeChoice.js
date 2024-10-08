@@ -4,8 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../PagesCSS/PracticeChoice.css';
-{/*{ useState }*/}
-{/* import { useNavigate } from 'react-router-dom'; */}
+
 function PracticeChoice({onClose, modeChoice}) {
    
     const [showJoinRoom, setShowJoinRoom] = useState(false);

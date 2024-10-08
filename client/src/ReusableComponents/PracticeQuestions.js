@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { TextField, IconButton, Typography } from '@mui/material';
+import { TextField, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const PracticeQuestion = ({ id, question, correctAnswer, incorrectAnswers, updateQuestion, deleteQuestion }) => {
-    const [isEditing, setIsEditing] = useState(false);
 
     const handleUpdate = (field, value) => {
         const updatedQuestion = { question, correctAnswer, incorrectAnswers, [field]: value };

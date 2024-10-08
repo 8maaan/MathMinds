@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { Card, CardContent, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useNavigate } from 'react-router-dom';
 import '../PagesCSS/TopicCard.css';
-import PracticeChoice from './PracticeChoice';
 
 function TopicCard({ topic, onClose, onStart }) {
-  const navigate = useNavigate();
 
   // const onNext = (topicId, topicTitle) => {
   //   navigate(`/questionForm/${topicId}`, { state: { topicTitle } });

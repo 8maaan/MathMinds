@@ -46,9 +46,9 @@ const PracticeLessonList = ({ onLessonStart }) => {
 
     const handleStartClick = (lesson) => {
         const { lessonId, lessonTopics } = lesson;
-        console.log("Lesson ID:", lessonId);
+        // console.log("Lesson ID:", lessonId);
         const topicId = lessonTopics.length > 0 ? lessonTopics[0].topicId : null; 
-        console.log("Topic ID:", topicId);
+        // console.log("Topic ID:", topicId);
         navigateTo(`/practice-event/${lessonId}/${topicId}`);
     }
 

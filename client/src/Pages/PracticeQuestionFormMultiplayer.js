@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { ref, onValue, off, update, serverTimestamp, get, runTransaction } from "firebase/database";
+import { ref, onValue, off, serverTimestamp, runTransaction } from "firebase/database";
 import { firebaseRTDB } from '../Firebase/firebaseConfig';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import MultiplayerLeaderboardModal from '../ReusableComponents/MultiplayerLeaderboardModal';
@@ -8,6 +8,7 @@ import ReusableCountdownTimer from '../ReusableComponents/ReusableCountdownTimer
 import { Box, Button, IconButton, LinearProgress, Slide, Tooltip } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import "../PagesCSS/PracticeQuestionFormMultiplayer.css"
+import ReusableDialog from '../ReusableComponents/ReusableDialog';
 
 //  W/ comments para way libog
 const PracticeQuestionFormMultiplayer = () => {
@@ -25,6 +26,7 @@ const PracticeQuestionFormMultiplayer = () => {
     const [startCountdownIsFinished, setStartCountdownIsFinished] = useState(false);
 
     const [shuffledChoices, setShuffledChoices] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const optionColors = [
         { defaultColor: "#f94848", hoverColor: "#d13d3d", disabledColor: "#bf3737" },
@@ -54,13 +56,13 @@ const PracticeQuestionFormMultiplayer = () => {
                     if (data.currentQuestionIndex !== (gameData?.currentQuestionIndex || 0)) {
                         if (data.currentQuestionStartTime) {
                             const currentTime = Date.now();
-                            console.log("Server Time:", currentTime);
+                            // console.log("Server Time:", currentTime);
                             const elapsedTime = (currentTime - data.currentQuestionStartTime) / 1000;
-                            console.log("Elapsed Time", elapsedTime);
+                            // console.log("Elapsed Time", elapsedTime);
                             const remainingTime = Math.max(0, data.questionTimer - elapsedTime);
-                            console.log("Remaining time: ",remainingTime);
+                            // console.log("Remaining time: ",remainingTime);
                             setTimer(Math.round(remainingTime > data.questionTimer ? data.questionTimer : remainingTime ));
-                            console.log("Timer:", timer);
+                            // console.log("Timer:", timer);
                         }
                         setCurrentQuestion(data.questions[data.currentQuestionIndex]);
                         setQuestionTimer(data.questionTimer);
@@ -108,7 +110,8 @@ const PracticeQuestionFormMultiplayer = () => {
             proceedToNextQuestionDelay();
         }
         return () => clearTimeout(timerId);
-    }, [timer, gameData, startCountdownIsFinished]);
+        // eslint-disable-next-line
+    }, [timer, gameData, startCountdownIsFinished, ]);
 
     // Checks if the question changed (Ako gibutang diri kay for some reason mu-cause og infinite loop sa first useEffect)
     useEffect(() => {
@@ -213,8 +216,8 @@ const PracticeQuestionFormMultiplayer = () => {
         return Object.values(scores).reduce((sum, score) => sum + score, 0);
     };
 
-    const handleNavigateBacktoLobby = () => {
-        navigateTo(`/lobby/${roomCode}`)
+    const handleNavigateBacktoHomePage= () => {
+        navigateTo(`/home`)
     }
     
     const handleShowLeaderboard = () =>{
@@ -229,8 +232,17 @@ const PracticeQuestionFormMultiplayer = () => {
         return array.sort(() => Math.random() - 0.5);
     };
 
-    // console.log("Timer:", timer);
-    // console.log("startCountdownIsFinished:",startCountdownIsFinished);
+    const handleOpenDialog = (event) => {
+        event.preventDefault();
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = (confirmed) => {
+        setOpenDialog(false);
+        if (confirmed) {
+            handleNavigateBacktoHomePage();
+        }
+    };
 
     if (!currentQuestion) {
         return (     
@@ -246,7 +258,7 @@ const PracticeQuestionFormMultiplayer = () => {
                     <LinearProgress variant='determinate' value={progress} sx={{ height: '25px',  width: '100%', marginBottom:'1.5%' }}/>
                     <Box className='pqfm-exit-section-container'>
                         <Tooltip title='Exit'>
-                            <IconButton>
+                            <IconButton onClick={handleOpenDialog}>
                                 <ExitToAppIcon sx={{fontSize: '1.8rem'}}/>
                             </IconButton>
                         </Tooltip>
@@ -259,13 +271,6 @@ const PracticeQuestionFormMultiplayer = () => {
                             <Box className='pqfm-question-container'>
                                 <p>{currentQuestion.question}</p>
                             </Box>
-                            {/* {isFinished && 
-                                    <>
-                                        <p>The quiz has finished{"(Temp Only)"}</p>
-                                        <button onClick={() => handleNavigateBacktoLobby()}>Go back to lobby</button>
-                                    </>
-                                } */}
-                            {/* <p>Time left: {timer} seconds</p> */}
                         </Box>
                         
                     </Box>
@@ -305,6 +310,13 @@ const PracticeQuestionFormMultiplayer = () => {
                             )}
                             isFinished={isFinished}
                             roomCode={roomCode}
+                        />
+
+                        <ReusableDialog
+                            status={openDialog} 
+                            onClose={handleCloseDialog} 
+                            title="Exit Game?" 
+                            context={`Are you sure you want to leave the game? You can still rejoin as long as the game is ongoing`}
                         />
                     </Box>
                 </Box>

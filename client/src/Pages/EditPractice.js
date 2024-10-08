@@ -26,7 +26,7 @@ const EditPractice = () => {
         const fetchPractice = async () => {
             try {
                 const practiceData = await getPracticeByTopicId(topicId);
-                console.log("PracticeId:",practiceData.data[0].practiceId);
+                // console.log("PracticeId:",practiceData.data[0].practiceId);
                 setPracticeId(practiceData.data[0].practiceId);
                 if (practiceData.success) {
                     const practiceQA = practiceData.data[0].practice_qa;
@@ -97,9 +97,9 @@ const EditPractice = () => {
             practice_qa: practiceQA
         };
 
-        console.log("RB:", requestBody);
-        console.log("practiceId:",practiceId);
-        console.log(process.env.REACT_APP_SPRINGBOOT_EDIT_PRACTICE)
+        // console.log("RB:", requestBody);
+        // console.log("practiceId:",practiceId);
+        // console.log(process.env.REACT_APP_SPRINGBOOT_EDIT_PRACTICE)
 
         const response = await updatePracticeInDb(practiceId, requestBody);
         if (response.success) {
@@ -109,7 +109,7 @@ const EditPractice = () => {
                 }
             });
         } else {
-            console.log(response.message);
+            console.error(response.message);
         }
     };
 
@@ -175,7 +175,7 @@ const EditPractice = () => {
         return <div>Error: {error.message}</div>;
     }
 
-    console.log(currentTopicTitle);
+    // console.log(currentTopicTitle);
 
     return (
         <div>

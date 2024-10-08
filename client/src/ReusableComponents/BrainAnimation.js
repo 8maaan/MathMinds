@@ -8,10 +8,10 @@ const BrainAnimation = () => {
     return (
         <div className="container-brain">
   <div className="brain">
-  <img src={Brain1} className='brain1'/>
-          <img src={Brain2} className='brain2'/>
-          <img src={Brain3} className='brain3'/>
-          <img src={Brain4} className='brain4'/>
+        <img src={Brain1} className='brain1' alt='brain1'/>
+        <img src={Brain2} className='brain2' alt='brain2'/>
+        <img src={Brain3} className='brain3' alt='brain3'/>
+        <img src={Brain4} className='brain4' alt='brain4'/>
   </div>
 </div>
     )

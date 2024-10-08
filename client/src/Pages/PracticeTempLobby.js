@@ -10,7 +10,6 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SendIcon from '@mui/icons-material/Send';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GameSettingsModal from '../ReusableComponents/GameSettingsModal';
-import { useUserInfo } from '../ReusableComponents/useUserInfo';
 
 const PracticeTempLobby = () => {
     const { roomCode } = useParams();
@@ -50,7 +49,7 @@ const PracticeTempLobby = () => {
                 setRoomData(data);
                 setPlayers(data.players || {});
                 setIsHost(data.host === user.uid);
-                console.log(isHost);
+                // console.log(isHost);
 
                 // Check if the host has disconnected
                 if (data.host && !data.players[data.host]) {
@@ -80,7 +79,7 @@ const PracticeTempLobby = () => {
             off(messagesRef);
             off(playerRef);
         };
-    }, [roomCode, navigateTo]);
+    }, [roomCode, navigateTo, user.uid]);
 
     useEffect(() => {
         const playerRef = ref(firebaseRTDB, `rooms/${roomCode}/players/${user.uid}`);
@@ -91,7 +90,7 @@ const PracticeTempLobby = () => {
                 // Player not in the room, add them back
                 try{
                     set(playerRef, {
-                        name: user.displayName,
+                        name: (user.displayName).split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '),
                         uid: user.uid,
                     });
                 }catch(e){
@@ -104,7 +103,7 @@ const PracticeTempLobby = () => {
         return () => {
             off(playerRef);
         };
-    }, [roomCode, user.uid, players]);
+    }, [roomCode, user.uid, players, user.displayName]);
 
     const startGame = async() => {
         // Implement game start logic here
@@ -112,7 +111,7 @@ const PracticeTempLobby = () => {
         if (!isHost) return;
 
         try {
-            console.log("Fetching new questions...");
+            // console.log("Fetching new questions...");
             const { success, data } = await getRandomizedPracticeByTopicId(roomData.topicId, questionAmount);
             if (success && data.length > 0) {
                 const questions = data.map(question => ({
@@ -155,7 +154,7 @@ const PracticeTempLobby = () => {
     
         await set(newMessageRef, {
             userId: user.uid,
-            userName: user.displayName || "Anon",
+            userName: (user.displayName || "Anon").split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '),
             message: chatInput,
             timestamp: serverTimestamp()
         });
@@ -192,9 +191,11 @@ const PracticeTempLobby = () => {
                             <h3>Room Code: <span style={{color: '#ba8f22'}}>{roomCode}</span></h3>
                         </div>
                         <div style={{height: '100%', marginLeft: 'auto'}}>
-                            <IconButton aria-label="delete" onClick={handleShowGameSettingsModal}>
-                                <SettingsIcon sx={{fontSize: '30px'}}/>
-                            </IconButton>
+                            {isHost &&
+                                <IconButton aria-label="delete" onClick={handleShowGameSettingsModal}>
+                                    <SettingsIcon sx={{fontSize: '30px'}}/>
+                                </IconButton>
+                            }
                         </div>
                         <div style={{height: '100%', marginLeft:'5px'}}>
                             {isHost && 
