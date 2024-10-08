@@ -10,7 +10,6 @@ import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
 import DynamicLottie from '../ReusableComponents/DynamicLottie';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 import TextToSpeech from '../ReusableComponents/TextToSpeech';
-import { browserPopupRedirectResolver } from 'firebase/auth';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER

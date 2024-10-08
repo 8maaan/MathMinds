@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -22,7 +21,7 @@ const style = {
 };
 
 export default function GameChoicesModal({ openModal, handleModalClose, onManipulativeSelect }) {
-  const [open, setOpen] = useState(openModal);
+  const open = openModal;
 
   return (
     <div>

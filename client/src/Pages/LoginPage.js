@@ -60,7 +60,7 @@ const LoginPage = () => {
         } catch (e) {
             console.log(e.message);
             setIsValid(false);
-            console.log(isValid);
+            // console.log(isValid);
         }
     };
 

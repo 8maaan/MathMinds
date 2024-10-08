@@ -44,17 +44,17 @@ export default function ReusableAppBar() {
     setAnchorElNav(null);
     switch(page){
       case 'Home':
-        console.log('Home');
+        // console.log('Home');
         navigateTo('/home');
         break;
 
       case 'Dashboard':
-        console.log('Dashboard');
+        // console.log('Dashboard');
         navigateTo('/lesson-progress');
         break;
 
       case 'Lessons':
-        console.log('Lessons');
+        // console.log('Lessons');
         navigateTo('/lessons');
         break;
 
@@ -63,7 +63,7 @@ export default function ReusableAppBar() {
         break;
 
       case 'Practice':
-        console.log('Practice');
+        // console.log('Practice');
         navigateTo('/practice');
         break;
 
@@ -76,7 +76,7 @@ export default function ReusableAppBar() {
     setAnchorElUser(null);
     switch(setting){
       case 'Profile':
-        console.log('Profile');
+        // console.log('Profile');
         navigateTo('/profile');
         break;
 
@@ -85,7 +85,7 @@ export default function ReusableAppBar() {
         break;
 
       case 'Logout':
-        console.log('Logout');
+        // console.log('Logout');
         handleUserLogOut();
         break;
 

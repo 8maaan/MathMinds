@@ -9,6 +9,7 @@ import { getAllTopicsFromDb } from '../API-Services/TopicAPI';
 import { insertPracticeToDb } from '../API-Services/PracticeAPI';
 import { useNavigate } from 'react-router-dom';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
+import ReusableDialog from '../ReusableComponents/ReusableDialog';
 
 const CreatePractice = () => {
     const [selectedLesson, setSelectedLesson] = useState(''); 
@@ -16,9 +17,11 @@ const CreatePractice = () => {
     const [practiceQuestions, setPracticeQuestions] = useState([]);
     const [lessons, setLessons] = useState([]);
     const [topics, setTopics] = useState([]);
-    const [filteredTopics, setFilteredTopics] = useState([]); 
+    const [filteredTopics, setFilteredTopics] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false); 
     const [snackbar, setSnackbar] = useState({ status: false, severity: '', message: '' });
-
+    const [topicName, setTopicName]= useState('');
+ 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -60,6 +63,14 @@ const CreatePractice = () => {
         setSelectedLesson(event.target.value); 
     };
 
+    const handleTopicChange = (event) => {
+        const selectedTopicId = event.target.value;
+        const selectedTopic = filteredTopics.find(topic => topic.topicId === selectedTopicId);
+        
+        setPracticeTopic(selectedTopicId);
+        setTopicName(selectedTopic?.topicTitle || '');
+    };
+
     const handleAddQuestion = () => {
         setPracticeQuestions([
             ...practiceQuestions,
@@ -80,7 +91,6 @@ const CreatePractice = () => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
         
         const practiceQAObject = practiceQuestions.reduce((acc, item, index) => {
             
@@ -97,10 +107,10 @@ const CreatePractice = () => {
             practice_qa: practiceQAObject
         };
         
-        console.log('Request Body:', requestBody);
+        // console.log('Request Body:', requestBody);
         
         const response = await insertPracticeToDb(requestBody);
-        console.log('Response:', response);
+        // console.log('Response:', response);
         
         if (response.success) {
             handleSnackbarOpen('success', 'Practice has been created successfully.');
@@ -123,6 +133,18 @@ const CreatePractice = () => {
         }
     };
 
+    const handleOpenDialog = (event) => {
+        event.preventDefault();
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = (confirmed) => {
+        setOpenDialog(false);
+        if (confirmed) {
+            handleSubmit();
+        }
+    };
+
     const handleSnackbarOpen = (severity, message) => {
         setSnackbar({ status: true, severity, message });
     };
@@ -140,9 +162,9 @@ const CreatePractice = () => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleOpenDialog}>
                 <div className='createPractice-body'>
-                    <Typography class='createPractice-title'>Create a quiz for Practice</Typography>
+                    <Typography class='createPractice-title'>Create a Practice for a Topic</Typography>
                     <div className='practice-config-container'>
                         <div className='practice-select-container'>
                          {/* Select Lesson - Added */}
@@ -157,7 +179,7 @@ const CreatePractice = () => {
                         {/* Practice Topic - Updated to use filteredTopics */}
                         <FormControl variant="filled" sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Topic</InputLabel>
-                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={(event) => setPracticeTopic(event.target.value)} required>
+                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={handleTopicChange} required>
                                 {filteredTopics.map(topic => (
                                     <MenuItem key={topic.topicId} value={topic.topicId}>{topic.topicTitle}</MenuItem>
                                 ))}
@@ -194,6 +216,12 @@ const CreatePractice = () => {
                     <Button type="submit" variant='contained' sx={{ mt: 2 }}>Submit</Button>
                 </div>
             </form>
+            <ReusableDialog
+                status={openDialog} 
+                onClose={handleCloseDialog} 
+                title="Confirm Practice Topic Creation" 
+                context={`Are you sure you want to create a practice for topic ${topicName}?`}
+            />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>
     );

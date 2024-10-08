@@ -75,7 +75,6 @@ const CreateLessonQuiz = () => {
             });
         }
     };
-    console.log(quizLesson);
 
     const handleSubmit = async (event) => {
         const lessonQuizQA = quizQuestions.reduce((acc, item, index) => {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import '../PagesCSS/RegisterPage.css'
-import mathMindsLogo from '../Images/mathminds-logo.png';
 import registerBackground from '../Images/register-bg.png'
 import {Button, TextField, Typography} from '@mui/material'
 import { useNavigate } from 'react-router-dom'

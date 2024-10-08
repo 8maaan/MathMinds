@@ -28,7 +28,7 @@ const EditLessonQuiz = () => {
             const lessonList = await getAllLessonsFromDb();
             if (lessonList.success) {
                 setLessons(lessonList.data);
-                console.log(lessonList.data);
+                // console.log(lessonList.data);
             } else {
                 console.error(lessonList.message);
             }
@@ -120,7 +120,7 @@ const EditLessonQuiz = () => {
             });
             console.log(response.message);
         } else {
-            console.log(response.message);
+            console.error(response.message);
         }
     };
 

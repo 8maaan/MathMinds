@@ -32,7 +32,7 @@ export default function ForgotPasswordModal({ open, onClose }) {
 
   const handleSubmit = async(event) =>{
     event.preventDefault();
-    console.log(email);
+    // console.log(email);
     try{
       await sendPasswordReset(email);
       setConfirmed(true);

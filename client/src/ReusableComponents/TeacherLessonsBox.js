@@ -244,10 +244,10 @@ const TeacherLessonsBox = () => {
                     open={Boolean(anchorEl)}
                     onClose={handleMenuClose}
                 >
-                    <MenuItem onClick={handleAddLessonClick}>Add a Lesson</MenuItem>
-                    <MenuItem onClick={handleAddTopicClick}>Add a Topic</MenuItem>
-                    <MenuItem onClick={handleAddQuizClick}>Add a Quiz</MenuItem>
-                    <MenuItem onClick={handleAddQuizPracticeClick}>Add a Quiz For Practice</MenuItem>
+                    <MenuItem onClick={handleAddLessonClick}>Create a Lesson</MenuItem>
+                    <MenuItem onClick={handleAddTopicClick}>Add Topic to Lesson</MenuItem>
+                    <MenuItem onClick={handleAddQuizClick}>Create Quiz to Lesson</MenuItem>
+                    <MenuItem onClick={handleAddQuizPracticeClick}>Add Practice to Topic</MenuItem>
                 </Menu>
             </div>
             

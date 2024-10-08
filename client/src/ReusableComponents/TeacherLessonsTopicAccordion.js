@@ -45,7 +45,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
     };
 
     const handleEditTopic = (topicId, currentTopicTitle) => {
-        console.log(currentTopicTitle);
+        // console.log(currentTopicTitle);
         navigateTo(`/edit-topic/${topicId}/${currentTopicTitle}`);
     };
 
@@ -82,7 +82,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
     const handleDeleteTopic = async () => {
         if (selectedTopicId) {
             try {
-                console.log("Deleting topic ID:", selectedTopicId); // Debugging log
+                // console.log("Deleting topic ID:", selectedTopicId); // Debugging log
                 const { success, message } = await deleteTopicFromDb(selectedTopicId);
                 if (success) {
                     console.log("Topic deleted successfully:", selectedTopicId);
