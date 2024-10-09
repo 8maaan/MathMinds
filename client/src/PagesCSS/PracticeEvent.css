@@ -9,25 +9,9 @@
   z-index: 1;
 }
 
-.outerContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh; /* Ensure the outer container takes the full height */
-}
-
-.container {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .practiceEventContainer {
   max-width: 75rem;
-  margin: 5rem auto; /* Add margin-top for spacing */
+  margin: 9rem auto; /* Add margin-top for spacing */
   padding: 1.25rem;
   text-align: center;
   width: 100%; /* Ensure it takes full width of the container */
@@ -76,6 +60,7 @@
 .slick-center {
   transform: scale(1.2) !important;
   margin-top: 2rem !important; /* Adjust margin-top for spacing */
+  margin-bottom: 2rem !important;
   z-index: 1 !important;
 }
 
