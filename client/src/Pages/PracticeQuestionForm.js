@@ -198,7 +198,7 @@ const PracticeQuestionForm = () => {
         </Box>
 
         {/* Main Container */}
-        <Container maxWidth="md" sx={{paddingRight: '1rem',backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
+        <Container maxWidth="md" sx={{paddingRight: '1rem',backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '70px', position: 'relative' }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
             {topicTitle} - Practice
           </Typography>
@@ -206,7 +206,7 @@ const PracticeQuestionForm = () => {
           <Tooltip title='Exit'>
             <IconButton 
               onClick={() => navigate(`/practice-event/${lessonId}/${topicId}`)}
-              sx={{ position: 'absolute', top: '75px', left: '1px', zIndex: 10 }}
+              sx={{ position: 'absolute', top: '50px', left: '1px', zIndex: 10 }}
             >
               <ExitToAppIcon sx={{ fontSize: '1.8rem' }} />
             </IconButton>
@@ -234,10 +234,10 @@ const PracticeQuestionForm = () => {
                     pointerEvents: isAnswered ? 'none' : 'auto',
                     opacity: isAnswered ? 0.5 : 1,
                     flexGrow: 1, 
-        flexBasis: 'calc(50% - 10px)', 
-        '@media (max-width: 600px)': {
-          flexBasis: '100%', 
-        },
+                    flexBasis: 'calc(50% - 10px)', 
+                    '@media (max-width: 600px)': {
+                       flexBasis: '100%', 
+                    },
                   }}
                 >
                   {option}
