@@ -55,7 +55,7 @@
   flex-direction: column;
   justify-content: left;
   text-align: left;
-  width: 40%;
+  width: 90%;
 }
 
 .right-side-text {
@@ -164,7 +164,7 @@
   font-family: 'Poppins';
   margin: auto 0;
   font-size: clamp(0.9rem, 1.25vw, 1.25rem);
-  padding: 5%;
+  padding: 2%;
   padding-top: 0;
   text-align: justify;
   margin-top: 1.5%;

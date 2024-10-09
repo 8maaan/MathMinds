@@ -47,6 +47,7 @@ const LandingPage = () => {
                         </div>
                     </div>
                 </div>
+                
                 <h1 data-aos="fade-up" style={{fontSize: 'clamp(2rem, 4.5vw, 5rem)'}}> Why MathMinds?</h1>
                 
 
@@ -57,7 +58,7 @@ const LandingPage = () => {
                                 <img src={GifContent1} className='gif-class' alt="Gif Content 1"/>
                            </div>
                         </div>
-                        <div className='section-content-right-side'>
+                        <div className='section-content-right-side'  style={{ paddingLeft:'30px'}}>
                            <div className='section-header-container'>
                                 <p>Personalized</p>
                                 <p>Math Journey</p>
