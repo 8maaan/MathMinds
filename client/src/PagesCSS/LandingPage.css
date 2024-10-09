@@ -30,9 +30,9 @@
   width: 70%;
   height: 60vh;
   border: none;
-  border-radius: 90px;
+  border-radius: 70px;
   padding: 3%;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .content-left-side, .content-right-side{
@@ -47,7 +47,7 @@
   align-items: center;
   overflow: hidden; 
   object-fit: contain; 
-  margin: 0; 
+  margin: 2%; 
   padding: 0;
 }
 
@@ -64,7 +64,6 @@
   align-items: left;
   text-align: right;
   width: 100%;
-  /* border: solid black 1px; */
   height: 70%;
 }
 
@@ -90,30 +89,56 @@
 .section-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 90vh;
+  align-content: center;
+  height: 80vh;
 }
 
 .section-content-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-content: center;
   height: 100vh;
   width: 70%;
   height: 60vh;
   border: none;
-  backdrop-filter: blur(4px);
+  border-radius: 70px;
+  backdrop-filter: blur(3px);
   padding: 3%;
-  border-radius: 90px;
 }
 
-.section-content-left-side, .section-content-right-side {
+.section-content-left-side {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: justify;
+  align-content: center;
+  width: 130%;
   height: 100%;
+  border: 10px solid;
+  border-radius: 70px;
+  background: transparent; 
+}
+
+.image-bg-yellow {
+  background-color: rgba(249, 181, 80, 0.8);
+  border-color: rgba(249, 181, 80);
+}
+
+.image-bg-purple {
+  background-color: rgba(179, 157, 219, 0.8);
+  border-color: rgb(179, 157, 219);
+}
+
+.image-bg-green {
+  background-color: rgba(153, 198, 126, 0.8);
+  border-color: rgb(153, 198, 126);
+}
+
+.section-content-right-side {
+  display: flex;
+  margin-left: 3.5%;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
 
 .section-header-container {
@@ -121,20 +146,23 @@
   flex-direction: column;
   align-items: left;
   width: 100%;
-  height: 45%;
+  height: 100%;
 }
 
 .section-header-container p {
   font-family: 'Poppins';
   margin: auto 0;
-  padding-left: 2%;
-  font-size: clamp(2rem, 4.5vw, 5rem);
+  padding: 5%;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: clamp(1.8rem, 4vw, 4.5rem);
   font-weight: 600;
   width: max-content;
 }
 
 .section-content-desc {
   font-family: 'Poppins';
+  margin: auto 0;
   font-size: clamp(0.9rem, 1.25vw, 1.25rem);
   padding: 2%;
   padding-top: 0;
@@ -146,17 +174,18 @@
 
 .section-content-image {
   justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden; 
-  object-fit: contain;
+  align-content: center;
 }
 
 .gif-class {
-  width: 100%;
+  width: 90%;
   height: 100%;
-  border: 12px solid #b39ddb;
-  border-radius: 30px;
+  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+}
+
+.gif-class:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in;
 }
 
 @media (max-width: 768px) {
@@ -177,22 +206,54 @@
         margin-top: 50px;
     }
 
-    .content-left-side, .content-right-side,
-    .section-content-left-side, .section-content-right-side {
-        width: 100%;
+    .content-left-side {
+        border: none;
+        border-radius: 0;
+        margin: 50%;
+    }
+
+    .content-right-side {
+      border: none;
+      border-radius: 0;
+      margin: 0%;
+    }
+
+    .section-content-left-side {
+      display: flex;
+      border: none;
+      border-radius: 0;
+      margin: 0%;
+      padding: 0%;
+      align-items: baseline;
+      background: none;
+      width: 90%;
+
+    }
+
+    .section-content-right-side {
+      border: none;
+      border-radius: 0;
+      margin: 0%;
+      padding: 0%;
     }
 
     .section-content-image {
       justify-content: center;
       max-width: 100%;
-      height: auto;
+      border-radius: 0; 
+  }
+
+    .gif-class:hover {
+      transform: none;
+      transition: none;
     }
 
-    .gif-class {
-      width: 95%;
-      height: 80%;
-      border-radius: 0%;
-      border: none;
+    .component-response {
+      width: 55%;
+    }
+
+    .lottie-animation {
+      display: none;
     }
 
     div:has(.section-content-image) {
@@ -200,7 +261,7 @@
     }
 
     .section-header-container {
-      padding-top: 10%;
+      padding-top: 0;
     }
 
     .right-side-text p, .section-header-container p {

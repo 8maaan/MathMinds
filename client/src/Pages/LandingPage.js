@@ -42,20 +42,20 @@ const LandingPage = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className='content-left-side'>
-                            <Lottie animationData={Birdy} loop={true} alt='Duolingo'/>
+                        <div className='content-left-side lottie-animation'>
+                                <Lottie animationData={Birdy} loop={true} alt='Duolingo'/>
                         </div>
                     </div>
                 </div>
                 
                 <h1 data-aos="fade-up" style={{fontSize: 'clamp(2rem, 4.5vw, 5rem)'}}> Why MathMinds?</h1>
                 
-                <div data-aos="fade-up-left" className='section-wrapper'>
-                    <div style={{background: 'linear-gradient(to right, #ffa726, #ffa72680 75%)', /*border: '12px solid #ffa726'*/ }} className='section-content-container'> 
-                        <div className='section-content-left-side'  style={{width:'115%'}}>
+
+                <div data-aos="fade-up" className='section-wrapper'>
+                    <div style={{background: 'rgba(249, 181, 80, 0.6)'}} className='section-content-container'> 
+                    <div className='section-content-left-side image-bg-yellow'>
                            <div className='section-content-image'>
-                                {/* <Lottie animationData={Journey} loop={true} alt='Journey' style={{ width: window.innerWidth <= 768 ? '40%' : '100%' }} /> */}
-                                <img src={GifContent1} className='gif-class' style={{borderColor: '#ffa726'}} alt="Gif Content 1"/>
+                                <img src={GifContent1} className='gif-class' alt="Gif Content 1"/>
                            </div>
                         </div>
                         <div className='section-content-right-side'  style={{ paddingLeft:'30px'}}>
@@ -72,12 +72,17 @@ const LandingPage = () => {
                     </div>
                 </div>
 
-                <div data-aos="fade-up-right" className='section-wrapper'> 
-                    <div style={{background: 'linear-gradient(to right, #b39ddb80, #b39ddb 75%)', /*border: '12px solid #b39ddb'*/}} className='section-content-container'>
-                        <div className='section-content-left-side' style={{marginRight: '40px'}}>
-                            <div className='section-header-container'>
-                                <p>Collaborative</p>
-                                <p>& Solo Learning</p>
+                <div data-aos="fade-up" className='section-wrapper'> 
+                    <div style={{background: 'rgb(179, 157, 219, 0.6)'}} className='section-content-container'>
+                        <div className='section-content-left-side image-bg-purple'>
+                            <div className='section-content-image'>
+                                <img src={GifContent2} className='gif-class' alt="Gif Content 2"/>
+                            </div>
+                        </div>
+                        <div className='section-content-right-side'>
+                           <div className='section-header-container'>
+                                <p>Collab/Solo</p>
+                                <p>Learning</p>
                             </div>
                             <div className='section-content-desc'>
                                     <p>Challenge yourself with topic quizzes and engaging practices,
@@ -85,20 +90,14 @@ const LandingPage = () => {
                                     </p>
                             </div>
                         </div>
-                        <div className='section-content-right-side'style={{marginLeft: '10px'}}>
-                           <div className='section-content-image'>
-                                {/* <Lottie animationData={Collab} loop={true} alt='Collaboration'  style={{ width: window.innerWidth <= 768 ? '40%' : '100%'}} /> */}
-                                <img src={GifContent2} className='gif-class' style={{borderColor: '#b39ddb'}} alt="Gif Content 2"/>
-                           </div>
-                        </div>
                     </div>
                 </div>
 
-                <div data-aos="fade-up-left"className='section-wrapper'>
-                    <div style={{background: 'linear-gradient(to right, #f0de38, #f0de3880 85%)', /*border: '12px solid #f0de38'*/}} className='section-content-container'>
-                        <div style={{width:'89%'}}className='section-content-left-side'>
-                           <div className='section-content-image'>
-                                <LandingPageSection/>     
+                <div data-aos="fade-up"className='section-wrapper'>
+                    <div style={{background: 'rgb(153, 198, 126, 0.6)'}} className='section-content-container'>
+                        <div className='section-content-left-side image-bg-green'>
+                           <div className='component-response section-content-image'>
+                                <LandingPageSection />     
                            </div>
                         </div>
                         <div className='section-content-right-side'>
@@ -107,8 +106,8 @@ const LandingPage = () => {
                                 <p>Earn Rewards</p>
                            </div>
                            <div className='section-content-desc'>
-                                <p>Celebrate your learning milestones! Earn badges for completing lessons,  
-                                    quizzes, and practices.
+                                <p>Celebrate your learning with us! Earn badges as a reward for your progress and dedication 
+                                    by completing lessons, quizzes, and practices.
                                 </p>
                            </div>
                         </div>
