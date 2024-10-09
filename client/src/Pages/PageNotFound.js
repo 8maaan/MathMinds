@@ -1,5 +1,5 @@
 import React from 'react'
-import Error404 from '../JSON/Error404.json';
+import Error404 from '../LottieFiles/LottieAnimations/Error404.json';
 import Lottie from 'lottie-react';
 import { Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';

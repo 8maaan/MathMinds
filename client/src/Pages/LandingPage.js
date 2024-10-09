@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
 import Lottie from 'lottie-react';
-import Birdy from '../JSON/BirdyLanding.json';
+import Birdy from '../LottieFiles/LottieAnimations/BirdyLanding.json';
 import GifContent1 from '../Images/LandingPageImages/GifContent1.gif';
 import GifContent2 from '../Images/LandingPageImages/GifContent2.gif';
 import GitHubIcon from '../Images/LandingPageImages/github-mark/github-mark.png';
@@ -32,13 +32,12 @@ const LandingPage = () => {
                     <div className='content-container'>
                         <div className='content-right-side'>
                             <div className='right-side-text'>
-                                <p>We Make</p>
-                                <p>Mathematics</p>
-                                <p>Fun</p>
+                                <p>Making Math</p>
+                                <p>Engaging</p>
                             </div>
                             <div className='right-side-desc'>
-                                <p>We transform the study of mathematics into a wonderful experience 
-                                    through interactive lessons, creative problem-solving, and real-world applications
+                                <p>Experience math in a new way with interactive lessons, hands-on problem-solving, and relatable real-world examples.
+                                    Our platform makes learning math more approachable and enjoyable for everyone.
                                 </p>
                             </div>
                         </div>
@@ -51,7 +50,7 @@ const LandingPage = () => {
                 <h1 data-aos="fade-up" style={{fontSize: 'clamp(2rem, 4.5vw, 5rem)'}}> Why MathMinds?</h1>
                 
 
-                <div data-aos="fade-up" className='section-wrapper'>
+                <div data-aos="fade-up-right" className='section-wrapper'>
                     <div style={{background: 'rgba(249, 181, 80, 0.6)'}} className='section-content-container'> 
                     <div className='section-content-left-side image-bg-yellow'>
                            <div className='section-content-image'>
@@ -60,19 +59,18 @@ const LandingPage = () => {
                         </div>
                         <div className='section-content-right-side'  style={{ paddingLeft:'30px'}}>
                            <div className='section-header-container'>
-                                <p>Personalized</p>
-                                <p>Math Journey</p>
+                                <p>Dynamic Math</p>
+                                <p>Learning Hub</p>
                            </div>
                            <div className='section-content-desc'>
-                                <p>Dive into a range of mathematical lessons and topics tailored to your 
-                                    learning and track your progress as you master new concepts!
+                                <p>Explore a flexible platform where teachers can adapt lessons, topics, and practices to suit the class's needs.
                                 </p>
                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div data-aos="fade-up" className='section-wrapper'> 
+                <div data-aos="fade-up-left" className='section-wrapper'> 
                     <div style={{background: 'rgb(179, 157, 219, 0.6)'}} className='section-content-container'>
                         <div className='section-content-left-side image-bg-purple'>
                             <div className='section-content-image'>
@@ -81,12 +79,12 @@ const LandingPage = () => {
                         </div>
                         <div className='section-content-right-side'>
                            <div className='section-header-container'>
-                                <p>Collab/Solo</p>
-                                <p>Learning</p>
+                                <p>Collaborative/ </p>
+                                <p>Solo Learning</p>
                             </div>
                             <div className='section-content-desc'>
                                     <p>Challenge yourself with topic quizzes and engaging practices,
-                                        Whether you prefer tackling practices on your own or competing with others.
+                                        whether you prefer tackling practices on your own or competing with others.
                                     </p>
                             </div>
                         </div>
@@ -102,12 +100,12 @@ const LandingPage = () => {
                         </div>
                         <div className='section-content-right-side'>
                            <div className='section-header-container'>
-                                <p>Achieve and</p>
-                                <p>Earn Rewards</p>
+                                <p>Progress &</p>
+                                <p>Rewards</p>
                            </div>
                            <div className='section-content-desc'>
-                                <p>Celebrate your learning with us! Earn badges as a reward for your progress and dedication 
-                                    by completing lessons, quizzes, and practices.
+                                <p>Celebrate every milestone! Earn badges and track your achievements as you complete lessons,
+                                    motivating you to keep pushing forward.
                                 </p>
                            </div>
                         </div>
@@ -115,7 +113,7 @@ const LandingPage = () => {
                 </div>
 
                 <div data-aos="fade-in">
-                    <h1 style={{fontSize: '1.5rem'}}>Start Your Mathematical Journey.</h1>
+                    <h1 style={{fontSize: '1.5rem'}}>Start Your Journey.</h1>
                     <Button 
                         variant='contained' 
                         size='large'
