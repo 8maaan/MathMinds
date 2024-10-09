@@ -77,7 +77,6 @@
 }
 
 /* Responsive adjustments */
-/* Responsive adjustments */
 @media (max-width: 600px) {
   .sliderContainer .slick-slider {
     width: 100% !important; /* Make the slider take up the full width */
