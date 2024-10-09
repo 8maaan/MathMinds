@@ -13,12 +13,12 @@
 .scoresContainer {
   width: 95%;
   max-width: 1200px;
-  min-height: 600px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 10%;
-  padding: 20px;
+  margin-top: 7%;
+  padding: 50px;
   align-items: center;
   background-color: #f6e6c3;
   border-radius: 20px;

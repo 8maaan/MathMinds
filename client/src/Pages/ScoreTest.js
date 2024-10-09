@@ -91,29 +91,19 @@ const ScoreTest = () => {
           <Grid container alignItems="center">
             <Grid item xs={2} sm={1} md={1}></Grid> {/* Matches the first column of content */}
             <Grid item xs={4} sm={3} md={3}></Grid> {/* Matches the name column of content */}
-            <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right" }}>
-              <Typography variant="h6">Questions</Typography>
-            </Grid>
-            <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right", paddingRight: "30px" }}> {/* Adjusted paddingRight */}
-              <Typography variant="h6">Scores</Typography>
+            <Grid item xs={6} sm={6} md={6} style={{ textAlign: "right", paddingRight: "30px" }}> {/* Adjusted paddingRight */}
+              <Typography variant="h6">Score</Typography>
             </Grid>
           </Grid>
         </div>
         {scores.map((score, index) => (
           <Paper key={index} elevation={3} className="scorePaper" style={{ marginBottom: "10px" }}> {/* Added margin for spacing */}
             <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item xs={2} sm={1} md={1} style={{ textAlign: "left" }}>
-                <Typography variant="h6">{score.id}.</Typography>
-              </Grid>
               <Grid item xs={4} sm={3} md={3}>
                 <Typography variant="h6">{score.name}</Typography>
               </Grid>
-              <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right" }}>
-                <Typography variant="body1" style={{ fontSize: "16px", marginRight: "10px" }}>
-                  {`${score.questionsCorrect}/${score.totalQuestions}`}
-                </Typography>
-              </Grid>
-              <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right" }}>
+              
+              <Grid item xs={4} sm={5} md={4.5}>
                 <Typography variant="body1" style={{ fontSize: "16px", marginRight: "30px" }}> {/* Adjusted marginRight */}
                   {`${score.score}/${score.totalScore}`}
                 </Typography>
@@ -126,7 +116,7 @@ const ScoreTest = () => {
             sx={{
               width: "150px",
               backgroundColor: "#ffb100",
-              color: "black",
+              color: "#181A52",
               padding: "10px 30px",
               borderRadius: "10px",
               fontSize: "1rem",
@@ -143,13 +133,13 @@ const ScoreTest = () => {
             }}
             onClick={onClickDone}
           >
-            Finish
+            Done
           </Button>
           <Button
             sx={{
-              width: "150px",
+              width: "200px",
               backgroundColor: "#ffb100",
-              color: "black",
+              color: "#181A52",
               padding: "10px 30px",
               borderRadius: "10px",
               fontSize: "1rem",
@@ -166,7 +156,7 @@ const ScoreTest = () => {
             }}
             onClick={onClickHome}
           >
-            New Topic
+            Choose Another Topic
           </Button>
         </div>
       </div>
