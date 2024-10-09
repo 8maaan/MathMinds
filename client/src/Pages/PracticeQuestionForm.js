@@ -12,7 +12,6 @@ import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 import { getRandomizedPracticeByTopicId } from '../API-Services/PracticeAPI';
 import { keyframes } from '@mui/system';
 
-
 const theme = createTheme({
   typography: {
     fontFamily: 'Poppins',
@@ -49,7 +48,7 @@ const OptionButton = styled(Button)(({ colorScheme }) => ({
   transition: 'background-color 0.3s ease',
   '&:hover': {
     backgroundColor: colorScheme.hoverColor,
-    animation: `${bounce} 1s infinite`, // Apply bounce animation
+    animation: `${bounce} 1s infinite`,
   },
   '&:disabled': {
     backgroundColor: colorScheme.disabledColor
@@ -80,11 +79,11 @@ const PracticeQuestionForm = () => {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const result = await getRandomizedPracticeByTopicId(topicId, 10); // Fetching max 5 questions
+      const result = await getRandomizedPracticeByTopicId(topicId, 10);
       if (result.success) {
         const fetchedQuestions = result.data.map(q => ({
           ...q,
-          shuffledOptions: [...q.incorrectAnswers.filter(ans => ans), q.correctAnswer].sort(() => Math.random() - 0.5) // Filter null/empty and shuffle options
+          shuffledOptions: [...q.incorrectAnswers.filter(ans => ans), q.correctAnswer].sort(() => Math.random() - 0.5)
         }));
         setShuffledQuestions(fetchedQuestions);
         setAnsweredQuestions(new Array(fetchedQuestions.length).fill(false));
@@ -185,26 +184,28 @@ const PracticeQuestionForm = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='container'>
-        <Box style={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
+      <div className='container' style={{ paddingRight: '1rem', overflow:'hidden'}}>
+        {/* Navigation Buttons */}
+        <Box sx={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
           <IconButton onClick={handlePrevQuestion}>
             <ArrowBackIosIcon style={iconStyle} />
           </IconButton>
         </Box>
-        <Box style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
+        <Box sx={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
           <IconButton onClick={handleNextQuestion}>
             <ArrowForwardIosIcon style={iconStyle} />
           </IconButton>
         </Box>
-        <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
-    
+
+        {/* Main Container */}
+        <Container maxWidth="md" sx={{paddingRight: '1rem',backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px', position: 'relative' }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
             {topicTitle} - Practice
           </Typography>
-          
+
           <Tooltip title='Exit'>
             <IconButton 
-              onClick={() => navigate(`/practice-event/${lessonId}/${topicId}`)} // Navigate using lessonId and topicId from the state
+              onClick={() => navigate(`/practice-event/${lessonId}/${topicId}`)}
               sx={{ position: 'absolute', top: '75px', left: '1px', zIndex: 10 }}
             >
               <ExitToAppIcon sx={{ fontSize: '1.8rem' }} />
@@ -219,7 +220,9 @@ const PracticeQuestionForm = () => {
               Question #{currentQuestionIndex + 1}
             </Typography>
           </Paper>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '115%', marginTop: '20px' }}>
+
+          {/* Answer Options */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: '20px', flexWrap: 'wrap' }}>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
               {currentQuestion.shuffledOptions.map((option, idx) => (
                 <OptionButton
@@ -230,6 +233,11 @@ const PracticeQuestionForm = () => {
                   sx={{
                     pointerEvents: isAnswered ? 'none' : 'auto',
                     opacity: isAnswered ? 0.5 : 1,
+                    flexGrow: 1, 
+        flexBasis: 'calc(50% - 10px)', 
+        '@media (max-width: 600px)': {
+          flexBasis: '100%', 
+        },
                   }}
                 >
                   {option}
@@ -237,6 +245,8 @@ const PracticeQuestionForm = () => {
               ))}
             </Box>
           </Box>
+
+          {/* Modals */}
           <PracticeAnswerModal
             open={isConfirming}
             handleClose={() => setIsConfirming(false)}

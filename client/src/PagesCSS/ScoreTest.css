@@ -77,14 +77,26 @@
   .doneButton .MuiButton-root {
     padding: 10px 20px;
   }
+}
 
-  .homeButton {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+@media (max-width: 480px) {
+  .scoreHeader {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .homeButton .MuiButton-root {
-    padding: 10px 20px;
+  .scoreHeader .MuiGrid-item {
+    text-align: center !important;
+  }
+
+  .scorePaper {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .scorePaper .MuiGrid-item {
+    text-align: center !important;
+    margin-bottom: 10px;
   }
 }
 
