@@ -291,6 +291,7 @@ function PracticeEvent() {
 
   return (
     <ThemeProvider theme={theme}>
+      <div className='practice-background'>
       <div className="container">
         {/* <ReusableAppBar style={{ zIndex: 1400, position: 'relative' }} /> */}
         {showCard ? (
@@ -343,6 +344,7 @@ function PracticeEvent() {
             )}
           </div>
         </Box>
+      </div>
       </div>
     </ThemeProvider>
   );
