@@ -107,29 +107,26 @@ function PracticeEvent() {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    centerMode:  1,
+    centerMode: true,
     centerPadding: '0px',
     beforeChange: () => setIsDragging(true),
     afterChange: () => setIsDragging(false),
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1280,
         settings: {
-          slidesToShow: topics.length > 1 ? 2 : 1,
-          centerMode: topics.length > 1,
-          vertical: true,
-          verticalSwiping: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
         },
       },
       {
         breakpoint: 960,
         settings: {
-          slidesToShow: topics.length > 1 ? 1 : 1,
-          centerMode: topics.length > 1,
-          vertical: true,
-          verticalSwiping: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: '40px',
         },
       },
       {
@@ -137,9 +134,26 @@ function PracticeEvent() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          vertical: true,
-          verticalSwiping: true,
-          centerMode: false,
+          centerMode: true,
+          centerPadding: '20px',
+        },
+      },
+      {
+        breakpoint: 400,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: '10px',
+        },
+      },
+      {
+        breakpoint: 200,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: '10px',
         },
       },
     ],
@@ -277,13 +291,23 @@ function PracticeEvent() {
 
   return (
     <ThemeProvider theme={theme}>
+      <div className='practice-background'>
       <div className="container">
         {/* <ReusableAppBar style={{ zIndex: 1400, position: 'relative' }} /> */}
         {showCard ? (
           <div style={backdropStyle} onClick={handleCloseCard}></div>
         ) : null}
         <Box className="practiceEventContainer">
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52', marginBottom: '2.5rem' }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: 'bold', color: '#181a52', marginBottom: '3rem', textAlign:'center',
+              fontSize: {
+                xs: '1.5rem',  // Extra small devices (mobile)
+                sm: '2rem',    // Small devices (landscape phones, tablets)
+                md: '2.5rem',  // Medium devices (tablets)
+              },
+            }}
+          >
             Choose a topic to practice
           </Typography>
           <div className="sliderContainer">
@@ -295,7 +319,7 @@ function PracticeEvent() {
               {topics.map((topic, index) => (
                 <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
                   <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{ '&hover': { cursor: 'pointer' } }}>
-                    <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
+                    <Typography variant="h5" style={{  fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>
               ))}
@@ -305,7 +329,7 @@ function PracticeEvent() {
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
                   <Box key={`default-${index}`} className="slideItem">
                     <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
-                      <Typography variant="h5" style={{ fontSize: '2rem', fontWeight: 'bold' }}>TBA</Typography>
+                      <Typography variant="h5" style={{ fontWeight: 'bold' }}>TBA</Typography>
                     </Paper>
                   </Box>
                 ))
@@ -320,6 +344,7 @@ function PracticeEvent() {
             )}
           </div>
         </Box>
+      </div>
       </div>
     </ThemeProvider>
   );

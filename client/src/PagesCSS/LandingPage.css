@@ -30,9 +30,9 @@
   width: 70%;
   height: 60vh;
   border: none;
-  border-radius: 90px;
+  border-radius: 70px;
   padding: 3%;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .content-left-side, .content-right-side{
@@ -47,7 +47,7 @@
   align-items: center;
   overflow: hidden; 
   object-fit: contain; 
-  margin: 0; 
+  margin: 2%; 
   padding: 0;
 }
 
@@ -55,25 +55,23 @@
   flex-direction: column;
   justify-content: left;
   text-align: left;
-  width: 90%;
+  width: 100%;
 }
 
 .right-side-text {
   display: flex;
   flex-direction: column;
   align-items: left;
-  text-align: right;
+  text-align: left;
   width: 100%;
-  /* border: solid black 1px; */
   height: 70%;
 }
 
 .right-side-text p {
     font-family: 'Poppins';
     margin: auto 0;
-    font-size: clamp(2rem, 4.5vw, 5rem);
+    font-size: clamp(1rem, 4.5vw, 5rem);
     font-weight: 700;
-    width: max-content;
 }
 
 .right-side-desc {
@@ -85,114 +83,187 @@
     overflow-wrap: break-word; 
 }
 
+.small-screen-text {
+  display: none;
+}
+
+.large-screen-text {
+  display: block;
+}
+
 /* SECTION CONTINER */
 
 .section-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 90vh;
+  align-content: center;
+  height: 80vh;
 }
 
 .section-content-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-content: center;
   height: 100vh;
   width: 70%;
   height: 60vh;
   border: none;
-  backdrop-filter: blur(4px);
+  border-radius: 70px;
+  backdrop-filter: blur(3px);
   padding: 3%;
-  border-radius: 90px;
 }
 
-.section-content-left-side, .section-content-right-side {
+.section-content-left-side {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: justify;
-  height: 100%;
+  align-content: center;
+  width: 130%;
+  height: 96%;
+  border: 10px solid;
+  border-radius: 70px;
+  background: transparent; 
+}
+
+.image-bg-yellow {
+  background-color: rgba(249, 181, 80, 0.8);
+  border-color: rgba(249, 181, 80);
+}
+
+.image-bg-purple {
+  background-color: rgba(179, 157, 219, 0.8);
+  border-color: rgb(179, 157, 219);
+}
+
+.image-bg-green {
+  background-color: rgba(153, 198, 126, 0.8);
+  border-color: rgb(153, 198, 126);
+}
+
+.section-content-right-side {
+  display: flex;
+  margin-left: 3.5%;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
 
 .section-header-container {
   display: flex;
   flex-direction: column;
   align-items: left;
-  width: 100%;
-  height: 45%;
+  margin-top: 15%;
+  margin-left: 2%;
 }
 
 .section-header-container p {
   font-family: 'Poppins';
   margin: auto 0;
-  padding-left: 2%;
-  font-size: clamp(2rem, 4.5vw, 5rem);
+  font-size: clamp(1.8rem, 4vw, 4.5rem);
   font-weight: 600;
   width: max-content;
 }
 
 .section-content-desc {
   font-family: 'Poppins';
+  margin: auto 0;
   font-size: clamp(0.9rem, 1.25vw, 1.25rem);
-  padding: 2%;
-  padding-top: 0;
+  padding-left: 2%;
   text-align: justify;
   margin-top: 1.5%;
   word-break: break-word; 
-  overflow-wrap: break-word; 
+  overflow-wrap: break-word;
 }
 
 .section-content-image {
   justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden; 
-  object-fit: contain;
+  align-content: center;
 }
 
 .gif-class {
-  width: 100%;
+  width: 90%;
   height: 100%;
-  border: 12px solid #b39ddb;
-  border-radius: 30px;
+  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
+.gif-class:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in;
+}
+
+@media (max-width: 800px) {
     .landing-wrapper, 
     .content-container, 
     .section-wrapper, 
     .section-content-container {
         flex-direction: column;
-        border: none;
         background-color: rgba(255, 255, 255, 0);
-        border-radius: none;
+        justify-content: center; /* Centers the content horizontally */
+        align-items: center; /* Centers the content vertically */
+    }
+
+    /* Hide the separate lines */
+    .large-screen-text {
+      display: none;
+    }
+
+    /* Show the combined text */
+    .small-screen-text {
+      display: block;
+    }
+
+    .content-container{
+      width: 80%;
     }
 
     .section-content-container {
         width: 90%;
-        padding: 5%;
-        border-radius: 0;
-        margin-top: 50px;
+        border-radius: 20px;
     }
 
-    .content-left-side, .content-right-side,
-    .section-content-left-side, .section-content-right-side {
-        width: 100%;
+    .content-left-side {
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+    }
+
+    .content-right-side {
+      justify-content: center; /* Center content horizontally */
+      align-items: center; /* Center content vertically */
+      width: 100%;
+    }
+
+    .section-content-left-side {
+      display: flex;
+      border: none;
+      align-items: baseline;
+      background: none;
+      width: 90%;
+      justify-content: center; /* Center content horizontally */
+      align-items: center; /* Center content vertically */
+    }
+
+    .section-content-right-side {
+      border-radius: 0;
     }
 
     .section-content-image {
       justify-content: center;
       max-width: 100%;
-      height: auto;
+      border-radius: 0;
+      margin-bottom: 70px;
     }
 
-    .gif-class {
-      width: 95%;
-      height: 80%;
-      border-radius: 0%;
-      border: none;
+    .gif-class:hover {
+      transform: none;
+      transition: none;
+    }
+
+    .component-response {
+      width: 55%;
+    }
+
+    .lottie-animation {
+      display: none;
     }
 
     div:has(.section-content-image) {
@@ -200,21 +271,39 @@
     }
 
     .section-header-container {
-      padding-top: 10%;
+      padding-right: 50px;
+    }
+
+    .right-side-text {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      text-align: left;
+      width: 100%;
+      height: 70%;
     }
 
     .right-side-text p, .section-header-container p {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
 
-    .right-side-desc, .section-content-desc {
+    .section-content-desc {
         font-size: 1rem;
+        padding-right: 45px;
     }
 
     .body {
         background-size: cover;
         background-attachment: fixed;
     }
+}
+
+@media (max-width: 400px){
+  .content-right-side {
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    width: 100%;
+  }
 }
 
 @keyframes boxReveal {

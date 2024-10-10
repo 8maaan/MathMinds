@@ -1,7 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+/* Background */
+.practice-background {
+  background-image: url('../Images/BG3.png');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: repeat-y;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Container */
 .practiceEventContainer {
   max-width: 75rem;
-  margin: 12.5rem auto;
+  margin: 9rem auto;
   padding: 1.25rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sliderContainer {
@@ -11,133 +28,168 @@
 }
 
 .slick-slider {
-  margin: 0 -1.6rem;
+  margin: 0 auto;
 }
 
+.slick-track {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Slides */
 .slick-slide {
-  transition: transform 0.3s ease-in-out, z-index 0.3s ease-in-out, margin-top 0.3s ease-in-out;
-  position: relative;
+  transition: transform 0.3s ease-in-out;
   transform: scale(0.8);
   margin-top: 1.25rem;
   z-index: 0;
-  padding: 0 !important;
+  padding: 0 1rem;
+  display: flex !important;
+  justify-content: center;
   cursor: grab;
+  box-sizing: border-box;
 }
 
 .slick-slide:active {
   cursor: grabbing;
 }
 
-
-
-.slick-list {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.slick-track {
-  margin: 0 auto !important;
-}
-
 .slick-center {
   transform: scale(1.2) !important;
-  margin-top: 0 !important;
+  margin: 2rem auto !important;
   z-index: 1 !important;
 }
 
 .slick-center .topic {
   transform: scale(1.2) !important;
-  z-index: 2 !important;
 }
 
 .slick-center + .slick-slide .topic,
 .slick-center.prev + .slick-slide .topic {
   transform: scale(1.05) !important;
-  z-index: 1 !important;
 }
 
-.slick-slide .topic {
-  transform: scale(1) !important;
-  z-index: -1 !important;
-}
-
-/* Card styling */
 .topic {
-  box-shadow: 0 0.75rem 1rem rgba(0,0,0,0.2);
-  border-radius: 0.5rem;
+  box-shadow: 0 0.75rem 1rem rgba(0, 0, 0, 0.2);
+  border-radius: 2rem; 
   overflow: hidden;
-  background-color: #fff;
   height: 15.625rem;
+  width: 28rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out, z-index 0.3s ease-in-out;
-  transform: scale(1.05);
-  z-index: 3;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  font-size: clamp(16px, calc(20px + (36 - 20) * ((100vw - 768px) / (1920 - 768))), 36px);
+  font-weight: bold;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .sliderContainer .slick-slider {
-    width: 100% !important; /* Make the slider take up the full width */
-    height: 100vh !important; /* Set the slider height to full viewport height */
-  }
+/* Navigation Arrows */
+.slick-prev, .slick-next {
+  background-color: transparent;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+}
 
-  .sliderContainer .slick-track {
-    display: flex !important; /* Use flexbox for the track */
-    flex-direction: column !important; /* Stack the slides vertically */
-    align-items: center !important; /* Center the slides vertically */
-    height: auto !important; /* Set the height to auto */
-  }
+.slick-prev { left: -2rem; }
+.slick-next { right: -2rem; }
 
-  .sliderContainer .slick-slide {
-    width: 100% !important; /* Make each slide take up the full width */
-    margin: 0 0.5rem; /* Add margin between the slides */
-  }
+.slick-prev:before, .slick-next:before { display: none; }
 
-  .sliderContainer .slick-list {
-    margin: 0 auto; /* Center the list */
-    overflow: visible !important; /* Ensure the slides are visible */
-  }
-
-  .sliderContainer .slick-slide > div {
-    width: 100% !important; /* Make the slide content take up the full width */
-  }
-
-  .sliderContainer .slick-slide img {
-    max-height: 100%; /* Ensure images maintain aspect ratio */
-    width: auto;
-    height: auto;
+/* Responsive Styles */
+@media (max-width: 1280px) {
+  .practiceEventContainer {
+    max-width: 60rem;
+    margin: 9rem auto;
   }
 
   .slick-slide {
-    transition: transform 0.3s ease-in-out, z-index 0.3s ease-in-out, margin-top 0.3s ease-in-out;
-    position: relative;
-    transform: scale(0.8);
-    margin-top: 1.25rem;
-    z-index: 0;
-    padding: 0 !important;
+    width: calc(50% - 2rem) !important;
+  }
+
+  .slick-center, .slick-center .topic {
+    transform: scale(1.1) !important;
+  }
+
+  .topic {
+    height: 15rem;
+    width: 30rem;
+    font-size: clamp(16px, calc(18px + (34 - 18) * ((100vw - 768px) / (1920 - 768))), 34px);
+  }
+
+  .slick-prev { left: -1rem; }
+  .slick-next { right: -1rem; }
+}
+
+@media (max-width: 960px) {
+  .practiceEventContainer {
+    max-width: 45rem;
+  }
+
+  .slick-slide {
+    width: calc(100% - 2rem) !important;
+    margin-left: 80px;
+  }
+
+  .slick-center, .slick-center .topic {
+    transform: scale(1) !important;
+  }
+
+  .topic {
+    height: 20rem;
+    width: 30rem;
+    font-size: clamp(16px, calc(16px + (32 - 16) * ((100vw - 768px) / (1920 - 768))), 32px);
+  }
+
+  .slick-prev { left: -1rem; }
+  .slick-next { right: -1rem; }
+}
+
+@media (max-width: 600px) {
+  .practiceEventContainer {
+    max-width: 100%;
+    margin: 8rem auto;
+  }
+
+  .sliderContainer, .slick-slide {
+    width: 100% !important;
+    margin: 0 !important;
   }
 
   .slick-center {
-    transform: scale(1.2) !important;
-    margin-top: 0 !important;
-    z-index: 1 !important;
+    transform: none !important;
+    margin: 0 !important;
   }
 
-  .slick-center .topic {
-    transform: scale(1.2) !important;
-    z-index: 2 !important;
+  .topic {
+    height: 20rem;
+    width: 20rem;
+    font-size: clamp(14px, calc(14px + (28 - 14) * ((100vw - 768px) / (1920 - 768))), 24px);
+    margin: 0 auto;
   }
 
-  .slick-center + .slick-slide .topic,
-  .slick-center.prev + .slick-slide .topic {
-    transform: scale(1.05) !important;
-    z-index: 1 !important;
+  .slick-prev { left: 0; }
+  .slick-next { right: 0; }
+}
+
+@media (max-width: 400px) {
+  .topic {
+    height: 15rem;
+    width: 18rem;
+    font-size: clamp(10px, calc(14px + (24 - 12) * ((100vw - 768px) / (1920 - 768))), 24px);
   }
 
-  .slick-slide .topic {
-    transform: scale(1) !important;
-    z-index: -1 !important;
-  }
+  .slick-prev { left: 0; }
+  .slick-next { right: 0; }
 }

@@ -46,26 +46,30 @@ export default function ReusableAppBar() {
       case 'Home':
         // console.log('Home');
         navigateTo('/home');
+        window.scrollTo(0, 0);
         break;
 
       case 'Dashboard':
         // console.log('Dashboard');
         navigateTo('/lesson-progress');
+        window.scrollTo(0, 0);
         break;
 
       case 'Lessons':
         // console.log('Lessons');
         navigateTo('/lessons');
+        window.scrollTo(0, 0);
         break;
 
       case 'Manage Lessons':
         navigateTo('/lessons-teacher');
+        window.scrollTo(0, 0);
         break;
 
-      case 'Practice':
-        // console.log('Practice');
-        navigateTo('/practice');
-        break;
+        case 'Practice':
+          navigateTo('/practice');
+          window.scrollTo(0, 0);
+          break;
 
       default:
         break;
@@ -82,6 +86,7 @@ export default function ReusableAppBar() {
 
       case 'Manage Accounts':
         navigateTo('/manage-accounts'); // Redirect to the user management page
+        window.scrollTo(0, 0);
         break;
 
       case 'Logout':

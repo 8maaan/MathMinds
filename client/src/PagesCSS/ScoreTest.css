@@ -8,17 +8,22 @@
   min-height: 100vh;
   background-color: #fff;
   padding-top: 20px;
+  background-image: url('../Images/BG3.png');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: repeat-y;
+  position: relative;
 }
 
 .scoresContainer {
   width: 95%;
   max-width: 1200px;
-  min-height: 600px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 10%;
-  padding: 20px;
+  margin-top: 7%;
+  padding: 50px;
   align-items: center;
   background-color: #f6e6c3;
   border-radius: 20px;
@@ -77,14 +82,26 @@
   .doneButton .MuiButton-root {
     padding: 10px 20px;
   }
+}
 
-  .homeButton {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+@media (max-width: 480px) {
+  .scoreHeader {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .homeButton .MuiButton-root {
-    padding: 10px 20px;
+  .scoreHeader .MuiGrid-item {
+    text-align: center !important;
+  }
+
+  .scorePaper {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .scorePaper .MuiGrid-item {
+    text-align: center !important;
+    margin-bottom: 10px;
   }
 }
 

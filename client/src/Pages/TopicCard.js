@@ -26,16 +26,16 @@ function TopicCard({ topic, onClose, onStart }) {
     },
     palette: {
       text: {
-        primary: '#181a52'
-      }
-    }
+        primary: '#181a52',
+      },
+    },
   });
 
   const cardStyles = {
-    maxWidth: '25 rem',
+    maxWidth: '55rem',
     maxHeight: '35.5rem',
     height: '80%',
-    width: '75%',
+    width: '80%',
     position: 'fixed',
     top: '50%',
     left: '50%',
@@ -56,24 +56,36 @@ function TopicCard({ topic, onClose, onStart }) {
     <ThemeProvider theme={theme}>
       <div className="backgroundOverlay">
         <Card sx={cardStyles}>
-          <Typography gutterBottom variant="h3" component="div" align="center" sx={{ marginTop: '-20px',marginBottom: '20px', fontSize: '20px' }}>
+          <Typography
+            gutterBottom
+            variant="h3"
+            component="div"
+            align="center"
+            sx={{ marginTop: '-20px', marginBottom: '20px', fontSize: 'clamp(18px, 4vw + 1rem, 24px)' }} 
+          >
             Topic {topic.topicId}
           </Typography>
           <CardContent>
-            <IconButton aria-label="close" onClick={onClose} sx={{ position: 'absolute', right: '8px', top: '8px', zIndex: 1 }}>
+            <IconButton
+              aria-label="close"
+              onClick={onClose}
+              sx={{ position: 'absolute', right: '8px', top: '8px', zIndex: 1 }}
+            >
               <CloseIcon />
             </IconButton>
-            <Typography gutterBottom variant="h5" component="div" align="center" sx={{ marginTop: '20px', fontWeight: 'bold', fontSize: '60px', color: '#181A52' }}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              align="center"
+              sx={{ marginTop: '20px', fontWeight: 'bold', fontSize: 'clamp(30px, 6vw + 1rem, 60px)', color: '#181A52' }} 
+            >
               {topic.topicTitle}
             </Typography>
           </CardContent>
-          
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '80px', marginBottom:'-40px' }}>
-            {/* <Button className="playButton" onClick={() => onNext(topic.topicId, topic.topicTitle)}>
-              Play <ArrowForwardIcon />
-            </Button> */}
 
-            <Button className="playButton" onClick={() => handleShowPracticeModeChoice()}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '80px', marginBottom: '-40px' }}>
+            <Button className="playButton" onClick={handleShowPracticeModeChoice}>
               Play <ArrowForwardIcon />
             </Button>
           </div>

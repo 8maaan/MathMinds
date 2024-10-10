@@ -129,7 +129,7 @@ function PracticeChoice({onClose, modeChoice}) {
                         <IconButton aria-label="close" sx={{ position: 'absolute', right: '0.5rem', top: '0.5rem', zIndex: 2 }}>
                             <CloseIcon  onClick={() => {handleCloseIconClick()}}/>
                         </IconButton>
-                        <Typography gutterBottom variant="h5" component="div" align="center" sx={{color: '#181a52', fontFamily: 'Poppins', fontSize:'35px'}}>
+                        <Typography gutterBottom variant="h5" component="div" align="center" sx={{color: '#181a52', fontFamily: 'Poppins', fontSize:'35px', mt: { xs: 1, sm:6, md: 5 }}}>
                             {showJoinRoom === false ? 'Choose a game mode' : 'Enter room code'}
                         </Typography>
                     </CardContent>
@@ -139,14 +139,14 @@ function PracticeChoice({onClose, modeChoice}) {
                                 <BouncingButton
                                     variant="contained"
                                     className="button-hover-effect"
-                                    sx={{ bgcolor: '#5999cf', '&:hover': { bgcolor: '#497eab' }, marginLeft: '4rem', marginRight: '0.125rem', borderRadius: '0.25rem' }}
+                                    sx={{ bgcolor: '#5999cf', '&:hover': { bgcolor: '#497eab' }, marginLeft: '2rem', marginRight: '0.5rem', borderRadius: '1rem' }}
                                     onClick={() => handleButtonChoiceClick(firstChoice)}>
                                     {firstChoice}
                                 </BouncingButton>
                                 <BouncingButton
                                     variant="contained"
                                     className="button-hover-effect"
-                                    sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' }, marginRight: '4rem', marginLeft: '0.125rem', borderRadius: '0.25rem' }}
+                                    sx={{ bgcolor: '#f94848', '&:hover': { bgcolor: 'darkred' }, marginRight: '2rem', marginLeft: '0.125rem', borderRadius: '1rem' }}
                                     onClick={() => handleButtonChoiceClick(secondChoice)}
                                     disabled={false}>
                                     {secondChoice}

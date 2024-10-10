@@ -5,14 +5,17 @@ import { Link } from 'react-router-dom';
 import homepageDashboardBtn from '../Images/HomePage_DashboardBtn2.png';
 import homepageLessonBtn from '../Images/HomePage_LessonsBtn.png';
 import homepagePracticeBtn from '../Images/HomePage_PracticeBtn2.png';
+import { UserAuth } from '../Context-and-routes/AuthContext';
 
 const HomePage = () => {
+    const { user } = UserAuth();
+
     return (
         <div className='App-home-body'>
             <div className="Homepage">
                 <Box>
                     <Typography class="home-header">
-                        Hey there, math explorer!
+                        Hey there, {(user.displayName).split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') || 'math explorer'}!
                     </Typography>
                     <Typography class="home-paragraph">
                         Ready to dive into the world of numbers and have some math fun together?
