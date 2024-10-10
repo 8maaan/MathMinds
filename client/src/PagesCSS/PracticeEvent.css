@@ -35,7 +35,7 @@
 }
 
 .slick-slide {
-  transition: transform 0.3s ease-in-out, z-index 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
   position: relative;
   transform: scale(0.8);
   margin-top: 1.25rem;
@@ -173,7 +173,7 @@
   .slick-slide {
     width: calc(100% - 2rem) !important; 
   }
-
+  
   .slick-center {
     transform: scale(1) !important;
   }
