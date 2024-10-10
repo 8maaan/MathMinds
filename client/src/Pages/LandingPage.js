@@ -32,8 +32,12 @@ const LandingPage = () => {
                     <div className='content-container'>
                         <div className='content-right-side'>
                             <div className='right-side-text'>
-                                <p>Making Math</p>
-                                <p>Engaging</p>
+                                {/* Show this for larger screens */}
+                                <p className='large-screen-text'>Making Math</p>
+                                <p className='large-screen-text'>Engaging</p>
+                                
+                                {/* Show this for smaller screens */}
+                                <p className='small-screen-text'>Making Math Engaging</p>
                             </div>
                             <div className='right-side-desc'>
                                 <p>Experience math in a new way with interactive lessons, hands-on problem-solving, and relatable real-world examples.
@@ -42,7 +46,7 @@ const LandingPage = () => {
                             </div>
                         </div>
                         <div className='content-left-side lottie-animation'>
-                                <Lottie animationData={Birdy} loop={true} alt='Duolingo'/>
+                            <Lottie animationData={Birdy} loop={true} alt='Duolingo'/>
                         </div>
                     </div>
                 </div>

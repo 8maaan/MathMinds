@@ -297,7 +297,16 @@ function PracticeEvent() {
           <div style={backdropStyle} onClick={handleCloseCard}></div>
         ) : null}
         <Box className="practiceEventContainer">
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52', marginBottom: '2.5rem' }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: 'bold', color: '#181a52', marginBottom: '3rem', textAlign:'center',
+              fontSize: {
+                xs: '1.5rem',  // Extra small devices (mobile)
+                sm: '2rem',    // Small devices (landscape phones, tablets)
+                md: '2.5rem',  // Medium devices (tablets)
+              },
+            }}
+          >
             Choose a topic to practice
           </Typography>
           <div className="sliderContainer">
