@@ -49,7 +49,6 @@ function TopicCard({ topic, onClose, onStart }) {
     backgroundColor: '#ffec86',
     borderRadius: '20px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    padding: '20px', 
     overflowY: 'auto',
   };
 
@@ -79,7 +78,7 @@ function TopicCard({ topic, onClose, onStart }) {
               variant="h5"
               component="div"
               align="center"
-              sx={{ marginTop: '20px', fontWeight: 'bold', fontSize: 'clamp(40px, 6vw + 1rem, 60px)', color: '#181A52' }} 
+              sx={{ marginTop: '20px', fontWeight: 'bold', fontSize: 'clamp(30px, 6vw + 1rem, 60px)', color: '#181A52' }} 
             >
               {topic.topicTitle}
             </Typography>

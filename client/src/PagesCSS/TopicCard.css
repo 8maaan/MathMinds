@@ -1,5 +1,5 @@
 .playButton {
-  width: 90% !important; 
+  width: 90% !important;
   max-width: 40rem !important; 
   min-width: 25rem !important;
   background-color: #ffb100 !important; 
@@ -26,4 +26,11 @@
   backdrop-filter: blur(2px); /* Adjust blur level kung feel nga needed */
   background-color: rgba(255, 255, 255, 0.3); /*blur effect ari*/
   z-index: 1200;
+}
+
+@media (max-width: 768px) {
+  .playButton {
+    width: 50% !important;
+    min-width: 15rem !important;
+  }
 }
