@@ -58,7 +58,7 @@ const LandingPage = () => {
                     <div style={{background: 'rgba(249, 181, 80, 0.6)'}} className='section-content-container'> 
                     <div className='section-content-left-side image-bg-yellow'>
                            <div className='section-content-image'>
-                                <video autoplay="autoplay" muted loop="true" playsInline className='gif-class' alt="Gif Content 1" loading="lazy">
+                                <video autoPlay muted loop playsinline className='gif-class' aria-label="Preview of multiplayer content">
                                     <source src={GifContent1} type='video/mp4'/>
                                     Your browser does not support the video tag.
                                 </video>
@@ -81,7 +81,7 @@ const LandingPage = () => {
                     <div style={{background: 'rgb(179, 157, 219, 0.6)'}} className='section-content-container'>
                         <div className='section-content-left-side image-bg-purple'>
                             <div className='section-content-image'>
-                                <video autoplay="autoplay" muted loop="true" playsInline className='gif-class' alt="Gif Content 2" loading="lazy" height="700px">
+                                <video autoPlay muted loop playsinline className='gif-class' aria-label="Preview of topic content">
                                     <source src={GifContent2} type='video/mp4'/>
                                     Your browser does not support the video tag.
                                 </video>
