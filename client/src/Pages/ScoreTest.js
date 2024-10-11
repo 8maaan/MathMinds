@@ -92,9 +92,9 @@ const ScoreTest = () => {
             <Grid item xs={2} sm={1} md={1}></Grid> {/* Matches the first column of content */}
             <Grid item xs={4} sm={3} md={3}></Grid> {/* Matches the name column of content */}
             <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right" }}>
-              <Typography variant="h6">Questions</Typography>
+              
             </Grid>
-            <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right", paddingRight: "30px" }}> {/* Adjusted paddingRight */}
+            <Grid item xs={3} sm={4} md={4} style={{ textAlign: "left", paddingRight: "30px" }}> {/* Adjusted paddingRight */}
               <Typography variant="h6">Scores</Typography>
             </Grid>
           </Grid>
@@ -109,12 +109,9 @@ const ScoreTest = () => {
                 <Typography variant="h6">{score.name}</Typography>
               </Grid>
               <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right" }}>
-                <Typography variant="body1" style={{ fontSize: "16px", marginRight: "10px" }}>
-                  {`${score.questionsCorrect}/${score.totalQuestions}`}
-                </Typography>
               </Grid>
-              <Grid item xs={3} sm={4} md={4} style={{ textAlign: "right" }}>
-                <Typography variant="body1" style={{ fontSize: "16px", marginRight: "30px" }}> {/* Adjusted marginRight */}
+              <Grid item xs={3} sm={4} md={4} style={{ textAlign: "left" }}>
+                <Typography variant="body1" style={{ fontSize: "16px", marginRight: "30px", marginLeft:"10px" }}> {/* Adjusted marginRight */}
                   {`${score.score}/${score.totalScore}`}
                 </Typography>
               </Grid>

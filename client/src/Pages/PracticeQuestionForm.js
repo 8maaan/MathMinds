@@ -184,68 +184,52 @@ const PracticeQuestionForm = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='container' style={{ paddingRight: '1rem', overflow:'hidden'}}>
-        {/* Navigation Buttons */}
-        <Box sx={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
-          <IconButton onClick={handlePrevQuestion}>
-            <ArrowBackIosIcon style={iconStyle} />
-          </IconButton>
+  <div className='container' style={{ paddingRight: '1rem', overflow: 'hidden' }}>
+    {/* Navigation Buttons */}
+    <Box sx={{ position: 'absolute', left: '0', top: { xs: '-50px', sm: '50%' }, transform: 'translateY(0)' }}>
+      <IconButton onClick={handlePrevQuestion}>
+        <ArrowBackIosIcon style={iconStyle} />
+      </IconButton>
+    </Box>
+    <Box sx={{ position: 'absolute', right: '0', top: { xs: '-50px', sm: '50%' }, transform: 'translateY(0)' }}>
+      <IconButton onClick={handleNextQuestion}>
+        <ArrowForwardIosIcon style={iconStyle} />
+      </IconButton>
+    </Box>
+
+    {/* Main Container */}
+    <Container maxWidth="md" sx={{ paddingRight: '1rem', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '70px', position: 'relative' }}>
+      <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52', fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2rem' } }} gutterBottom>
+        {topicTitle} - Practice
+      </Typography>
+
+      <Tooltip title='Exit'>
+        <IconButton onClick={() => navigate(`/practice-event/${lessonId}/${topicId}`)} sx={{ position: 'absolute', top: '50px', left: '1px', zIndex: 10 }}>
+          <ExitToAppIcon sx={{ fontSize: '1.8rem' }} />
+        </IconButton>
+      </Tooltip>
+
+      <Paper elevation={3} sx={{ height: { xs: '20rem', sm: '22.5rem' }, padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+        <Typography variant="h6" sx={{ textAlign: 'center', marginTop: { xs: '60px', sm: '100px' }, fontSize: { xs: '1rem', sm: '1.2rem' } }}>
+          {currentQuestion.question}
+        </Typography>
+        <Typography variant="body1" sx={{ position: 'absolute', top: '10px', left: '10px', fontWeight: 'bold', fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+          Question #{currentQuestionIndex + 1}
+        </Typography>
+      </Paper>
+
+      {/* Answer Options */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: '20px', flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
+          {currentQuestion.shuffledOptions.map((option, idx) => (
+            <OptionButton key={idx} colorScheme={optionColors[idx % optionColors.length]} onClick={() => handleOptionClick(option)} disabled={isAnswered} 
+              sx={{ pointerEvents: isAnswered ? 'none' : 'auto', opacity: isAnswered ? 0.5 : 1, flexGrow: 1, flexBasis: { xs: 'calc(50% - 10px)', sm: 'calc(50% - 10px)' }, 
+              maxWidth: { xs: 'calc(50% - 10px)', sm: 'calc(50% - 10px)' }, margin: '5px' }}>
+              {option}
+            </OptionButton>
+          ))}
         </Box>
-        <Box sx={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
-          <IconButton onClick={handleNextQuestion}>
-            <ArrowForwardIosIcon style={iconStyle} />
-          </IconButton>
-        </Box>
-
-        {/* Main Container */}
-        <Container maxWidth="md" sx={{paddingRight: '1rem',backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '70px', position: 'relative' }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
-            {topicTitle} - Practice
-          </Typography>
-
-          <Tooltip title='Exit'>
-            <IconButton 
-              onClick={() => navigate(`/practice-event/${lessonId}/${topicId}`)}
-              sx={{ position: 'absolute', top: '50px', left: '1px', zIndex: 10 }}
-            >
-              <ExitToAppIcon sx={{ fontSize: '1.8rem' }} />
-            </IconButton>
-          </Tooltip>
-
-          <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
-              {currentQuestion.question}
-            </Typography>
-            <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px', fontWeight:'bold' }}>
-              Question #{currentQuestionIndex + 1}
-            </Typography>
-          </Paper>
-
-          {/* Answer Options */}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: '20px', flexWrap: 'wrap' }}>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-              {currentQuestion.shuffledOptions.map((option, idx) => (
-                <OptionButton
-                  key={idx}
-                  colorScheme={optionColors[idx % optionColors.length]}
-                  onClick={() => handleOptionClick(option)}
-                  disabled={isAnswered}
-                  sx={{
-                    pointerEvents: isAnswered ? 'none' : 'auto',
-                    opacity: isAnswered ? 0.5 : 1,
-                    flexGrow: 1, 
-                    flexBasis: 'calc(50% - 10px)', 
-                    '@media (max-width: 600px)': {
-                       flexBasis: '100%', 
-                    },
-                  }}
-                >
-                  {option}
-                </OptionButton>
-              ))}
-            </Box>
-          </Box>
-
+      </Box>
           {/* Modals */}
           <PracticeAnswerModal
             open={isConfirming}

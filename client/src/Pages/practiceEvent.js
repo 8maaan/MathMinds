@@ -134,8 +134,8 @@ function PracticeEvent() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerMode: true,
-          centerPadding: '20px',
+          centerMode: false,
+          centerPadding: '0px',
         },
       },
       {
@@ -143,17 +143,17 @@ function PracticeEvent() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerMode: true,
-          centerPadding: '10px',
+          centerMode: false,
+          centerPadding: '0px',
         },
       },
       {
-        breakpoint: 200,
+        breakpoint: 300,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerMode: true,
-          centerPadding: '10px',
+          centerMode: false,
+          centerPadding: '0px',
         },
       },
     ],
