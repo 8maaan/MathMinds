@@ -3,8 +3,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; 
 import Lottie from 'lottie-react';
 import Birdy from '../LottieFiles/LottieAnimations/BirdyLanding.json';
-import GifContent1 from '../Images/LandingPageImages/GifContent1.gif';
-import GifContent2 from '../Images/LandingPageImages/GifContent2.gif';
+import GifContent1 from '../Images/LandingPageImages/GifContent1.mp4';
+import GifContent2 from '../Images/LandingPageImages/GifContent2.mp4';
 import GitHubIcon from '../Images/LandingPageImages/github-mark/github-mark.png';
 import GitHubIconWhite from '../Images/LandingPageImages/GitHub-Logos/GitHub_Logo_White.png';
 import LandingPageSection from '../ReusableComponents/LandingPageSection';
@@ -58,7 +58,10 @@ const LandingPage = () => {
                     <div style={{background: 'rgba(249, 181, 80, 0.6)'}} className='section-content-container'> 
                     <div className='section-content-left-side image-bg-yellow'>
                            <div className='section-content-image'>
-                                <img src={GifContent1} className='gif-class' alt="Gif Content 1"/>
+                                <video autoplay="autoplay" muted loop="true" playsInline className='gif-class' alt="Gif Content 1" loading="lazy">
+                                    <source src={GifContent1} type='video/mp4'/>
+                                    Your browser does not support the video tag.
+                                </video>
                            </div>
                         </div>
                         <div className='section-content-right-side'  style={{ paddingLeft:'30px'}}>
@@ -78,7 +81,10 @@ const LandingPage = () => {
                     <div style={{background: 'rgb(179, 157, 219, 0.6)'}} className='section-content-container'>
                         <div className='section-content-left-side image-bg-purple'>
                             <div className='section-content-image'>
-                                <img src={GifContent2} className='gif-class' alt="Gif Content 2"/>
+                                <video autoplay="autoplay" muted loop="true" playsInline className='gif-class' alt="Gif Content 2" loading="lazy" height="700px">
+                                    <source src={GifContent2} type='video/mp4'/>
+                                    Your browser does not support the video tag.
+                                </video>
                             </div>
                         </div>
                         <div className='section-content-right-side'>
@@ -148,7 +154,7 @@ const LandingPage = () => {
                                 target="__blank"
                                 rel="noopener noreferrer"
                             >
-                                <img src={GitHubIcon} alt='GitHub Icon' height='30px'/>
+                                <img src={GitHubIcon} alt='GitHub Icon' height='30px' loading="lazy"/>
                             </IconButton>
                         </Tooltip>
                          <Divider orientation="vertical" variant="middle" flexItem />
@@ -160,7 +166,7 @@ const LandingPage = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                <img src={GitHubIconWhite} alt='GitHub Icon' height='30px'/>
+                                <img src={GitHubIconWhite} alt='GitHub Icon' height='30px' loading="lazy"/>
                             </IconButton>
                         </Tooltip>
                     </Box>

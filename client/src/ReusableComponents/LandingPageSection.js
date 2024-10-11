@@ -8,9 +8,9 @@ const LandingPageSection = () => {
  
     return (
         <div className='container-landing-bg'>
-            <img src={Badge1} className='badge1' alt='Badge 1'/>
-            <img src={Badge2} className='badge2' alt='Badge 2'/>
-            <img src={Badge3} className='badge3' alt='Badge 3'/>
+            <img src={Badge1} className='badge1' alt='Badge 1' loading="lazy"/>
+            <img src={Badge2} className='badge2' alt='Badge 2' loading="lazy"/>
+            <img src={Badge3} className='badge3' alt='Badge 3' loading="lazy"/>
         </div>
     );
 };
