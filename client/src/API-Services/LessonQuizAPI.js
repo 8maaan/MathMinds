@@ -58,3 +58,13 @@ export const getRandomizedLessonQuizByLessonQuizId = async (lessonQuizId) => {
       return { success: false, message: "Failed to fetch practice by topic id. Try again later." };
     }
   }
+
+export const deleteLessonQuiz = async (lessonQuizId) => {
+    try {
+        const response = await axios.delete(process.env.REACT_APP_SPRINGBOOT_DELETE_LESSONQUIZ.replace("{lessonQuizId}", lessonQuizId));
+        return { success: true, data: response.data };
+      } catch (error) {
+        console.error("Error deleting lesson quiz: ", error);
+        return { success: false, message: "Failed to delete lesson quiz. Try again later." };
+      }
+}

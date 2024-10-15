@@ -5,7 +5,7 @@ import { Button, FormControl, InputLabel, MenuItem, Select, Typography, Checkbox
 import '../PagesCSS/CreateTopic.css';
 import TopicContentQuestion from '../ReusableComponents/TopicContentQuestions';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI';
-import { getLessonQuizById, updateLessonQuiz } from '../API-Services/LessonQuizAPI';
+import { getLessonQuizById, updateLessonQuiz, deleteLessonQuiz } from '../API-Services/LessonQuizAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
 
@@ -17,6 +17,7 @@ const EditLessonQuiz = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isAdministered, setIsAdministered] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
     const [openDialog, setOpenDialog] = useState(false);
 
@@ -68,6 +69,34 @@ const EditLessonQuiz = () => {
             ...quizQuestions,
             { id: quizQuestions.length.toString(), question: '', correctAnswer: '', incorrectAnswers: ['', '', ''] }
         ]);
+    };
+
+    const handleDeleteQuiz = async () => {
+        try {
+            const response = await deleteLessonQuiz(lessonQuizId);
+            if (response.success) {
+                navigate('/lessons-teacher', {
+                    state: {
+                        snackbar: { status: true, severity: 'success', message: 'Lesson Quiz deleted successfully!' }
+                    }
+                });
+            } else {
+                console.error(response.message);
+            }
+        } catch (err) {
+            console.error("Error deleting lesson quiz: ", err);
+        }
+    };
+
+    const handleOpenDeleteDialog = () => {
+        setOpenDeleteDialog(true);
+    };
+    
+    const handleCloseDeleteDialog = (confirmed) => {
+        setOpenDeleteDialog(false);
+        if (confirmed) {
+            handleDeleteQuiz();
+        }
     };
 
     const updateQuestion = (id, updatedQuestion) => {
@@ -160,6 +189,9 @@ const EditLessonQuiz = () => {
                         </FormControl>
                         <div style={{ marginTop: '1.5%' }}>
                             <Button onClick={handleAddQuestion} variant='contained' sx={{fontFamily:'Poppins'}}>Add Question</Button>
+                            <Button onClick={handleOpenDeleteDialog} variant='contained' color='error' sx={{ ml: '0.5%', fontFamily:'Poppins' }}>
+                                Delete Lesson Quiz
+                            </Button>
                         </div>
                     </div>
                     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} >
@@ -204,6 +236,13 @@ const EditLessonQuiz = () => {
                 onClose={handleCloseDialog} 
                 title="Confirm Lesson Quiz Update" 
                 context={`Are you sure you're done editing the quiz for "${currentLessonTitle}" lesson?`}
+            />
+
+            <ReusableDialog
+                status={openDeleteDialog} 
+                onClose={handleCloseDeleteDialog} 
+                title="Confirm Delete" 
+                context={`Are you sure you want to delete the quiz for "${currentLessonTitle}" lesson? This action cannot be undone.`}
             />
         </div>
     );

@@ -362,6 +362,9 @@ const TopicsPage = () => {
                             <img src={value.imageUrl} alt="Topic Content" loading="lazy"/>
                           </div>
                           <p style={{textAlign:"center"/*, fontFamily:"Flavors"*/}}>{value.imageDescription}</p>
+                          <div style={{textAlign:'right'}}>
+                            <TextToSpeech text={value.imageDescription} rate={1} pitch={1} lang={"en-GB"} />
+                          </div>
                         </div>
                       )}
 
@@ -377,6 +380,9 @@ const TopicsPage = () => {
                                     <DynamicLottie animationPath={value.storyboardAnimations[boxId]} />
                                 </div>
                             ))}           
+                          </div>
+                          <div style={{position: 'absolute', bottom: '10px', right: '10px'}}>
+                            <TextToSpeech text={value.storyboardContext} rate={1} pitch={1} lang={"en-GB"} />
                           </div>
                         </div>
                       )}
