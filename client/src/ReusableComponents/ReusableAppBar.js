@@ -1,11 +1,13 @@
-import {AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem} from '@mui/material'
-import MenuIcon from '../Images/MenuIcon.png'
-import { useState } from 'react';
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material';
+import MenuIcon from '../Images/MenuIcon.png';
+import { useState, useEffect } from 'react';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import mathMindsLogo from '../Images/mathminds-logo.png';
 import mathMindsLogo2 from '../Images/mathminds-logo2.png';
 import { useUserRoles } from './useUserRoles';
+import { getUserProfileInfoFromDb } from '../API-Services/UserAPI';
+import userprofilepic from '../Images/UserDP.png';
 
 export default function ReusableAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -13,24 +15,36 @@ export default function ReusableAppBar() {
 
   const { user } = UserAuth();
   const { isTeacher, isAdmin } = useUserRoles(user ? user.uid : null);
+  
+  // New: Placeholder for the profile picture URL
+  const [profilePictureUrl, setProfilePictureUrl] = useState('');
 
   const pages = (isTeacher || isAdmin) ? ['Home', 'Dashboard', 'Manage Lessons', 'Practice'] : ['Home', 'Dashboard', 'Lessons', 'Practice'];
-  
-  // Add "Manage Accounts" to settings only if the user is an Admin
   const settings = isAdmin ? ['Profile', 'Manage Accounts', 'Logout'] : ['Profile', 'Logout'];
 
   const { logOut } = UserAuth();
-
   const navigateTo = useNavigate();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user) {
+        const result = await getUserProfileInfoFromDb(user.uid);
+        if (result && result.success) {
+          setProfilePictureUrl(result.data.profilePictureUrl || userprofilepic); // fallback to default image
+        }
+      }
+    };
+    fetchUserProfile();
+  }, [user]);
 
   const handleUserLogOut = async () => {
     try {
-      const userLogOut = await logOut();
-      console.log(userLogOut);
+      await logOut();
+      console.log("User logged out");
     } catch (e) {
       console.log(e.message);
     }
-  }
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -44,33 +58,25 @@ export default function ReusableAppBar() {
     setAnchorElNav(null);
     switch(page){
       case 'Home':
-        // console.log('Home');
         navigateTo('/home');
         window.scrollTo(0, 0);
         break;
-
       case 'Dashboard':
-        // console.log('Dashboard');
         navigateTo('/lesson-progress');
         window.scrollTo(0, 0);
         break;
-
       case 'Lessons':
-        // console.log('Lessons');
         navigateTo('/lessons');
         window.scrollTo(0, 0);
         break;
-
       case 'Manage Lessons':
         navigateTo('/lessons-teacher');
         window.scrollTo(0, 0);
         break;
-
-        case 'Practice':
-          navigateTo('/practice');
-          window.scrollTo(0, 0);
-          break;
-
+      case 'Practice':
+        navigateTo('/practice');
+        window.scrollTo(0, 0);
+        break;
       default:
         break;
     }
@@ -80,20 +86,15 @@ export default function ReusableAppBar() {
     setAnchorElUser(null);
     switch(setting){
       case 'Profile':
-        // console.log('Profile');
         navigateTo('/profile');
         break;
-
       case 'Manage Accounts':
-        navigateTo('/manage-accounts'); // Redirect to the user management page
+        navigateTo('/manage-accounts');
         window.scrollTo(0, 0);
         break;
-
       case 'Logout':
-        // console.log('Logout');
         handleUserLogOut();
         break;
-
       default:
         break;
     }
@@ -117,7 +118,6 @@ export default function ReusableAppBar() {
               textDecoration: 'none',
             }}
           >
-            {/* LOGO */}
             <img className='app-bar-logo' src={mathMindsLogo2} alt='logo' height='80px'/>
           </Typography>
 
@@ -130,7 +130,6 @@ export default function ReusableAppBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              {/* MENU ICON */}
               <img src={MenuIcon} alt='menu-icon' height='30px'/>
             </IconButton>
             <Menu
@@ -192,8 +191,7 @@ export default function ReusableAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* AVATAR */}
-                <Avatar src="https://imgur.com/ip7Owg9.png" alt='UserDP' />
+                <Avatar src={profilePictureUrl} alt='UserDP' />
               </IconButton>
             </Tooltip>
             <Menu
