@@ -84,7 +84,7 @@
 
 /* Hover effects with tilted shake animation */
 .image-buttons-margin:hover img {
-    animation: tilt-shake 0.5s ease-in-out;
+    animation: tilt-shake 1s ease-in-out;
 }
 
 .button:hover img {

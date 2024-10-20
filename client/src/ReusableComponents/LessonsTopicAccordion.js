@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
+import AccordionCustomButton from './AccordionCustomButton';  // Import your custom button
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A", hoverColor: "#F94848" },
@@ -48,7 +49,7 @@ const LessonsTopicAccordion = ({ lesson }) => {
                         <Accordion
                             sx={{
                                 marginTop: '1.5%',
-                                borderRadius: "10px"
+                                borderRadius: "15px",
                             }}
                             key={panelId}
                             expanded={isExpanded}
@@ -57,10 +58,10 @@ const LessonsTopicAccordion = ({ lesson }) => {
                             <AccordionSummary
                                 sx={{
                                     backgroundColor: colorPalette.summaryBgColor,
-                                    borderTopRightRadius: "10px",
-                                    borderTopLeftRadius: "10px",
-                                    borderBottomLeftRadius: isExpanded ? '0px' : '10px',
-                                    borderBottomRightRadius: isExpanded ? '0px' : '10px',
+                                    borderTopRightRadius: "15px",
+                                    borderTopLeftRadius: "15px",
+                                    borderBottomLeftRadius: isExpanded ? '0px' : '15px',
+                                    borderBottomRightRadius: isExpanded ? '0px' : '15px',
                                     textAlign: 'left'
                                 }}
                                 expandIcon={<ArrowDropDownIcon />}
@@ -74,28 +75,29 @@ const LessonsTopicAccordion = ({ lesson }) => {
                                 sx={{
                                     backgroundColor: colorPalette.detailsBgColor,
                                     textAlign: 'left',
-                                    borderBottomRightRadius: "10px",
-                                    borderBottomLeftRadius: "10px"
+                                    borderBottomRightRadius: "15px",
+                                    borderBottomLeftRadius: "15px"
                                 }}
                             >
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
 
                                 <AccordionActions>
-                                    <Button
+                                    <AccordionCustomButton
+                                        className="important"
                                         sx={{
-                                            backgroundColor: colorPalette.accordionColor,
-                                            fontFamily: 'Poppins',
-                                            color: '#181A52',
-                                            fontWeight: 'bold',
-                                            '&:hover': {
-                                                backgroundColor: `${colorPalette.hoverColor}` // Slightly darken color on hover
-                                            }
+                                        backgroundColor: colorPalette.accordionColor, // Existing accordion color
+                                        fontFamily: 'Poppins',
+                                        color: '#181A52',
+                                        fontWeight: 'bold',
+                                        summaryBgColor: colorPalette.summaryBgColor, // Pass summaryBgColor for boxShadow
+                                        animation: 'flash 1.5s infinite ease',
                                         }}
                                         onClick={() => handleStartTopic(topic.lessonId, topic.topicId)}
                                     >
                                         Start
-                                    </Button>
+                                    </AccordionCustomButton>
                                 </AccordionActions>
+
                             </AccordionDetails>
                         </Accordion>
                     );

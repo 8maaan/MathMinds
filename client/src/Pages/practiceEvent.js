@@ -318,7 +318,7 @@ function PracticeEvent() {
               {/* Render available topics first */}
               {topics.map((topic, index) => (
                 <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
-                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{ '&hover': { cursor: 'pointer' } }}>
+                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{ borderRadius:'15px', '&hover': { cursor: 'pointer' } }}>
                     <Typography variant="h5" style={{  fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>
@@ -328,7 +328,7 @@ function PracticeEvent() {
               {topics.length < 4 &&
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
                   <Box key={`default-${index}`} className="slideItem">
-                    <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
+                    <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080', borderRadius:'15px' }}>
                       <Typography variant="h5" style={{ fontWeight: 'bold' }}>TBA</Typography>
                     </Paper>
                   </Box>

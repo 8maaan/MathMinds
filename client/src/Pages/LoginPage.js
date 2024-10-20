@@ -8,6 +8,7 @@ import ForgotPasswordModal from '../ReusableComponents/forgotPasswordModal';
 import ForwardIcon from '@mui/icons-material/Forward';
 import LoginPageBg from '../ReusableComponents/LoginPageBg';
 import BrainAnimate from '../ReusableComponents/BrainAnimation';
+import AccordionCustomButton from '../ReusableComponents/AccordionCustomButton';
 
 export const txtFieldInputProps = {
     disableUnderline: true,
@@ -128,22 +129,13 @@ const LoginPage = () => {
                     <div className="forgot-password-text-container">
                         <p onClick={handleModalOpen}>Forgot password?</p>
                     </div>
-                    <Button
+                    <AccordionCustomButton
                         type="submit"
-                        variant="contained"
                         fullWidth
                         size="large"
-                        sx={{
-                            backgroundColor: '#ffb100',
-                            borderRadius: '20px',
-                            marginTop: '30px',
-                            height: '5vh',
-                            fontFamily: 'Poppins',
-                            '&:hover': { backgroundColor: '#e39e02' },
-                        }}
                     >
-                        <h4>LOG IN</h4>
-                    </Button>
+                        LOG IN
+                    </AccordionCustomButton>
                 </form>
                 <p>No account yet?
                     <span style={{ color: '#181A52', cursor: 'pointer', fontWeight: '700' }} onClick={() => navigateTo('/register')}> Click here</span>

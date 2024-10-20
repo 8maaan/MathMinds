@@ -125,7 +125,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                         <Accordion
                             sx={{
                                 marginTop: '1.5%',
-                                borderRadius: "10px"
+                                borderRadius: "15px"
                             }}
                             key={panelId}
                             expanded={isExpanded}
@@ -134,10 +134,10 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                             <AccordionSummary
                                 sx={{
                                     backgroundColor: colorPalette.summaryBgColor,
-                                    borderTopRightRadius: "10px",
-                                    borderTopLeftRadius: "10px",
-                                    borderBottomLeftRadius: isExpanded ? '0px' : '10px',
-                                    borderBottomRightRadius: isExpanded ? '0px' : '10px',
+                                    borderTopRightRadius: "15px",
+                                    borderTopLeftRadius: "15px",
+                                    borderBottomLeftRadius: isExpanded ? '0px' : '15px',
+                                    borderBottomRightRadius: isExpanded ? '0px' : '15px',
                                     textAlign: 'left'
                                 }}
                                 expandIcon={<ArrowDropDownIcon />}
@@ -151,8 +151,8 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                 sx={{
                                     backgroundColor: colorPalette.detailsBgColor,
                                     textAlign: 'left',
-                                    borderBottomRightRadius: "10px",
-                                    borderBottomLeftRadius: "10px"
+                                    borderBottomRightRadius: "15px",
+                                    borderBottomLeftRadius: "15px"
                                 }}
                             >
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
