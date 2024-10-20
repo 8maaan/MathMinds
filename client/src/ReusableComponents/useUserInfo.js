@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import axios from "axios"
+import api from '../API-Services/axiosConfig';
 
 export const useUserInfo = (uid) => {
     // add other Data later 
@@ -7,7 +7,7 @@ export const useUserInfo = (uid) => {
 
     const fetchUserData = useCallback(async () => {
         try{
-            const userInfo = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_USER_PROFILE_INFO}?uid=${uid}`);
+            const userInfo = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_USER_PROFILE_INFO}?uid=${uid}`);
             setUserData(userInfo.data);
         }catch(e){
             console.error(e);

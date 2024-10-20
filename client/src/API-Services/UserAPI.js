@@ -1,8 +1,8 @@
-import axios from "axios";
+import api from "./axiosConfig";
 
 export const createUserToDb = async(user) => {
     try{
-        await axios.post(process.env.REACT_APP_SPRINGBOOT_CREATE_USER, user);
+        await api.post(process.env.REACT_APP_SPRINGBOOT_CREATE_USER, user);
         return { success: true, message: "Happy solving!"};
     } catch (error) {
         console.error("Error: ", error);
@@ -14,7 +14,7 @@ export const createUserToDb = async(user) => {
 //GET USER PROFILE INFO
 export const getUserProfileInfoFromDb = async (uid) => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_USER_PROFILE_INFO}?uid=${uid}`);
+        const response = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_USER_PROFILE_INFO}?uid=${uid}`);
         return { success: true, data: response.data };
     } catch (error) {
         console.error("Error fetching user profile info: ", error);
@@ -26,7 +26,7 @@ export const getUserProfileInfoFromDb = async (uid) => {
 export const updateUserProfileInfoToDb = async (uid, updatedProfileInfo) => {
     try {
         // Send a PUT request to update the user's profile information
-        const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_UPDATE_USER_PROFILE}?uid=${uid}`, updatedProfileInfo);
+        const response = await api.put(`${process.env.REACT_APP_SPRINGBOOT_UPDATE_USER_PROFILE}?uid=${uid}`, updatedProfileInfo);
         return { success: true, message: "User profile updated successfully", data: response.data };
     } catch (error) {
         console.error("Error updating user profile info: ", error);
@@ -38,7 +38,7 @@ export const updateUserProfileInfoToDb = async (uid, updatedProfileInfo) => {
 //GET ALL USERS
 export const getAllUsersFromDb = async () => {
     try {
-        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS);
+        const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS);
         //console.log(response.data)
         return { success: true, data: response.data };
     } catch (error) {
@@ -50,7 +50,7 @@ export const getAllUsersFromDb = async () => {
 //GET ALL USERS FOR ADMIN
 export const getAllUsersForAdmin = async () => {
     try {
-        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS_FOR_ADMIN);
+        const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS_FOR_ADMIN);
         //console.log(response.data)
         return { success: true, data: response.data };
     } catch (error) {
@@ -63,7 +63,7 @@ export const getAllUsersForAdmin = async () => {
 export const getProgressForAllLessonsFromDb = async (uid) => {
     try {
         // Send a GET request to fetch lesson progress data for a user
-        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_ALL_LESSON_PROGRESS.replace("{uid}", uid));
+        const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_ALL_LESSON_PROGRESS.replace("{uid}", uid));
         return { success: true, data: response.data };
     } catch (error) {
         // Handle errors
@@ -76,7 +76,7 @@ export const getProgressForAllLessonsFromDb = async (uid) => {
 //GET USER'S BADGES
 export const getBadgesForUser = async (uid) => {
     try {
-        const response = await axios.get(
+        const response = await api.get(
             process.env.REACT_APP_SPRINGBOOT_GET_USER_BADGES.replace("{uid}", uid)
         );
         return { success: true, data: response.data };
@@ -89,7 +89,7 @@ export const getBadgesForUser = async (uid) => {
 // CHECK IF USER HAS EARNED A BADGE
 export const checkUserBadge = async (uid, lessonId) => {
     try {
-      const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_CHECK_USER_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
+      const response = await api.get(process.env.REACT_APP_SPRINGBOOT_CHECK_USER_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
       return { success: true, data: response.data };
     } catch (error) {
       console.error("Error checking user badge:", error);
@@ -100,7 +100,7 @@ export const checkUserBadge = async (uid, lessonId) => {
   // AWARD BADGE TO USER
   export const awardBadge = async (uid, lessonId) => {
     try {
-      const response = await axios.put(process.env.REACT_APP_SPRINGBOOT_AWARD_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
+      const response = await api.put(process.env.REACT_APP_SPRINGBOOT_AWARD_BADGE.replace("{uid}", uid).replace("{lessonId}", lessonId));
       return { success: true, data: response.data };
     } catch (error) {
       console.error("Error awarding badge:", error);
@@ -110,7 +110,7 @@ export const checkUserBadge = async (uid, lessonId) => {
 
   export const changeUserRole = async (uid, newRole) => {
     try {
-        const response = await axios.put(process.env.REACT_APP_SPRINGBOOT_CHANGE_USER_ROLE.replace("{uid}", uid).replace("{newRole}", newRole));
+        const response = await api.put(process.env.REACT_APP_SPRINGBOOT_CHANGE_USER_ROLE.replace("{uid}", uid).replace("{newRole}", newRole));
         return response;
     } catch (error) {
         console.error('Error changing user role:', error);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../PagesCSS/LoginPage.css';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import LoginPageImage from '../Images/LoginPageImages/login-bg.png';
@@ -35,6 +35,7 @@ const LoginPage = () => {
     const [isValid, setIsValid] = useState(true);
     const [useFallbackImage, setUseFallbackImage] = useState(false);
 
+    const [loading, setLoading] = useState(false) //FOR CIRCULAR PROGRESS
     const navigateTo = useNavigate();
 
     useEffect(() => {
@@ -52,6 +53,7 @@ const LoginPage = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
         try {
             setIsValid(true);
             await signIn(email, password);
@@ -62,6 +64,7 @@ const LoginPage = () => {
             setIsValid(false);
             // console.log(isValid);
         }
+        setLoading(false);
     };
 
     // FOR FORGOT PASSWORD MODAL
@@ -142,7 +145,7 @@ const LoginPage = () => {
                             '&:hover': { backgroundColor: '#e39e02' },
                         }}
                     >
-                        <h4>LOG IN</h4>
+                        <h4>{loading ? <CircularProgress color="inherit" size="1.5rem" /> : 'Create'}</h4>
                     </Button>
                 </form>
                 <p>No account yet?

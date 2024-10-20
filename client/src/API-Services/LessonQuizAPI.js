@@ -1,8 +1,8 @@
-import axios from "axios";
+import api from "./axiosConfig";
 
 export const insertLessonQuiz = async (newLessonQuiz) => {
     try {
-        const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_INSERT_LESSON_QUIZ, newLessonQuiz);
+        const response = await api.post(process.env.REACT_APP_SPRINGBOOT_INSERT_LESSON_QUIZ, newLessonQuiz);
         return { success: true, message: 'You have successfully created a quiz! 🎉', data: response.data };
     } catch (error) {
         return { success: false, message: "Failed to create a quiz. Try again later." };
@@ -11,7 +11,7 @@ export const insertLessonQuiz = async (newLessonQuiz) => {
 
 export const getAllLessonsQuiz = async () => {
     try {
-        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_LESSONQUIZ);
+        const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_LESSONQUIZ);
         return { success: true, data: response.data };
     } catch (error) {
         console.error("Error fetching lessons: ", error);
@@ -21,7 +21,7 @@ export const getAllLessonsQuiz = async () => {
 
 export const updateLessonQuiz = async (lessonQuizId, updatedLessonQuiz) => {
     try {
-        const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_LESSON_QUIZ}${lessonQuizId}`, updatedLessonQuiz);
+        const response = await api.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_LESSON_QUIZ}${lessonQuizId}`, updatedLessonQuiz);
         return { success: true, message: 'Lesson quiz updated successfully!', data: response.data };
     } catch (error) {
         console.error("Error updating lesson quiz: ", error);
@@ -31,7 +31,7 @@ export const updateLessonQuiz = async (lessonQuizId, updatedLessonQuiz) => {
 
 export const getLessonQuizById = async (lessonQuizId) => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_LESSONQUIZ_BY_ID}${lessonQuizId}`);
+        const response = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_LESSONQUIZ_BY_ID}${lessonQuizId}`);
         return { success: true, data: response.data };
     } catch (error) {
         console.error("Error fetching lesson quiz by id: ", error);
@@ -41,7 +41,7 @@ export const getLessonQuizById = async (lessonQuizId) => {
 
 export const isQuizAdministered = async (lessonQuizId) => {
     try{
-        const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_CHECK_QUIZ_ADMINISTERED.replace("{lessonQuizId}", lessonQuizId));
+        const response = await api.get(process.env.REACT_APP_SPRINGBOOT_CHECK_QUIZ_ADMINISTERED.replace("{lessonQuizId}", lessonQuizId));
         return { success: true, data: response.data };
     }catch (error) {
         console.error("Error checking quiz:", error);
@@ -51,7 +51,7 @@ export const isQuizAdministered = async (lessonQuizId) => {
 
 export const getRandomizedLessonQuizByLessonQuizId = async (lessonQuizId) => {
     try {
-      const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_RANDOMIZED_LESSONQUIZ_QA_BY_LESSONQUIZID.replace("{lessonQuizId}", lessonQuizId));
+      const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_RANDOMIZED_LESSONQUIZ_QA_BY_LESSONQUIZID.replace("{lessonQuizId}", lessonQuizId));
       return { success: true, data: response.data };
     } catch (error) {
       console.error("Error fetching practice by topic id: ", error);
@@ -61,7 +61,7 @@ export const getRandomizedLessonQuizByLessonQuizId = async (lessonQuizId) => {
 
 export const deleteLessonQuiz = async (lessonQuizId) => {
     try {
-        const response = await axios.delete(process.env.REACT_APP_SPRINGBOOT_DELETE_LESSONQUIZ.replace("{lessonQuizId}", lessonQuizId));
+        const response = await api.delete(process.env.REACT_APP_SPRINGBOOT_DELETE_LESSONQUIZ.replace("{lessonQuizId}", lessonQuizId));
         return { success: true, data: response.data };
       } catch (error) {
         console.error("Error deleting lesson quiz: ", error);

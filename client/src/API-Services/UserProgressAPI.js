@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "./axiosConfig";
 
 export const updateProgress = async(uid, topicId, completed) => {
     try {
@@ -6,7 +6,7 @@ export const updateProgress = async(uid, topicId, completed) => {
             .replace('{uid}', uid)
             .replace('{topicId}', topicId)
             .replace('{completed}', completed);
-        const response = await axios.post(url);
+        const response = await api.post(url);
         return { success: true, message: "Progress successfully updated.", data: response.data };
     } catch (error) {
         console.error("Error: ", error);

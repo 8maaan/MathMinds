@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../PagesCSS/RegisterPage.css'
 import registerBackground from '../Images/register-bg.png'
-import {Button, TextField, Typography} from '@mui/material'
+import {Button, TextField, Typography, CircularProgress} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { txtFieldInputProps } from './LoginPage'
 import { UserAuth } from '../Context-and-routes/AuthContext'
@@ -32,6 +32,7 @@ const RegisterTxtField = ({name, label, type, value, onChange, error, helperText
 }
 
 const RegisterPage = () => {
+    const [loading, setLoading] = useState(false) //FOR CIRCULAR PROGRESS
 
     // INITIAL STATE FOR CORRESPONDING TEXTFIELDS
     const [user, setUser] = useState({
@@ -98,7 +99,7 @@ const RegisterPage = () => {
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
-
+        setLoading(true);
         const capitalizedFirstName = user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase();
         const capitalizedLastName = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1).toLowerCase();
 
@@ -117,6 +118,7 @@ const RegisterPage = () => {
             console.error(error.code)
             setEmailAlreadyUsed(true);
         }
+        setLoading(false);
     }
 
     const handleRegisterToDb = async (userid) => {
@@ -198,7 +200,7 @@ const RegisterPage = () => {
                         size='large'
                         sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '1rem', height:'5vh', fontFamily:'Poppins'}}
                     >
-                        <h4>REGISTER</h4>
+                        <h4>{loading ? <CircularProgress color="inherit" size="1.5rem" /> : 'Create'}</h4>
                     </Button>
                 </form>
                 <Typography style={{fontSize:'12px', fontFamily:'Poppins'}}>Already have an account?<span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={() => navigateTo('/login')}> Sign in</span></Typography> 

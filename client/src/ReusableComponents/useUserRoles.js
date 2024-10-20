@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import axios from "axios"
+import api from '../API-Services/axiosConfig';
 
 export const useUserRoles = (uid) => {
     // add other roles later
@@ -8,7 +8,7 @@ export const useUserRoles = (uid) => {
 
     const fetchUserRoles = useCallback(async () => {
         try {
-            const userRole = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_USER_ROLE}${uid}`);
+            const userRole = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_USER_ROLE}${uid}`);
             const role = userRole.data;
             setIsTeacher(role === 'Teacher');
             setIsAdmin(role === 'Admin');

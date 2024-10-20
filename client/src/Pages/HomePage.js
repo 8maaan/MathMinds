@@ -15,7 +15,7 @@ const HomePage = () => {
             <div className="Homepage">
                 <Box>
                     <Typography class="home-header">
-                        Hey there, {(user.displayName).split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') || 'math explorer'}!
+                        Hey there, {user.displayName ? user.displayName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : 'math explorer'}!
                     </Typography>
                     <Typography class="home-paragraph">
                         Ready to dive into the world of numbers and have some math fun together?

@@ -1,8 +1,8 @@
-import axios from "axios";
+import api from "./axiosConfig";
 
 export const insertTopic = async(newTopic) => {
   try{
-      const response = await axios.post(process.env.REACT_APP_SPRINGBOOT_CREATE_TOPIC, newTopic);
+      const response = await api.post(process.env.REACT_APP_SPRINGBOOT_CREATE_TOPIC, newTopic);
       return { success: true, message: 'You have successfully created a topic! 🎉',data: response.data };
   }catch(error) {
       return { success: false, message: "Failed to insert a topic. Try again later." };
@@ -11,7 +11,7 @@ export const insertTopic = async(newTopic) => {
 
 export const getTopicById = async(topicId) => {
   try{
-      const response = await axios.get(`${process.env.REACT_APP_SPRINGBOOT_GET_TOPIC_BY_ID}${topicId}`);
+      const response = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_TOPIC_BY_ID}${topicId}`);
       return { success: true, data: response.data };
   }catch(error) {
       console.error("Error fetching topic by id: ", error);
@@ -21,7 +21,7 @@ export const getTopicById = async(topicId) => {
 
 export const updateTopic = async (topicId, updatedTopic) => {
   try {
-      const response = await axios.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_TOPIC}${topicId}`, updatedTopic);
+      const response = await api.put(`${process.env.REACT_APP_SPRINGBOOT_EDIT_TOPIC}${topicId}`, updatedTopic);
       return { success: true, message: 'Topic updated successfully!', data: response.data };
   } catch (error) {
       console.error("Error updating topic: ", error);
@@ -32,7 +32,7 @@ export const updateTopic = async (topicId, updatedTopic) => {
 export const deleteTopicFromDb = async (topicId) => {
   try {
       console.log(topicId)
-      const response = await axios.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_TOPIC}${topicId}`);
+      const response = await api.delete(`${process.env.REACT_APP_SPRINGBOOT_DELETE_TOPIC}${topicId}`);
       return { success: true, data: response.data };
   } catch (error) {
       console.error("Error deleting topic: ", error.response ? error.response.data : error.message);
@@ -42,7 +42,7 @@ export const deleteTopicFromDb = async (topicId) => {
 
 export const getAllTopicsFromDb = async () => {
   try {
-      const response = await axios.get(process.env.REACT_APP_SPRINGBOOT_GET_TOPICS);
+      const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_TOPICS);
       //console.log(response.data)
       return { success: true, data: response.data };
   } catch (error) {
