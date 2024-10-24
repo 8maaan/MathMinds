@@ -259,13 +259,13 @@ const EditTopic = () => {
 
         const response = await updateTopic(topicId, requestBody);
         if (response.success) {
-            handleSnackbarOpen('success', 'Topic has been updated successfully.');
+            handleSnackbarOpen('success', 'Topic has been updated successfully!');
             setTimeout(() => {
                 navigateTo('/lessons-teacher');
             }, 1250)
         } else {
             console.error(response.message);
-            handleSnackbarOpen('error', 'Could not update this topic, try again later.');
+            handleSnackbarOpen('error', 'Failed to update topic, try again later.');
         }
     };
 
@@ -326,21 +326,21 @@ const EditTopic = () => {
     };
 
     return (
-        <div>
+        <div className='createTopic-bg'>
             <form onSubmit={handleOpenDialog}>
                 <Typography class='createTopic-title'>Edit "{currentTopicTitle}" topic</Typography>
                 <div className='createTopic-body'>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Lesson</InputLabel>
-                            <Select label='Select Lesson' value={topicLesson} autoWidth onChange={(event) => { setTopicLesson(event.target.value) }} required disabled>
+                            <Select label='Select Lesson' value={topicLesson} autoWidth onChange={(event) => { setTopicLesson(event.target.value) }} required disabled sx={{backgroundColor:'#f4f4f4'}}>
                                 {lessons && lessons.map(lesson => (
                                     <MenuItem key={lesson.lessonId} value={lesson.lessonId}>{lesson.lessonTitle}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
-                        <TextField label='Topic Title' fullWidth required value={topicTitle} onChange={(event) => { setTopicTitle(event.target.value) }} autoComplete='off' />
-                        <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} value={topicDescription} onChange={(event) => { setTopicDescription(event.target.value) }} autoComplete='off' />
+                        <TextField label='Topic Title' fullWidth required value={topicTitle} onChange={(event) => { setTopicTitle(event.target.value) }} autoComplete='off' sx={{backgroundColor:'#f4f4f4'}}/>
+                        <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} value={topicDescription} onChange={(event) => { setTopicDescription(event.target.value) }} autoComplete='off' sx={{backgroundColor:'#f4f4f4'}}/>
                         <div className='topic-content-choices'>
                             <Button onClick={handleAddContent} variant='contained' sx={{...buttonStyle, ml: 0}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
@@ -446,7 +446,7 @@ const EditTopic = () => {
                 status={openDialog} 
                 onClose={handleCloseDialog} 
                 title="Confirm Topic Update" 
-                context={`Are you sure you're done editing the contents for "${topicTitle}" topic?`}
+                context={`Are you sure you're done editing the contents for the topic titled "${topicTitle}"?`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

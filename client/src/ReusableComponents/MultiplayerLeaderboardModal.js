@@ -2,6 +2,8 @@ import React, { } from 'react'
 import {Box, Modal, Typography, Fade, Backdrop, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, tableCellClasses, Button } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import Confetti from 'react-confetti'; // Import the Confetti component
+import { useWindowSize } from 'react-use';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -28,6 +30,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const MultiplayerLeaderboardModal = ({open, onClose, scores, isFinished, roomCode}) => {
     const navigateTo = useNavigate();
+    const { width, height } = useWindowSize();
     const handleNavigateBacktoLobby = () => {
         navigateTo(`/lobby/${roomCode}`)
     }
@@ -49,6 +52,17 @@ const MultiplayerLeaderboardModal = ({open, onClose, scores, isFinished, roomCod
     const sortedScores = Object.entries(scores).sort(([, scoreA], [, scoreB]) => scoreB - scoreA);
     return (
         <div>
+            {isFinished && open && (
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1400, pointerEvents: 'none' }}>
+                    <Confetti
+                        width={width} 
+                        height={height}
+                        recycle={false} // mu loop ang confetti or dili?
+                        numberOfPieces={400} // Amount of confetti pieces
+                        gravity={0.2} // ang gipaspason sa pagkahulog sa confetti
+                    />
+                </div>
+            )}
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -90,8 +104,8 @@ const MultiplayerLeaderboardModal = ({open, onClose, scores, isFinished, roomCod
                     </TableContainer>
                     {isFinished && 
                         <Box sx={{ marginTop: 'auto', textAlign: 'center', }}>
-                            <p style={{fontWeight: '600', color: '#ba8f22'}}>The game has finished!</p>
-                            <Button variant='contained' onClick={() => handleNavigateBacktoLobby()}>Lobby</Button>
+                            <p style={{fontWeight: '600', color: '#181A52'}}>The game has finished!</p> {/*#ba8f22*/}
+                            <Button variant='contained' onClick={() => handleNavigateBacktoLobby()} sx={{backgroundColor:'#ffb100', color:'#181A52', '&:hover':{backgroundColor:'#ba8f22'}, }}>Lobby</Button>
                         </Box>
                      }
                 </Box>

@@ -74,6 +74,8 @@ const PracticeQuestionForm = () => {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const optionFontSize= '2.5vmin';
+  const questionFontSize = '3vmin';
   
   const navigate = useNavigate();
 
@@ -212,8 +214,8 @@ const PracticeQuestionForm = () => {
             </IconButton>
           </Tooltip>
 
-          <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '100px' }}>
+          <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: {md:'100%', xs:'90%'}, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', borderRadius:'15px', wordWrap: 'break-word' }}>
+            <Typography sx={{ textAlign: 'center', marginTop: '100px', fontSize: {md: questionFontSize, xs:'4.5vmin'}, padding:'5%' }}>
               {currentQuestion.question}
             </Typography>
             <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px', fontWeight:'bold' }}>
@@ -233,6 +235,7 @@ const PracticeQuestionForm = () => {
                   sx={{
                     pointerEvents: isAnswered ? 'none' : 'auto',
                     opacity: isAnswered ? 0.5 : 1,
+                    fontSize: {md: optionFontSize, xs:'4.5vmin'},
                     flexGrow: 1, 
                     flexBasis: 'calc(50% - 10px)', 
                     '@media (max-width: 600px)': {

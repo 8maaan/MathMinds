@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography, Box, Button } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography, Box } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/PracticeLessonList.css';
 import { useNavigate } from 'react-router-dom';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI'; 
 import AccordionCustomButton from "./AccordionCustomButton";
+import ForwardIcon from '@mui/icons-material/Forward';
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A" },
@@ -103,6 +104,7 @@ const PracticeLessonList = ({ onLessonStart }) => {
                             </Box>
 
                             <AccordionActions>
+                                <ForwardIcon className='arrow' style={{ marginTop: '10px', fontSize:'2.5rem' }} />
                                 <AccordionCustomButton
                                     sx={{
                                         backgroundColor: colorPalette.accordionColor, // Existing accordion color

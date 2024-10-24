@@ -113,12 +113,12 @@ const CreatePractice = () => {
         // console.log('Response:', response);
         
         if (response.success) {
-            handleSnackbarOpen('success', 'Practice has been created successfully.');
+            handleSnackbarOpen('success', 'Practice has been created successfully!');
             setTimeout(() => {
                 navigate('/lessons-teacher');
             }, 1250);
         } else {
-            handleSnackbarOpen('error', 'Could not create practice, try again later.');
+            handleSnackbarOpen('error', 'Failed to create practice, try again later.');
         }
     };
 
@@ -159,9 +159,17 @@ const CreatePractice = () => {
         }));
     };
 
+    const buttonStyle = {
+        variant: 'contained',
+        bgcolor: '#AA75CB',
+        '&:hover': {
+            bgcolor: '#9163ad'
+        },
+        mt:'5px'
+    };
 
     return (
-        <div>
+        <div className='createPractice-bg'>
             <form onSubmit={handleOpenDialog}>
                 <div className='createPractice-body'>
                     <Typography class='createPractice-title'>Create a Practice for a Topic</Typography>
@@ -170,7 +178,7 @@ const CreatePractice = () => {
                          {/* Select Lesson - Added */}
                          <FormControl variant="filled" sx={{ minWidth: 180, mb: 1 }}>
                             <InputLabel>Select Lesson</InputLabel>
-                            <Select label='Select Lesson' value={selectedLesson} autoWidth onChange={handleLessonChange} required>
+                            <Select label='Select Lesson' value={selectedLesson} autoWidth onChange={handleLessonChange} required sx={{backgroundColor:'#f4f4f4'}}>
                                 {lessons.map(lesson => (
                                     <MenuItem key={lesson.lessonId} value={lesson.lessonId}>{lesson.lessonTitle}</MenuItem>
                                 ))}
@@ -179,14 +187,14 @@ const CreatePractice = () => {
                         {/* Practice Topic - Updated to use filteredTopics */}
                         <FormControl variant="filled" sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Topic</InputLabel>
-                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={handleTopicChange} required>
+                            <Select label='Select Topic' value={practiceTopic} autoWidth onChange={handleTopicChange} required sx={{backgroundColor:'#f4f4f4'}}>
                                 {filteredTopics.map(topic => (
                                     <MenuItem key={topic.topicId} value={topic.topicId}>{topic.topicTitle}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <div style={{ marginTop: '1.5%' }}>
-                            <Button onClick={handleAddQuestion} variant='contained'>Add Question</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
                         </div>
                     </div>
                     </div>
@@ -213,14 +221,14 @@ const CreatePractice = () => {
                             
                         </div>
                     </DndContext>
-                    <Button type="submit" variant='contained' sx={{ mt: 2 }}>Submit</Button>
+                    <Button type="submit" variant='contained' sx={{mt: 2, backgroundColor:'#ffb100', fontWeight:'600', color: '#181A52', '&:hover': {backgroundColor: '#e39e02'}}}>Create</Button>
                 </div>
             </form>
             <ReusableDialog
                 status={openDialog} 
                 onClose={handleCloseDialog} 
                 title="Confirm Practice Topic Creation" 
-                context={`Are you sure you want to create a practice for topic ${topicName}?`}
+                context={`Are you sure you want to create the practice for the topic titled ${topicName}?`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

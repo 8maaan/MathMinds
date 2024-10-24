@@ -4,6 +4,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
 import AccordionCustomButton from './AccordionCustomButton';  // Import your custom button
+import ForwardIcon from '@mui/icons-material/Forward';
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A", hoverColor: "#F94848" },
@@ -50,6 +51,7 @@ const LessonsTopicAccordion = ({ lesson }) => {
                             sx={{
                                 marginTop: '1.5%',
                                 borderRadius: "15px",
+                                overflow: "visible",
                             }}
                             key={panelId}
                             expanded={isExpanded}
@@ -62,7 +64,8 @@ const LessonsTopicAccordion = ({ lesson }) => {
                                     borderTopLeftRadius: "15px",
                                     borderBottomLeftRadius: isExpanded ? '0px' : '15px',
                                     borderBottomRightRadius: isExpanded ? '0px' : '15px',
-                                    textAlign: 'left'
+                                    textAlign: 'left',
+                                    overflow: 'visibile'
                                 }}
                                 expandIcon={<ArrowDropDownIcon />}
                             >
@@ -76,21 +79,24 @@ const LessonsTopicAccordion = ({ lesson }) => {
                                     backgroundColor: colorPalette.detailsBgColor,
                                     textAlign: 'left',
                                     borderBottomRightRadius: "15px",
-                                    borderBottomLeftRadius: "15px"
+                                    borderBottomLeftRadius: "15px",
+                                    overflow: 'visible'
                                 }}
                             >
                                 <Typography className="lesson-number" sx={{ fontFamily: "Poppins", paddingTop: '1%', paddingLeft: '1%' }}>{topic.topicDescription}</Typography>
 
                                 <AccordionActions>
+                                    <ForwardIcon className='arrow' style={{ marginTop: '10px', fontSize:'2.5rem' }} /> {/* Adds space between text and icon */}
                                     <AccordionCustomButton
-                                        className="important"
                                         sx={{
-                                        backgroundColor: colorPalette.accordionColor, // Existing accordion color
-                                        fontFamily: 'Poppins',
-                                        color: '#181A52',
-                                        fontWeight: 'bold',
-                                        summaryBgColor: colorPalette.summaryBgColor, // Pass summaryBgColor for boxShadow
-                                        animation: 'flash 1.5s infinite ease',
+                                            backgroundColor: colorPalette.accordionColor, // Existing accordion color
+                                            fontFamily: 'Poppins',
+                                            color: '#181A52',
+                                            fontWeight: 'bold',
+                                            summaryBgColor: colorPalette.summaryBgColor, // Pass summaryBgColor for boxShadow
+                                            display: 'flex', // Ensures proper alignment of text and icon
+                                            alignItems: 'center', // Centers the icon and text vertically
+                                            overflow: 'visible'
                                         }}
                                         onClick={() => handleStartTopic(topic.lessonId, topic.topicId)}
                                     >

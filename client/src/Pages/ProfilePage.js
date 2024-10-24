@@ -8,7 +8,8 @@ import { getUserProfileInfoFromDb, updateUserProfileInfoToDb } from '../API-Serv
 import { isPasswordValid, isEmailValid, isPasswordMatch} from '../ReusableComponents/txtFieldValidations';
 import MuiAlert from '@mui/material/Alert';
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
-import ImageUploader from '../ReusableComponents/ImageUploader'; // Import the ImageUploader
+//import ImageUploader from '../ReusableComponents/ImageUploader'; // Import the ImageUploader
+import CustomButton from '../ReusableComponents/CustomButton';
 
 const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText, disabled }) => (
     <div className='profile-txtField'>
@@ -47,7 +48,7 @@ const ProfileTxtField = ({ name, label, type, value, onChange, error, helperText
 );
 
 const ProfilePage = () => {
-    const [userProfileInfo, setUserProfileInfo] = useState({ fname: '', lname: '', email: '', password: '***********', profilePictureUrl: '' });
+    const [userProfileInfo, setUserProfileInfo] = useState({ fname: '', lname: '', email: '', password: '***********' }); //profilePictureUrl: ''
     const [newPassword, setNewPassword] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
     const [userError, setUserError] = useState({ fname: false, lname: false, email: false, newPassword: false, retypePassword: false });
@@ -66,7 +67,7 @@ const ProfilePage = () => {
                 if (result.success) {
                     setUserProfileInfo({
                         ...result.data,
-                        profilePictureUrl: result.data.profilePictureUrl, // Ensure this is set
+                        //profilePictureUrl: result.data.profilePictureUrl, // Ensure this is set
                         email: user.email
                     });
                 } else {
@@ -147,7 +148,7 @@ const ProfilePage = () => {
     const handleImageUpload = (imageUrl) => {
         setUserProfileInfo((prevInfo) => ({
             ...prevInfo,
-            profilePictureUrl: imageUrl // Update the profile picture URL
+            //profilePictureUrl: imageUrl // Update the profile picture URL
         }));
         handleSnackbarOpen("Profile picture updated", "success");
     };
@@ -177,7 +178,7 @@ const ProfilePage = () => {
                                     
                                     {isEditing && (
                                         <div className="upload-button-container">
-                                        <ImageUploader onImageUpload={handleImageUpload} />
+                                        {/*<ImageUploader onImageUpload={handleImageUpload} />*/}
                                         </div>
                                     )}
                                 </div>
@@ -235,7 +236,7 @@ const ProfilePage = () => {
                                                         helperText={userError.retypePassword ? 'Passwords do not match.' : ''} // Update message
                                                         disabled={!isEditing}
                                                     />
-                                                    <Button
+                                                    <CustomButton
                                                         onClick={handleOpenDialog}
                                                         variant='contained'
                                                         size='medium'
@@ -246,13 +247,14 @@ const ProfilePage = () => {
                                                             color: '#181A52',
                                                             fontWeight: '600',
                                                             borderRadius: '10px',
+                                                            marginTop: '0px',
                                                             '&:hover': {
                                                                 backgroundColor: '#d69500'
                                                             }
                                                         }}
                                                     >
                                                         Update
-                                                    </Button>
+                                                    </CustomButton>
                                                 </>
                                             ) : (
                                                 <>
@@ -266,17 +268,17 @@ const ProfilePage = () => {
                                                         helperText=""
                                                         disabled
                                                     />
-                                                    <Button
+                                                    <CustomButton
                                                         onClick={handleEdit}
                                                         variant='contained'
                                                         size='medium'
                                                         sx={{
                                                             width: "50%",
-                                                            fontFamily: 'Poppins',
                                                             backgroundColor: '#FFB100',
                                                             color: '#181A52',
                                                             fontWeight: '600',
                                                             borderRadius: '10px',
+                                                            marginTop: '0px',
                                                             '&:hover': {
                                                                 backgroundColor: '#d69500'
                                                             }
@@ -284,7 +286,7 @@ const ProfilePage = () => {
                                                         disabled={!user.emailVerified}
                                                     >
                                                         Edit
-                                                    </Button>
+                                                    </CustomButton>
                                                 </>
                                             )}
                                         </div>

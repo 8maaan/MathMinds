@@ -4,7 +4,15 @@
     background-image: url('../Images/BG3.png');
     background-size: cover;
     background-attachment: fixed;
-    min-height: 100vh; /* Ensure the background covers the entire viewport */
+    min-height: 80vh; /* Ensure the background covers the entire viewport */
     padding: 50px;
     margin-top: 80px;
+    overflow: hidden;
+}
+
+@media (max-width: 900px){
+    .user-management-page {
+        margin-top: 50px;
+        min-height: 85vh;
+    }
 }

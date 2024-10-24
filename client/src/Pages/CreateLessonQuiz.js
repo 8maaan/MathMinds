@@ -94,12 +94,14 @@ const CreateLessonQuiz = () => {
 
         const response = await insertLessonQuiz(requestBody);
         if (response.success) {
-            handleSnackbarOpen('success', `Quiz for lesson ${selectedLesson} has been created successfully.`);
+            //handleSnackbarOpen('success', `Quiz for lesson ${selectedLesson} has been created successfully.`);
+            handleSnackbarOpen('success', 'Lesson quiz has been created successfully!');
             setTimeout(() => {
                 navigate('/lessons-teacher');
             }, 1250)
         } else {
-            handleSnackbarOpen('error', `Could not create a quiz for lesson ${selectedLesson} try again later.`);
+            //handleSnackbarOpen('error', `Could not create a quiz for lesson ${selectedLesson}, try again later.`);
+            handleSnackbarOpen('error', 'Failed to create lesson quiz, try again later.');
         }
     };
 
@@ -129,8 +131,16 @@ const CreateLessonQuiz = () => {
         }))
     };
 
+    const buttonStyle = {
+        variant: 'contained',
+        bgcolor: '#AA75CB',
+        '&:hover': {
+            bgcolor: '#9163ad'
+        },
+    };
+
     return (
-        <div>
+        <div className='createTopic-bg'>
             <form onSubmit={handleOpenDialog}>
                 <Typography class='createTopic-title'>Add Lesson Quiz</Typography>
                 <div className='createTopic-body'>
@@ -144,6 +154,7 @@ const CreateLessonQuiz = () => {
                                 autoWidth
                                 onChange={handleLessonChange}
                                 required
+                                sx={{backgroundColor:'#f4f4f4'}}
                                 >
                                 {lessons && lessons.map(lesson => (
                                     <MenuItem key={lesson.lessonId} value={lesson.lessonId}>
@@ -153,7 +164,7 @@ const CreateLessonQuiz = () => {
                             </Select>
                         </FormControl>
                         <div style={{ marginTop: '1.5%' }}>
-                            <Button onClick={handleAddQuestion} variant='contained' sx={{ fontFamily:'Poppins' }}>Add Question</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
                         </div>
                     </div>
 
@@ -192,14 +203,14 @@ const CreateLessonQuiz = () => {
                         sx={{ mt: 2 }}
                     />
 
-                    <Button type="submit" variant='contained' sx={{ mt: 2, fontFamily:'Poppins' }}>Submit</Button>
+                    <Button type="submit" variant='contained' sx={{mt: 2, backgroundColor:'#ffb100', fontWeight:'600', color: '#181A52', '&:hover': {backgroundColor: '#e39e02'}}}>Create</Button>
                 </div>
             </form>
             <ReusableDialog
                 status={openDialog} 
                 onClose={handleCloseDialog} 
                 title="Confirm Lesson Quiz Creation" 
-                context={`Are you sure you're done creating the quiz for "${selectedLesson}" lesson?`}
+                context={`Are you sure you want to create the quiz for the lesson titled "${selectedLesson}"?`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

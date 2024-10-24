@@ -26,6 +26,9 @@ const ReusableDialog = ({ status, onClose, title, context}) => {
         onClose={() => handleClose(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        sx={{'& .MuiPaper-root': {
+              borderRadius: '15px',
+            },}}
       >
         {/* The title for the dialog */}
         <DialogTitle id="alert-dialog-title" style={{ color: '#181A52' }}>

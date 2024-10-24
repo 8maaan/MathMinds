@@ -22,6 +22,7 @@ const colorPalettes = [
 const TeacherLessonsTopicAccordion = ({ lesson }) => {
     const navigateTo = useNavigate();
     const [expanded, setExpanded] = useState([]);
+    const [selectedTopicTitle, setSelectedTopicTitle] = useState('');
     const [selectedTopicId, setSelectedTopicId] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [lessonTopics, setLessonTopics] = useState(lesson.lessonTopics || []);
@@ -56,7 +57,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
             if (practiceExists) {
                 navigateTo(`/edit-practice/${topicId}/${currentTopicTitle}`);
             } else {
-                handleSnackbarOpen('error', 'No practice exists for this topic yet.');
+                handleSnackbarOpen('error', 'Practice for this topic has not yet been created.');
                 console.error("No practice exists for this topic yet or Topic ID is missing.");
                 return;
             }
@@ -66,8 +67,9 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
         }
     };
 
-    const handleOpenDialog = (topicId) => {
+    const handleOpenDialog = (topicId, topicTitle) => {
         setSelectedTopicId(topicId);
+        setSelectedTopicTitle(topicTitle);
         setOpenDialog(true);
     };
 
@@ -77,6 +79,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
             handleDeleteTopic();
         }
         setSelectedTopicId(null);
+        setSelectedTopicTitle('');
     };
 
     const handleDeleteTopic = async () => {
@@ -87,10 +90,10 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                 if (success) {
                     console.log("Topic deleted successfully:", selectedTopicId);
                     setLessonTopics(lessonTopics.filter(topic => topic.topicId !== selectedTopicId));
-                    handleSnackbarOpen('success', 'Topic has been deleted successfully.');
+                    handleSnackbarOpen('success', 'Topic has been deleted successfully!');
                 } else {
                     console.error("Failed to delete topic:", message);
-                    handleSnackbarOpen('error', 'Error deleting a topic, try again later.');
+                    handleSnackbarOpen('error', 'Failed to delete topic, try again later.');
                 }
             } catch (error) {
                 console.error("An error occurred while deleting the topic:", error);
@@ -185,7 +188,7 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Delete Topic">
-                                        <IconButton onClick={() => handleOpenDialog(topic.topicId)}>
+                                        <IconButton onClick={() => handleOpenDialog(topic.topicId, topic.topicTitle)}>
                                             <CloseIcon
                                                 sx={{
                                                     color: "#181A52",
@@ -225,8 +228,8 @@ const TeacherLessonsTopicAccordion = ({ lesson }) => {
             <ReusableDialog
                 status={openDialog} 
                 onClose={handleCloseDialog} 
-                title="Confirm Delete" 
-                context="Are you sure you want to delete this topic?"
+                title="Confirm Topic Deletion" 
+                context={`Are you sure you want to delete the topic titled "${selectedTopicTitle}"?. This action cannot be undone.`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message} />
         </div>

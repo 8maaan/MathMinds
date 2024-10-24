@@ -7,6 +7,7 @@ const StyledDialog = styled(Dialog)({
     fontFamily: 'Poppins',
     minWidth: '400px',
     backgroundColor: '#ffec86',
+    borderRadius:'15px',
   },
 });
 
@@ -39,6 +40,7 @@ const StyledButton = styled(Button)(({ theme, colorIndex }) => ({
   fontFamily: 'Poppins',
   backgroundColor: buttonColors[colorIndex % buttonColors.length],
   color: 'white',
+  borderRadius:'8px',
   '&:hover': {
     backgroundColor: buttonHoverColors[colorIndex % buttonHoverColors.length],
   },
