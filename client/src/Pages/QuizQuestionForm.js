@@ -5,8 +5,11 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { getAllLessonsQuiz, getRandomizedLessonQuizByLessonQuizId } from '../API-Services/LessonQuizAPI';
+import { getLessonById } from '../API-Services/LessonAPI';
 import { checkUserBadge, awardBadge } from '../API-Services/UserAPI'; // Import the new functions
 import { UserAuth } from '../Context-and-routes/AuthContext'; // Assuming you have access to user context here
+import Confetti from 'react-confetti'; // Import the Confetti component
+import { useWindowSize } from 'react-use';
 
 const theme = createTheme({
   typography: {
@@ -54,12 +57,14 @@ const QuizQuestionForm = () => {
   const [open, setOpen] = useState(false);
   const [badgeNotification, setBadgeNotification] = useState(false); // State for badge notification
   const [badgeAwarded, setBadgeAwarded] = useState(false); // State to check if badge was awarded
-  const questionFontSize = '1.5rem';
-  const optionFontSize= '1rem';
+  const questionFontSize = '3vmin';
+  const optionFontSize= '2.5vmin';
   const [lessonTitle, setLessonTitle] = useState('');
-
-  const questionRef = useRef(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const { width, height } = useWindowSize();
   const optionsRef = useRef([]);
+  const [lessonBadgeImageUrl, setLessonBadgeImageUrl] = useState('');
+  const [shuffledOptions, setShuffledOptions] = useState([]);
 
   const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
@@ -102,58 +107,81 @@ const QuizQuestionForm = () => {
   }, [lessonId, quizId]);
 
   useEffect(() => {
-    adjustFontSizes();
-  }, [currentQuestionIndex]);
+    const fetchLessonDetails = async () => {
+      try {
+        const lessonResponse = await getLessonById(lessonId);
+        if (lessonResponse.success) {
+          setLessonBadgeImageUrl(lessonResponse.data.lessonBadgeImageUrl); // Store the badge image URL
+        } else {
+          console.error("Failed to fetch lesson details");
+        }
+      } catch (error) {
+        console.error("Error fetching lesson details:", error);
+      }
+    };
+  
+    fetchLessonDetails();
+  }, [lessonId]);  
+  
+  useEffect(() => {
+    if (quiz && quiz[currentQuestionIndex]) {
+      // Shuffle options only once per question load
+      const currentQuestion = quiz[currentQuestionIndex];
+      const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
+      setShuffledOptions(options);
+    }
+  }, [quiz, currentQuestionIndex]);
+
+  /*useEffect(() => {
+    if (quiz && currentQuestionIndex === 0) {
+      adjustFontSizes();
+    }
+  }, [quiz]);
 
   const adjustFontSizes = () => {
     const maxFontSize = 2; // Maximum font size in rem
-    const minFontSize = 1; // Minimum font size in rem
-    const maxHeight = 100; // Max height for question text in pixels
-    const baseLength = 50; // Base length of the question text
+    const minFontSize = 1.7; // Minimum font size in rem
+    const maxHeight = 180; // Adjusted max height for question text in pixels
+    const maxWidth = 800; // Maximum width for question text in pixels
   
     if (questionRef.current) {
       let fontSize = maxFontSize;
-      const questionLength = currentQuestion.question.length;
-  
-      // Adjust font size based on text length
-      fontSize = Math.max(minFontSize, Math.min(maxFontSize, (baseLength / questionLength) * maxFontSize));
-  
       questionRef.current.style.fontSize = `${fontSize}rem`;
+      questionRef.current.style.wordWrap = 'break-word';
+      questionRef.current.style.maxWidth = `${maxWidth}px`; // Set maximum width
   
-      // Ensure the text fits within the container
-      while (fontSize > minFontSize && questionRef.current.scrollHeight > maxHeight) {
+      // Gradually decrease the font size if the text overflows height or width
+      while (
+        fontSize > minFontSize &&
+        (questionRef.current.scrollHeight > maxHeight || questionRef.current.scrollWidth > maxWidth)
+      ) {
         fontSize -= 0.1;
         questionRef.current.style.fontSize = `${fontSize}rem`;
       }
     }
-  
-    if (optionsRef.current.length > 0) {
-      optionsRef.current.forEach((option) => {
-        if (option) {
-          option.style.fontSize = `${optionFontSize}rem`;
-        }
-      });
-    }
-  };
+  };*/
 
   if (!quiz) {
     return <div>Loading...</div>;
   }
 
   const questions = quiz;
+  
   const currentQuestion = questions[currentQuestionIndex];
 
   if (!currentQuestion) {
     return <div>Loading...</div>;
   }
 
-  const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
+  //const options = shuffledOptions;
+//const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
+  
   const optionColors = [
     { defaultColor: "#f94848", hoverColor: "#d13d3d"},
     { defaultColor: "#4cae4f", hoverColor: "#429645"},
     { defaultColor: "#2874ba", hoverColor: "#2265a3"},
     { defaultColor: "#f4cc3f", hoverColor: "#dbb739"}
-];
+  ];
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -187,6 +215,7 @@ const QuizQuestionForm = () => {
         }
       }
       setBadgeNotification(true); // Show badge notification
+      setShowConfetti(true); //confetti
     } else {
       setBadgeNotification(true); // Show notification even if failed
     }
@@ -194,12 +223,20 @@ const QuizQuestionForm = () => {
 
   const handleBadgeNotificationClose = () => {
     setBadgeNotification(false);
+    setShowConfetti(false);
     navigate('/lessons', { state: { lessonId: parseInt(lessonId, 10), score } });
   };
 
   return (
     <ThemeProvider theme={theme}>
       <div className='container'>
+
+      {showConfetti && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1400, pointerEvents: 'none' }}>
+          <Confetti width={width} height={height} recycle={false} gravity={0.2}/>
+        </div>
+      )}
+        
         <Container maxWidth="md" sx={{ padding: '20px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '120px', position: 'relative' }}>
         
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#181a52' }} gutterBottom>
@@ -215,28 +252,28 @@ const QuizQuestionForm = () => {
             </IconButton>
           </Tooltip>
 
-          <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-            <Typography ref={questionRef} variant="h6" sx={{ textAlign: 'center', marginTop: '120px', fontSize: questionFontSize }}>
+          <Paper elevation={3} sx={{ height: '22.5rem', padding: '20px', backgroundColor: '#f6e6c3', marginTop: '40px', width: {md:'100%', xs:'90%'}, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', borderRadius:'15px', wordWrap: 'break-word' }}>
+            <Typography sx={{ textAlign: 'center', marginTop: '110px', fontSize: {md: questionFontSize, xs:'4.5vmin'}, padding:'5%' }}>
               {currentQuestion.question}
             </Typography>
             <Typography variant="body1" sx={{ position: 'absolute', top: '10px', center: '10px', fontWeight:'bold' }}>
               Question #{currentQuestionIndex + 1}
             </Typography>
           </Paper>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
-            {options.map((option, idx) => (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '110%', marginTop: '20px' }}>
+            {shuffledOptions.map((option, idx) => (
               option && ( // This checks if the option is not falsy (null, undefined, empty string)
                 <OptionButton
                   ref={(el) => optionsRef.current[idx] = el}
-                  key={`${currentQuestionIndex}-${idx}`}
+                  key={option} //`${currentQuestionIndex}-${idx}`
                   sx={{
-                    bgcolor: optionColors[idx % optionColors.length].defaultColor, // Apply the default color
+                    bgcolor: optionColors[idx % 4/*optionColors.length*/].defaultColor, // Apply the default color
                     color: '#fff', // Keep text color white for better contrast
                     minWidth: '100px',
                     marginBottom: '20px',
-                    fontSize: optionFontSize,
+                    fontSize: {md: optionFontSize, xs:'4.5vmin'},
                     '&:hover': {
-                      bgcolor: optionColors[idx % optionColors.length].hoverColor // Apply the hover color
+                      bgcolor: optionColors[idx % 4/*optionColors.length*/].hoverColor // Apply the hover color
                     }
                   }}
                   onClick={() => handleOptionClick(option)}
@@ -253,18 +290,20 @@ const QuizQuestionForm = () => {
           onClose={handleClose}
           aria-labelledby="modal-title"
           aria-describedby="modal-description"
+          //BackdropProps={{ invisible: true }}
         >
           <Box sx={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: {md:400, xs:300},
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
             radius: '20px',
-            textAlign: 'center'
+            textAlign: 'center',
+            borderRadius:'15px'
           }}>
             <Typography id="modal-title" variant="h6" component="h2" sx={{color: '#181a52'}}>
               Quiz Completed!
@@ -284,17 +323,18 @@ const QuizQuestionForm = () => {
           onClose={handleBadgeNotificationClose}
           aria-labelledby="badge-modal-title"
           aria-describedby="badge-modal-description"
+          //BackdropProps={{ invisible: true }}
         >
           <Box sx={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: {md:400, xs:300},
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
-            borderRadius: '10px',
+            borderRadius: '15px',
             textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
@@ -310,8 +350,7 @@ const QuizQuestionForm = () => {
                 <Typography id="badge-modal-description" sx={{ mt: 2, color: '#181a52' }}>
                   You've passed the quiz and earned a badge!
                 </Typography>
-                <img src="https://i.pinimg.com/originals/e9/93/d1/e993d191d03335fd09a1987db3f8d39a.gif" alt="Badge" style={{ width: '350px', margin: '20px 0' }} />
-              </>
+                <img src={lessonBadgeImageUrl} alt="Badge" style={{ width: '150px', margin: '20px 0' }} />              </>
             ) : (
               <>
                 <Typography id="badge-modal-title" variant="h6" component="h2" sx={{color: '#181a52'}}>

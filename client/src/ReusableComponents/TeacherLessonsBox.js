@@ -75,26 +75,26 @@ const TeacherLessonsBox = () => {
                 const { success, data, error } = await updateLessonInDb(currentLesson.lessonId, currentLesson.title, currentLesson.description, currentLesson.badgeImageUrl);
                 if (success) {
                     setLessons(lessons.map(lesson => lesson.lessonId === currentLesson.lessonId ? data : lesson));
-                    handleSnackbarOpen('success', 'Lesson updated successfully'); // Show success snackbar
+                    handleSnackbarOpen('success', 'Lesson has been updated successfully!'); // Show success snackbar
                     handleCancelLesson();
                 } else {
                     console.error("Failed to update lesson", error);
-                    handleSnackbarOpen('error', 'Failed to update lesson'); // Show error snackbar
+                    handleSnackbarOpen('error', 'Failed to update lesson, try again later.'); // Show error snackbar
                 }
             } else {
                 const { success, data, error } = await insertLessonToDb(currentLesson.title, currentLesson.description, currentLesson.badgeImageUrl);
                 if (success) {
                     setLessons([...lessons, data]);
-                    handleSnackbarOpen('success', 'Lesson added successfully'); // Show success snackbar
+                    handleSnackbarOpen('success', 'Lesson has been created successfully!'); // Show success snackbar
                     handleCancelLesson();
                 } else {
                     console.error("Failed to save lesson", error);
-                    handleSnackbarOpen('error', 'Failed to add lesson'); // Show error snackbar
+                    handleSnackbarOpen('error', 'Failed to create lesson, try again later.'); // Show error snackbar
                 }
             }
         } catch (error) {
             console.error("Error while saving lesson:", error);
-            handleSnackbarOpen('error', 'An error occurred while saving the lesson'); // Show error snackbar
+            handleSnackbarOpen('error', 'An error occurred while saving the lesson, try again later.'); // Show error snackbar
         }
     };
     
@@ -148,17 +148,24 @@ const TeacherLessonsBox = () => {
         handleMenuClose();
     };
     
-    const handleOpenDialog = (lessonId) => {
+    const handleOpenDialog = (lessonId, lessonTitle) => {
         setSelectedLessonId(lessonId);
+    
+        // Ensure to set the currentLesson title directly with the lessonTitle provided.
+        setCurrentLesson(prevLesson => ({
+            ...prevLesson,
+            title: lessonTitle
+        }));
+    
         setOpenDeleteDialog(true);
-    };
-
+    };    
+    
     const handleCloseDialogDelete = (confirmed) => {
         setOpenDeleteDialog(false);
         if (confirmed && selectedLessonId) {
             handleDeleteLesson(selectedLessonId);
         }
-    };
+    };    
 
     const confirmSaveLesson = () => {
         setOpenSaveDialog(true);
@@ -187,10 +194,10 @@ const TeacherLessonsBox = () => {
             const { success, message } = await deleteLessonFromDb(selectedLessonId);
             if (success) {
                 setLessons(lessons.filter(lesson => lesson.lessonId !== selectedLessonId));
-                handleSnackbarOpen('success', 'Lesson has been deleted successfully.');
+                handleSnackbarOpen('success', 'Lesson has been deleted successfully!');
             } else {
                 console.error("Failed to delete lesson:", message);
-                handleSnackbarOpen('error', 'Error deleting a lesson, try again later.');
+                handleSnackbarOpen('error', 'Failed to delete lesson, try again later.');
             }
         }
     };
@@ -208,8 +215,8 @@ const TeacherLessonsBox = () => {
             const lessonQuizId = lesson.lessonQuiz[0].lessonQuizId;
             navigate(`/edit-lesson-quiz/${lessonQuizId}/${lesson.lessonTitle}`);
         } else {
-            handleSnackbarOpen('error', 'Lesson quiz ID is missing');
-            console.error("Lesson quiz ID is missing");
+            handleSnackbarOpen('error', 'Quiz for this lesson has not yet been created.');
+            console.error("Quiz for this lesson has not yet been created.");
         }
     };
 
@@ -408,7 +415,7 @@ const TeacherLessonsBox = () => {
                             <Tooltip title="Delete Lesson">
                                 <IconButton
                                     aria-label="delete"
-                                    onClick={() => handleOpenDialog(lesson.lessonId)}
+                                    onClick={() => handleOpenDialog(lesson.lessonId, lesson.lessonTitle)}
                                     className='delete-button'
                                 >
                                     <CloseIcon
@@ -443,21 +450,21 @@ const TeacherLessonsBox = () => {
                 status={openSaveDialog} 
                 onClose={handleCloseSaveDialog} 
                 title="Confirm Lesson Creation" 
-                context="Are you sure you want to save this lesson?"
+                context={`Are you sure you want to create the lesson titled "${currentLesson.title}"?`}
             />
 
             <ReusableDialog 
                 status={openUpdateDialog} 
                 onClose={handleCloseUpdateDialog} 
                 title="Confirm Lesson Update" 
-                context="Are you sure you want to edit this lesson?"
+                context={`Are you sure you're done editing the contents for the lesson titled "${currentLesson.title}"?`}
             />
             
             <ReusableDialog 
                 status={openDeleteDialog} 
                 onClose={handleCloseDialogDelete} 
-                title="Confirm Delete" 
-                context="Are you sure you want to delete this lesson? All of its content including the topics, quizzes and progress will also be deleted."
+                title="Confirm Lesson Deletion" 
+                context={`Are you sure you want to delete the lesson titled "${currentLesson.title}"? All of its content including the topics, quizzes and progress will also be deleted. This action cannot be undone.`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

@@ -39,9 +39,9 @@
     width: 90%;
     background-color: #f6e6c3;
     padding: 0 5px 0 5px;
-    border-radius: 10px;
+    border-radius: 15px;
     box-shadow: 24px;
-    box-shadow: 5px 10px gray;
+    box-shadow: 0px 2px 5px gray;
 }
 
 .pqfm-currentQuestionIndex{
@@ -62,7 +62,7 @@
 .pqfm-question-container p {
     /* border: solid black 1px; */
     padding: 5%;
-    font-size: 2.5vmin; /* Adjust this value as needed */
+    font-size: 3vmin; /* Adjust this value as needed */
     text-align: justify;
     margin-bottom: 15%;
     line-height: 1.5; /* Ensures better readability */

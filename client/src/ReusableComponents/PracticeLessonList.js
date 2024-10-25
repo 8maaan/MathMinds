@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography, Box, Button } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography, Box } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/PracticeLessonList.css';
 import { useNavigate } from 'react-router-dom';
 import { getAllLessonsFromDb } from '../API-Services/LessonAPI'; 
+import AccordionCustomButton from "./AccordionCustomButton";
+import ForwardIcon from '@mui/icons-material/Forward';
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A" },
@@ -64,7 +66,7 @@ const PracticeLessonList = ({ onLessonStart }) => {
                     <Accordion
                         sx={{
                             marginTop: '1.5%',
-                            borderRadius: "10px",
+                            borderRadius: "15px",
                             width: '80%',
                         }}
                         key={index}
@@ -74,10 +76,10 @@ const PracticeLessonList = ({ onLessonStart }) => {
                         <AccordionSummary
                             sx={{
                                 backgroundColor: colorPalette.summaryBgColor,
-                                borderTopRightRadius: "10px",
-                                borderTopLeftRadius: "10px",
-                                borderBottomLeftRadius: isExpanded ? '0px' : '10px',
-                                borderBottomRightRadius: isExpanded ? '0px' : '10px',
+                                borderTopRightRadius: "15px",
+                                borderTopLeftRadius: "15px",
+                                borderBottomLeftRadius: isExpanded ? '0px' : '15px',
+                                borderBottomRightRadius: isExpanded ? '0px' : '15px',
                                 textAlign: 'left'
                             }}
                             expandIcon={<ArrowDropDownIcon />}
@@ -93,8 +95,8 @@ const PracticeLessonList = ({ onLessonStart }) => {
                             sx={{
                                 backgroundColor: colorPalette.detailsBgColor,
                                 textAlign: 'left',
-                                borderBottomRightRadius: "10px",
-                                borderBottomLeftRadius: "10px",
+                                borderBottomRightRadius: "15px",
+                                borderBottomLeftRadius: "15px",
                             }}
                         >
                             <Box>
@@ -102,12 +104,19 @@ const PracticeLessonList = ({ onLessonStart }) => {
                             </Box>
 
                             <AccordionActions>
-                                <Button
-                                    style={{ backgroundColor: colorPalette.accordionColor, fontFamily: 'Poppins', color: '#181A52', fontWeight: 'bold' }}
+                                <ForwardIcon className='arrow' style={{ marginTop: '10px', fontSize:'2.5rem' }} />
+                                <AccordionCustomButton
+                                    sx={{
+                                        backgroundColor: colorPalette.accordionColor, // Existing accordion color
+                                        fontFamily: 'Poppins',
+                                        color: '#181A52',
+                                        fontWeight: 'bold',
+                                        summaryBgColor: colorPalette.summaryBgColor, // Pass summaryBgColor for boxShadow
+                                        }}
                                     onClick={() => handleStartClick(lesson)}
                                 >
                                     Start
-                                </Button>
+                                </AccordionCustomButton>
                             </AccordionActions>
                         </AccordionDetails>
                     </Accordion>

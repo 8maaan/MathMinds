@@ -77,11 +77,16 @@ const EditLessonQuiz = () => {
             if (response.success) {
                 navigate('/lessons-teacher', {
                     state: {
-                        snackbar: { status: true, severity: 'success', message: 'Lesson Quiz deleted successfully!' }
+                        snackbar: { status: true, severity: 'success', message: 'Lesson quiz has been deleted successfully!' }
                     }
                 });
             } else {
                 console.error(response.message);
+                navigate('/lessons-teacher', {
+                    state: {
+                        snackbar: { status: true, severity: 'error', message: 'Failed to delete lesson quiz, try again later.' }
+                    }
+                });
             }
         } catch (err) {
             console.error("Error deleting lesson quiz: ", err);
@@ -144,12 +149,17 @@ const EditLessonQuiz = () => {
         if (response.success) {
             navigate('/lessons-teacher', {
                 state: {
-                    snackbar: { status: true, severity: 'success', message: response.message }
+                    snackbar: { status: true, severity: 'success', message: 'Lesson quiz has been updated successfully!' }
                 }
             });
             console.log(response.message);
         } else {
             console.error(response.message);
+            navigate('/lessons-teacher', {
+                state: {
+                    snackbar: { status: true, severity: 'error', message: 'Failed to update lesson quiz, try again later.' }
+                }
+            });
         }
     };
 
@@ -173,22 +183,30 @@ const EditLessonQuiz = () => {
         return <div>Error: {error}</div>;
     }
 
+    const buttonStyle = {
+        variant: 'contained',
+        bgcolor: '#AA75CB',
+        '&:hover': {
+            bgcolor: '#9163ad'
+        },
+    };
+
     return (
-        <div>
+        <div className='createTopic-bg'>
             <form onSubmit={handleOpenDialog}>
                 <Typography class='createTopic-title'>Edit "{currentLessonTitle}" quiz</Typography>
                 <div className='createTopic-body' sx={{marginTop:'2%'}}>
                     <div className='topic-config-container'>
                         <FormControl sx={{ minWidth: 180, mt: 3 }}>
                             <InputLabel>Select Lesson</InputLabel>
-                            <Select label='Select Lesson' value={quizLesson} autoWidth onChange={(event) => { setQuizLesson(event.target.value) }} required disabled>
+                            <Select label='Select Lesson' value={quizLesson} autoWidth onChange={(event) => { setQuizLesson(event.target.value) }} required disabled sx={{backgroundColor:'#f4f4f4'}}>
                                 {lessons && lessons.map(lesson => (
                                     <MenuItem key={lesson.lessonTitle} value={lesson.lessonTitle}>{lesson.lessonTitle}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <div style={{ marginTop: '1.5%' }}>
-                            <Button onClick={handleAddQuestion} variant='contained' sx={{fontFamily:'Poppins'}}>Add Question</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
                             <Button onClick={handleOpenDeleteDialog} variant='contained' color='error' sx={{ ml: '0.5%', fontFamily:'Poppins' }}>
                                 Delete Lesson Quiz
                             </Button>
@@ -228,21 +246,21 @@ const EditLessonQuiz = () => {
                         />
                     </FormControl>
 
-                    <Button type="submit" variant='contained' sx={{ mt: 2, fontFamily:'Poppins' }}>Submit</Button>
+                    <Button type="submit" variant='contained' sx={{mt: 2, backgroundColor:'#ffb100', fontWeight:'600', color: '#181A52', '&:hover': {backgroundColor: '#e39e02'}}}>Update</Button>
                 </div>
             </form>
             <ReusableDialog
                 status={openDialog} 
                 onClose={handleCloseDialog} 
                 title="Confirm Lesson Quiz Update" 
-                context={`Are you sure you're done editing the quiz for "${currentLessonTitle}" lesson?`}
+                context={`Are you sure you're done editing the contents of the quiz for the lesson titled "${currentLessonTitle}"?`}
             />
 
             <ReusableDialog
                 status={openDeleteDialog} 
                 onClose={handleCloseDeleteDialog} 
-                title="Confirm Delete" 
-                context={`Are you sure you want to delete the quiz for "${currentLessonTitle}" lesson? This action cannot be undone.`}
+                title="Confirm Lesson Quiz Deletion" 
+                context={`Are you sure you want to delete the quiz for the lesson titled "${currentLessonTitle}"? This action cannot be undone.`}
             />
         </div>
     );

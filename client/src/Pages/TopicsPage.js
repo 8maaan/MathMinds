@@ -10,6 +10,7 @@ import { isQuizAdministered } from '../API-Services/LessonQuizAPI';
 import DynamicLottie from '../ReusableComponents/DynamicLottie';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
 import TextToSpeech from '../ReusableComponents/TextToSpeech';
+import { checkUserBadge } from '../API-Services/UserAPI';
 
 // ⚠ SPAGHETTI CODE ⚠
 // WILL REFACTOR LATER
@@ -23,7 +24,7 @@ const TopicsPage = () => {
   const [feedBackColor, setFeedBackColor] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isQuizAvailable, setIsQuizAvailable] = useState(false);
-
+  const [hasBadge, setHasBadge] = useState(false); // State to check if user has badge
   const [shuffledOptionsState, setShuffledOptionsState] = useState({});
   const [animateFeedback, setAnimateFeedback] = useState(false);
   
@@ -68,6 +69,12 @@ const TopicsPage = () => {
           const quiz = fetchResult.data.lesson.lessonQuiz[0];
           const quizResult = await isQuizAdministered(quiz.lessonQuizId);
           setIsQuizAvailable(quizResult.success && quizResult.data === 1); // Assuming 1 means administered
+        }
+
+        const badgeResult = await checkUserBadge(getUid(), lessonId);
+        if (badgeResult.success) {
+          setHasBadge(badgeResult.data === true); // Assuming 1 means the user has the badge
+          //console.log(badgeResult.data);
         }
       } catch (e) {
         console.log(e);
@@ -207,21 +214,24 @@ const TopicsPage = () => {
     await updateTopicProgress(selectedTopic.topicId);
     setLoading(false);
 
-    const quiz = lessonQuizzes.length ? lessonQuizzes[0] : null;
-    if (quiz) {
+    // Check if the quiz is available and the user doesn't already have a badge
+    if (isQuizAvailable && !hasBadge) {
+      const quiz = lessonQuizzes.length ? lessonQuizzes[0] : null;
+      if (quiz) {
         try {
-            const result = await isQuizAdministered(quiz.lessonQuizId);
-            if (result.success && result.data === 1) { // Assuming 1 means administered
-                navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`);
-            } else {
-                handleSnackbarOpen('info', 'The quiz is not yet open or available.');
-            }
+          const result = await isQuizAdministered(quiz.lessonQuizId);
+          if (result.success && result.data === 1) {
+            navigateTo(`/lesson/${lessonId}/quiz/${quiz.lessonQuizId}`);
+          } else {
+            handleSnackbarOpen('info', 'The quiz is not yet open or available.');
+          }
         } catch (error) {
-            console.error("Error checking quiz:", error);
-            handleSnackbarOpen('error', 'An error occurred while checking quiz availability.');
+          console.error("Error checking quiz:", error);
+          handleSnackbarOpen('error', 'An error occurred while checking quiz availability.');
         }
-    } else {
+      } else {
         handleSnackbarOpen('error', 'No quiz available for this lesson.');
+      }
     }
   };
 
@@ -436,9 +446,9 @@ const TopicsPage = () => {
                       variant='contained'
                       sx={{ color: '#101436', backgroundColor: '#FFB100', fontFamily: 'Poppins', '&:hover': { backgroundColor: '#e9a402' } }}
                       onClick={handleProceedToQuiz}
-                      disabled={!isQuizAvailable || (hasQuestions(selectedTopic) && !allQuestionsAnswered(selectedTopic))}
+                      disabled={hasBadge || !isQuizAvailable || (hasQuestions(selectedTopic) && !allQuestionsAnswered(selectedTopic))}
                     >
-                      Proceed to Quiz
+                      {hasBadge ? "Quiz Completed" : "Proceed to Quiz"}
                     </Button>
                   </div>
                 ) :
