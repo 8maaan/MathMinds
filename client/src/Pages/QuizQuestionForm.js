@@ -64,6 +64,7 @@ const QuizQuestionForm = () => {
   const { width, height } = useWindowSize();
   const optionsRef = useRef([]);
   const [lessonBadgeImageUrl, setLessonBadgeImageUrl] = useState('');
+  const [shuffledOptions, setShuffledOptions] = useState([]);
 
   const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
@@ -122,6 +123,15 @@ const QuizQuestionForm = () => {
     fetchLessonDetails();
   }, [lessonId]);  
   
+  useEffect(() => {
+    if (quiz && quiz[currentQuestionIndex]) {
+      // Shuffle options only once per question load
+      const currentQuestion = quiz[currentQuestionIndex];
+      const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
+      setShuffledOptions(options);
+    }
+  }, [quiz, currentQuestionIndex]);
+
   /*useEffect(() => {
     if (quiz && currentQuestionIndex === 0) {
       adjustFontSizes();
@@ -156,19 +166,22 @@ const QuizQuestionForm = () => {
   }
 
   const questions = quiz;
+  
   const currentQuestion = questions[currentQuestionIndex];
 
   if (!currentQuestion) {
     return <div>Loading...</div>;
   }
 
-  const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
+  //const options = shuffledOptions;
+//const options = shuffleArray([...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer]);
+  
   const optionColors = [
     { defaultColor: "#f94848", hoverColor: "#d13d3d"},
     { defaultColor: "#4cae4f", hoverColor: "#429645"},
     { defaultColor: "#2874ba", hoverColor: "#2265a3"},
     { defaultColor: "#f4cc3f", hoverColor: "#dbb739"}
-];
+  ];
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -248,19 +261,19 @@ const QuizQuestionForm = () => {
             </Typography>
           </Paper>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '110%', marginTop: '20px' }}>
-            {options.map((option, idx) => (
+            {shuffledOptions.map((option, idx) => (
               option && ( // This checks if the option is not falsy (null, undefined, empty string)
                 <OptionButton
                   ref={(el) => optionsRef.current[idx] = el}
-                  key={`${currentQuestionIndex}-${idx}`}
+                  key={option} //`${currentQuestionIndex}-${idx}`
                   sx={{
-                    bgcolor: optionColors[idx % optionColors.length].defaultColor, // Apply the default color
+                    bgcolor: optionColors[idx % 4/*optionColors.length*/].defaultColor, // Apply the default color
                     color: '#fff', // Keep text color white for better contrast
                     minWidth: '100px',
                     marginBottom: '20px',
                     fontSize: {md: optionFontSize, xs:'4.5vmin'},
                     '&:hover': {
-                      bgcolor: optionColors[idx % optionColors.length].hoverColor // Apply the hover color
+                      bgcolor: optionColors[idx % 4/*optionColors.length*/].hoverColor // Apply the hover color
                     }
                   }}
                   onClick={() => handleOptionClick(option)}
