@@ -128,32 +128,41 @@
 
 @media (max-width: 768px) {/* KARI */
     .Profilepage{
-        margin-top: 60px;
+        margin-top: 55px;
+        height: auto;
     }
     .profile-content-container {
         flex-direction: column;
-        height: 150vh;
+        height: auto;
         width: 100%;
     }
     .personalinfo-left-side {
         height: 100%;
         width: 100%;
+        margin-top: 5%;
         align-items: end;
     }
     .personalinfo-right-side {
-        margin-top: 50px;
+        margin-top: 35px;
         width: 100%;
     }
     .profile-logo-container {
+        display: flex;
+        justify-content: center;
         width: 100%;
         height: 30%;
         margin-bottom: 30px;
+    }
+
+    .profile-logo-container img{
+        width: 50%;
     }
     .userinfo-container {
         width: 100%;
         height: 70%;
     }
-    .PI-title-lesson {
+    .PI-title{
+        margin: 10px;
         font-size: 25px;
     }
     .PI-container-lesson {
@@ -183,6 +192,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .userinfo-container .MuiButton-root{
+        margin-bottom: 10px;
     }
 }
 @media (max-width: 768px) {

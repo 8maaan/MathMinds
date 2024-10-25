@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../PagesCSS/BadgesPage.css';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
-import { getBadgesForUser, getUserProfileInfoFromDb } from '../API-Services/UserAPI'; // Adjust the path as needed
+import { getBadgesForUser } from '../API-Services/UserAPI'; // Adjust the path as needed
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { Alert } from '@mui/material';
 
@@ -18,19 +18,19 @@ const BadgesPage = () => {
   const { user } = UserAuth();
   const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState(''); // State to hold user's full name
+  // const [userName, setUserName] = useState(''); // State to hold user's full name (COMMENTED FOR NOW TO AVOID REDUNDANCY)
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (user) {
-        // Fetch user's profile info
-        const profileResult = await getUserProfileInfoFromDb(user.uid);
-        if (profileResult.success) {
-          const { fname, lname } = profileResult.data;
-          setUserName(`${fname} ${lname}`);
-        } else {
-          console.error('Failed to fetch user profile info:', profileResult.message);
-        }
+        // Fetch user's profile info (COMMENTED FOR NOW TO AVOID REDUNDANCY)
+        // const profileResult = await getUserProfileInfoFromDb(user.uid);
+        // if (profileResult.success) {
+        //   const { fname, lname } = profileResult.data;
+        //   setUserName(`${fname} ${lname}`);
+        // } else {
+        //   console.error('Failed to fetch user profile info:', profileResult.message);
+        // }
 
         // Fetch user's badges
         const badgesResult = await getBadgesForUser(user.uid);
@@ -65,7 +65,7 @@ const BadgesPage = () => {
                         </div>
                         <div className='badgesPage-badgesinfo-right-side'>
                             <div className='badgesPage-PI-container'>
-                            <div className='badges-title'>{userName ? `${userName}'s Badges` : 'Badges'}</div>
+                            <div className='badges-title'>{user ? `${user.displayName}'s Badges` : 'Badges'}</div>
                                 <div className='badges-scrollable-container'>
                                 {loading ? (
                                     <div className="loading">Loading...</div>

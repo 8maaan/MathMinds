@@ -145,9 +145,10 @@ const ProfilePage = () => {
         <div className="Profilepage">
             {!user.emailVerified && (
                 <Alert
+                    fullWidth
                     variant="filled"
                     severity="warning"
-                    sx={{ display: 'flex', justifyContent: 'center' }}
+                    sx={{ display: 'flex', justifyContent: 'center'}}
                 >
                     Please verify your email address to update your account information. An email has been sent to your inbox with verification instructions
                 </Alert>

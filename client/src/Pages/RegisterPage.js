@@ -104,6 +104,7 @@ const RegisterPage = () => {
         const capitalizedLastName = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1).toLowerCase();
 
         if(userError.email || userError.password || userError.retypePassword){
+            setLoading(false);
             return;
         }
         try{
@@ -117,6 +118,7 @@ const RegisterPage = () => {
             console.error(error.message);
             console.error(error.code)
             setEmailAlreadyUsed(true);
+            setLoading(false);
         }
         setLoading(false);
     }
@@ -200,7 +202,7 @@ const RegisterPage = () => {
                         size='large'
                         sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '1rem', height:'5vh', fontFamily:'Poppins'}}
                     >
-                        <h4>{loading ? <CircularProgress color="inherit" size="1.5rem" /> : 'Create'}</h4>
+                        {loading ? <CircularProgress color="inherit" size="1.5rem" thickness={6}/> : <h4>Create</h4>}
                     </Button>
                 </form>
                 <Typography style={{fontSize:'12px', fontFamily:'Poppins'}}>Already have an account?<span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={() => navigateTo('/login')}> Sign in</span></Typography> 

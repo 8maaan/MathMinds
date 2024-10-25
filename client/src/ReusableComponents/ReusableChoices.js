@@ -11,11 +11,12 @@ export default function ReusableChoices(){
     return (
     
         
-                        <div className='choicess-container'>
-                            <div className='Persona-button' onClick={()=> navigateTo('/profile')}>Personal Information</div>
-                            <div className='LessonProgress-button' onClick={()=> navigateTo('/lesson-progress')}>Lesson Progress</div>
-                            <div className='Badgess-button' onClick={()=> navigateTo('/badges')}>Badges</div>
-                        </div>
+        <div className='choicess-container'>
+            <div className='Persona-button' onClick={()=> navigateTo('/profile')}>Personal Information</div>
+            <div className='Dashboard-button' onClick={()=> navigateTo('/dashboard-analytics')}>Dashboard</div>
+            <div className='LessonProgress-button' onClick={()=> navigateTo('/lesson-progress')}>Lesson Progress</div>
+            <div className='Badgess-button' onClick={()=> navigateTo('/badges')}>Badges</div>
+        </div>
             
                     
                     

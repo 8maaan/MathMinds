@@ -34,6 +34,7 @@ import PracticeQuestionFormMultiplayer from './Pages/PracticeQuestionFormMultipl
 
 import UserManagementPage from './Pages/UserManagementPage';
 import AttributionPage from './Pages/AttributionPage';
+import DashboardAnalytics from './Pages/DashboardAnalytics';
 
 function App() {
 
@@ -67,14 +68,6 @@ function App() {
             <Route path="/choice" element={<ProtectedRoute> <PracticeChoicePage/> </ProtectedRoute>}/>
             <Route path="/scoreTest" element={<ProtectedRoute> <ScoreTestPage/> </ProtectedRoute>}/>
 
-            {/* FOR TEACHERS & ADMIN*/}
-            <Route path="/create-topic" element={<ProtectedRoute requireTeacher ><CreateTopic/></ProtectedRoute>} />
-            <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher ><TeacherLessonsPage/></ProtectedRoute> }/>
-            <Route path="/edit-topic/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher ><EditTopicPage /></ProtectedRoute>} />
-            <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher ><CreateLessonQuizPage /></ProtectedRoute>} />
-            <Route path="/create-practice-quiz" element={<ProtectedRoute requireTeacher><CreateQuizPracticePage /></ProtectedRoute>} />
-            <Route path="/edit-lesson-quiz/:lessonQuizId/:currentLessonTitle" element={<ProtectedRoute requireTeacher ><EditLessonQuizPage /></ProtectedRoute>} />
-            <Route path="/edit-practice/:topicId/:currentTopicTitle" element={<ProtectedRoute> <EditPracticePage/> </ProtectedRoute>} />
             <Route path="/lesson/:lessonId/quiz/:quizId" element={<ProtectedRoute><QuizQuestionForm/></ProtectedRoute>} />
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
@@ -83,7 +76,17 @@ function App() {
             <Route path="/lobby/:roomCode" element={<ProtectedRoute><PracticeTempLobby/></ProtectedRoute>}/>
             <Route path="/game/:roomCode" element={<PracticeQuestionFormMultiplayer/>} />
 
-            {/*FOR ADMIN*/}
+            {/* FOR TEACHERS & ADMIN*/}
+            <Route path="/create-topic" element={<ProtectedRoute requireTeacher ><CreateTopic/></ProtectedRoute>} />
+            <Route path="/lessons-teacher" element={ <ProtectedRoute requireTeacher ><TeacherLessonsPage/></ProtectedRoute> }/>
+            <Route path="/edit-topic/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher ><EditTopicPage /></ProtectedRoute>} />
+            <Route path="/create-lesson-quiz" element={<ProtectedRoute requireTeacher ><CreateLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/create-practice-quiz" element={<ProtectedRoute requireTeacher><CreateQuizPracticePage /></ProtectedRoute>} />
+            <Route path="/edit-lesson-quiz/:lessonQuizId/:currentLessonTitle" element={<ProtectedRoute requireTeacher ><EditLessonQuizPage /></ProtectedRoute>} />
+            <Route path="/edit-practice/:topicId/:currentTopicTitle" element={<ProtectedRoute requireTeacher> <EditPracticePage/> </ProtectedRoute>} />
+            <Route path="/dashboard-analytics" element={<ProtectedRoute requireTeacher> <DashboardAnalytics/> </ProtectedRoute>} />
+
+            {/*FOR ADMIN ONLY*/}
             <Route path="/manage-accounts" element={<ProtectedRoute requireAdmin><UserManagementPage/></ProtectedRoute>} />
           </Routes>
         </BrowserRouter>

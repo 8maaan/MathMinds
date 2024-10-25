@@ -243,15 +243,23 @@
 }
 
 @media (max-width: 768px) {/* KARI */
+    .badgesPage{
+        margin-top: 50px;
+        height: auto;
+    }
     .badgesPage-badges-content-container {
         flex-direction: column;
-        height: 150vh;
+        height: auto;
         width: 100%;
     }
     .badgesPage-badgesinfo-left-side {
         height: 10%;
         width: 100%;
         align-items: end;
+    }
+
+    .badges-title{
+        font-size: 25px;
     }
     
     .badgesPage-badgesinfo-right-side {
