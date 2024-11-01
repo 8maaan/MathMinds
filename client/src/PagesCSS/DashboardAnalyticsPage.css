@@ -100,7 +100,7 @@
 }
 
 .dap-toggleBtnGrp-container .MuiToggleButton-root{
-    border-radius: 10px;
+    /* border-radius: 10px; */
     background-color: white;
     width: fit-content;
 }
@@ -127,6 +127,27 @@
 .dap-recent-activity-data{
     text-align: left;
     margin-left: 15px;
+}
+
+.dap-component-scrollable-container{
+    scrollbar-width: thin; /* Thin scrollbar */
+    height: 50vh;
+    overflow-y: auto;
+    max-height: 80vh;
+    /* border: solid red 1px; */
+    margin-top: 2.5%;
+}
+
+.dap-component-container{
+    /* padding: 1.5%; */
+    height: 100%;
+    /* margin-top:2.5%;  */
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    flex-direction:column;
+    width: 100%;
+    /* border: solid purple 1px; */
 }
 
 @media (max-width: 768px) {/* KARI */

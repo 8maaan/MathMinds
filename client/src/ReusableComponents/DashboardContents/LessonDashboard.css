@@ -1,0 +1,114 @@
+/* ld = lesson dashboard */
+.ld-first-section-container,
+.ld-second-section-container{
+    /* border: solid black 1px; */
+    width: 100%;
+    /* margin: 2.5% 0 2.5% 0; */
+    height: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+
+}
+
+.ld-second-section-container{
+    margin: 2.5% 0 2.5% 0;
+    height: auto;
+    min-height: fit-content;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(128, 128, 128, 0.2); 
+    /* overflow-y: hidden; */
+}
+
+/* .ld-first-section-container > *{
+    border: solid black 1px;
+} */
+
+.ld-overView-container,
+.ld-totalLessonCompleted-container{
+    min-width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ld-overView-container{
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.ld-overView-container .MuiTypography-root{
+    min-width: 85%;
+    text-align: left;
+    color: gray;
+    margin: 0 auto;
+}
+
+.ld-totalLessonCompleted-table {
+    overflow-y: auto;
+    max-height: 100%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(128, 128, 128, 0.2); 
+}
+  
+.ld-totalLessonCompleted-table::-webkit-scrollbar {
+    width: 0; /* Hidden by default */
+}
+
+.ld-totalLessonCompleted-table:hover::-webkit-scrollbar {
+    width: 8px; /* Visible on hover */
+}
+
+.ld-totalLessonCompleted-table::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.ld-overView-content{
+    min-width: 85%;
+    max-width: 85%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 15px;
+    text-align: left;
+    padding: 3%;
+    box-sizing: border-box;
+    margin-bottom: 3%;
+    overflow-wrap: break-word;
+}
+
+.chart-container{
+    width: 80%;
+}
+
+@media (max-height: 768px){
+    .ld-first-section-container{
+        height: 80%;
+    }
+}
+
+@media (max-width: 1024px){
+    .ld-first-section-container{
+        flex-direction: column-reverse;
+        height: auto;
+    }
+
+    .ld-second-section-container{
+        overflow: auto;
+        width:'50%';
+        height:auto;
+    }
+
+    .ld-overView-container,
+    .ld-totalLessonCompleted-container{
+        min-width: 100%;
+        height: 100%;
+    }
+    .ld-overView-container .MuiTypography-root,
+    .ld-overView-content{
+        min-width: 100%;
+        max-width: 100%;
+    }
+}

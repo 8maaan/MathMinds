@@ -3,6 +3,8 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography, AccordionAct
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import '../PagesCSS/LessonsTopicAccordion.css';
 import { useNavigate } from 'react-router-dom';
+import { trackTopicView } from "../API-Services/UserProgressAPI";
+import { UserAuth } from "../Context-and-routes/AuthContext";
 
 const colorPalettes = [
     { summaryBgColor: "#F94848", detailsBgColor: "#F8A792", accordionColor: "#FE7A7A", hoverColor: "#F94848" },
@@ -13,6 +15,7 @@ const colorPalettes = [
 ];
 
 const LessonsTopicAccordion = ({ lesson }) => {
+    const { getUid } = UserAuth();
     const navigateTo = useNavigate();
     const [expandedPanels, setExpandedPanels] = useState([]);  // Array to track expanded panels
     const [lessonTopics, setLessonTopics] = useState(lesson.lessonTopics || []);
@@ -31,7 +34,11 @@ const LessonsTopicAccordion = ({ lesson }) => {
         }
     };
 
-    const handleStartTopic = (lessonId, topicId) => {
+    const handleStartTopic = async (lessonId, topicId) => {
+        const track = await trackTopicView(getUid(), topicId);
+        if (!track.success) {
+            console.error("Failed to update progress:", track.message);
+          } 
         navigateTo(`/lesson/${lessonId}/${topicId}`);
     };
 

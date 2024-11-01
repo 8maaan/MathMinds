@@ -13,3 +13,14 @@ export const updateProgress = async(uid, topicId, completed) => {
         return { success: false, message: error.message || "An error occurred" };
     }
 };
+
+export const trackTopicView = async(uid, topicId) => {
+    try{
+        const url = process.env.REACT_APP_SPRINGBOOT_TRACK_TOPIC_VIEW.replace('{uid}', uid).replace('{topicId}', topicId);
+        const response = await api.post(url);
+        return { success: true, message: `Incremented view for ${topicId}`, data: response.data };
+
+    } catch (error) {
+        return { success: false, message: error.message || "An error occurred" };
+    }
+}

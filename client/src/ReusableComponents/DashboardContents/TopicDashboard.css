@@ -1,0 +1,120 @@
+.td-first-section-container,
+.td-second-section-container{
+    /* border: solid black 1px; */
+    width: 100%;
+    height: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.td-second-section-container{
+    margin: 5% 0 2.5% 0;
+    height: auto;
+    min-height: fit-content;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    /* padding: 1%; */
+    /* border: solid black 1px; */
+    /* overflow-y: hidden; */
+}
+
+.td-overView-container,
+.td-totalActiveTopics-container{
+    min-width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: solid black 1px; */
+}
+
+
+/* .td-first-section-container > *{
+    border: solid black 1px;
+} */
+
+.td-overView-container{
+    min-width: 65%;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+}
+.td-totalActiveTopics-container{
+    min-width: 35%
+}
+
+.td-overView-content{
+    min-width: 95%;
+    /* max-width: 85%; */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 15px;
+    text-align: left;
+    padding: 2.5%;
+    box-sizing: border-box;
+    margin-bottom: 3%;
+    overflow-wrap: break-word;
+}
+
+.td-overView-container .MuiTypography-root{
+    min-width: 95%;
+    text-align: left;
+    color: gray;
+    margin: 0 auto;
+    /* border: solid black 1px; */
+}
+
+.td-totalActiveTopics-content{
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(128, 128, 128, 0.5); 
+    border-radius: 180px;
+    min-height: 90%;
+    min-width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.td-totalActiveTopics-title-date{
+    flex-direction: column;
+}
+
+@media (max-height: 768px){
+    .td-first-section-container{
+        height: 80%;
+    }
+}
+
+@media (max-width: 1024px){
+    .td-first-section-container{
+        flex-direction: column-reverse;
+        height: auto;
+    }
+
+    /* .td-second-section-container{
+        overflow: auto;
+        width:'50%';
+        height:auto;
+    } */
+
+    .td-overView-container,
+    .td-totalActiveTopics-container{
+        min-width: 100%;
+        height: 100%;
+    }
+
+    .td-totalActiveTopics-content{
+        min-height: 200px;
+        min-width: 200px;
+        margin-bottom: 5%;
+    }
+
+    .td-overView-container .MuiTypography-root,
+    .td-overView-content{
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
