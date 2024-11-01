@@ -186,13 +186,13 @@ const CreateTopic = () => {
         const response = await insertTopic(requestBody);
         if(response.success){
             console.log(response.message); // Use this for snackbar message l8er
-            handleSnackbarOpen('success', 'Topic has been created successfully.');
+            handleSnackbarOpen('success', 'Topic has been created successfully!');
             setTimeout(() => {
                 navigateTo('/lessons-teacher');
             }, 1250)
         }else{
             console.log(response.message); // Use this for snackbar message l8er
-            handleSnackbarOpen('error', 'Could not create a topic, try again later.');
+            handleSnackbarOpen('error', 'Failed to create topic, try again later.');
         }
         setLoading(false);
     };
@@ -245,7 +245,7 @@ const CreateTopic = () => {
     };
 
     return (
-        <div>
+        <div className='createTopic-bg'>
             <Typography class='createTopic-title'>Create a Topic</Typography>
             <form onSubmit={handleOpenDialog}>
                 <div className='createTopic-body'>
@@ -253,16 +253,16 @@ const CreateTopic = () => {
                         {/* Topic Lesson */}
                         <FormControl sx={{minWidth: 180, mt: 3}}>
                             <InputLabel>Select Lesson</InputLabel>
-                            <Select label='Select Lesson' value={topicLesson} autoWidth onChange={(event) => {setTopicLesson(event.target.value)}} required>
+                            <Select label='Select Lesson' value={topicLesson} autoWidth onChange={(event) => {setTopicLesson(event.target.value)}} required sx={{backgroundColor:'#f4f4f4'}}>
                                 {lessons && lessons.map(lessons => (
                                     <MenuItem key={lessons.lessonId} value={lessons.lessonId}>{lessons.lessonTitle}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         {/* Topic Title */}
-                        <TextField label='Topic Title' fullWidth required onChange={(event) => {setTopicTitle(event.target.value)}} autoComplete='off'/>
+                        <TextField label='Topic Title' fullWidth required onChange={(event) => {setTopicTitle(event.target.value)}} autoComplete='off' sx={{backgroundColor:'#f4f4f4'}}/>
                         {/* Topic Description */}
-                        <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} onChange={(event) => {setTopicDescription(event.target.value)}} autoComplete='off'/>
+                        <TextField label='Topic Description' variant='filled' fullWidth required multiline rows={3} onChange={(event) => {setTopicDescription(event.target.value)}} autoComplete='off' sx={{backgroundColor:'#f4f4f4'}}/>
                         <div className='topic-content-choices'>
                             <Button onClick={handleAddContent} variant='contained' sx={{...buttonStyle, ml: 0}}>Add Text</Button>
                             <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>

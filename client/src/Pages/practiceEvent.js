@@ -159,10 +159,14 @@ function PracticeEvent() {
     ],
   };
   
-
-  const handleTopicClick = (topic) => {
+  const handleTopicClick = (topic, orderNumber, color) => {
     if (!isDragging) {
-      setSelectedTopic(topic);
+      setSelectedTopic({ 
+        topicId: topic.topicId,
+        topicTitle: topic.topicTitle,
+        orderNumber: orderNumber,
+        //backgroundColor: color
+      });
       setShowCard(true);
     }
   };
@@ -170,7 +174,6 @@ function PracticeEvent() {
   const handleCloseCard = () => {
     setShowCard(false);
   };
-
 
   const handleStart = () => {
     setShowPracticeChoice(true);
@@ -180,8 +183,6 @@ function PracticeEvent() {
   const generateRoomCode = () => {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
   };
-
-  
 
   const handleModeChoice = async (choice, roomCode = null) => {
     // console.log("Mode choice:", choice);
@@ -267,7 +268,7 @@ function PracticeEvent() {
   const generateBackgroundColor = (index) => {
     const colorVariations = [
       "#F94848", // red
-      "#FFB100", // orange
+      "#ffb343", // orange
       "#FFEC86", // yellow
       "#4CAE4F", // green
       "#2874BA", // blue
@@ -317,8 +318,8 @@ function PracticeEvent() {
             <Slider {...settings}>
               {/* Render available topics first */}
               {topics.map((topic, index) => (
-                <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic)}>
-                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{ '&hover': { cursor: 'pointer' } }}>
+                <Box key={topic.id} className="slideItem" onClick={() => handleTopicClick(topic, index+1, /*generateBackgroundColor(index)*/)}>
+                  <Paper elevation={3} className="topic" style={{ backgroundColor: generateBackgroundColor(index) }} sx={{ borderRadius:'15px', '&hover': { cursor: 'pointer' } }}>
                     <Typography variant="h5" style={{  fontWeight: 'bold' }}>{topic.topicTitle}</Typography>
                   </Paper>
                 </Box>
@@ -328,7 +329,7 @@ function PracticeEvent() {
               {topics.length < 4 &&
                 Array.from({ length: 4 - topics.length }).map((_, index) => (
                   <Box key={`default-${index}`} className="slideItem">
-                    <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080' }}>
+                    <Paper elevation={3} className="topic" style={{ backgroundColor: '#808080', borderRadius:'15px' }}>
                       <Typography variant="h5" style={{ fontWeight: 'bold' }}>TBA</Typography>
                     </Paper>
                   </Box>
@@ -338,6 +339,7 @@ function PracticeEvent() {
             {showCard && selectedTopic && (
               <TopicCard
                 topic={selectedTopic}
+                //backgroundColor={selectedTopic.backgroundColor}
                 onClose={handleCloseCard}
                 onStart={handleStart}
               />

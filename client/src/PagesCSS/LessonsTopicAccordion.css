@@ -17,3 +17,19 @@
     padding: 15px;
     margin-top: 13px;
 }
+
+/* Arrow bounce or pointing animation */
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateX(0); /* Start pointing towards the button */
+  }
+  50% {
+    transform: translateX(-15px); /* Moves slightly left as if pointing */
+  }
+}
+
+.arrow {
+  color: #181A52;
+  font-size: 6rem;
+  animation: arrowBounce 1s ease-in-out infinite; /* Apply the bounce animation */
+}

@@ -105,11 +105,16 @@ const EditPractice = () => {
         if (response.success) {
             navigate('/lessons-teacher', {
                 state: {
-                    snackbar: { status: true, severity: 'success', message: response.message }
+                    snackbar: { status: true, severity: 'success', message: 'Practice has been updated sucessfully!' }
                 }
             });
         } else {
             console.error(response.message);
+            navigate('/lessons-teacher', {
+                state: {
+                    snackbar: { status: true, severity: 'error', message: 'Failed to update practice, try again later.' }
+                }
+            });
         }
     };
 
@@ -117,17 +122,17 @@ const EditPractice = () => {
             try {
                 const { success, message } = await deletePracticeInDb(practiceId);
                 if (success) {
-                    console.log("Practice deleted successfully:", practiceId);
+                    //console.log("Practice deleted successfully:", practiceId);
                     navigate('/lessons-teacher', {
                         state: {
-                            snackbar: { status: success, severity: 'success', message: 'Practice deleted successfully.' }
+                            snackbar: { status: success, severity: 'success', message: 'Practice has been deleted successfully!' }
                         }
                     });
                 } else {
-                    handleSnackbarOpen('error', message);
+                    handleSnackbarOpen('error', 'Failed to delete practice, try again later.');
                 }
             } catch (error) {
-                console.error("An error occurred while deleting the practice:", error);
+                console.error("Failed to delete practice, try again later.", error);
             }
     };
 
@@ -176,15 +181,23 @@ const EditPractice = () => {
     }
 
     // console.log(currentTopicTitle);
+    const buttonStyle = {
+        variant: 'contained',
+        bgcolor: '#AA75CB',
+        '&:hover': {
+            bgcolor: '#9163ad'
+        },
+        mr: 1,
+    };
 
     return (
-        <div>
+        <div className='createPractice-bg'>
             <form onSubmit={handleSubmit}>
                 <div className='createPractice-body'>
                     <Typography class='createPractice-title'>Edit "{currentTopicTitle}" practice</Typography>
                     <div className='practice-config-container'>
                         <div style={{ marginTop: '1.5%'}}>
-                            <Button onClick={handleAddQuestion} variant='contained' style={{ fontFamily: 'Poppins', marginRight: '0.5%'}}>Add Question</Button>
+                            <Button onClick={handleAddQuestion} variant='contained' sx={buttonStyle}>Add Question</Button>
                             <Button onClick={handleOpenDeleteDialog} variant='contained' color='error' style={{ fontFamily: 'Poppins' }}>Delete Practice</Button>
                         </div>
                     </div>
@@ -210,20 +223,20 @@ const EditPractice = () => {
                             
                         </div>
                     </DndContext>
-                    <Button onClick={handleOpenUpdateDialog} variant='contained' style={{ marginTop: '2%', fontFamily: 'Poppins' }}>Submit</Button>
+                    <Button onClick={handleOpenUpdateDialog} variant='contained' sx={{mt: 2, backgroundColor:'#ffb100', fontWeight:'600', color: '#181A52', '&:hover': {backgroundColor: '#e39e02'}}}>Update</Button>
                 </div>
             </form>
             <ReusableDialog
                 status={openUpdateDialog} 
                 onClose={handleCloseUpdateDialog} 
-                title="Confirm Topic Practice Update" 
-                context="Are you sure you're done editing the quiz for"
+                title="Confirm Practice Topic Update" 
+                context={`Are you sure you're done editing the contents of the practice for the topic titled "${currentTopicTitle}"?`}
             />
             <ReusableDialog
                 status={openDeleteDialog} 
                 onClose={handleCloseDeleteDialog} 
-                title="Confirm Delete" 
-                context={`Are you sure you want to delete "${currentTopicTitle}" practice? This will remove all associated questions and answers.`}
+                title="Confirm Practice Topic Deletion" 
+                context={`Are you sure you want to delete the practice for the topic titled "${currentTopicTitle}"? This action cannot be undone.`}
             />
             <ReusableSnackbar open={snackbar.status} onClose={handleSnackbarClose} severity={snackbar.severity} message={snackbar.message}/>
         </div>

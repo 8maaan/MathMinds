@@ -29,7 +29,7 @@ function PracticeChoice({onClose, modeChoice}) {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         zIndex: 1300,
-        backgroundColor: '#ffec86',
+        backgroundColor: '#fffdd0',//'#ffec86',
         borderRadius: '15px'
     };
 
@@ -125,7 +125,7 @@ function PracticeChoice({onClose, modeChoice}) {
             <div className="containerChoice">
                 <div style={backdropStyle}></div>
                 <Card sx={cardStyles}>
-                    <CardContent sx={{ background: '#ffec86', marginTop: '3.125rem' }}>
+                    <CardContent sx={{ marginTop: '3.125rem' }}>
                         <IconButton aria-label="close" sx={{ position: 'absolute', right: '0.5rem', top: '0.5rem', zIndex: 2 }}>
                             <CloseIcon  onClick={() => {handleCloseIconClick()}}/>
                         </IconButton>
@@ -133,7 +133,7 @@ function PracticeChoice({onClose, modeChoice}) {
                             {showJoinRoom === false ? 'Choose a game mode' : 'Enter room code'}
                         </Typography>
                     </CardContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 5, background: '#ffec86' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 5 }}>
                         {showJoinRoom === false ? 
                             <>
                                 <BouncingButton
