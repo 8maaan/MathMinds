@@ -1,0 +1,213 @@
+/*DAP = Dashboard Analytics Page*/
+.sdap-body{
+    background-image: url('../Images/BG3.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: repeat-y; /* Ensure no repeat */
+    background-color: #f0f0f0; /* Fallback color */
+    margin-top: 80px;
+    min-height: calc(100vh - 80px); /* Subtract the margin-top */
+}
+
+.sdap-wrapper,
+.sdap-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+   
+}
+
+.sdap-content-container{
+    width: 70%;
+    height: 75vh;
+    /*background-color: #FAFAFA;*/
+    padding: 2.5%;
+    /* border: solid red 2px; */
+}
+
+.sdap-right-side,
+.sdap-left-side{
+    display: flex;
+    height: 100%;
+    
+}
+
+.sdap-left-side{
+    height: 60vh;
+}
+.sdap-right-side{
+    flex-direction: column;
+    width: 65%;
+    /*overflow-y: auto;*/
+}
+.sdap-left-side{
+    display: flex;
+    width: 35%;
+}
+
+.sdap-analytics-container > * {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sdap-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins';
+    font-size: 30px;
+    font-weight: 900;
+    color: #181A52;
+    width: 100%;
+    height: 20%;
+}
+
+.sdap-analytics-container{
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    /* background-color: #F6E6C3;   */
+    background-color: #F6E6C3;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+    border-radius: 25px;
+    border: 1px solid rgba(128, 128, 128, 0.2); /* Subtle gray border */
+    padding: 3.5%;
+    box-sizing: border-box;
+}
+
+.sdap-analytics-container .MuiTypography-h4{
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+}
+
+.sdap-overview-count-box{
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Lighter, subtle border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-top: 2%;
+    width: 100%;
+    padding: 1%;
+    box-sizing: border-box;
+    border-radius: 15px;
+    background-color: white;
+}
+
+.sdap-overview-count-box-info{
+    flex-direction: column;
+}
+
+.sdap-overview-count-box-info .MuiTypography-root {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.sdap-toggleBtnGrp-container{
+    box-sizing: border-box;
+    margin-top: 5%;
+    /* width: fit-content; */
+    padding: 5px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
+
+.sdap-toggleBtnGrp-container .MuiToggleButton-root{
+    /* border-radius: 10px; */
+    background-color: white;
+    width: fit-content;
+}
+
+.sdap-recent-activity-container{
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Lighter, subtle border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-top: 2%;
+    width: 100%;
+    padding: 3.5%;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.sdap-recent-activity-container-info-box {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 2.5%;
+}
+
+.sdap-recent-activity-data{
+    text-align: left;
+    margin-left: 15px;
+}
+
+.sdap-component-scrollable-container{
+    scrollbar-width: thin; /* Thin scrollbar */
+    height: 50vh;
+    overflow-y: auto;
+    max-height: 80vh;
+    /* border: solid red 1px; */
+    margin-top: 2.5%;
+    /*border: solid brown;*/
+    width: 100%;
+    scrollbar-color: #888 #F6E6C3;
+}
+
+.sdap-component-container{
+    /* padding: 1.5%; */
+    height: 100%;
+    /* margin-top:2.5%;  */
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    flex-direction:column;
+    width: 100%;
+    /* border: solid purple 1px; */
+}
+
+@media (max-width: 768px) {/* KARI */
+    .sdap-body{
+        margin-top: 55px;
+        height: auto;
+        overflow-x: hidden;
+    }
+    .sdap-content-container {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        width: 97%;
+    }
+
+    .sdap-left-side {
+        height: 100%;
+        width: 97%;
+    }
+    .sdap-right-side {
+        margin-top: 30px;
+        width: 97%;
+    }
+
+    .sdap-analytics-container .MuiTypography-h4{
+        width: 100%;
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    .sdap-toggleBtnGrp-container {
+        width: 100%; /* Make container full width */
+        padding: 10px 5px;
+    }
+
+    .sdap-toggleBtnGrp-container .MuiToggleButtonGroup-root {
+        width: 100%; /* Make button group full width */
+        display: flex;
+    }
+
+    .sdap-toggleBtnGrp-container .MuiToggleButton-root {
+        flex: 1; /* Make buttons take equal width */
+        min-width: 0; /* Allow buttons to shrink */
+        padding: 5px 10px; /* Reduce padding */
+        font-size: 14px; /* Smaller font size */
+    }
+}

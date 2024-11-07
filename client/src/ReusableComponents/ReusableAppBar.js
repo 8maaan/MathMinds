@@ -62,7 +62,7 @@ export default function ReusableAppBar() {
         window.scrollTo(0, 0);
         break;
       case 'Dashboard':
-        navigateTo('/lesson-progress');
+        navigateTo('/dashboard-analytics');
         window.scrollTo(0, 0);
         break;
       case 'Lessons':

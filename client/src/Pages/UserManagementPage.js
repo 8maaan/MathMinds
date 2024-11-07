@@ -5,8 +5,10 @@ import '../PagesCSS/UserManagementPage.css';
 import '../PagesCSS/Global.css';
 import ReusableDialog from '../ReusableComponents/ReusableDialog';
 import ReusableSnackbar from '../ReusableComponents/ReusableSnackbar';
+import { UserAuth } from '../Context-and-routes/AuthContext';
 
 const UserManagementPage = () => {
+    const { user } = UserAuth();
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -19,7 +21,7 @@ const UserManagementPage = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await getAllUsersForAdmin();
+                const response = await getAllUsersForAdmin(user.uid);
                 if (response && response.data) {
                     setUsers(response.data);
                     setFilteredUsers(response.data);

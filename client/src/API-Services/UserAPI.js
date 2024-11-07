@@ -48,9 +48,9 @@ export const getAllUsersFromDb = async () => {
 };
 
 //GET ALL USERS FOR ADMIN
-export const getAllUsersForAdmin = async () => {
+export const getAllUsersForAdmin = async (uid) => {
     try {
-        const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS_FOR_ADMIN);
+        const response = await api.get(process.env.REACT_APP_SPRINGBOOT_GET_USERS_FOR_ADMIN.replace("{uid}", uid));
         //console.log(response.data)
         return { success: true, data: response.data };
     } catch (error) {

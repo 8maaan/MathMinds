@@ -4,6 +4,7 @@ import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import { getBadgesForUser } from '../API-Services/UserAPI'; // Adjust the path as needed
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { Alert } from '@mui/material';
+import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 
 
 const badgeContainerStyle = {
@@ -47,9 +48,13 @@ const BadgesPage = () => {
     fetchUserData();
   }, [user]);
 
+  if (loading) {
+    return <LoadingAnimations />;
+  }
+
     return (
-        <div className="badgesPage">
-                {!user.emailVerified && (
+        <div /*className="badgesPage"*/>
+                {/*{!user.emailVerified && (
                     <Alert
                         variant="filled"
                         severity="warning"
@@ -57,19 +62,16 @@ const BadgesPage = () => {
                     >
                         Please verify your email address to update your account information. An email has been sent to your inbox with verification instructions
                     </Alert>
-                )}
+                )}*/}
                 <div className='badgesPage-badges-wrapper'>
                     <div className='badgesPage-badges-content-container'>
-                        <div className='badgesPage-badgesinfo-left-side'>
+                        {/*<div className='badgesPage-badgesinfo-left-side'>
                             <ReusableChoices/>
-                        </div>
+                        </div>*/}
                         <div className='badgesPage-badgesinfo-right-side'>
                             <div className='badgesPage-PI-container'>
-                            <div className='badges-title'>{user ? `${user.displayName}'s Badges` : 'Badges'}</div>
-                                <div className='badges-scrollable-container'>
-                                {loading ? (
-                                    <div className="loading">Loading...</div>
-                                ) : (
+                            {/*<div className='badges-title'>{user ? `${user.displayName}'s Badges` : 'Badges'}</div>*/}
+                                
                                     <div className='userbadges-container'>
                                         <div className={`userinfo-badges-container ${badges.length === 0 ? 'no-badges' : ''}`}>
                                             {badges.length === 0 ? (
@@ -94,8 +96,7 @@ const BadgesPage = () => {
                                             )}
                                         </div>
                                     </div>
-                                )}
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

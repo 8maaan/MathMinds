@@ -7,67 +7,53 @@
     background-image: url('../Images/BG3.png');
     background-size: cover;
     background-attachment: fixed;
-    background-repeat: no-repeat; /* Ensure no repeat */
+    background-repeat: no-repeat;
     background-color: #f0f0f0; /* Fallback color */
     margin-top: 80px;
-    height: calc(100vh - 80px); /* Subtract the margin-top */
-
+    height: calc(100vh - 80px);
 }
 
 .body {
     background-attachment: fixed;
     min-height: 100vh;
-   
 }
 
 .lessprog-profile-wrapper,
 .lessprog-profile-content-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: left;
+    height: auto;
+    /*border: solid yellow;*/
+}
+
+.lessprog-profile-wrapper{
+    width: 39vw;
+    margin-top: 40%;
+}
+
+.lessprog-profile-content-container {
     width: 100%;
-   
-}
-
-.lessprog-profile-content-container{
-    width: 70%;
-    height: 60vh;
-    /*background-color: #FAFAFA;*/
-    padding: 2.5%;
- 
-  
-    
-}
-
-.lessprog-personalinfo-right-side,
-.lessprog-personalinfo-left-side{
-    display: flex;
     height: 100%;
- 
+    /*border: solid red;*/
 }
-.lessprog-personalinfo-right-side{
-    flex-direction: column;
-    width: 65%;
-    /*overflow-y: auto;*/
-   
- 
-}
-.lessprog-personalinfo-left-side{
-    display: flex;
-    width: 35%;
-    
-}
-.lessprog-PI-container{
+
+.lessprog-personalinfo-right-side {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: #F6E6C3;  
-    box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
-    border-radius: 25px;  
- 
 }
-.lessprog-PI-title{
+
+.lessprog-PI-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+}
+
+.lessprog-PI-title {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,22 +63,14 @@
     color: #181A52;
     width: 100%;
     height: 20%;
-
 }
 
 .lesprog-lessons-scrollable-container {
     overflow-y: auto;
-    max-height: 80vh; /* Adjust this value based on your layout */
- 
-}
-
-/* Styling the scrollbar for Firefox */
-.lesprog-lessons-scrollable-container {
-    scrollbar-width: thick; /* Thin scrollbar */
-    scrollbar-color: #888 #F6E6C3; /* Thumb and track colors */
-    height: 45vh;
-    margin-right: 2px;
-  
+    max-height: 80vh;
+    width: 100%;
+    height: 100%;
+    scrollbar-width: thick;
 }
 
 .lesprog-lesson-container {
@@ -100,12 +78,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    background-color: #Ffb100;
+    background-color: rgba(255, 177, 0, 0.5);
     padding: 20px;
-    margin: 10px 0;
+    margin: 7px 0;
     border-radius: 25px;
-    width: 94%;
-    
+    width: auto;
+    /*border: solid pink;*/
 }
 
 .lesprog-lesson-title {
@@ -114,6 +92,7 @@
     font-weight: 700;
     color: #181A52;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .lesprog-progress-bar-wrapper {
@@ -126,32 +105,50 @@
     font-size: 14px;
     font-weight: 400;
     color: #181A52;
+    margin-left: auto;
 }
 
 .lesprog-lessons-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 10px;
-    width: 90%;
-    margin: 0% 0% 1% 3.3%;
+    align-items: left;
+    justify-content: left;
+    border-radius: 15px;
+    width: 100%;
+    /*border: solid blue;*/
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
+.lesprog-lesson-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.lesprog-progress-percentage{
+    font-size: 1rem;
+    color: #181A52;
+    margin-left: auto; /* This pushes the percentage to the far right */
+}
 
 @media (max-width: 1024px) {
     .lessprog-profile-content-container {
-        width: 90%;
+        height: auto;
+        width: 100%;
+        
     }
-    .lesprog-lessons-scrollable-container {
-        height: 100%;
+    .lesprog-lessons-wrapper {
+        padding-left: 2px;
+        margin-top: 30%;
     }
-    /* KARI */
+    
 }
 
-@media (max-width: 768px) {/* KARI */
-    .lessonProgressPage{
+@media (max-width: 768px) {
+    .lessonProgressPage {
         margin-top: 55px;
         height: auto;
     }
@@ -159,15 +156,21 @@
         flex-direction: column;
         height: auto;
         width: 100%;
+        margin-top: 20%;
+    }
+    .lesprog-lessons-wrapper{
+        width: 84vw;
+        /*border: solid blue;*/
+    }
+    .lessprog-personalinfo-left-side,
+    .lessprog-personalinfo-right-side {
+        width: 100%;
     }
     .lessprog-personalinfo-left-side {
-        height: 100%;
-        width: 100%;
         align-items: end;
     }
     .lessprog-personalinfo-right-side {
         margin-top: 30px;
-        width: 100%;
     }
     .lessprog-PI-title-lesson {
         font-size: 25px;
@@ -183,11 +186,10 @@
     }
     .lessprog-personalinfo-right-side-lesson {
         margin-top: 50px;
-        width: 100%;
     }
-   
 }
-@media (max-width: 768px) {
+
+@media (max-width: 760px) {
     .lessprog-personalinfo-left-side {
         height: 10%;
         width: 100%;
@@ -196,9 +198,34 @@
 
     .lesprog-lessons-scrollable-container {
         overflow-y: auto;
-        max-height: 100vh; /* Adjust this value based on your layout */
-     
+        max-height: 100vh;
     }
 }
 
-/*i rename lang ni rad kay maguba tungod same same silag classname*/
+@media (max-width: 450px){
+    .lessprog-profile-content-container {
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+    }
+
+    .lesprog-lessons-wrapper{
+        width: 82vw;
+        margin-top: 160%;
+        /*border: solid purple;*/
+    }
+}
+
+@media (max-width: 380px){
+    .lessprog-profile-content-container {
+        flex-direction: column;
+        height: 110vh;
+        width: 75vw;
+        margin-top: 30%;
+    }
+
+    .lesprog-lessons-wrapper{
+        margin-top: 40%;
+        /*border: solid purple;*/
+    }
+}

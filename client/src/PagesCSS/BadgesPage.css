@@ -23,16 +23,18 @@
 .badgesPage-badges-wrapper,
 .badgesPage-badges-content-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-   
+    justify-content: left;
+    align-items: left;
+    width: 40vw;
+    height: auto;
+    /*border: solid brown;*/
+    
 }
 
 .badgesPage-badges-content-container{
-    width: 70%;
-    height: 60vh;
-    padding: 2.5%;
+    width: 100%;
+    height: 100%;
+    /*border: solid yellow;*/
 }
 
 .badgesPage-badgesinfo-right-side,
@@ -43,7 +45,7 @@
 }
 .badgesPage-badgesinfo-right-side{
     flex-direction: column;
-    width: 65%;
+    width: 100%;
     
 }
 .badgesPage-badgesinfo-left-side{
@@ -57,10 +59,10 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: #F6E6C3;  
-    box-shadow: 0px 3px rgba(184, 184, 184, 0.75);
-    border-radius: 25px;  
-    
+    /*background-color: #F6E6C3; */ 
+    /*box-shadow: 0px 3px rgba(184, 184, 184, 0.75);*/
+    /*border-radius: 25px;*/  
+    /*border: solid blue;*/
 }
 .badges-title {
     display: flex;
@@ -76,22 +78,25 @@
 .userbadges-container {
     display: flex;
     flex-direction: row;
-    width: 80%;
+    width: 88%;
     height: 100%;
     overflow-y: auto;
     padding-right: 10%;
-    padding-left: 10%;
+    padding-left: 2%;
+    /*border: solid rebeccapurple;*/
+    padding-bottom: 10px;
 }
 .userinfo-badges-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 35px;
+    gap: 20px 50px; /* 20px row gap, 48px column gap */
     width: 100%;
     height: 100%; /* Ensure it takes up full height */
     justify-content: center;
     align-items: flex-start;
     text-align: center;
-    border: solid #F6E6C3;
+    /*border: solid #F6E6C3;*/
+    margin-top: 10px;
 }
 
 /* When there are no badges, switch to flexbox to center the content */
@@ -101,6 +106,7 @@
     align-items: center;
     flex-direction: column;
     height: 80%; /* Ensure it takes up the full height */
+    margin-left: 40px;
 }
 
 /* Center the 'No badges' text */
@@ -108,8 +114,8 @@
     font-size: 16px;
     color: #333; /* Adjust as needed */
     padding: 20px;
-    background-color: #F6E6C3; /* Optional styling */
-    border-radius: 10px;
+    /*background-color: #F6E6C3;  Optional styling 
+    border-radius: 10px;*/
 }
 
 .badges-scrollable-container {
@@ -235,50 +241,66 @@
     color: #555;
     text-align: center;
 }
+
 @media (max-width: 1024px) {
     .badgesPage-badges-content-container {
-        width: 90%;
+        width: 100%;
     }
     
 }
 
-@media (max-width: 768px) {/* KARI */
+@media (max-width: 800px) {/* KARI */
     .badgesPage{
         margin-top: 50px;
         height: auto;
     }
+    
+    .badgesPage-badges-wrapper,
     .badgesPage-badges-content-container {
-        flex-direction: column;
-        height: auto;
-        width: 100%;
-    }
-    .badgesPage-badgesinfo-left-side {
-        height: 10%;
-        width: 100%;
-        align-items: end;
+        width: 65vw;
     }
 
     .badges-title{
         font-size: 25px;
     }
-    
-    .badgesPage-badgesinfo-right-side {
-        margin-top: 50px;
-        width: 100%;
-    }
-
-    .badges-scrollable-container {
-        height: 100%;
-        max-height: 100vh;
-    }
    
     .userbadges-container {
         flex-direction: row;
-        width: 77%;
-        padding-right: 44px;
+        width: 98%;
     }
 
-    .userinfo-badges-container{
-        gap: 45px;
+    .userinfo-badges-container {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 25px 45px; /* 20px row gap, 48px column gap */
+    
     }
+}
+
+@media (max-width: 450px){
+    .userbadges-container {
+        /*border: solid pink;*/
+        width: auto;
+    }
+
+    .badgesPage-badges-wrapper,
+    .badgesPage-badges-content-container {
+        justify-content: center;
+        align-items: center;
+        width: 70vw;
+    }
+   
+}
+
+@media (max-width: 380px){
+    .badgesPage-badges-wrapper,
+    .badgesPage-badges-content-container {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .userbadges-container {
+        margin-left: 22%;
+        /*border: solid purple;*/
+    }
+
 }

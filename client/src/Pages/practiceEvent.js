@@ -18,7 +18,8 @@ import { firebaseRTDB } from '../Firebase/firebaseConfig'
 import { ref, set, get } from "firebase/database";
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { useUserInfo } from '../ReusableComponents/useUserInfo';
-import { getRandomizedPracticeByTopicId } from '../API-Services/PracticeAPI';
+import { getRandomizedPracticeByTopicId, getPracticeByTopicId } from '../API-Services/PracticeAPI';
+import { trackPracticeView } from '../API-Services/UserProgressAPI';
 
 function NextArrow(props) {
   const { onClick } = props;
@@ -192,78 +193,112 @@ function PracticeEvent() {
       return;
     }
   
-    if (choice === 'SOLO') {
-      console.log(selectedTopic.topicTitle, selectedTopic.topicId);
-      try {
-        // Fetch randomized practice questions by topicId
-        const { success, data } = await getRandomizedPracticeByTopicId(selectedTopic.topicId, 10);
-        if (success) {
-          // Pass the questions to questionForm through the state
-          navigateTo(`/questionForm/${selectedTopic.topicId}`, { state: 
-            { 
-              topicTitle: selectedTopic.topicTitle, 
-              questions: data, 
-              lessonId,
-              topicId: selectedTopic.topicId
-            } });
-        } else {
-          console.error("Failed to fetch questions");
-        }
-      } catch (error) {
-        console.error("Error fetching randomized practice questions:", error);
-      }
-    } else if (choice === 'CREATE ROOM') {
-      const generatedRoomCode = generateRoomCode();
-      console.log("Generated room code:", generatedRoomCode);
-      const roomRef = ref(firebaseRTDB, `rooms/${generatedRoomCode}`);
-      
-      try {
-        console.log("Attempting to create room...");
-        await set(roomRef, {
-          host: user.uid,
-          topicId: selectedTopic.topicId,
-          topicTitle: selectedTopic.topicTitle,
-          players: {
-            [user.uid]: { name: userData.fname + " " + userData.lname || "Host" }
-          },
-          state: "waiting",
-          currentQuestion: null,
-          scores: {},
-        });
-        console.log('Room created successfully');
-        navigateTo(`/lobby/${generatedRoomCode}`, { state: { isHost: true } });
-      } catch (error) {
-        console.error("Error creating room:", error);
-        console.error("Error details:", error.message);
-        // You might want to show an error message to the user here
-      }
-    } else if (choice === 'JOIN_ROOM') {
-      if (!roomCode) {
-        console.error("Room code is required to join a room");
+    try {
+      // Step 1: Fetch the practiceId using getPracticeByTopicId for all modes
+      const practiceResponse = await getPracticeByTopicId(selectedTopic.topicId);
+      if (!practiceResponse.success) {
+        console.error("Failed to fetch practiceId");
         return;
       }
-      const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
-      try {
-        const snapshot = await get(roomRef);
-        if (snapshot.exists()) {
-          const roomData = snapshot.val();
-          if (roomData.topicId === selectedTopic.topicId) {
-            await set(ref(firebaseRTDB, `rooms/${roomCode}/players/${user.uid}`), {
-              name: userData.fname + " " + userData.lname || "Player"
-            });
-            navigateTo(`/lobby/${roomCode}`, { state: { isHost: false } });
-          } else {
-            throw new Error("Room topic does not match selected topic");
+      const practiceId = practiceResponse.data[0].practiceId;
+  
+      if (choice === 'SOLO') {
+        // SOLO mode logic
+        try {
+          // Track the practice view using practiceId
+          const trackResult = await trackPracticeView(user.uid, practiceId);
+          //console.log(user.uid, practiceId, "SOLO TRACK");
+          if (!trackResult.success) {
+            console.error("Error tracking practice view:", trackResult.message);
           }
-        } else {
-          throw new Error("Room does not exist");
+  
+          // Fetch randomized questions using getRandomizedPracticeByTopicId
+          const { success, data } = await getRandomizedPracticeByTopicId(selectedTopic.topicId, 10);
+          if (success) {
+            navigateTo(`/questionForm/${selectedTopic.topicId}`, {
+              state: {
+                topicTitle: selectedTopic.topicTitle,
+                questions: data,
+                lessonId,
+                topicId: selectedTopic.topicId,
+              },
+            });
+          } else {
+            console.error("Failed to fetch randomized questions");
+          }
+        } catch (error) {
+          console.error("Error during SOLO mode setup:", error);
         }
-      } catch (error) {
-        console.error("Error joining room:", error);
-        throw error; // Rethrow the error so it can be caught in the PracticeChoice component
+  
+      } else if (choice === 'CREATE ROOM') {
+        const generatedRoomCode = generateRoomCode();
+        const roomRef = ref(firebaseRTDB, `rooms/${generatedRoomCode}`);
+  
+        try {
+          // Create the room
+          await set(roomRef, {
+            host: user.uid,
+            topicId: selectedTopic.topicId,
+            topicTitle: selectedTopic.topicTitle,
+            players: {
+              [user.uid]: { name: userData.fname + " " + userData.lname || "Host" },
+            },
+            state: "waiting",
+            currentQuestion: null,
+            scores: {},
+          });
+          console.log('Room created successfully');
+  
+          // Track practice view for CREATE ROOM using practiceId
+          const trackResult = await trackPracticeView(user.uid, practiceId);
+          //console.log(user.uid, practiceId, "CREATE ROOM");
+          if (!trackResult.success) {
+            console.error("Error tracking practice view:", trackResult.message);
+          }
+  
+          navigateTo(`/lobby/${generatedRoomCode}`, { state: { isHost: true } });
+        } catch (error) {
+          console.error("Error creating room:", error);
+        }
+  
+      } else if (choice === 'JOIN_ROOM') {
+        if (!roomCode) {
+          console.error("Room code is required to join a room");
+          return;
+        }
+        const roomRef = ref(firebaseRTDB, `rooms/${roomCode}`);
+  
+        try {
+          const snapshot = await get(roomRef);
+          if (snapshot.exists()) {
+            const roomData = snapshot.val();
+            if (roomData.topicId === selectedTopic.topicId) {
+              await set(ref(firebaseRTDB, `rooms/${roomCode}/players/${user.uid}`), {
+                name: userData.fname + " " + userData.lname || "Player",
+              });
+  
+              // Track practice view for JOIN ROOM using practiceId
+              const trackResult = await trackPracticeView(user.uid, practiceId);
+              //console.log(user.uid, practiceId, "JOIN ROOM");
+              if (!trackResult.success) {
+                console.error("Error tracking practice view:", trackResult.message);
+              }
+  
+              navigateTo(`/lobby/${roomCode}`, { state: { isHost: false } });
+            } else {
+              throw new Error("Room topic does not match selected topic");
+            }
+          } else {
+            throw new Error("Room does not exist");
+          }
+        } catch (error) {
+          console.error("Error joining room:", error);
+        }
       }
+    } catch (error) {
+      console.error("Error fetching practiceId or tracking practice view:", error);
     }
-  }
+  };  
 
   const generateBackgroundColor = (index) => {
     const colorVariations = [

@@ -35,6 +35,7 @@ import PracticeQuestionFormMultiplayer from './Pages/PracticeQuestionFormMultipl
 import UserManagementPage from './Pages/UserManagementPage';
 import AttributionPage from './Pages/AttributionPage';
 import DashboardAnalytics from './Pages/DashboardAnalytics';
+import StudentDashboardAnalytics from './Pages/StudentDashboardAnalytics';
 
 function App() {
 
@@ -72,7 +73,8 @@ function App() {
             
             <Route path="/badges" element={<ProtectedRoute> <BadgesPage/> </ProtectedRoute>}/>
             <Route path="/lesson-progress" element={<ProtectedRoute> <LessonProgressPage/> </ProtectedRoute>}/>
-
+            <Route path="/studentDashboard" element={<ProtectedRoute> <StudentDashboardAnalytics/> </ProtectedRoute>}/>
+            
             <Route path="/lobby/:roomCode" element={<ProtectedRoute><PracticeTempLobby/></ProtectedRoute>}/>
             <Route path="/game/:roomCode" element={<PracticeQuestionFormMultiplayer/>} />
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, LinearProgress } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import '../PagesCSS/LessonProgressPage.css';
-import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import { getProgressForAllLessonsFromDb } from '../API-Services/UserAPI';
 import { UserAuth } from '../Context-and-routes/AuthContext';
+import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 
 const LessonProgressPage = () => {
     const { user } = UserAuth();
@@ -24,57 +24,50 @@ const LessonProgressPage = () => {
         };
         fetchLessonProgress();
     }, [user]);
-        return (
-            <div className="lessonProgressPage">
-                {!user.emailVerified && (
-                    <Alert
-                        variant="filled"
-                        severity="warning"
-                        sx={{ display: 'flex', justifyContent: 'center' }}
-                    >
-                        Please verify your email address to update your account information. An email has been sent to your inbox with verification instructions
-                    </Alert>
-                )}
-                <div className='lessprog-profile-wrapper'>
-                    <div className='lessprog-profile-content-container'>
-                        <div className='lessprog-personalinfo-left-side'>
-                            <ReusableChoices/>
-                        </div>
-                        <div className='lessprog-personalinfo-right-side'>
-                            <div className='lessprog-PI-container'>
-                                <div className='lessprog-PI-title'>Lesson Progress</div>
-                                <div className="lesprog-lessons-scrollable-container">
-                                <div className="lesprog-lessons-wrapper">
-                                    {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
-                                        <div className="lesprog-lesson-container" key={lessonTitle}>
-                                            <div className="lesprog-lesson-title">{lessonTitle}</div>
-                                            <LinearProgress 
-                                                className="lesprog-progress-bar-wrapper"
-                                                variant="determinate" 
-                                                value={progress} 
-                                                sx={{
-                                                    height: '0.75rem',
-                                                    borderRadius: 5,
-                                                    backgroundColor: '#ffffff',
-                                                    '& .MuiLinearProgress-bar': {
-                                                        backgroundColor: '#4CAE4F',
-                                                        borderRadius: 5,
-                                                        margin: "3px"
-                                                    }
-                                                }}
-                                            />
-                                            <div className="lesprog-progress-percentage">{progress.toFixed(0)}%</div>
+
+    if (loading) {
+        return <LoadingAnimations />;
+    }
+
+    return (
+        <div>
+            <div className='lessprog-profile-wrapper'>
+                <div className='lessprog-profile-content-container'>
+                    <div className='lessprog-personalinfo-right-side'>
+                        <div className='lessprog-PI-container'>
+                            
+                            <div className="lesprog-lessons-wrapper">
+                                {Object.entries(lessonProgress).map(([lessonTitle, progress]) => (
+                                    <div className="lesprog-lesson-container" key={lessonTitle}>
+                                        <div className="lesprog-lesson-header">
+                                            <span className="lesprog-lesson-title">{lessonTitle}</span>
+                                            <span className="lesprog-progress-percentage">{progress.toFixed(0)}%</span>
                                         </div>
-                                    ))}
-                                </div>
+                                        <LinearProgress 
+                                            className="lesprog-progress-bar-wrapper"
+                                            variant="determinate" 
+                                            value={progress} 
+                                            sx={{
+                                                height: '0.75rem',
+                                                borderRadius: 5,
+                                                backgroundColor: '#ffffff',
+                                                '& .MuiLinearProgress-bar': {
+                                                    backgroundColor: '#4CAE4F',
+                                                    borderRadius: 5,
+                                                    margin: "3px"
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
-              
             </div>
-        );
+        </div>
+    );
 };
 
 export default LessonProgressPage;
