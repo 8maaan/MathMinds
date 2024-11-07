@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import '../PagesCSS/DashboardAnalyticsPage.css'
-import { getBasicCountAnalytics } from '../API-Services/DashboardAPI';
 import { Alert, Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import ReusableChoices from '../ReusableComponents/ReusableChoices';
-import LessonDashboard, { LessonDashboardFirstSection, LessonDashboardSecondSection } from '../ReusableComponents/DashboardContents/LessonDashboard';
-import { TopicDashboardFirstSection, TopicDashboardSecondSection } from '../ReusableComponents/DashboardContents/TopicDashboard';
+import LessonDashboard from '../ReusableComponents/DashboardContents/LessonDashboard';
+import { TopicDashboardFirstSection } from '../ReusableComponents/DashboardContents/TopicDashboard';
 import OverviewDashboard from '../ReusableComponents/DashboardContents/OverviewDashboard';
+import StudentDashboard from '../ReusableComponents/DashboardContents/StudentDashboard';
 
 const DashboardAnalytics = () => {
   const { user } = UserAuth();
@@ -65,7 +65,7 @@ const DashboardAnalytics = () => {
                       ) : btnGroupAlignment === "Students" ? (
                         <Box className="dap-component-scrollable-container">
                           <Box className="dap-component-container">
-                            ⚒ W.I.P ⚒
+                            <StudentDashboard userId={user.uid}/>
                           </Box>
                         </Box>
                       ) : null

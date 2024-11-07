@@ -47,3 +47,16 @@ export const getTopicDashboardContent = async (uid) =>{
         return { success: false, message: "Failed to fetch topic dashboard data" };
     }
 }
+
+
+export const getStudentDashboardContent = async (uid) =>{
+    try{
+        const response = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_STUDENT_CONTENT_ANALYTICS}${uid}`);
+        //console.log(response.data)
+        return { success: true, data: response.data };
+
+    }catch(e){
+        console.error("Error fetching topic dashboard data: ", e);
+        return { success: false, message: "Failed to fetch topic dashboard data" };
+    }
+}
