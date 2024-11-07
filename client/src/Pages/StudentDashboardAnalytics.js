@@ -61,7 +61,9 @@ const StudentDashboardAnalytics = () => {
                         </Box>
                       ) : btnGroupAlignment === "Lesson Progress" ? (
                         <Box className="sdap-component-scrollable-container">
-                            <LessonProgressPage />
+                            <Box className="sdap-component-container">
+                              <LessonProgressPage />
+                            </Box>
                         </Box>
                       ) : btnGroupAlignment === "Badges" ? (
                         <Box className="sdap-component-scrollable-container">

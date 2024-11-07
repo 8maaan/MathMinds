@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../PagesCSS/BadgesPage.css';
-import ReusableChoices from '../ReusableComponents/ReusableChoices';
 import { getBadgesForUser } from '../API-Services/UserAPI'; // Adjust the path as needed
 import { UserAuth } from '../Context-and-routes/AuthContext';
-import { Alert } from '@mui/material';
-import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
+import { CircularProgress } from '@mui/material';
 
 
 const badgeContainerStyle = {
@@ -49,7 +47,7 @@ const BadgesPage = () => {
   }, [user]);
 
   if (loading) {
-    return <LoadingAnimations />;
+    return <CircularProgress />;;
   }
 
     return (

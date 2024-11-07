@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardContent, Typography, Grid, Paper, Divider, CircularProgress } from '@mui/material';
-import { Book, EmojiEvents, Visibility, History } from '@mui/icons-material';
+import { Book, Visibility, History } from '@mui/icons-material';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import dayjs from 'dayjs';
 import { UserAuth } from '../Context-and-routes/AuthContext';
 import { getStudentDashboardOverview } from '../API-Services/DashboardAPI';
-import { getProgressForAllLessonsFromDb } from '../API-Services/UserAPI';
-import { getAllTopicsFromDb } from '../API-Services/TopicAPI';
-import LoadingAnimations from './LoadingAnimations';
 
 /*const studentData = {
     userMostAccessedContent: {
@@ -39,8 +36,6 @@ const TOTAL_BADGES = 10;*/
 const OverviewSDPage = () => {
     const { user } = UserAuth();
     const [studentData, setStudentData] = useState(null);
-    const [totalBadges, setTotalBadges] = useState(0);
-    const [totalTopics, setTotalTopics] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -56,27 +51,6 @@ const OverviewSDPage = () => {
                 } else {
                     throw new Error(dashboardResponse.message);
                 }
-
-                // Fetch total badges (count of unique lessons for badges)
-                const progressResponse = await getProgressForAllLessonsFromDb(user.uid);
-                if (progressResponse.success) {
-                    const lessonProgressData = progressResponse.data; // Assume this is the entire lesson progress object
-                    const badgeCount = Object.keys(lessonProgressData).length;
-                    setTotalBadges(badgeCount);
-                } else {
-                    throw new Error(progressResponse.message);
-                }
-
-                // Fetch total topics
-                const topicsResponse = await getAllTopicsFromDb();
-                if (topicsResponse.success) {
-                    const topicsData = topicsResponse.data; // Assume this is an array of topic objects
-                    const topicCount = topicsData.length;
-                    setTotalTopics(topicCount);
-                } else {
-                    throw new Error(topicsResponse.message);
-                }
-
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -89,7 +63,7 @@ const OverviewSDPage = () => {
 
 
     if (loading) {
-        return <LoadingAnimations />;
+        return <CircularProgress />;
     }
 
     if (error) {
@@ -100,64 +74,81 @@ const OverviewSDPage = () => {
         <Box p={3} sx={{ width: '100%', maxWidth: 550, mx: 'auto' }}>
             {/* Recent Activity Section */}
             <Box mb={2}>
-                <Typography variant="h6" gutterBottom sx={{textAlign:'left'}}>Recent Activity</Typography>
+                <Typography variant="h6" gutterBottom sx={{ textAlign: 'left' }}>Recent Activity</Typography>
                 <Divider />
                 <Grid container spacing={3}>
                     {/* Recent Topics Viewed */}
                     <Grid item xs={12} sm={6}>
-                        <Card variant="outlined" sx={{ mb: 2, borderRadius:'15px', mt: 2, backgroundColor: 'rgba(255, 177, 0, 0.5)', boxShadow:'2' }}>
+                        <Card variant="outlined" sx={{ mb: 2, borderRadius: '15px', mt: 2, backgroundColor: 'rgba(255, 177, 0, 0.5)', boxShadow: '2' }}>
                             <CardContent>
                                 <Typography variant="h6" display="flex" alignItems="center" gutterBottom>
                                     <History fontSize="small" sx={{ mr: 1 }} /> Recently Viewed Topics
                                 </Typography>
-                                {studentData.userRecentTopicViewed.map((topic, index) => (
-                                    <Paper key={index} elevation={2} sx={{ p: 1, mt: 1, borderRadius:'10px', backgroundColor:'#A4C3CF' }}>
-                                        <Typography variant="body1">
-                                            {topic.lessonTitle} - {topic.topicTitle}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" sx={{textAlign:'left'}}>
-                                            {dayjs(topic.lastViewed).format('MMM D, YYYY')}
-                                        </Typography>
-                                    </Paper>
-                                ))}
+                                {studentData.userRecentTopicViewed && studentData.userRecentTopicViewed.length > 0 ? (
+                                    studentData.userRecentTopicViewed.map((topic, index) => (
+                                        <Paper key={index} elevation={2} sx={{ p: 1, mt: 1, borderRadius: '10px', backgroundColor: '#A4C3CF' }}>
+                                            <Typography variant="body1" sx={{ textAlign: 'left' }}>
+                                                {topic.lessonTitle} - {topic.topicTitle}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
+                                                {dayjs(topic.lastViewed).format('MMM D, YYYY')}
+                                            </Typography>
+                                        </Paper>
+                                    ))
+                                ) : (
+                                    <Typography variant="body2" color="text.secondary">No recent topics viewed.</Typography>
+                                )}
                             </CardContent>
                         </Card>
                     </Grid>
-
+    
                     {/* Recent Practices Viewed */}
                     <Grid item xs={12} sm={6}>
-                        <Card variant="outlined" sx={{ mb: 2, borderRadius:'15px', mt: 2, backgroundColor: 'rgba(255, 177, 0, 0.5)', boxShadow:'2' }}>
+                        <Card variant="outlined" sx={{ mb: 2, borderRadius: '15px', mt: 2, backgroundColor: 'rgba(255, 177, 0, 0.5)', boxShadow: '2' }}>
                             <CardContent>
                                 <Typography variant="h6" display="flex" alignItems="center" gutterBottom>
                                     <History fontSize="small" sx={{ mr: 1 }} /> Recently Viewed Practices
                                 </Typography>
-                                {studentData.userRecentPracticeViewed.map((practice, index) => (
-                                    <Paper key={index} elevation={2} sx={{ p: 1, mt: 1, borderRadius:'15px', backgroundColor:'#A4C3CF' }}>
-                                        <Typography variant="body1">
-                                            {practice.lessonTitle} - {practice.topicTitle}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" sx={{textAlign:'left'}}>
-                                            {dayjs(practice.lastViewed).format('MMM D, YYYY')}
-                                        </Typography>
-                                    </Paper>
-                                ))}
+                                {studentData.userRecentPracticeViewed && studentData.userRecentPracticeViewed.length > 0 ? (
+                                    studentData.userRecentPracticeViewed.map((practice, index) => (
+                                        <Paper key={index} elevation={2} sx={{ p: 1, mt: 1, borderRadius: '15px', backgroundColor: '#A4C3CF' }}>
+                                            <Typography variant="body1" sx={{ textAlign: 'left' }}>
+                                                {practice.lessonTitle} - {practice.topicTitle}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
+                                                {dayjs(practice.lastViewed).format('MMM D, YYYY')}
+                                            </Typography>
+                                        </Paper>
+                                    ))
+                                ) : (
+                                    <Typography variant="body2" color="text.secondary">No recent practices viewed.</Typography>
+                                )}
                             </CardContent>
                         </Card>
                     </Grid>
                 </Grid>
             </Box>
-
-            <Typography variant="h6" gutterBottom sx={{textAlign:'left'}}>Learning Highlights</Typography>
-            <Divider />                    
+    
+            <Typography variant="h6" gutterBottom sx={{ textAlign: 'left' }}>Learning Highlights</Typography>
+            <Divider />
             {/* Key Metrics Row with Circular Progress Bars */}
-            <Box mt={3} mb={2} p={2} sx={{ backgroundColor: '#F6E6C3;', borderRadius: 2 }}>
+            <Box mt={3} mb={2} p={2} sx={{ backgroundColor: '#F6E6C3', borderRadius: 2 }}>
                 <Grid container spacing={3}>
                     {/* Topics Completed Progress */}
                     <Grid item xs={12} sm={6} display="flex" flexDirection="column" alignItems="center">
                         <Box position="relative" display="inline-flex">
+                            {/* Gray Background Circle */}
                             <CircularProgress
                                 variant="determinate"
-                                value={(studentData.userTopicsCompleted / totalTopics) * 100}
+                                value={100}
+                                size={190}
+                                thickness={2.5}
+                                sx={{ color: 'lightgray', position: 'absolute', top: 0, left: 0 }}
+                            />
+                            {/* Main Progress Circle */}
+                            <CircularProgress
+                                variant="determinate"
+                                value={(studentData.userTopicsCompleted / (studentData.totalTopics || 1)) * 100}
                                 size={190}
                                 thickness={2.5}
                                 color="primary"
@@ -173,9 +164,9 @@ const OverviewSDPage = () => {
                                 alignItems="center"
                                 justifyContent="center"
                             >
-                                <Book fontSize="large" sx={{color:'#4CAE4F'}} />
+                                <Book fontSize="large" sx={{ color: '#4CAE4F' }} />
                                 <Typography variant="h6" component="div" color="textPrimary">
-                                    {`${studentData.userTopicsCompleted}/${totalTopics}`}
+                                    {`${studentData.userTopicsCompleted || 0}/${studentData.totalTopics || 0}`}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">Topics Completed</Typography>
                             </Box>
@@ -185,9 +176,18 @@ const OverviewSDPage = () => {
                     {/* Badges Earned Progress */}
                     <Grid item xs={12} sm={6} display="flex" flexDirection="column" alignItems="center">
                         <Box position="relative" display="inline-flex">
+                            {/* Gray Background Circle */}
                             <CircularProgress
                                 variant="determinate"
-                                value={(studentData.userBadgeCount / totalBadges) * 100}
+                                value={100}
+                                size={190}
+                                thickness={2.5}
+                                sx={{ color: 'lightgray', position: 'absolute', top: 0, left: 0 }}
+                            />
+                            {/* Main Progress Circle */}
+                            <CircularProgress
+                                variant="determinate"
+                                value={(studentData.userBadgeCount / (studentData.totalLessons || 1)) * 100}
                                 size={190}
                                 thickness={2.5}
                                 color="secondary"
@@ -203,9 +203,9 @@ const OverviewSDPage = () => {
                                 alignItems="center"
                                 justifyContent="center"
                             >
-                                <MilitaryTechIcon fontSize="large" sx={{color:'#ffb100'}} />
+                                <MilitaryTechIcon fontSize="large" sx={{ color: '#ffb100' }} />
                                 <Typography variant="h6" component="div" color="textPrimary">
-                                    {`${studentData.userBadgeCount}/${totalBadges}`}
+                                    {`${studentData.userBadgeCount || 0}/${studentData.totalLessons || 0}`}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">Badges Earned</Typography>
                             </Box>
@@ -217,32 +217,44 @@ const OverviewSDPage = () => {
             {/* Access Statistics Section */}
             <Box mt={3} mb={1}>
                 <Box mb={3} mt={2}>
-                    <Card variant="outlined" sx={{borderRadius:'15px', backgroundColor:'#F8A792', boxShadow:'2'}}>
+                    <Card variant="outlined" sx={{ borderRadius: '15px', backgroundColor: '#F8A792', boxShadow: '2' }}>
                         <CardContent>
                             <Typography variant="h6" display="flex" alignItems="center" gutterBottom>
                                 <Visibility fontSize="small" sx={{ mr: 1 }} /> Most Visited Content
                             </Typography>
-                            <Typography variant="body1">
-                                {studentData.userMostAccessedContent.lessonTitle} - {studentData.userMostAccessedContent.topicTitle}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {studentData.userMostAccessedContent.viewCount} views
-                            </Typography>
+                            {studentData.userMostAccessedContent ? (
+                                <>
+                                    <Typography variant="body1">
+                                        {studentData.userMostAccessedContent.lessonTitle || 'N/A'} - {studentData.userMostAccessedContent.topicTitle || 'N/A'}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Visited {studentData.userMostAccessedContent.viewCount || 0} times
+                                    </Typography>
+                                </>
+                            ) : (
+                                <Typography variant="body2" color="text.secondary">No data available.</Typography>
+                            )}
                         </CardContent>
                     </Card>
                 </Box>
                 <Box mb={3}>
-                    <Card variant="outlined" sx={{borderRadius:'15px',  backgroundColor:'#9BC88B', boxShadow:'2'}}>
+                    <Card variant="outlined" sx={{ borderRadius: '15px', backgroundColor: '#9BC88B', boxShadow: '2' }}>
                         <CardContent>
                             <Typography variant="h6" display="flex" alignItems="center" gutterBottom>
                                 <Visibility fontSize="small" sx={{ mr: 1 }} /> Most Practiced Topic
                             </Typography>
-                            <Typography variant="body1">
-                                {studentData.userMostAccessedPractice.lessonTitle} - {studentData.userMostAccessedPractice.topicTitle}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {studentData.userMostAccessedPractice.viewCount} views
-                            </Typography>
+                            {studentData.userMostAccessedPractice && Object.keys(studentData.userMostAccessedPractice).length > 0 ? (
+                                <>
+                                    <Typography variant="body1">
+                                        {studentData.userMostAccessedPractice.lessonTitle || 'N/A'} - {studentData.userMostAccessedPractice.topicTitle || 'N/A'}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Practiced {studentData.userMostAccessedPractice.viewCount || 0} times
+                                    </Typography>
+                                </>
+                            ) : (
+                                <Typography variant="body2" color="text.secondary">No data available.</Typography>
+                            )}
                         </CardContent>
                     </Card>
                 </Box>

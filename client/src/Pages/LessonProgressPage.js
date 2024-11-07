@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { LinearProgress } from '@mui/material';
+import { LinearProgress, CircularProgress } from '@mui/material';
 import '../PagesCSS/LessonProgressPage.css';
 import { getProgressForAllLessonsFromDb } from '../API-Services/UserAPI';
 import { UserAuth } from '../Context-and-routes/AuthContext';
-import LoadingAnimations from '../ReusableComponents/LoadingAnimations';
 
 const LessonProgressPage = () => {
     const { user } = UserAuth();
@@ -26,7 +25,7 @@ const LessonProgressPage = () => {
     }, [user]);
 
     if (loading) {
-        return <LoadingAnimations />;
+        return <CircularProgress />;
     }
 
     return (
