@@ -79,12 +79,12 @@ export const TopicDashboardFirstSection = ({userId}) => {
                 <Box className="td-overView-container">
                     <Typography> Recently Added Topics ⏰</Typography>
                     <Box className="td-overView-content">
-                        <Typography style={{fontSize:'16px', fontWeight:'500', color:'inherit'}}>{fetchedTopicData.recentTopics[0].topicTitle}</Typography>       
-                        <Typography style={{fontSize:'13px', color: 'gray'}}>{timeAgo(fetchedTopicData.recentTopics[0].topicDateAdded)}</Typography>
+                        <Typography style={{fontSize:'16px', fontWeight:'500', color:'inherit'}}>{fetchedTopicData?.recentTopics?.[0]?.topicTitle ?? null}</Typography>       
+                        <Typography style={{fontSize:'13px', color: 'gray'}}>{timeAgo(fetchedTopicData?.recentTopics?.[0]?.topicDateAdded ?? null)}</Typography>
                     </Box>
                     <Box className="td-overView-content">
-                        <Typography style={{fontSize:'16px', fontWeight:'500', color:'inherit'}}>{fetchedTopicData.recentTopics[1].topicTitle}</Typography>       
-                        <Typography style={{fontSize:'13px', color: 'gray'}}>{timeAgo(fetchedTopicData.recentTopics[1].topicDateAdded)}</Typography>
+                        <Typography style={{fontSize:'16px', fontWeight:'500', color:'inherit'}}>{fetchedTopicData?.recentTopics?.[1]?.topicTitle ?? null}</Typography>       
+                        <Typography style={{fontSize:'13px', color: 'gray'}}>{timeAgo(fetchedTopicData?.recentTopics?.[1]?.topicDateAdded ?? null)}</Typography>
                     </Box>
                     <Typography> Most Popular Topic 🌟</Typography>
                     <Box className="td-overView-content">

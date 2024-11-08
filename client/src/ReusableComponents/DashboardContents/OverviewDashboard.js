@@ -62,7 +62,7 @@ const OverviewDashboard = ({userId}) => {
                 <PeopleOutlineIcon fontSize='large' color='primary'/>
                 <Box className='dap-overview-count-box-info'>
                     <Typography sx={{color:'gray', fontWeight:'500'}}>Total Students</Typography>
-                    <Typography sx={{fontSize:'24px', fontWeight:'600'}}>{fetchedOverviewData.totalStudents}</Typography>
+                    <Typography sx={{fontSize:'24px', fontWeight:'600'}}>{fetchedOverviewData.totalStudents || "0"}</Typography>
                 </Box>
             </Box>
 
@@ -70,7 +70,7 @@ const OverviewDashboard = ({userId}) => {
                 <AutoStoriesIcon fontSize='large' color='success'/>
                 <Box className='dap-overview-count-box-info'>
                     <Typography sx={{color:'gray', fontWeight:'500'}}>Active Lessons</Typography>
-                    <Typography sx={{fontSize:'24px', fontWeight:'600'}}>{fetchedOverviewData.totalLessons}</Typography>
+                    <Typography sx={{fontSize:'24px', fontWeight:'600'}}>{fetchedOverviewData.totalLessons || "0"}</Typography>
                 </Box>
             </Box>
 
@@ -78,7 +78,7 @@ const OverviewDashboard = ({userId}) => {
                 <MilitaryTechIcon fontSize='large' color='secondary'/>
                 <Box className='dap-overview-count-box-info'>
                     <Typography sx={{color:'gray', fontWeight:'500'}}>Badges Awarded</Typography>
-                    <Typography sx={{fontSize:'24px', fontWeight:'600'}}>{fetchedOverviewData.totalBadgesAwarded}</Typography>
+                    <Typography sx={{fontSize:'24px', fontWeight:'600'}}>{fetchedOverviewData.totalBadgesAwarded || "0"}</Typography>
                 </Box>
             </Box>
 
@@ -87,7 +87,7 @@ const OverviewDashboard = ({userId}) => {
                 <Box className='dap-recent-activity-container-info-box'>
                     <AccessTimeIcon style={{color:'gray'}} fontSize='medium'/>
                     <Box className='dap-recent-activity-data'>
-                        <Typography style={{fontSize:'16px', fontWeight:'500'}}>New Lesson Added: {fetchedOverviewData.recentLessons[0].lessonTitle}</Typography>
+                        <Typography style={{fontSize:'16px', fontWeight:'500'}}>New Lesson Added: {fetchedOverviewData.recentLessons?.[0]?.lessonTitle || "None"}</Typography>
                         <Typography style={{fontSize:'13px', color: 'gray'}}>{timeAgo(fetchedOverviewData.recentLessons[0].lessonDateAdded)}</Typography>
                     </Box>
                 </Box>

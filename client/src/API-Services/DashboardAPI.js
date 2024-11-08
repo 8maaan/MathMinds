@@ -48,6 +48,19 @@ export const getTopicDashboardContent = async (uid) =>{
     }
 }
 
+
+export const getStudentDashboardContent = async (uid) =>{
+    try{
+        const response = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_STUDENT_CONTENT_ANALYTICS}${uid}`);
+        //console.log(response.data)
+        return { success: true, data: response.data };
+
+    }catch(e){
+        console.error("Error fetching student dashboard data: ", e);
+        return { success: false, message: "Failed to fetch student dashboard data" };
+    }
+}
+
 export const getStudentDashboardOverview = async (uid) => {
     try{
         const response = await api.get(`${process.env.REACT_APP_SPRINGBOOT_GET_STUDENTDASHBOARD_OVERVIEW}${uid}`);
