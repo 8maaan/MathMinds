@@ -79,6 +79,8 @@
     box-sizing: border-box;
     border-radius: 15px;
     background-color: white;
+    display: flex;
+    align-items: center;
 }
 
 .dap-overview-count-box-info{
@@ -114,6 +116,7 @@
     padding: 3.5%;
     box-sizing: border-box;
     border-radius: 15px;
+    margin-bottom: 5%;
 }
 
 .dap-recent-activity-container-info-box {

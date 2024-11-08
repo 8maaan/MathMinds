@@ -46,28 +46,17 @@ export const getLessonById = async(lessonId) => {
 }
 
 export const updateLessonInDb = async (lessonId, lessonTitle, lessonDescription, lessonBadgeImageUrl) => {
+    const updatedLesson = {
+        lessonTitle,
+        lessonDescription,
+        lessonBadgeImageUrl
+    };
     try {
-        const apiUrl = process.env.REACT_APP_SPRINGBOOT_EDIT_LESSON;
-        const response = await fetch(`${apiUrl}${lessonId}`, {
-            method: 'PUT', // or 'POST' if that's what your API expects
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                lessonTitle,
-                lessonDescription,
-                lessonBadgeImageUrl
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            return { success: true, data };
-        } else {
-            return { success: false, error: data };
-        }
+        const apiUrl = `${process.env.REACT_APP_SPRINGBOOT_EDIT_LESSON}${lessonId}`;
+        const response = await api.put(apiUrl, updatedLesson);
+        return { success: true, data: response.data };
     } catch (error) {
+        console.error("Error updating lesson: ", error);
         return { success: false, error };
     }
 };

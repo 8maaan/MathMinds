@@ -47,9 +47,11 @@ const DashboardAnalytics = () => {
                     </Box>
 
                     {btnGroupAlignment === "Overview" ? (
-                        <>
-                          <OverviewDashboard userId={user.uid}/>
-                        </>
+                        <Box className="dap-component-scrollable-container">
+                          <Box className="dap-component-container">
+                            <OverviewDashboard userId={user.uid}/>
+                          </Box>
+                        </Box>
                       ) : btnGroupAlignment === "Lessons" ? (
                         <Box className="dap-component-scrollable-container">
                           <Box className="dap-component-container">

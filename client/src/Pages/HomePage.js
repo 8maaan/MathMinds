@@ -6,9 +6,11 @@ import homepageDashboardBtn from '../Images/HomePage_DashboardBtn2.png';
 import homepageLessonBtn from '../Images/HomePage_LessonsBtn.png';
 import homepagePracticeBtn from '../Images/HomePage_PracticeBtn2.png';
 import { UserAuth } from '../Context-and-routes/AuthContext';
+import { useUserRoles } from '../ReusableComponents/useUserRoles';
 
 const HomePage = () => {
     const { user } = UserAuth();
+    const { isTeacher, isAdmin } = useUserRoles(user ? user.uid : null);
 
     return (
         <div className='App-home-body'>
@@ -23,7 +25,7 @@ const HomePage = () => {
                 </Box>
 
                 <Box className="image-buttons">
-                    <Link to="/lesson-progress" className="image-buttons-margin">
+                    <Link to={(isTeacher || isAdmin) ? "/dashboard-analytics" : "/studentDashboard"} className="image-buttons-margin">
                         <Button className="img-button-size">
                             <img src={homepageDashboardBtn} alt="Dashboard" className="img-button-size" />
                         </Button>

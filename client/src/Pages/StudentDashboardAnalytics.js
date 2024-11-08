@@ -42,7 +42,7 @@ const StudentDashboardAnalytics = () => {
                     <Typography sx={{marginBottom:'5%', justifyContent: 'center',
                                     alignItems:'center', fontSize:'30px', fontWeight: '900', 
                     }}>
-                      {user.displayName || "Student"}'s Dashboard
+                      {user ? user.displayName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : 'Student'}'s Dashboard
                     </Typography>
                     
                     <Box className='sdap-toggleBtnGrp-container' sx={{backgroundColor:'#F6E6C3'}}>
