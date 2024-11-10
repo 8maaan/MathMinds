@@ -145,7 +145,7 @@ const LoginPage = () => {
                             '&:hover': { backgroundColor: '#e39e02' },
                         }}
                     >
-                        {loading ? <CircularProgress color="inherit" size="1.5rem" thickness={6}/> : <h4>Create</h4>}
+                        {loading ? <CircularProgress color="inherit" size="1.5rem" thickness={6}/> : <h4>Log In</h4>}
                     </Button>
                 </form>
                 <p>No account yet?
