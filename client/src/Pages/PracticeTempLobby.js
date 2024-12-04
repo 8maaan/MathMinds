@@ -14,6 +14,7 @@ import GameSettingsModal from '../ReusableComponents/GameSettingsModal';
 const PracticeTempLobby = () => {
     const { roomCode } = useParams();
     const [isHost, setIsHost] = useState(false);
+    const [hostId, setHostId] = useState("");
     const [players, setPlayers] = useState({});
     const [roomData, setRoomData] = useState(null);
     const navigateTo = useNavigate();
@@ -49,6 +50,7 @@ const PracticeTempLobby = () => {
                 setRoomData(data);
                 setPlayers(data.players || {});
                 setIsHost(data.host === user.uid);
+                setHostId(data.host);
                 // console.log(isHost);
 
                 // Check if the host has disconnected
@@ -257,7 +259,7 @@ const PracticeTempLobby = () => {
                             className='pml-right-section-participants-name'
                             style={{ backgroundColor: playerColorList[index % playerColorList.length]}}
                         >
-                            <p style={{fontWeight:'600'}}>{player.name}</p>
+                            <p style={{fontWeight:'600'}}>{hostId === id ? '👑' : null } {player.name} { hostId === id ? '(Host)' : null }</p>
                         </div>
                     ))}
                 </div> 
