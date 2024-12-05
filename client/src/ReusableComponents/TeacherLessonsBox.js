@@ -210,7 +210,7 @@ const TeacherLessonsBox = () => {
     };
 
     const handleEditQuiz = (lesson) => {
-        console.log(lesson.lessonQuiz);
+        //console.log(lesson.lessonQuiz);
         if (lesson.lessonQuiz && lesson.lessonQuiz.length > 0) {
             const lessonQuizId = lesson.lessonQuiz[0].lessonQuizId;
             navigate(`/edit-lesson-quiz/${lessonQuizId}/${lesson.lessonTitle}`);

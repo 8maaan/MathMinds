@@ -202,7 +202,7 @@ const RegisterPage = () => {
                         size='large'
                         sx={{backgroundColor:'#ffb100', borderRadius: '20px', marginTop: '1rem', height:'5vh', fontFamily:'Poppins'}}
                     >
-                        {loading ? <CircularProgress color="inherit" size="1.5rem" thickness={6}/> : <h4>Create</h4>}
+                        {loading ? <CircularProgress color="inherit" size="1.5rem" thickness={6}/> : <h4>Register</h4>}
                     </Button>
                 </form>
                 <Typography style={{fontSize:'12px', fontFamily:'Poppins'}}>Already have an account?<span style={{color:'#181A52', cursor: 'pointer', fontWeight:'700'}} onClick={() => navigateTo('/login')}> Sign in</span></Typography> 
