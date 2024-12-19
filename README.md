@@ -35,7 +35,7 @@ MathMinds is an interactive web learning platform designed to help 3rd grade stu
 ### Steps to Install and Run the Project
 1. **Clone the Repository**: 
    ```bash
-   git clone https://github.com/8maaan/TCGMart-FrontEnd.git
+   git clone https://github.com/8maaan/MathMinds.git
 
 2. **Navigate to the Project Directory**: 
    ```bash
