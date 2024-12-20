@@ -19,7 +19,14 @@ MathMinds is an interactive web learning platform designed to help 3rd grade stu
 
 ## 💻 Tech Stack / Tools
 
-![Java](https://skillicons.dev/icons?i=react,spring,mysql,firebase,azure,vercel) 
+![Tech Stack](https://skillicons.dev/icons?i=react,spring,mysql,firebase,azure,vercel) 
+- React ver. 18.2.0
+- Spring Boot ver. 2.7.16
+- MySQL ver. 8.0.34
+- Firebase ver. 10.9.0
+- Azure MySQL Flexible Server ver. 8.0
+- Vercel MathMinds Deployment Version (1.1.8)
+
 
 ## ⚙️ Installation Instructions (Run Locally)
 <b>NOTE:</b> _Some features may require an API key, and we are unable to share our .env files for security reasons._
